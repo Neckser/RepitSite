@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Регистрация репетитора | Учебный портал</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        body {
+            background-color: #f8f9fa;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .registration-container {
+            background: linear-gradient(135deg, #ffffff 0%, #f8fff8 100%);
+            border-radius: 15px;
+            padding: 35px;
+            width: 100%;
+            max-width: 520px;
+            box-shadow: 0 8px 25px rgba(107, 142, 35, 0.15);
+            border: 2px solid #6b8e23;
+        }
+        
+        h1 {
+            color: #6b8e23;
+            text-align: center;
+            margin-bottom: 25px;
+            font-size: 30px;
+            font-weight: bold;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        }
+        
+        .form-group {
+            margin-bottom: 22px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 10px;
+            color: #5a7a1f;
+            font-weight: bold;
+            font-size: 15px;
+        }
+        
+        label.required:after {
+            content: " *";
+            color: #e53935;
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 14px 16px;
+            border-radius: 8px;
+            border: 2px solid #8fb84a;
+            font-size: 16px;
+            background-color: white;
+            color: #333;
+            transition: all 0.3s ease;
+        }
+        
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #6b8e23;
+            box-shadow: 0 0 0 3px rgba(107, 142, 35, 0.2);
+            transform: translateY(-1px);
+        }
+        
+        .file-upload {
+            display: block;
+            width: 100%;
+            padding: 14px;
+            border: 2px dashed #8fb84a;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            margin-bottom: 8px;
+            color: #6b8e23;
+            background-color: rgba(143, 184, 74, 0.08);
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        
+        .file-upload:hover {
+            background-color: rgba(143, 184, 74, 0.15);
+            border-color: #6b8e23;
+        }
+        
+        .register-btn {
+            width: 100%;
+            padding: 16px;
+            border-radius: 8px;
+            border: none;
+            background: linear-gradient(135deg, #6b8e23 0%, #5a7a1f 100%);
+            color: white;
+            font-size: 17px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 25px;
+            box-shadow: 0 4px 12px rgba(107, 142, 35, 0.3);
+        }
+        
+        .register-btn:hover {
+            background: linear-gradient(135deg, #5a7a1f 0%, #4a661a 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(107, 142, 35, 0.4);
+        }
+        
+        .register-btn:active {
+            transform: translateY(0);
+        }
+        
+        .login-link {
+            text-align: center;
+            margin-top: 25px;
+            color: #666;
+            font-size: 15px;
+        }
+        
+        .login-link a {
+            color: #6b8e23;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+        
+        .login-link a:hover {
+            color: #5a7a1f;
+            text-decoration: underline;
+        }
+        
+        .moderation-notice {
+            background: linear-gradient(135deg, #f1f8e9 0%, #e8f5e8 100%);
+            border: 2px solid #c5e1a5;
+            border-radius: 10px;
+            padding: 18px;
+            margin: 25px 0;
+            font-size: 14px;
+            color: #2e7d32;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(46, 125, 50, 0.1);
+        }
+        
+        .moderation-notice:before {
+            content: "⏳ ";
+            font-size: 16px;
+        }
+        
+        .subjects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 10px;
+            margin-top: 8px;
+        }
+        
+        .subject-checkbox {
+            display: none;
+        }
+        
+        .subject-label {
+            display: block;
+            padding: 12px;
+            background-color: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .subject-checkbox:checked + .subject-label {
+            background-color: #6b8e23;
+            color: white;
+            border-color: #6b8e23;
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(107, 142, 35, 0.3);
+        }
+        
+        .subject-label:hover {
+            border-color: #8fb84a;
+            transform: translateY(-1px);
+        }
+        
+        .file-info {
+            color: #6b8e23;
+            font-size: 13px;
+            margin-top: 5px;
+            font-style: italic;
+        }
+        
+        .subjects-info {
+            color: #6b8e23;
+            font-size: 13px;
+            margin-top: 5px;
+            font-style: italic;
+            text-align: center;
+        }
+        
+        @media (max-width: 480px) {
+            .registration-container {
+                padding: 25px 20px;
+                margin: 10px;
+                border-width: 1px;
+            }
+            
+            h1 {
+                font-size: 26px;
+            }
+            
+            .subjects-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            input, select, textarea {
+                padding: 12px 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="registration-container">
+        <h1>Регистрация репетитора</h1>
+        
+        <div class="moderation-notice">
+            Ваша анкета будет проверена модератором. Обычно это занимает несколько часов, 
+            но в редких случаях может занять до 3 дней.
+        </div>
+        
+        <form id="registration-form" action="/registertut" method="post" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="first-name" class="required">Имя</label>
+                <input type="text" id="first-name" name="first_name" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="last-name" class="required">Фамилия</label>
+                <input type="text" id="last-name" name="last_name" required>
+            </div>
+            
+            <div class="form-group">
+                <label class="required">Выберите предметы</label>
+                <div class="subjects-grid">
+                    <!-- Математические науки -->
+                    <input type="checkbox" id="math" name="subject_math" value="1" class="subject-checkbox">
+                    <label for="math" class="subject-label">Математика</label>
+                    
+                    <input type="checkbox" id="physics" name="subject_physics" value="1" class="subject-checkbox">
+                    <label for="physics" class="subject-label">Физика</label>
+                    
+                    <input type="checkbox" id="chemistry" name="subject_chemistry" value="1" class="subject-checkbox">
+                    <label for="chemistry" class="subject-label">Химия</label>
+                    
+                    <input type="checkbox" id="computer" name="subject_computer" value="1" class="subject-checkbox">
+                    <label for="computer" class="subject-label">Информатика</label>
+                    
+                    <!-- Языки -->
+                    <input type="checkbox" id="russian" name="subject_russian" value="1" class="subject-checkbox">
+                    <label for="russian" class="subject-label">Русский язык</label>
+                    
+                    <input type="checkbox" id="english" name="subject_english" value="1" class="subject-checkbox">
+                    <label for="english" class="subject-label">Английский</label>
+                    
+                    <input type="checkbox" id="german" name="subject_german" value="1" class="subject-checkbox">
+                    <label for="german" class="subject-label">Немецкий</label>
+                    
+                    <input type="checkbox" id="french" name="subject_french" value="1" class="subject-checkbox">
+                    <label for="french" class="subject-label">Французский</label>
+                    
+                    <!-- Гуманитарные науки -->
+                    <input type="checkbox" id="history" name="subject_history" value="1" class="subject-checkbox">
+                    <label for="history" class="subject-label">История</label>
+                    
+                    <input type="checkbox" id="social" name="subject_social" value="1" class="subject-checkbox">
+                    <label for="social" class="subject-label">Обществознание</label>
+                    
+                    <input type="checkbox" id="literature" name="subject_literature" value="1" class="subject-checkbox">
+                    <label for="literature" class="subject-label">Литература</label>
+                    
+                    <!-- Естественные науки -->
+                    <input type="checkbox" id="biology" name="subject_biology" value="1" class="subject-checkbox">
+                    <label for="biology" class="subject-label">Биология</label>
+                    
+                    <input type="checkbox" id="geography" name="subject_geography" value="1" class="subject-checkbox">
+                    <label for="geography" class="subject-label">География</label>
+                    
+                    <!-- Дополнительные -->
+                    <input type="checkbox" id="economics" name="subject_economics" value="1" class="subject-checkbox">
+                    <label for="economics" class="subject-label">Экономика</label>
+                    
+                    <input type="checkbox" id="art" name="subject_art" value="1" class="subject-checkbox">
+                    <label for="art" class="subject-label">ИЗО</label>
+                    
+                    <input type="checkbox" id="music" name="subject_music" value="1" class="subject-checkbox">
+                    <label for="music" class="subject-label">Музыка</label>
+                </div>
+                <div class="subjects-info">Выберите один или несколько предметов</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="education" class="required">Образование</label>
+                <input type="text" id="education" name="education" placeholder="Вуз, специальность, год окончания" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="experience" class="required">Опыт преподавания (лет)</label>
+                <input type="number" id="experience" name="experience" min="0" max="50" placeholder="0" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="username" class="required">Логин</label>
+                <input type="text" id="username" name="login" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="password" class="required">Пароль</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="photo" class="required">Фотография профиля</label>
+                <input type="file" id="photo" name="photo" accept="image/*" class="file-upload" required>
+                <div class="file-info">Рекомендуемый размер: 300×300 px, JPG или PNG</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="resume">Резюме (необязательно)</label>
+                <input type="file" id="resume" name="resume" accept=".pdf,.doc,.docx" class="file-upload">
+                <div class="file-info">PDF, DOC или DOCX, до 5MB</div>
+            </div>
+            
+            <button type="submit" class="register-btn">Отправить на модерацию</button>
+        </form>
+        
+        <div class="login-link">
+            Уже есть аккаунт? <a href="/login">Войдите</a> или <a href="/register">зарегистрируйтесь как ученик</a>
+        </div>
+    </div>
+</body>
+</html>
