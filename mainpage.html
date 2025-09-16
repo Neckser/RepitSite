@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Мои задания - Учебный портал</title>
+    <style>
+        /* Общие стили */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+        }
+
+        /* Шапка */
+        .top-bar {
+            background-color: #6b8e23;
+            padding: 15px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .top-bar nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            gap: 10px;
+            padding: 0 20px;
+        }
+
+        .nav-button {
+            background-color: rgba(255,255,255,0.2);
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .nav-button.active {
+            background-color: white;
+            color: #6b8e23;
+        }
+
+        .nav-button:hover {
+            background-color: rgba(255,255,255,0.3);
+        }
+
+        /* Основной контейнер */
+        .container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        /* Стили для заданий */
+        .assignments-container {
+            margin-top: 20px;
+        }
+
+        .assignments-filters {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .filter-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .filter-btn {
+            background-color: rgba(107, 142, 35, 0.1);
+            color: #6b8e23;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .filter-btn.active {
+            background-color: #6b8e23;
+            color: white;
+        }
+
+        .filter-btn:hover {
+            background-color: rgba(107, 142, 35, 0.2);
+        }
+
+        .assignments-stats {
+            display: flex;
+            gap: 20px;
+            color: #666;
+            font-size: 14px;
+        }
+
+        .stat-item strong {
+            color: #333;
+        }
+
+        .assignments-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .assignment-card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .assignment-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .assignment-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .subject-badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            color: white;
+        }
+
+        .subject-badge.math {
+            background-color: #6b8e23;
+        }
+
+        .subject-badge.physics {
+            background-color: #3a6ea5;
+        }
+
+        .due-date {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .due-date.overdue {
+            color: #e53935;
+            font-weight: bold;
+        }
+
+        .status {
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .status.active {
+            background-color: rgba(76, 175, 80, 0.1);
+            color: #2e7d32;
+        }
+
+        .status.completed {
+            background-color: rgba(33, 150, 243, 0.1);
+            color: #1565c0;
+        }
+
+        .status.overdue {
+            background-color: rgba(229, 57, 53, 0.1);
+            color: #c62828;
+        }
+
+        .assignment-title {
+            color: #333;
+            margin: 0 0 10px 0;
+            font-size: 18px;
+        }
+
+        .assignment-description {
+            color: #666;
+            margin: 0 0 15px 0;
+            line-height: 1.5;
+        }
+
+        .assignment-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .tutor-info {
+            color: #6b8e23;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .assignment-btn {
+            background-color: #6b8e23;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            font-size: 14px;
+        }
+
+        .assignment-btn:hover {
+            background-color: #5a7a1f;
+        }
+
+        .assignment-btn.overdue {
+            background-color: #e53935;
+        }
+
+        .assignment-btn.overdue:hover {
+            background-color: #c62828;
+        }
+
+    </style>
+</head>
+<body>
+    <header class="top-bar">
+        <nav>
+            <button class="nav-button">Мои репетиторы</button>
+            <button class="nav-button active">Мои задания</button>
+        </nav>
+    </header>
+    
+    <div class="container">
+        <h1>Мои задания</h1>
+        
+        <div class="assignments-container">
+            <!-- Фильтры и статусы -->
+            <div class="assignments-filters">
+                <div class="filter-buttons">
+                    <button class="filter-btn active">Все</button>
+                    <button class="filter-btn">Активные</button>
+                    <button class="filter-btn">Завершенные</button>
+                    <button class="filter-btn">Просроченные</button>
+                </div>
+                <div class="assignments-stats">
+                    <span class="stat-item">Всего: <strong>8</strong></span>
+                    <span class="stat-item">Активные: <strong>5</strong></span>
+                    <span class="stat-item">Просрочено: <strong>1</strong></span>
+                </div>
+            </div>
+            
+            <!-- Список заданий -->
+            <div class="assignments-list">
+                <div class="assignment-card">
+                    <div class="assignment-header">
+                        <span class="subject-badge math">Математика</span>
+                        <span class="due-date">До 15.10.2023</span>
+                        <span class="status active">Активно</span>
+                    </div>
+                    <h3 class="assignment-title">Решение квадратных уравнений</h3>
+                    <p class="assignment-description">Решить 10 уравнений различными методами. Особое внимание уделить теореме Виета.</p>
+                    <div class="assignment-footer">
+                        <span class="tutor-info">Иван Иванов</span>
+                        <button class="assignment-btn">Перейти к заданию</button>
+                    </div>
+                </div>
+                
+                <div class="assignment-card">
+                    <div class="assignment-header">
+                        <span class="subject-badge physics">Физика</span>
+                        <span class="due-date">До 10.10.2023</span>
+                        <span class="status completed">Завершено</span>
+                    </div>
+                    <h3 class="assignment-title">Законы Ньютона</h3>
+                    <p class="assignment-description">Решить задачи на применение всех трех законов Ньютона. Подготовить отчет.</p>
+                    <div class="assignment-footer">
+                        <span class="tutor-info">Петр Петров</span>
+                        <button class="assignment-btn">Посмотреть решение</button>
+                    </div>
+                </div>
+                
+                <div class="assignment-card">
+                    <div class="assignment-header">
+                        <span class="subject-badge math">Математика</span>
+                        <span class="due-date overdue">Просрочено (до 05.10.2023)</span>
+                        <span class="status overdue">Просрочено</span>
+                    </div>
+                    <h3 class="assignment-title">Тригонометрические тождества</h3>
+                    <p class="assignment-description">Доказать 15 тригонометрических тождеств. Подробно расписать каждый шаг.</p>
+                    <div class="assignment-footer">
+                        <span class="tutor-info">Иван Иванов</span>
+                        <button class="assignment-btn overdue">Отправить с опозданием</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
