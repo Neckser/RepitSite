@@ -165,5 +165,9 @@ def post_registertut(first_name: str = Form(...), last_name: str = Form(...), ed
         connection.close()
     return RedirectResponse(url="/login", status_code=303)
 
-
+@app.get("/home")
+def home():
+    with open("mainpage.html", "r", encoding = "utf-8") as f:
+        content = f.read()
+        return HTMLResponse(content=content)
 
