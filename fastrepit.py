@@ -9,6 +9,10 @@ app = FastAPI()
 def create_id():
     return random.randint(1000000, 100000000000000)
 
+def verstka(file, name):
+    formatted_content = file.replace("{{ name }}", name)
+    return formatted_content
+
 @app.get("/")
 def startlog():
     with open("login.html", "r", encoding='utf-8') as file:
@@ -66,7 +70,7 @@ def login(login: str = Form(...), password: str = Form(...)):
     res = cursor.fetchall()
     connection.close()
     if res:
-        return RedirectResponse(url=f"/home?name={login}", status_code=303)
+        return RedirectResponse(url=f"/hometut?name={login}", status_code=303)
     else:
         with open("loginrepfailed.html", "r", encoding='utf-8') as file:
             content = file.read()
@@ -166,8 +170,16 @@ def post_registertut(first_name: str = Form(...), last_name: str = Form(...), ed
     return RedirectResponse(url="/login", status_code=303)
 
 @app.get("/home")
-def home():
+def home(name: str = None):
     with open("mainpage.html", "r", encoding = "utf-8") as f:
-        content = f.read()
+        content = verstka(f.read(), name)
         return HTMLResponse(content=content)
+    
+@app.get("/hometut")
+def hometut(name: str = None):
+    with open("hometut.html",'r', encoding='utf-8') as f:
+        content = verstka(f.read(), name)
+        return HTMLResponse(content=content)
+
+
 

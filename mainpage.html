@@ -37,15 +37,18 @@
             cursor: pointer;
             font-size: 14px;
             transition: all 0.3s;
+            text-decoration: none;
         }
 
         .nav-button.active {
             background-color: white;
             color: #6b8e23;
+            text-decoration: none;
         }
 
         .nav-button:hover {
             background-color: rgba(255,255,255,0.3);
+            text-decoration: none;
         }
 
         /* Основной контейнер */
@@ -240,8 +243,8 @@
 <body>
     <header class="top-bar">
         <nav>
-            <button class="nav-button">Мои репетиторы</button>
-            <button class="nav-button active">Мои задания</button>
+            <a href="/hometut?name={{ name }}" class="nav-button">Мои репетиторы</a>
+            <a href="/home?name={{ name }}" class="nav-button active">Мои репетиторы</a>
         </nav>
     </header>
     
