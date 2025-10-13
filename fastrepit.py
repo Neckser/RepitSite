@@ -1,10 +1,15 @@
 from fastapi import FastAPI, Form, File, UploadFile
 from fastapi.responses import HTMLResponse, RedirectResponse
+from database import init_database
 from typing import Optional, List
 import sqlite3
 import random
 
 app = FastAPI()
+
+@app.on_event("startup")
+def startup_event():
+    init_database()
 
 def create_id():
     return random.randint(1000000, 100000000000000)
@@ -29,52 +34,34 @@ def get_login():
 def login(login: str = Form(...), password: str = Form(...)):
     connection = sqlite3.connect('basa.db')
     cursor = connection.cursor()
-    cursor.execute('''
-    CREATE TABLE IF NOT EXISTS students (
-        student_id INTEGER UNIQUE PRIMARY KEY,
-        first_name TEXT NOT NULL,
-        last_name TEXT NOT NULL,
-        login TEXT UNIQUE NOT NULL,
-        password TEXT UNIQUE,
-        registration_date DATETIME DEFAULT CURRENT_TIMESTAMP
-    );''')
-    connection.commit()
-    cursor.execute("SELECT * FROM students WHERE login = ? AND password = ?", (login, password))
-    res = cursor.fetchall()
-    connection.close()
-    if res:
-        return RedirectResponse(url=f"/home?name={login}", status_code=303)
-    else:
-        with open("loginstudfailed.html", "r", encoding='utf-8') as file:
-            content = file.read()
-        return HTMLResponse(content=content)
-
+    try:
+        cursor.execute("SELECT * FROM students WHERE login = ? AND password = ?", (login, password))
+        res = cursor.fetchall()
+        if res:
+            return RedirectResponse(url=f"/home?name={login}", status_code=303)
+        else:
+            with open("loginstudfailed.html", "r", encoding='utf-8') as file:
+                content = file.read()
+            return HTMLResponse(content=content)
+    finally:
+        connection.close()
 
 @app.post("/logintut")
-def login(login: str = Form(...), password: str = Form(...)):
+def logintut(login: str = Form(...), password: str = Form(...)):
     connection = sqlite3.connect('basa.db')
     cursor = connection.cursor()
-    cursor.execute('''
-    CREATE TABLE IF NOT EXISTS tutors (
-        tutor_id INTEGER PRIMARY KEY,
-        first_name TEXT NOT NULL,
-        last_name TEXT NOT NULL,
-        login TEXT UNIQUE NOT NULL,
-        password TEXT UNIQUE NOT NULL,
-        specialization TEXT,
-        experience INTEGER,
-        registration_date DATETIME DEFAULT CURRENT_TIMESTAMP
-    );''')
-    connection.commit()
-    cursor.execute("SELECT * FROM tutors WHERE login = ? AND password = ?", (login, password))
-    res = cursor.fetchall()
-    connection.close()
-    if res:
-        return RedirectResponse(url=f"/hometut", status_code=303)
-    else:
-        with open("loginrepfailed.html", "r", encoding='utf-8') as file:
-            content = file.read()
-        return HTMLResponse(content=content)
+    try:
+        cursor.execute("SELECT * FROM tutors WHERE login = ? AND password = ?", (login, password))
+        res = cursor.fetchall()
+        if res:
+            return RedirectResponse(url=f"/hometut", status_code=303)
+        else:
+            with open("loginrepfailed.html", "r", encoding='utf-8') as file:
+                content = file.read()
+            return HTMLResponse(content=content)
+    finally:
+        connection.close()
+
 
 @app.get("/register")
 def get_registration():
@@ -87,15 +74,6 @@ def post_registration(first_name: str = Form(), last_name: str = Form(), grade: 
     connection = sqlite3.connect('basa.db')
     cursor = connection.cursor()
     try:
-        cursor.execute('''
-        CREATE TABLE IF NOT EXISTS students (
-            student_id INTEGER UNIQUE PRIMARY KEY,
-            first_name TEXT NOT NULL,
-            last_name TEXT NOT NULL,
-            login TEXT UNIQUE NOT NULL,
-            password TEXT NOT NULL,
-            registration_date DATETIME DEFAULT CURRENT_TIMESTAMP
-        )''')
         cursor.execute("INSERT INTO students (student_id, first_name, last_name, login, password) VALUES (?, ?, ?, ?, ?)", (create_id(), first_name, last_name, login, password))
         connection.commit()
     except sqlite3.IntegrityError:
@@ -133,34 +111,7 @@ def post_registertut(first_name: str = Form(...), last_name: str = Form(...), ed
     connection = sqlite3.connect('basa.db')
     cursor = connection.cursor()
     try:
-        cursor.execute('''
-        CREATE TABLE IF NOT EXISTS tutors (
-            tutor_id INTEGER PRIMARY KEY,
-            first_name TEXT NOT NULL,
-            last_name TEXT NOT NULL,
-            subject_math TEXT,
-            subject_physics TEXT,
-            subject_chemistry TEXT,
-            subject_computer TEXT,
-            subject_russian TEXT,
-            subject_english TEXT,
-            subject_german TEXT,
-            subject_french TEXT,
-            subject_history TEXT,
-            subject_social TEXT,
-            subject_literature TEXT,
-            subject_biology TEXT,
-            subject_geography TEXT,
-            subject_economics TEXT,
-            subject_art TEXT,
-            subject_music TEXT,
-            experience INTEGER,
-            login TEXT UNIQUE NOT NULL,
-            password TEXT NOT NULL,
-            registration_date DATETIME DEFAULT CURRENT_TIMESTAMP
-        );''')
-        cursor.execute("INSERT INTO tutors (tutor_id, first_name, last_name, subject_math, subject_physics, subject_chemistry, subject_computer, subject_russian, subject_english, subject_german, subject_french, subject_history, subject_social, subject_literature, subject_biology, subject_geography, subject_economics, subject_art, subject_music, experience, login, password) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", 
-                       (create_id(), first_name, last_name, subject_math, subject_physics, subject_chemistry, subject_computer, subject_russian, subject_english, subject_german, subject_french, subject_history, subject_social, subject_literature, subject_biology, subject_geography, subject_economics, subject_art, subject_music, experience, login, password))
+        cursor.execute("INSERT INTO tutors (tutor_id, first_name, last_name, subject_math, subject_physics, subject_chemistry, subject_computer, subject_russian, subject_english, subject_german, subject_french, subject_history, subject_social, subject_literature, subject_biology, subject_geography, subject_economics, subject_art, subject_music, experience, login, password) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", (create_id(), first_name, last_name, subject_math, subject_physics, subject_chemistry, subject_computer, subject_russian, subject_english, subject_german, subject_french, subject_history, subject_social, subject_literature, subject_biology, subject_geography, subject_economics, subject_art, subject_music, experience, login, password))
         connection.commit()
     except sqlite3.IntegrityError:
         #Доделать страницу когда Логин уже занят
