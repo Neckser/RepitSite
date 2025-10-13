@@ -244,7 +244,7 @@
     <header class="top-bar">
         <nav>
             <a href="/tutlist?name={{ name }}" class="nav-button">Мои репетиторы</a>
-            <a href="/home?name={{ name }}" class="nav-button active">Мои репетиторы</a>
+            <a href="/home?name={{ name }}" class="nav-button active">Мои задания</a>
         </nav>
     </header>
     
@@ -279,7 +279,7 @@
                     <p class="assignment-description">Решить 10 уравнений различными методами. Особое внимание уделить теореме Виета.</p>
                     <div class="assignment-footer">
                         <span class="tutor-info">Иван Иванов</span>
-                        <button class="assignment-btn">Перейти к заданию</button>
+                        <!-- <button class="assignment-btn">Перейти к заданию</button> пока в разработке--> 
                     </div>
                 </div>
                 
@@ -293,7 +293,7 @@
                     <p class="assignment-description">Решить задачи на применение всех трех законов Ньютона. Подготовить отчет.</p>
                     <div class="assignment-footer">
                         <span class="tutor-info">Петр Петров</span>
-                        <button class="assignment-btn">Посмотреть решение</button>
+                        <!-- <button class="assignment-btn">Посмотреть решение</button> пока в разработке-->
                     </div>
                 </div>
                 
@@ -307,11 +307,116 @@
                     <p class="assignment-description">Доказать 15 тригонометрических тождеств. Подробно расписать каждый шаг.</p>
                     <div class="assignment-footer">
                         <span class="tutor-info">Иван Иванов</span>
-                        <button class="assignment-btn overdue">Отправить с опозданием</button>
+                        <!-- <button class="assignment-btn overdue">Отправить с опозданием</button> пока в разработке-->
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    <script>
+        // filters.js - Фильтрация заданий на странице
+        document.addEventListener('DOMContentLoaded', function() {
+            const filterButtons = document.querySelectorAll('.filter-btn');
+            const assignmentCards = document.querySelectorAll('.assignment-card');
+            const statsItems = document.querySelectorAll('.stat-item strong');
+            
+            // Функция для подсчета ВСЕХ заданий по статусам
+            function countAllAssignments() {
+                const total = assignmentCards.length;
+                const active = document.querySelectorAll('.assignment-card .status.active').length;
+                const overdue = document.querySelectorAll('.assignment-card .status.overdue').length;
+                const completed = document.querySelectorAll('.assignment-card .status.completed').length;
+                
+                return { total, active, overdue, completed };
+            }
+            
+            // Функция для подсчета ВИДИМЫХ заданий
+            function countVisibleAssignments() {
+                const visibleCards = Array.from(assignmentCards).filter(card => 
+                    card.style.display !== 'none'
+                );
+                const active = visibleCards.filter(card => 
+                    card.querySelector('.status.active')
+                ).length;
+                const overdue = visibleCards.filter(card => 
+                    card.querySelector('.status.overdue')
+                ).length;
+                const completed = visibleCards.filter(card => 
+                    card.querySelector('.status.completed')
+                ).length;
+                
+                return { 
+                    total: visibleCards.length, 
+                    active, 
+                    overdue, 
+                    completed 
+                };
+            }
+            
+            function updateStats(useAll = true) {
+                let stats;
+                
+                if (useAll) {
+                    // Показываем статистику по ВСЕМ заданиям
+                    stats = countAllAssignments();
+                } else {
+                    // Показываем статистику по ВИДИМЫМ заданиям
+                    stats = countVisibleAssignments();
+                }
+                
+                statsItems[0].textContent = stats.total;
+                statsItems[1].textContent = stats.active;
+                statsItems[2].textContent = stats.overdue;
+            }
+            
+            function filterAssignments(filterType) {
+                assignmentCards.forEach(card => {
+                    const statusElement = card.querySelector('.status');
+                    const statusClasses = statusElement.classList;
+                    
+                    let shouldShow = false;
+                    
+                    switch(filterType) {
+                        case 'все':
+                            shouldShow = true;
+                            break;
+                        case 'активные':
+                            shouldShow = statusClasses.contains('active');
+                            break;
+                        case 'завершенные':
+                            shouldShow = statusClasses.contains('completed');
+                            break;
+                        case 'просроченные':
+                            shouldShow = statusClasses.contains('overdue');
+                            break;
+                        default:
+                            shouldShow = true;
+                    }
+                    
+                    card.style.display = shouldShow ? 'block' : 'none';
+                });
+                
+                // После фильтрации показываем статистику по видимым заданиям
+                updateStats(false);
+            }
+            
+            filterButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // Убираем активный класс у всех кнопок
+                    filterButtons.forEach(btn => btn.classList.remove('active'));
+                    
+                    // Добавляем активный класс текущей кнопке
+                    this.classList.add('active');
+                    
+                    // Получаем тип фильтра из текста кнопки
+                    const filterType = this.textContent.toLowerCase();
+                    
+                    // Применяем фильтр
+                    filterAssignments(filterType);
+                });
+            });
+            updateStats(true);
+        });
+    </script>
 </body>
 </html>

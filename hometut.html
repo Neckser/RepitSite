@@ -3,300 +3,561 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>В разработке | Учебный портал</title>
-    <link rel="stylesheet" href="hometut.css">
+    <title>Главная - Репетитор | Учебный портал</title>
     <style>
+        /* Общие стили */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
             font-family: 'Arial', sans-serif;
         }
+        
         body {
             background-color: #f8f9fa;
             min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        } 
-        .header {
-            background: linear-gradient(135deg, #6b8e23 0%, #5a7a1f 100%);
-            padding: 20px 0;
+        }
+
+        /* Шапка */
+        .top-bar {
+            background-color: #6b8e23;
+            padding: 12px 0;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
-        .nav-container {
+
+        .top-bar nav {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 0 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            gap: 10px;
+            padding: 0 20px;
         }
-        .logo {
-            color: white;
-            font-size: 24px;
-            font-weight: bold;
-            text-decoration: none;
-        }
-        .nav-buttons {
+
+        .nav-section {
             display: flex;
-            gap: 15px;
+            gap: 10px;
         }
+
         .nav-button {
             background-color: rgba(255,255,255,0.2);
             color: white;
             border: none;
-            padding: 10px 25px;
-            border-radius: 25px;
+            padding: 8px 20px;
+            border-radius: 20px;
             cursor: pointer;
             font-size: 14px;
-            transition: all 0.3s ease;
+            transition: all 0.3s;
             text-decoration: none;
-            display: inline-block;
         }
 
         .nav-button.active {
             background-color: white;
             color: #6b8e23;
-            font-weight: bold;
+            text-decoration: none;
         }
 
         .nav-button:hover {
             background-color: rgba(255,255,255,0.3);
+            text-decoration: none;
         }
 
-        .main-container {
-            flex: 1;
+        .user-info {
+            color: white;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background-color: white;
+            color: #6b8e23;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 40px 20px;
-        }
-
-        .development-card {
-            background: linear-gradient(135deg, #ffffff 0%, #f8fff8 100%);
-            border-radius: 20px;
-            padding: 50px;
-            text-align: center;
-            box-shadow: 0 8px 30px rgba(107, 142, 35, 0.15);
-            border: 3px solid #e8f5e8;
-            max-width: 600px;
-            width: 100%;
-        }
-
-        .development-icon {
-            font-size: 80px;
-            color: #6b8e23;
-            margin-bottom: 30px;
-            animation: float 3s ease-in-out infinite;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-        }
-
-        .development-title {
-            color: #6b8e23;
-            font-size: 36px;
             font-weight: bold;
+            font-size: 14px;
+        }
+
+        /* Основной контейнер */
+        .container {
+            max-width: 1200px;
+            margin: 25px auto;
+            padding: 0 20px;
+        }
+
+        /* Приветствие */
+        .welcome-section {
+            background: linear-gradient(135deg, #ffffff 0%, #f8fff8 100%);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 20px rgba(107, 142, 35, 0.1);
+            border: 2px solid #e8f5e8;
+        }
+
+        .welcome-title {
+            color: #6b8e23;
+            font-size: 28px;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .welcome-subtitle {
+            color: #666;
+            font-size: 16px;
             margin-bottom: 20px;
         }
 
-        .development-text {
-            color: #666;
-            font-size: 18px;
-            line-height: 1.6;
-            margin-bottom: 30px;
-        }
-
-        .progress-container {
-            background-color: #f1f8e9;
-            border-radius: 25px;
-            height: 12px;
-            margin: 30px 0;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .progress-bar {
-            background: linear-gradient(135deg, #6b8e23 0%, #8fb84a 100%);
-            height: 100%;
-            width: 65%;
-            border-radius: 25px;
-            animation: progress 2s ease-in-out;
-        }
-
-        @keyframes progress {
-            0% { width: 0%; }
-            100% { width: 65%; }
-        }
-
-        .progress-text {
-            color: #5a7a1f;
-            font-size: 14px;
-            font-weight: 500;
-            margin-top: 10px;
-        }
-
-        .features-list {
+        /* Статистика */
+        .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 20px;
-            margin: 30px 0;
+            margin-bottom: 30px;
         }
 
-        .feature-item {
-            background-color: #f8fff8;
-            border: 2px solid #e8f5e8;
-            border-radius: 12px;
+        .stat-card {
+            background: white;
+            border-radius: 10px;
             padding: 20px;
             text-align: center;
-            transition: all 0.3s ease;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+            border: 2px solid #e8f5e8;
+            transition: transform 0.3s;
         }
 
-        .feature-item:hover {
-            border-color: #6b8e23;
+        .stat-card:hover {
+            transform: translateY(-3px);
+        }
+
+        .stat-value {
+            color: #6b8e23;
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 14px;
+        }
+
+        /* Список учеников */
+        .students-section {
+            margin-bottom: 30px;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            color: #6b8e23;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .view-all {
+            color: #6b8e23;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .view-all:hover {
+            text-decoration: underline;
+        }
+
+        .students-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .student-card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+            border: 2px solid #e8f5e8;
+            transition: transform 0.3s;
+        }
+
+        .student-card:hover {
             transform: translateY(-3px);
             box-shadow: 0 5px 15px rgba(107, 142, 35, 0.1);
         }
 
-        .feature-icon {
-            font-size: 30px;
-            color: #6b8e23;
-            margin-bottom: 10px;
+        .student-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
         }
 
-        .feature-text {
-            color: #5a7a1f;
-            font-weight: 500;
-            font-size: 14px;
-        }
-
-        .back-button {
-            background: linear-gradient(135deg, #6b8e23 0%, #5a7a1f 100%);
+        .student-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: #6b8e23;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             color: white;
-            border: none;
-            padding: 15px 40px;
-            border-radius: 25px;
+            font-weight: bold;
+            margin-right: 15px;
+            font-size: 16px;
+        }
+
+        .student-info h3 {
+            color: #333;
+            margin-bottom: 5px;
+            font-size: 16px;
+        }
+
+        .student-grade {
+            color: #5a7a1f;
+            font-size: 14px;
+            background-color: #f1f8e9;
+            padding: 2px 8px;
+            border-radius: 10px;
+        }
+
+        .student-stats {
+            display: flex;
+            justify-content: space-between;
+            margin: 15px 0;
+            padding: 15px 0;
+            border-top: 1px solid #e8f5e8;
+            border-bottom: 1px solid #e8f5e8;
+        }
+
+        .student-stat {
+            text-align: center;
+        }
+
+        .student-stat-value {
+            color: #6b8e23;
             font-size: 16px;
             font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            display: inline-block;
-            margin-top: 20px;
         }
 
-        .back-button:hover {
-            background: linear-gradient(135deg, #5a7a1f 0%, #4a661a 100%);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(107, 142, 35, 0.3);
-        }
-
-        .contact-info {
-            margin-top: 30px;
-            padding-top: 20px;
-            border-top: 2px solid #e8f5e8;
-        }
-
-        .contact-text {
+        .student-stat-label {
             color: #666;
-            font-size: 14px;
+            font-size: 12px;
+        }
+
+        .student-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .student-btn {
+            flex: 1;
+            padding: 8px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+            text-decoration: none;
+            text-align: center;
+            font-size: 13px;
+        }
+
+        .assignments-btn {
+            background-color: #6b8e23;
+            color: white;
+        }
+
+        .assignments-btn:hover {
+            background-color: #5a7a1f;
+        }
+
+        .message-btn {
+            background-color: #f1f8e9;
+            color: #6b8e23;
+            border: 1px solid #6b8e23;
+        }
+
+        .message-btn:hover {
+            background-color: #6b8e23;
+            color: white;
+        }
+
+        /* Ближайшие занятия */
+        .lessons-section {
+            margin-bottom: 30px;
+        }
+
+        .lessons-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .lesson-card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+            border: 2px solid #e8f5e8;
+            transition: transform 0.3s;
+        }
+
+        .lesson-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .lesson-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             margin-bottom: 10px;
         }
 
-        .contact-email {
+        .lesson-time {
             color: #6b8e23;
             font-weight: bold;
-            text-decoration: none;
+            font-size: 16px;
         }
 
-        .contact-email:hover {
-            text-decoration: underline;
+        .lesson-date {
+            color: #666;
+            font-size: 14px;
         }
 
+        .lesson-student {
+            color: #333;
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+
+        .lesson-subject {
+            color: #5a7a1f;
+            background-color: #f1f8e9;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 13px;
+            display: inline-block;
+        }
+
+        /* Адаптивность */
         @media (max-width: 768px) {
-            .development-card {
-                padding: 30px 20px;
-                margin: 20px;
-            }
-
-            .development-title {
-                font-size: 28px;
-            }
-
-            .development-text {
-                font-size: 16px;
-            }
-
-            .features-list {
-                grid-template-columns: 1fr;
-            }
-
-            .nav-container {
+            .top-bar nav {
                 flex-direction: column;
                 gap: 15px;
             }
-
-            .nav-buttons {
+            
+            .nav-section {
                 width: 100%;
                 justify-content: center;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .students-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .student-stats {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .student-actions {
+                flex-direction: column;
             }
         }
     </style>
 </head>
 <body>
-    <header class="header">
-        <div class="nav-container">
-            <a href="/" class="logo">Учебный портал</a>
-            <div class="nav-buttons">
-                <a href="/tutors" class="nav-button">Мои репетиторы</a>
-                <a href="/assignments" class="nav-button">Мои задания</a>
+    <header class="top-bar">
+        <nav>
+            <div class="nav-section">
+                <a href="#" class="nav-button active">Главная</a>
+                <a href="#" class="nav-button">Мои ученики</a>
+                <a href="#" class="nav-button">Задания</a>
+                <a href="#" class="nav-button">Расписание</a>
             </div>
-        </div>
+            <div class="user-info">
+                <div class="user-avatar">ИИ</div>
+                <span>Иван Иванов</span>
+            </div>
+        </nav>
     </header>
 
-    <div class="main-container">
-        <div class="development-card">
-            <div class="development-icon">🚧</div>
-            
-            <h1 class="development-title">Страница в разработке</h1>
-            
-            <p class="development-text">
-                Мы активно работаем над созданием этой страницы. 
-                Здесь скоро появится что-то интересное и полезное для вас!
-            </p>
-            
-            <div class="progress-container">
-                <div class="progress-bar"></div>
+    <div class="container">
+        <!-- Приветствие -->
+        <section class="welcome-section">
+            <h1 class="welcome-title">Добро пожаловать, Иван Иванов!</h1>
+            <p class="welcome-subtitle">Сегодня у вас 2 занятия и 3 задания на проверку</p>
+        </section>
+
+        <!-- Статистика -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-value">12</div>
+                <div class="stat-label">Учеников</div>
             </div>
-            <div class="progress-text">Завершено на 65%</div>
-            
-            <div class="features-list">
-                <div class="feature-item">
-                    <div class="feature-icon">⚡</div>
-                    <div class="feature-text">Быстрая загрузка</div>
-                </div>
-                <div class="feature-item">
-                    <div class="feature-icon">🎯</div>
-                    <div class="feature-text">Удобный интерфейс</div>
-                </div>
-                <div class="feature-item">
-                    <div class="feature-icon">🔒</div>
-                    <div class="feature-text">Безопасность данных</div>
-                </div>
+            <div class="stat-card">
+                <div class="stat-value">8</div>
+                <div class="stat-label">Активных заданий</div>
             </div>
-            
-            <a href="/" class="back-button">Вернуться на главную</a>
-            
-            <div class="contact-info">
-                <p class="contact-text">
-                    Есть вопросы или предложения?<br>
-                    Напишите нам: 
-                    <a href="mailto:support@tutorportal.ru" class="contact-email">support@tutorportal.ru</a>
-                </p>
+            <div class="stat-card">
+                <div class="stat-value">3</div>
+                <div class="stat-label">Занятия сегодня</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">4.9</div>
+                <div class="stat-label">Ваш рейтинг</div>
             </div>
         </div>
+
+        <!-- Список учеников -->
+        <section class="students-section">
+            <div class="section-header">
+                <h2 class="section-title">Мои ученики</h2>
+                <a href="#" class="view-all">Все ученики →</a>
+            </div>
+            <div class="students-grid">
+                <!-- Ученик 1 -->
+                <div class="student-card">
+                    <div class="student-header">
+                        <div class="student-avatar">АС</div>
+                        <div class="student-info">
+                            <h3>Анна Смирнова</h3>
+                            <span class="student-grade">10 класс</span>
+                        </div>
+                    </div>
+                    <div class="student-stats">
+                        <div class="student-stat">
+                            <div class="student-stat-value">5</div>
+                            <div class="student-stat-label">заданий</div>
+                        </div>
+                        <div class="student-stat">
+                            <div class="student-stat-value">12</div>
+                            <div class="student-stat-label">уроков</div>
+                        </div>
+                        <div class="student-stat">
+                            <div class="student-stat-value">4.8</div>
+                            <div class="student-stat-label">успеваемость</div>
+                        </div>
+                    </div>
+                    <div class="student-actions">
+                        <a href="#" class="student-btn assignments-btn">Задания</a>
+                        <a href="#" class="student-btn message-btn">Написать</a>
+                    </div>
+                </div>
+
+                <!-- Ученик 2 -->
+                <div class="student-card">
+                    <div class="student-header">
+                        <div class="student-avatar">ПЗ</div>
+                        <div class="student-info">
+                            <h3>Петр Захаров</h3>
+                            <span class="student-grade">9 класс</span>
+                        </div>
+                    </div>
+                    <div class="student-stats">
+                        <div class="student-stat">
+                            <div class="student-stat-value">3</div>
+                            <div class="student-stat-label">заданий</div>
+                        </div>
+                        <div class="student-stat">
+                            <div class="student-stat-value">8</div>
+                            <div class="student-stat-label">уроков</div>
+                        </div>
+                        <div class="student-stat">
+                            <div class="student-stat-value">4.5</div>
+                            <div class="student-stat-label">успеваемость</div>
+                        </div>
+                    </div>
+                    <div class="student-actions">
+                        <a href="#" class="student-btn assignments-btn">Задания</a>
+                        <a href="#" class="student-btn message-btn">Написать</a>
+                    </div>
+                </div>
+
+                <!-- Ученик 3 -->
+                <div class="student-card">
+                    <div class="student-header">
+                        <div class="student-avatar">МК</div>
+                        <div class="student-info">
+                            <h3>Мария Козлова</h3>
+                            <span class="student-grade">11 класс</span>
+                        </div>
+                    </div>
+                    <div class="student-stats">
+                        <div class="student-stat">
+                            <div class="student-stat-value">7</div>
+                            <div class="student-stat-label">заданий</div>
+                        </div>
+                        <div class="student-stat">
+                            <div class="student-stat-value">15</div>
+                            <div class="student-stat-label">уроков</div>
+                        </div>
+                        <div class="student-stat">
+                            <div class="student-stat-value">4.9</div>
+                            <div class="student-stat-label">успеваемость</div>
+                        </div>
+                    </div>
+                    <div class="student-actions">
+                        <a href="#" class="student-btn assignments-btn">Задания</a>
+                        <a href="#" class="student-btn message-btn">Написать</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Ближайшие занятия -->
+        <section class="lessons-section">
+            <div class="section-header">
+                <h2 class="section-title">Ближайшие занятия</h2>
+                <a href="#" class="view-all">Все занятия →</a>
+            </div>
+            <div class="lessons-list">
+                <!-- Занятие 1 -->
+                <div class="lesson-card">
+                    <div class="lesson-header">
+                        <div class="lesson-time">14:00 - 15:30</div>
+                        <div class="lesson-date">Сегодня</div>
+                    </div>
+                    <div class="lesson-student">Анна Смирнова</div>
+                    <span class="lesson-subject">Математика - Подготовка к ЕГЭ</span>
+                </div>
+
+                <!-- Занятие 2 -->
+                <div class="lesson-card">
+                    <div class="lesson-header">
+                        <div class="lesson-time">16:00 - 17:30</div>
+                        <div class="lesson-date">Сегодня</div>
+                    </div>
+                    <div class="lesson-student">Петр Захаров</div>
+                    <span class="lesson-subject">Физика - Кинематика</span>
+                </div>
+
+                <!-- Занятие 3 -->
+                <div class="lesson-card">
+                    <div class="lesson-header">
+                        <div class="lesson-time">10:00 - 11:30</div>
+                        <div class="lesson-date">Завтра</div>
+                    </div>
+                    <div class="lesson-student">Мария Козлова</div>
+                    <span class="lesson-subject">Математика - Производные</span>
+                </div>
+            </div>
+        </section>
     </div>
 </body>
 </html>

@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Добавить репетитора | Учебный портал</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        body {
+            background-color: #f8f9fa;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        /* Карточка добавления */
+        .add-tutor-card {
+            background: linear-gradient(135deg, #ffffff 0%, #f8fff8 100%);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 8px 30px rgba(107, 142, 35, 0.15);
+            border: 3px solid #e8f5e8;
+            max-width: 450px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .add-icon {
+            font-size: 60px;
+            color: #6b8e23;
+            margin-bottom: 20px;
+        }
+
+        .add-title {
+            color: #6b8e23;
+            font-size: 28px;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        .add-description {
+            color: #666;
+            font-size: 16px;
+            line-height: 1.5;
+            margin-bottom: 30px;
+        }
+
+        /* Форма ввода кода */
+        .code-form {
+            margin-bottom: 25px;
+        }
+
+        .code-input {
+            width: 100%;
+            padding: 15px 20px;
+            border: 2px solid #8fb84a;
+            border-radius: 12px;
+            font-size: 18px;
+            text-align: center;
+            background-color: white;
+            color: #333;
+            transition: all 0.3s ease;
+            font-family: 'Courier New', monospace;
+            letter-spacing: 2px;
+        }
+
+        .code-input:focus {
+            outline: none;
+            border-color: #6b8e23;
+            box-shadow: 0 0 0 3px rgba(107, 142, 35, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .code-input::placeholder {
+            color: #aaa;
+            letter-spacing: normal;
+        }
+
+        .code-hint {
+            color: #666;
+            font-size: 14px;
+            margin-top: 10px;
+            font-style: italic;
+        }
+
+        /* Кнопки */
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .action-btn {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            text-align: center;
+        }
+
+        .add-btn {
+            background: linear-gradient(135deg, #6b8e23 0%, #5a7a1f 100%);
+            color: white;
+        }
+
+        .add-btn:hover {
+            background: linear-gradient(135deg, #5a7a1f 0%, #4a661a 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(107, 142, 35, 0.3);
+        }
+
+        .back-btn {
+            background-color: #f1f8e9;
+            color: #6b8e23;
+            border: 2px solid #6b8e23;
+        }
+
+        .back-btn:hover {
+            background-color: #6b8e23;
+            color: white;
+        }
+
+        /* Информационный блок */
+        .info-section {
+            margin-top: 30px;
+            padding-top: 25px;
+            border-top: 2px solid #e8f5e8;
+        }
+
+        .info-title {
+            color: #6b8e23;
+            font-size: 16px;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        .info-steps {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            text-align: left;
+        }
+
+        .info-step {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            color: #666;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        .step-number {
+            background-color: #6b8e23;
+            color: white;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            .add-tutor-card {
+                padding: 30px 20px;
+            }
+            
+            .add-title {
+                font-size: 24px;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+            
+            .code-input {
+                font-size: 16px;
+                padding: 12px 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 15px;
+            }
+            
+            .add-tutor-card {
+                padding: 25px 15px;
+            }
+            
+            .add-icon {
+                font-size: 50px;
+            }
+            
+            .add-title {
+                font-size: 22px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="add-tutor-card">
+        <div class="add-icon">👨‍🏫</div>
+        <h1 class="add-title">Добавить репетитора</h1>
+        <p class="add-description">
+            Введите код репетитора, чтобы добавить его в свой список. 
+            Код можно получить у самого репетитора.
+        </p>
+
+        <!-- Форма ввода кода -->
+        <form class="code-form" action="/addtut" method="post">
+            <input type="hidden" name="name" value="{{ name }}">
+            <input 
+                type="text" 
+                class="code-input" 
+                name="tutor_code"
+                placeholder="Введите код репетитора"
+                maxlength="8"
+                required
+            >
+            <div class="code-hint">Код обычно состоит из 7-15 символов (буквы и цифры)</div>
+            
+            <!-- Кнопки действий -->
+            <div class="action-buttons">
+                <button type="submit" class="action-btn add-btn">
+                    Добавить репетитора
+                </button>
+                <a href="/tutlist?name={{ name }}" class="action-btn back-btn">
+                    Назад
+                </a>
+            </div>
+        </form>
+
+        <!-- Информационный блок -->
+        <div class="info-section">
+            <div class="info-title">Как получить код репетитора?</div>
+            <div class="info-steps">
+                <div class="info-step">
+                    <div class="step-number">1</div>
+                    <span>Попросите репетитора поделиться его уникальным кодом</span>
+                </div>
+                <div class="info-step">
+                    <div class="step-number">2</div>
+                    <span>Репетитор может найти код в своем личном кабинете в разделе "Мой код"</span>
+                </div>
+                <div class="info-step">
+                    <div class="step-number">3</div>
+                    <span>Введите код в поле выше и нажмите "Добавить репетитора"</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

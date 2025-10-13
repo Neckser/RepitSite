@@ -6,8 +6,6 @@ import random
 
 app = FastAPI()
 
-#hometut in work
-
 def create_id():
     return random.randint(1000000, 100000000000000)
 
@@ -189,6 +187,17 @@ def tutlist(name: str = None):
     with open("tutlist.html",'r', encoding='utf-8') as f:
         content = verstka(f.read(), name)
         return HTMLResponse(content=content)
+    
+@app.get("/findtut")
+def findtut(name: str = None):
+    with open("findtut.html", "r", encoding = "utf-8") as f:
+        content = verstka(f.read(), name)
+        return HTMLResponse(content=content)
+    
+@app.post("/addtut")
+def addtut(tutor_code: str = Form(...), name: str = Form(...)):
+    #сделать обработку бд добавления репетитора челиксу
+    return RedirectResponse(url=f"/tutlist?name={name}", status_code=303)
 
 
 
