@@ -6,6 +6,8 @@ import random
 
 app = FastAPI()
 
+#hometut in work
+
 def create_id():
     return random.randint(1000000, 100000000000000)
 
@@ -70,7 +72,7 @@ def login(login: str = Form(...), password: str = Form(...)):
     res = cursor.fetchall()
     connection.close()
     if res:
-        return RedirectResponse(url=f"/hometut?name={login}", status_code=303)
+        return RedirectResponse(url=f"/hometut", status_code=303)
     else:
         with open("loginrepfailed.html", "r", encoding='utf-8') as file:
             content = file.read()
@@ -175,9 +177,16 @@ def home(name: str = None):
         content = verstka(f.read(), name)
         return HTMLResponse(content=content)
     
+
 @app.get("/hometut")
-def hometut(name: str = None):
-    with open("hometut.html",'r', encoding='utf-8') as f:
+def get_registertut():
+    with open('hometut.html', 'r', encoding='utf-8') as file:
+        content = file.read()
+    return HTMLResponse(content=content)
+    
+@app.get("/tutlist")
+def tutlist(name: str = None):
+    with open("tutlist.html",'r', encoding='utf-8') as f:
         content = verstka(f.read(), name)
         return HTMLResponse(content=content)
 
