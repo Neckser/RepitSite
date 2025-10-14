@@ -53,6 +53,23 @@
             margin-bottom: 30px;
         }
 
+        /* Сообщение об ошибке */
+        .error-message {
+            background-color: #ffebee;
+            color: #c62828;
+            border: 2px solid #ffcdd2;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            font-weight: bold;
+            display: block; /* Показываем всегда если есть */
+        }
+
+        .error-message.hidden {
+            display: none; /* Скрываем если нет ошибки */
+        }
+
         /* Форма ввода кода */
         .code-form {
             margin-bottom: 25px;
@@ -72,11 +89,21 @@
             letter-spacing: 2px;
         }
 
+        .code-input.error {
+            border-color: #e53935;
+            background-color: #fff5f5;
+        }
+
         .code-input:focus {
             outline: none;
             border-color: #6b8e23;
             box-shadow: 0 0 0 3px rgba(107, 142, 35, 0.2);
             transform: translateY(-2px);
+        }
+
+        .code-input.error:focus {
+            border-color: #e53935;
+            box-shadow: 0 0 0 3px rgba(229, 57, 53, 0.2);
         }
 
         .code-input::placeholder {
@@ -226,12 +253,17 @@
             Код можно получить у самого репетитора.
         </p>
 
+        <!-- Сообщение об ошибке - показывается если есть параметр error -->
+        <div class="error-message {{ 'hidden' if not error else '' }}">
+            Неверный код репетитора. Пожалуйста, проверьте код и попробуйте снова.
+        </div>
+
         <!-- Форма ввода кода -->
         <form class="code-form" action="/addtut" method="post">
             <input type="hidden" name="name" value="{{ name }}">
             <input 
                 type="text" 
-                class="code-input" 
+                class="code-input {{ 'error' if error else '' }}"
                 name="tutor_code"
                 placeholder="Введите код репетитора"
                 maxlength="15"

@@ -18,6 +18,61 @@ def verstka(file, name):
     formatted_content = file.replace("{{ name }}", name)
     return formatted_content
 
+def verstkatut(file, name, tutor_cout, tutor_data):
+    verstkatemplatetut = ""
+    verstkatemplatetut += file
+    for i in range(tutor_cout):
+        verstkatemplatetut += """
+        <div class="tutor-card">
+        <div class="tutor-header">
+            <div class="tutor-avatar">{{avatar_initials}}</div>
+            <div class="tutor-info">
+                <h3>{{first_name}} {{last_name}}</h3>
+                <span class="tutor-subject">{{specialization}}</span>
+            </div>
+        </div>
+        
+        <div class="tutor-stats">
+            <div class="stat-item">
+                <div class="stat-value"><!-- {{homeworks_count}} --> 1</div>
+                <div class="stat-label">заданий</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value"><!-- {{rating}} --> 5.0</div>
+                <div class="stat-label">рейтинг</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value"><!-- {{lessons_count}} --> 1</div>
+                <div class="stat-label">уроков</div>
+            </div>
+        </div>
+        
+        <div class="tutor-actions">
+            <!-- <a href="/tutor/{{tutor_id}}/assignments" class="action-btn assignments-btn">Задания</a> -->
+            <a href="/messages/tutor/{{tutor_id}}" class="action-btn message-btn">Написать</a>
+        </div>
+    </div>
+"""
+        formatted_content = verstkatemplatetut.replace("{{name}}", name)
+        formatted_content = formatted_content.replace("{{tutor_id}}", str(tutor_data[i]['tutor_id']))
+        formatted_content = formatted_content.replace("{{first_name}}", tutor_data[i]['first_name'])
+        formatted_content = formatted_content.replace("{{last_name}}", tutor_data[i]['last_name'])
+        formatted_content = formatted_content.replace("{{experience}}", str(tutor_data[i]['experience']))
+        formatted_content = formatted_content.replace("{{specialization}}", tutor_data[i]['specialization'])
+        formatted_content = formatted_content.replace("{{avatar_initials}}", tutor_data[i]['first_name'][0] + tutor_data[i]['last_name'][0])
+    
+    return formatted_content
+
+
+def verstkaprofile(file, name, first_name, last_name):
+    formatted_content = file.replace("{{ name }}", name)
+    formatted_content = formatted_content.replace("{{ first_name }}", first_name)
+    formatted_content = formatted_content.replace("{{ last_name }}", last_name)
+    formatted_content = formatted_content.replace("{{ avatar }}", first_name[0] + last_name[0])
+    
+    return formatted_content
+    
+
 @app.get("/")
 def startlog():
     with open("login.html", "r", encoding='utf-8') as file:
@@ -122,9 +177,22 @@ def post_registertut(first_name: str = Form(...), last_name: str = Form(...), ed
 
 @app.get("/home")
 def home(name: str = None):
-    with open("mainpage.html", "r", encoding = "utf-8") as f:
-        content = verstka(f.read(), name)
-        return HTMLResponse(content=content)
+    connection = sqlite3.connect('basa.db')
+    cursor = connection.cursor()
+    try:
+        cursor.execute("SELECT first_name, last_name FROM students WHERE login = ?", (name,))
+        res = cursor.fetchone()
+        if res:
+            first_name = res[0]
+            last_name = res[1]
+            with open("mainpage.html", "r", encoding = "utf-8") as f:
+                content = verstkaprofile(f.read(), name, first_name, last_name)
+            return HTMLResponse(content=content)
+        else:
+            pass
+            #Прописать когда нету такого логина
+    except Exception as e:
+        print(f"Ловит ошибку - { e }")
     
 
 @app.get("/hometut")
@@ -135,10 +203,56 @@ def get_registertut():
     
 @app.get("/tutlist")
 def tutlist(name: str = None):
-    with open("tutlist.html",'r', encoding='utf-8') as f:
-        content = verstka(f.read(), name)
-        return HTMLResponse(content=content)
-    
+    connection = sqlite3.connect('basa.db')
+    cursor = connection.cursor()
+    cursor.execute("""
+        SELECT 
+            tutors.tutor_id, tutors.first_name, tutors.last_name, tutors.experience,
+            tutors.subject_math, tutors.subject_physics, tutors.subject_chemistry, tutors.subject_computer,
+            tutors.subject_russian, tutors.subject_english, tutors.subject_german, tutors.subject_french,
+            tutors.subject_history, tutors.subject_social, tutors.subject_literature, tutors.subject_biology,
+            tutors.subject_geography, tutors.subject_economics, tutors.subject_art, tutors.subject_music
+        FROM tutors
+        INNER JOIN student_tutors ON tutors.tutor_id = student_tutors.tutor_id
+        INNER JOIN students ON student_tutors.student_id = students.student_id
+        WHERE students.login = ?
+    """, (name, ))
+
+    all_tutors = cursor.fetchall()
+    tutor_count = len(all_tutors)
+
+    tutors_data = []
+    for tutor in all_tutors:
+        tutor_id, first_name, last_name, experience = tutor[0:4]
+        subjects = tutor[4:]
+
+        subject_names = ["Математика", "Физика", "Химия", "Информатика", "Русский язык", 
+                        "Английский язык", "Немецкий язык", "Французский язык", "История",
+                        "Обществознание", "Литература", "Биология", "География", "Экономика",
+                        "Искусство", "Музыка"]
+
+        first_subject = "Не указано"
+        for i, subject in enumerate(subjects):
+            if subject is not None:
+                first_subject = subject_names[i]
+                break
+            
+        tutors_data.append({
+            'tutor_id': tutor_id,
+            'first_name': first_name,
+            'last_name': last_name,
+            'experience': experience,
+            'specialization': first_subject
+        })
+
+    connection.close()
+    with open("tutlistbegin.html", 'r', encoding='utf-8') as f:
+        content = verstkatut(f.read(), name, tutor_count, tutors_data)
+    with open("tutlistend.html", 'r', encoding='utf-8') as f:
+        content += f.read()
+        content = content.replace("{{ name }}", name)
+    return HTMLResponse(content=content)
+
 @app.get("/findtut")
 def findtut(name: str = None):
     with open("findtut.html", "r", encoding = "utf-8") as f:
@@ -147,8 +261,75 @@ def findtut(name: str = None):
     
 @app.post("/addtut")
 def addtut(tutor_code: str = Form(...), name: str = Form(...)):
-    #сделать обработку бд добавления репетитора челиксу
-    return RedirectResponse(url=f"/tutlist?name={name}", status_code=303)
+    try:
+        connection = sqlite3.connect('basa.db')
+        cursor = connection.cursor()
+        cursor.execute("SELECT student_id FROM students WHERE login = ?", (name,))
+        res = cursor.fetchone()
+        if res:
+            stud_id = res[0]
+            cursor.execute("SELECT tutor_id FROM tutors WHERE tutor_id = ?", (tutor_code,))
+            tutor_exists = cursor.fetchone()
+            if tutor_exists:
+                cursor.execute("INSERT INTO student_tutors (student_id, tutor_id) VALUES (?, ?)", (stud_id, tutor_code))
+                connection.commit()
+            else:
+                with open("findtutidfailed.html", "r", encoding='utf-8') as file:
+                    content = verstka(file.read(), name)
+                return HTMLResponse(content=content) 
+        else:
+            with open("findtutstudidfailed.html", "r", encoding='utf-8') as file:
+                content = verstka(file.read(), name)
+            return HTMLResponse(content=content) 
+            
+    except Exception as e:
+        # Общая ошибка
+        with open("findtutidfailed.html", "r", encoding='utf-8') as file:
+            content = verstka(file.read(), name)
+        return HTMLResponse(content=content) 
+            
+    finally:
+        connection.close()
+    
+    return RedirectResponse(url=f"/home?name={name}", status_code=303)
+    # return RedirectResponse(url=f"/tutlist?name={name}", status_code=303)
+
+
+@app.get("/profile")
+def studprofile(name: str = None):
+    connection = sqlite3.connect('basa.db')
+    cursor = connection.cursor()
+    try:
+        cursor.execute("SELECT first_name, last_name FROM students WHERE login = ?", (name,))
+        res = cursor.fetchone()
+        if res:
+            first_name = res[0]
+            last_name = res[1]
+            with open("studprofile.html", "r", encoding = "utf-8") as f:
+                content = verstkaprofile(f.read(), name, first_name, last_name)
+            return HTMLResponse(content=content)
+        else:
+            return RedirectResponse(url="/login", status_code=303)
+    except Exception as e:
+        print(f"Ловит ошибку - { e }")
+
+@app.get("/check_links")
+def check_links():
+    """Проверить все связи в БД"""
+    connection = sqlite3.connect('basa.db')
+    cursor = connection.cursor()
+    
+    cursor.execute("SELECT * FROM student_tutors")
+    links = cursor.fetchall()
+    
+    connection.close()
+    
+    html = "<h1>Все связи в student_tutors:</h1><ul>"
+    for link in links:
+        html += f"<li>ID: {link[0]}, student_id: {link[1]}, tutor_id: {link[2]}</li>"
+    html += "</ul>"
+    
+    return HTMLResponse(content=html)
 
 
 
