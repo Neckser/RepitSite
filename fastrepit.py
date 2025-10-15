@@ -21,45 +21,53 @@ def verstka(file, name):
 def verstkatut(file, name, tutor_cout, tutor_data):
     verstkatemplatetut = ""
     verstkatemplatetut += file
-    for i in range(tutor_cout):
-        verstkatemplatetut += """
-        <div class="tutor-card">
-        <div class="tutor-header">
-            <div class="tutor-avatar">{{avatar_initials}}</div>
-            <div class="tutor-info">
-                <h3>{{first_name}} {{last_name}}</h3>
-                <span class="tutor-subject">{{specialization}}</span>
-            </div>
-        </div>
-        
-        <div class="tutor-stats">
-            <div class="stat-item">
-                <div class="stat-value"><!-- {{homeworks_count}} --> 1</div>
-                <div class="stat-label">заданий</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-value"><!-- {{rating}} --> 5.0</div>
-                <div class="stat-label">рейтинг</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-value"><!-- {{lessons_count}} --> 1</div>
-                <div class="stat-label">уроков</div>
-            </div>
-        </div>
-        
-        <div class="tutor-actions">
-            <!-- <a href="/tutor/{{tutor_id}}/assignments" class="action-btn assignments-btn">Задания</a> -->
-            <a href="/messages/tutor/{{tutor_id}}" class="action-btn message-btn">Написать</a>
-        </div>
-    </div>
-"""
+    print(tutor_cout)
+    if tutor_cout == 0 :
         formatted_content = verstkatemplatetut.replace("{{name}}", name)
-        formatted_content = formatted_content.replace("{{tutor_id}}", str(tutor_data[i]['tutor_id']))
-        formatted_content = formatted_content.replace("{{first_name}}", tutor_data[i]['first_name'])
-        formatted_content = formatted_content.replace("{{last_name}}", tutor_data[i]['last_name'])
-        formatted_content = formatted_content.replace("{{experience}}", str(tutor_data[i]['experience']))
-        formatted_content = formatted_content.replace("{{specialization}}", tutor_data[i]['specialization'])
-        formatted_content = formatted_content.replace("{{avatar_initials}}", tutor_data[i]['first_name'][0] + tutor_data[i]['last_name'][0])
+        with open("tutlistend.html", 'r', encoding="utf-8") as f:
+            formatted_content += f.read()
+        formatted_content = formatted_content.replace("{{name}}", name)
+        return formatted_content
+    else:
+        for i in range(tutor_cout):
+            verstkatemplatetut += """
+            <div class="tutor-card">
+            <div class="tutor-header">
+                <div class="tutor-avatar">{{avatar_initials}}</div>
+                <div class="tutor-info">
+                    <h3>{{first_name}} {{last_name}}</h3>
+                    <span class="tutor-subject">{{specialization}}</span>
+                </div>
+            </div>
+
+            <div class="tutor-stats">
+                <div class="stat-item">
+                    <div class="stat-value"><!-- {{homeworks_count}} --> 1</div>
+                    <div class="stat-label">заданий</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value"><!-- {{rating}} --> 5.0</div>
+                    <div class="stat-label">рейтинг</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value"><!-- {{lessons_count}} --> 1</div>
+                    <div class="stat-label">уроков</div>
+                </div>
+            </div>
+
+            <div class="tutor-actions">
+                <!-- <a href="/tutor/{{tutor_id}}/assignments" class="action-btn assignments-btn">Задания</a> -->
+                <a href="/messages/tutor/{{tutor_id}}" class="action-btn message-btn">Написать</a>
+            </div>
+        </div>
+    """ 
+            formatted_content = verstkatemplatetut.replace("{{name}}", name)
+            formatted_content = formatted_content.replace("{{tutor_id}}", str(tutor_data[i]['tutor_id']))
+            formatted_content = formatted_content.replace("{{first_name}}", tutor_data[i]['first_name'])
+            formatted_content = formatted_content.replace("{{last_name}}", tutor_data[i]['last_name'])
+            formatted_content = formatted_content.replace("{{experience}}", str(tutor_data[i]['experience']))
+            formatted_content = formatted_content.replace("{{specialization}}", tutor_data[i]['specialization'])
+            formatted_content = formatted_content.replace("{{avatar_initials}}", tutor_data[i]['first_name'][0] + tutor_data[i]['last_name'][0])
     
     return formatted_content
 
@@ -109,7 +117,7 @@ def logintut(login: str = Form(...), password: str = Form(...)):
         cursor.execute("SELECT * FROM tutors WHERE login = ? AND password = ?", (login, password))
         res = cursor.fetchall()
         if res:
-            return RedirectResponse(url=f"/hometut", status_code=303)
+            return RedirectResponse(url=f"/hometut?name={login}", status_code=303)
         else:
             with open("loginrepfailed.html", "r", encoding='utf-8') as file:
                 content = file.read()
@@ -129,7 +137,7 @@ def post_registration(first_name: str = Form(), last_name: str = Form(), grade: 
     connection = sqlite3.connect('basa.db')
     cursor = connection.cursor()
     try:
-        cursor.execute("INSERT INTO students (student_id, first_name, last_name, login, password) VALUES (?, ?, ?, ?, ?)", (create_id(), first_name, last_name, login, password))
+        cursor.execute("INSERT INTO students (student_id, first_name, last_name, grade, login, password) VALUES (?, ?, ?, ?, ?, ?)", (create_id(), first_name, last_name, grade, login, password))
         connection.commit()
     except sqlite3.IntegrityError:
         #Доделать страницу когда Логин уже занят
@@ -177,29 +185,82 @@ def post_registertut(first_name: str = Form(...), last_name: str = Form(...), ed
 
 @app.get("/home")
 def home(name: str = None):
+    hwtemplate = ""
+    a = '''<div class="assignment-card">
+    <div class="assignment-header">
+        <!-- <span class="subject-badge math">Математика</span> -->
+        <span class="due-date">До {{ data }}</span>
+        <span class="status active">{{ status }}</span>
+    </div>
+    <h3 class="assignment-title">{{ title }}</h3>
+    <p class="assignment-description">{{ description }}</p>
+    <div class="assignment-footer">
+        <span class="tutor-info">{{ tutor_first_name }} {{ tutor_last_name }}</span>
+        <!-- <button class="assignment-btn">Перейти к заданию</button> -->                
+    </div>
+</div>'''
+
+
+
+
     connection = sqlite3.connect('basa.db')
     cursor = connection.cursor()
     try:
-        cursor.execute("SELECT first_name, last_name FROM students WHERE login = ?", (name,))
+        cursor.execute("SELECT first_name, last_name, student_id FROM students WHERE login = ?", (name,))
         res = cursor.fetchone()
         if res:
             first_name = res[0]
             last_name = res[1]
-            with open("mainpage.html", "r", encoding = "utf-8") as f:
-                content = verstkaprofile(f.read(), name, first_name, last_name)
-            return HTMLResponse(content=content)
-        else:
-            pass
-            #Прописать когда нету такого логина
+            student_id = res[2]
+
+        cursor.execute(''' SELECT h.title, h.description, h.deadline, h.status, t.first_name, t.last_name FROM homeworks h JOIN tutors t ON h.tutor_id = t.tutor_id WHERE h.student_id = ? ORDER BY h.deadline ASC''', (student_id,))
+        homeworks = cursor.fetchall()
+        for hw in homeworks:
+            hwtemplate += a
+            if hw[3] == "assigned":
+                hwtemplate = hwtemplate.replace("{{ status }}", "активно")
+            hwtemplate = hwtemplate.replace("{{ status }}", str(hw[3]))
+            hwtemplate = hwtemplate.replace("{{ title }}", str(hw[0]))
+            hwtemplate = hwtemplate.replace("{{ data }}", str(hw[2]))
+            hwtemplate = hwtemplate.replace("{{ description }}", str(hw[1]))
+            hwtemplate = hwtemplate.replace("{{ tutor_first_name }}", str(hw[4]))
+            hwtemplate = hwtemplate.replace("{{ tutor_last_name }}", str(hw[5]))
+            
+
+        with open("mainpage.html", "r", encoding = "utf-8") as f:
+            content = verstkaprofile(f.read(), name, first_name, last_name)
+        connection.close()
+        content = content.replace("{{ hwtemplate }}", hwtemplate)
+        return HTMLResponse(content=content)
     except Exception as e:
         print(f"Ловит ошибку - { e }")
     
 
 @app.get("/hometut")
-def get_registertut():
-    with open('hometut.html', 'r', encoding='utf-8') as file:
-        content = file.read()
-    return HTMLResponse(content=content)
+def get_registertut(name: str = None):
+    connection = sqlite3.connect('basa.db')
+    cursor = connection.cursor()
+    try:
+        cursor.execute("SELECT first_name, last_name FROM tutors WHERE login = ?", (name,))
+        res = cursor.fetchone()
+        if res:
+            first_name = res[0]
+            last_name = res[1]
+        else:
+            return RedirectResponse(url="/login", status_code=303)
+        
+        cursor.execute('''SELECT COUNT(*) FROM student_tutors st JOIN tutors t ON st.tutor_id = t.tutor_id WHERE t.login = ?''', (name,))
+        res = cursor.fetchone()
+        if res:
+            student_colvo = res[0]
+        with open('hometut.html', 'r', encoding='utf-8') as file:
+            content = verstkaprofile(file.read(), name, first_name, last_name)
+        content = content.replace("{{ student_colvo }}", str(student_colvo))
+        connection.close()
+        return HTMLResponse(content=content)
+    except Exception as e: 
+        print(f"Случилась ошибка - {e}")
+        connection.close()
     
 @app.get("/tutlist")
 def tutlist(name: str = None):
@@ -251,6 +312,7 @@ def tutlist(name: str = None):
     with open("tutlistend.html", 'r', encoding='utf-8') as f:
         content += f.read()
         content = content.replace("{{ name }}", name)
+    connection.close()
     return HTMLResponse(content=content)
 
 @app.get("/findtut")
@@ -280,10 +342,12 @@ def addtut(tutor_code: str = Form(...), name: str = Form(...)):
         else:
             with open("findtutstudidfailed.html", "r", encoding='utf-8') as file:
                 content = verstka(file.read(), name)
+            connection.close()
             return HTMLResponse(content=content) 
             
     except Exception as e:
         # Общая ошибка
+        connection.close()
         with open("findtutidfailed.html", "r", encoding='utf-8') as file:
             content = verstka(file.read(), name)
         return HTMLResponse(content=content) 
@@ -300,18 +364,208 @@ def studprofile(name: str = None):
     connection = sqlite3.connect('basa.db')
     cursor = connection.cursor()
     try:
-        cursor.execute("SELECT first_name, last_name FROM students WHERE login = ?", (name,))
+        cursor.execute("SELECT first_name, last_name, grade FROM students WHERE login = ?", (name,))
         res = cursor.fetchone()
         if res:
             first_name = res[0]
             last_name = res[1]
-            with open("studprofile.html", "r", encoding = "utf-8") as f:
-                content = verstkaprofile(f.read(), name, first_name, last_name)
-            return HTMLResponse(content=content)
+            grade = res[2]
         else:
             return RedirectResponse(url="/login", status_code=303)
+            
+        cursor.execute('''SELECT COUNT(*) FROM homeworks h JOIN students s ON h.student_id = s.student_id WHERE s.login = ?''', (name,))
+        res = cursor.fetchone()
+        if res:
+            homework_colvo = res[0]
+        else:
+            return RedirectResponse(url="/login", status_code=303)
+        cursor.execute('''SELECT COUNT(*) FROM homeworks h JOIN students s ON h.student_id = s.student_id WHERE s.login = ? AND h.status = "completed"''', (name,))
+        res = cursor.fetchone()
+        if res:
+            completed_homeworks = res[0]
+        else:
+            return RedirectResponse(url="/login", status_code=303)
+        cursor.execute('''SELECT COUNT(*) FROM student_tutors st JOIN students s ON st.student_id = s.student_id WHERE s.login = ?''', (name,))
+        res = cursor.fetchone()
+        if res:
+            tutor_count = res[0]
+        else:
+            return RedirectResponse(url="/login", status_code=303)
+        connection.close()
+        with open("studprofile.html", "r", encoding = "utf-8") as f:
+            content = verstkaprofile(f.read(), name, first_name, last_name)
+            content = content.replace("{{ grade }}", str(grade))
+            content = content.replace("{{ tutors_count }}", str(tutor_count))
+            content = content.replace("{{ homework_colvo }}", str(homework_colvo))
+            content = content.replace("{{ completed_homeworks }}", str(completed_homeworks))
+        connection.close()
+        return HTMLResponse(content=content)
+
     except Exception as e:
         print(f"Ловит ошибку - { e }")
+        connection.close()
+
+
+@app.get("/studtime")
+def studtime(name: str = None):
+    with open('studtime.html', 'r', encoding="utf-8") as f:
+        content = verstka(f.read(), name)
+    return HTMLResponse(content=content)
+
+
+
+
+
+@app.get("/profiletut")
+def profiletut(name : str =  None):
+    connection = sqlite3.connect('basa.db')
+    cursor = connection.cursor()
+    try:
+        cursor.execute("SELECT first_name, last_name, experience FROM tutors WHERE login = ?", (name,))
+        res = cursor.fetchone()
+        if res:
+            first_name = res[0]
+            last_name = res[1]
+            experience = res[2]
+        else:
+            return RedirectResponse(url="/login", status_code=303)
+        
+        cursor.execute('''SELECT COUNT(*) FROM student_tutors st JOIN tutors t ON st.tutor_id = t.tutor_id WHERE t.login = ?''', (name,))
+        res = cursor.fetchone()
+        if res:
+            student_colvo = res[0]
+        with open('profiletut.html', 'r', encoding='utf-8') as f:
+            content = verstkaprofile(f.read(), name, first_name, last_name)
+        content = content.replace("{{ experience }}", str(experience))
+        content = content.replace("{{ student_colvo }}", str(student_colvo))
+        connection.close()
+        return HTMLResponse(content=content)
+    
+    except Exception as e:
+        print(f"произошла - {e}")
+        connection.close()
+
+@app.get("/homeworkstut")
+def homeworkstut(name : str =  None):
+    optionTemaplate = '''<select class="form-select" id="student_id" name="student_id" required>
+    <option value="">Выберите ученика</option>'''
+
+    hwtemplate = ""
+    a = '''<div class="assignment-item">
+    <div class="assignment-header">
+        <div class="assignment-info">
+            <h3>{{ title }}</h3>
+            <div class="assignment-meta">
+                <span class="assignment-date">Срок: {{ data }}</span>
+            </div>
+        </div>
+        <div class="assignment-status status-active">{{ status }}</div>
+    </div>
+<div class="assignment-content">
+    {{ description }}
+</div>
+</div>'''
+    connection = sqlite3.connect('basa.db')
+    cursor = connection.cursor()
+    try:
+        cursor.execute("SELECT first_name, last_name FROM tutors WHERE login = ?", (name,))
+        res = cursor.fetchone()
+        if res:
+            first_name = res[0]
+            last_name = res[1]
+        else:
+            return RedirectResponse(url="/login", status_code=303)
+        cursor.execute('''SELECT s.student_id,s.first_name, s.last_name, s.login, s.grade FROM students s JOIN student_tutors st ON s.student_id = st.student_id JOIN tutors t ON st.tutor_id = t.tutor_id WHERE t.login = ? ORDER BY s.first_name, s.last_name''', (name,))
+        students = cursor.fetchall()
+        for student in students:
+            optionTemaplate += f'   <option value="{student[0]}">{student[1]} {student[2]} ({student[4]} класс)</option>'
+        optionTemaplate += "</select>"
+
+
+        cursor.execute("SELECT tutor_id FROM tutors WHERE login = ?", (name,))
+        res = cursor.fetchone()
+        if res:
+            tutor_id = res[0]
+
+        cursor.execute('''SELECT h.title, h.description, h.deadline, h.status FROM homeworks h JOIN tutors t ON h.tutor_id = t.tutor_id WHERE h.tutor_id = ? ORDER BY h.deadline ASC''', (tutor_id,))
+        homeworks = cursor.fetchall()
+        for hw in homeworks:
+            hwtemplate += a
+            if hw[3] == "assigned":
+                hwtemplate = hwtemplate.replace("{{ status }}", "активно")
+            hwtemplate = hwtemplate.replace("{{ status }}", str(hw[3]))
+            hwtemplate = hwtemplate.replace("{{ title }}", str(hw[0]))
+            hwtemplate = hwtemplate.replace("{{ data }}", str(hw[2]))
+            hwtemplate = hwtemplate.replace("{{ description }}", str(hw[1]))
+        
+        with open('homeworkstut.html', 'r', encoding='utf-8') as f:
+            content = verstkaprofile(f.read(), name, first_name, last_name)
+        content = content.replace("{{ selectForm }}", optionTemaplate)
+        content = content.replace("{{ hwtemplate }}", hwtemplate)
+        return HTMLResponse(content=content)
+    except Exception as e:
+        print(f"Произошла ошибка - {e}")
+
+
+
+@app.post("/createhw")
+def createhw(name: str = Form(...), student_id: str = Form(...), subject: str = Form(...), title: str = Form(...), deadline: str = Form(...), description: str = Form(...)):
+    connection = sqlite3.connect('basa.db')
+    cursor = connection.cursor()
+    try:
+        cursor.execute("SELECT tutor_id FROM tutors WHERE login = ?", (name,))
+        res = cursor.fetchone()
+        if res:
+            tutor_id = res[0]
+        cursor.execute('''
+            INSERT INTO homeworks (student_id, tutor_id, title, description, deadline, status) VALUES (?, ?, ?, ?, ?, 'assigned')''', (student_id, tutor_id, title, description, deadline))
+        connection.commit()
+        connection.close()
+    except Exception as e:
+        print(f"Произошла ошибка - {e}")
+
+    
+    return RedirectResponse(url=f"/homeworkstut?name={name}", status_code=303)
+
+
+@app.post("/deletehw")
+def deletehw(name: str = Form(...), title: str = Form(...)):
+    connection = sqlite3.connect('basa.db')
+    cursor = connection.cursor()
+    try:
+        cursor.execute('''DELETE FROM homeworks WHERE title = ?''', (title,))
+        connection.commit()
+    except Exception as e:
+        print(f"Произошла ошибка - {e}")
+
+    print(f"Удалена домашка:  {name} - {title}")
+    connection.close()
+    return RedirectResponse(url=f"/homeworkstut?name={name}", status_code=303)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 @app.get("/check_links")
 def check_links():
@@ -330,6 +584,8 @@ def check_links():
     html += "</ul>"
     
     return HTMLResponse(content=html)
+
+
 
 
 

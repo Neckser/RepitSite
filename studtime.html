@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Расписание занятий | Учебный портал</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        body {
+            background-color: #f8f9fa;
+            min-height: 100vh;
+        }
+
+        /* Шапка */
+        .top-bar {
+            background-color: #6b8e23;
+            padding: 12px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .nav-button {
+            background-color: rgba(255,255,255,0.2);
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+
+        .nav-button.active {
+            background-color: white;
+            color: #6b8e23;
+        }
+
+        .nav-button:hover {
+            background-color: rgba(255,255,255,0.3);
+        }
+
+        /* Окошко аккаунта */
+        .account-widget {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: white;
+            cursor: pointer;
+            padding: 8px 15px;
+            border-radius: 20px;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+
+        .account-widget:hover {
+            background-color: rgba(255,255,255,0.2);
+        }
+
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background-color: white;
+            color: #6b8e23;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+            border: 2px solid rgba(255,255,255,0.3);
+        }
+
+        .user-info {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .user-name {
+            font-size: 14px;
+            font-weight: 600;
+            line-height: 1.2;
+        }
+
+        .user-role {
+            font-size: 12px;
+            opacity: 0.9;
+            line-height: 1.2;
+        }
+
+        /* Основной контейнер */
+        .container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        /* Заголовок */
+        .page-title {
+            color: #6b8e23;
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        /* Дни недели */
+        .days {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .day {
+            padding: 12px 20px;
+            background: #f1f8e9;
+            border: 2px solid #e8f5e8;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 500;
+            color: #666;
+            text-align: center;
+            min-width: 100px;
+        }
+
+        .day.active {
+            background: #6b8e23;
+            color: white;
+            border-color: #6b8e23;
+        }
+
+        /* Карточка занятия */
+        .lesson-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border: 2px solid #e8f5e8;
+        }
+
+        .lesson-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .lesson-time {
+            background: #6b8e23;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .lesson-type {
+            background: #f1f8e9;
+            color: #6b8e23;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .lesson-subject {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .lesson-tutor {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        .lesson-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        /* Кнопки */
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: #6b8e23;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #5a7a1f;
+        }
+
+        .btn-secondary {
+            background: #f1f8e9;
+            color: #6b8e23;
+            border: 2px solid #6b8e23;
+        }
+
+        .btn-secondary:hover {
+            background: #6b8e23;
+            color: white;
+        }
+
+        /* Ближайшие занятия */
+        .upcoming {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 30px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border: 2px solid #e8f5e8;
+        }
+
+        .section-title {
+            color: #6b8e23;
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .upcoming-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #e8f5e8;
+        }
+
+        .upcoming-item:last-child {
+            border-bottom: none;
+        }
+
+        .upcoming-time {
+            font-weight: bold;
+            color: #6b8e23;
+        }
+
+        .upcoming-subject {
+            font-weight: 600;
+        }
+
+        /* Кнопки действий */
+        .actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+            justify-content: center;
+        }
+
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            .nav-container {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .account-widget .user-info {
+                display: none;
+            }
+            
+            .days {
+                gap: 5px;
+            }
+            
+            .day {
+                min-width: 80px;
+                padding: 10px 15px;
+                font-size: 14px;
+            }
+            
+            .lesson-header {
+                flex-direction: column;
+                gap: 10px;
+                align-items: flex-start;
+            }
+            
+            .lesson-actions {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="top-bar">
+        <div class="nav-container">
+            <div class="nav-buttons">
+                <a href="/tutlist?name=Иван" class="nav-button">Мои репетиторы</a>
+                <a href="/home?name=Иван" class="nav-button">Мои задания</a>
+                <a href="/schedule?name=Иван" class="nav-button active">Расписание</a>
+                <a href="/profile?name=Иван" class="nav-button">Профиль</a>
+            </div>
+            
+            <a href="/profile?name=Иван" class="account-widget">
+                <div class="user-avatar">ИП</div>
+                <div class="user-info">
+                    <div class="user-name">Иван Петров</div>
+                    <div class="user-role">Ученик</div>
+                </div>
+            </a>
+        </div>
+    </header>
+
+    <div class="container">
+        <h1 class="page-title">Моё расписание</h1>
+
+        <!-- Дни недели -->
+        <div class="days">
+            <div class="day">Пн 18.11</div>
+            <div class="day">Вт 19.11</div>
+            <div class="day">Ср 20.11</div>
+            <div class="day active">Чт 21.11</div>
+            <div class="day">Пт 22.11</div>
+            <div class="day">Сб 23.11</div>
+            <div class="day">Вс 24.11</div>
+        </div>
+
+        <!-- Занятия на выбранный день -->
+        <div class="lesson-card">
+            <div class="lesson-header">
+                <div class="lesson-time">09:00 - 10:30</div>
+                <div class="lesson-type">Online</div>
+            </div>
+            <div class="lesson-subject">Математика</div>
+            <div class="lesson-tutor">Анна Сергеевна</div>
+            <div class="lesson-actions">
+                <button class="btn btn-primary">Присоединиться</button>
+                <button class="btn btn-secondary">Подробнее</button>
+            </div>
+        </div>
+
+        <div class="lesson-card">
+            <div class="lesson-header">
+                <div class="lesson-time">14:00 - 15:30</div>
+                <div class="lesson-type">Online</div>
+            </div>
+            <div class="lesson-subject">Английский язык</div>
+            <div class="lesson-tutor">Елена Викторовна</div>
+            <div class="lesson-actions">
+                <button class="btn btn-primary">Присоединиться</button>
+                <button class="btn btn-secondary">Подробнее</button>
+            </div>
+        </div>
+
+        <div class="lesson-card">
+            <div class="lesson-header">
+                <div class="lesson-time">18:00 - 19:30</div>
+                <div class="lesson-type">Оффлайн</div>
+            </div>
+            <div class="lesson-subject">Информатика</div>
+            <div class="lesson-tutor">Алексей Смирнов</div>
+            <div class="lesson-actions">
+                <button class="btn btn-primary">Подготовиться</button>
+                <button class="btn btn-secondary">Подробнее</button>
+            </div>
+        </div>
+
+        <!-- Ближайшие занятия -->
+        <div class="upcoming">
+            <div class="section-title">Ближайшие занятия</div>
+            
+            <div class="upcoming-item">
+                <div>
+                    <div class="upcoming-time">Завтра 12:00</div>
+                    <div class="upcoming-subject">Физика</div>
+                </div>
+                <button class="btn btn-secondary">Напомнить</button>
+            </div>
+            
+            <div class="upcoming-item">
+                <div>
+                    <div class="upcoming-time">Среда 14:00</div>
+                    <div class="upcoming-subject">Химия</div>
+                </div>
+                <button class="btn btn-secondary">Напомнить</button>
+            </div>
+            
+            <div class="upcoming-item">
+                <div>
+                    <div class="upcoming-time">Пятница 16:00</div>
+                    <div class="upcoming-subject">Русский язык</div>
+                </div>
+                <button class="btn btn-secondary">Напомнить</button>
+            </div>
+        </div>
+
+        <!-- Кнопки действий -->
+        <div class="actions">
+            <button class="btn btn-primary">Экспорт расписания</button>
+            <button class="btn btn-secondary">Распечатать</button>
+            <a href="/home?name=Иван" class="btn btn-secondary">Назад к заданиям</a>
+        </div>
+    </div>
+</body>
+</html>

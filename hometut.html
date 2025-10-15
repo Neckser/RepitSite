@@ -69,6 +69,16 @@
             display: flex;
             align-items: center;
             gap: 10px;
+            text-decoration: none;
+            padding: 8px 15px;
+            border-radius: 20px;
+            transition: all 0.3s;
+        }
+
+        .user-info:hover {
+            background-color: rgba(255,255,255,0.2);
+            text-decoration: none;
+            color: white;
         }
 
         .user-avatar {
@@ -386,28 +396,26 @@
         <nav>
             <div class="nav-section">
                 <a href="#" class="nav-button active">Главная</a>
-                <a href="#" class="nav-button">Мои ученики</a>
-                <a href="#" class="nav-button">Задания</a>
-                <a href="#" class="nav-button">Расписание</a>
+                <a href="/homeworkstut?name={{ name }}" class="nav-button">Задания</a>
+                <!-- <a href="#" class="nav-button">Расписание</a> -->
             </div>
-            <div class="user-info">
-                <div class="user-avatar">ИИ</div>
-                <span>Иван Иванов</span>
-            </div>
+            <a href="/profiletut?name={{ name }}" class="user-info">
+                <div class="user-avatar">{{ avatar }}</div>
+                <span>{{ first_name }} {{ last_name }}</span>
+            </a>
         </nav>
     </header>
 
     <div class="container">
         <!-- Приветствие -->
         <section class="welcome-section">
-            <h1 class="welcome-title">Добро пожаловать, Иван Иванов!</h1>
-            <p class="welcome-subtitle">Сегодня у вас 2 занятия и 3 задания на проверку</p>
+            <h1 class="welcome-title">Добро пожаловать, {{ first_name }} {{ last_name }}!</h1>
         </section>
 
         <!-- Статистика -->
         <div class="stats-grid">
             <div class="stat-card">
-                <div class="stat-value">12</div>
+                <div class="stat-value">{{ student_colvo }}</div>
                 <div class="stat-label">Учеников</div>
             </div>
             <div class="stat-card">
@@ -520,14 +528,13 @@
             </div>
         </section>
 
-        <!-- Ближайшие занятия -->
-        <section class="lessons-section">
+        <!-- <section class="lessons-section">
             <div class="section-header">
                 <h2 class="section-title">Ближайшие занятия</h2>
                 <a href="#" class="view-all">Все занятия →</a>
             </div>
             <div class="lessons-list">
-                <!-- Занятие 1 -->
+
                 <div class="lesson-card">
                     <div class="lesson-header">
                         <div class="lesson-time">14:00 - 15:30</div>
@@ -537,7 +544,7 @@
                     <span class="lesson-subject">Математика - Подготовка к ЕГЭ</span>
                 </div>
 
-                <!-- Занятие 2 -->
+
                 <div class="lesson-card">
                     <div class="lesson-header">
                         <div class="lesson-time">16:00 - 17:30</div>
@@ -547,7 +554,7 @@
                     <span class="lesson-subject">Физика - Кинематика</span>
                 </div>
 
-                <!-- Занятие 3 -->
+
                 <div class="lesson-card">
                     <div class="lesson-header">
                         <div class="lesson-time">10:00 - 11:30</div>
@@ -557,7 +564,7 @@
                     <span class="lesson-subject">Математика - Производные</span>
                 </div>
             </div>
-        </section>
+        </section> -->
     </div>
 </body>
 </html>

@@ -9,6 +9,7 @@ def init_database():
             student_id INTEGER UNIQUE PRIMARY KEY,
             first_name TEXT NOT NULL,
             last_name TEXT NOT NULL,
+            grade INTEGER NOT NULL,
             login TEXT UNIQUE NOT NULL,
             password TEXT NOT NULL,
             registration_date DATETIME DEFAULT CURRENT_TIMESTAMP
@@ -16,7 +17,7 @@ def init_database():
     
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS tutors (
-            tutor_id INTEGER PRIMARY KEY,
+            tutor_id INTEGER UNIQUE PRIMARY KEY,
             first_name TEXT NOT NULL,
             last_name TEXT NOT NULL,
             subject_math TEXT,
@@ -57,7 +58,7 @@ def init_database():
             homework_id INTEGER PRIMARY KEY AUTOINCREMENT,
             student_id INTEGER NOT NULL,
             tutor_id INTEGER NOT NULL,
-            title TEXT NOT NULL,
+            title TEXT UNIQUE NOT NULL,
             description TEXT,
             deadline DATETIME,
             status TEXT DEFAULT 'assigned',
@@ -65,6 +66,21 @@ def init_database():
             FOREIGN KEY (student_id) REFERENCES students(student_id) ON DELETE CASCADE,
             FOREIGN KEY (tutor_id) REFERENCES tutors(tutor_id) ON DELETE CASCADE
         )''')
+    
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS timetable (
+            schedule_id INTEGER PRIMARY KEY AUTOINCREMENT,
+            student_id INTEGER NOT NULL,
+            tutor_id INTEGER NOT NULL,
+            subject TEXT NOT NULL,
+            lesson_date DATE NOT NULL,
+            lesson_time TIME NOT NULL,
+            status TEXT DEFAULT 'scheduled' CHECK(status IN ('scheduled', 'completed', 'cancelled')),
+            notes TEXT,
+            FOREIGN KEY (student_id) REFERENCES students(student_id) ON DELETE CASCADE,
+            FOREIGN KEY (tutor_id) REFERENCES tutors(tutor_id) ON DELETE CASCADE
+        )
+    ''')
 
     connection.commit()
     connection.close()

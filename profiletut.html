@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Профиль ученика | Учебный портал</title>
+    <title>Профиль преподавателя | Учебный портал</title>
     <style>
         /* Базовые стили */
         * {
@@ -18,7 +18,7 @@
             min-height: 100vh;
         }
 
-        /* Цветовые переменные для единообразия */
+        /* Цветовые переменные */
         :root {
             --primary-color: #6b8e23;
             --primary-dark: #5a7a1f;
@@ -32,7 +32,7 @@
             --danger-dark: #c82333;
         }
 
-        /* Шапка - будет одинаковой на всех страницах */
+        /* Шапка */
         .top-bar {
             background-color: var(--primary-color);
             padding: 12px 0;
@@ -130,7 +130,7 @@
             padding: 0 20px;
         }
 
-        /* Карточки - переиспользуемый компонент */
+        /* Карточки */
         .card {
             background: var(--white);
             border-radius: 15px;
@@ -154,7 +154,7 @@
             gap: 10px;
         }
 
-        /* Кнопки - переиспользуемый компонент */
+        /* Кнопки */
         .btn {
             padding: 12px 25px;
             border: none;
@@ -202,7 +202,7 @@
             box-shadow: 0 5px 15px rgba(220, 53, 69, 0.3);
         }
 
-        /* Специфичные стили для страницы профиля */
+        /* Заголовок профиля */
         .profile-header {
             display: flex;
             align-items: center;
@@ -299,6 +299,67 @@
             font-weight: 600;
         }
 
+        /* Предметы */
+        .subjects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .subject-card {
+            background: var(--background-light);
+            border: 2px solid var(--border-light);
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .subject-card:hover {
+            border-color: var(--primary-color);
+            transform: translateY(-2px);
+        }
+
+        .subject-name {
+            color: var(--primary-color);
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .subject-stats {
+            font-size: 12px;
+            color: var(--text-gray);
+        }
+
+        /* Рейтинг */
+        .rating {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 10px 0;
+        }
+
+        .stars {
+            display: flex;
+            gap: 2px;
+        }
+
+        .star {
+            color: #ffc107;
+            font-size: 16px;
+        }
+
+        .rating-value {
+            font-weight: bold;
+            color: var(--text-dark);
+        }
+
+        .reviews-count {
+            color: var(--text-gray);
+            font-size: 12px;
+        }
+
         /* Прогресс-бары */
         .progress-item {
             margin-bottom: 20px;
@@ -311,7 +372,7 @@
             margin-bottom: 8px;
         }
 
-        .progress-subject {
+        .progress-label {
             color: var(--text-dark);
             font-weight: 600;
         }
@@ -376,6 +437,10 @@
                 grid-template-columns: 1fr;
             }
             
+            .subjects-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
             .action-buttons {
                 flex-direction: column;
             }
@@ -399,20 +464,23 @@
             .stat-value {
                 font-size: 20px;
             }
+            
+            .subjects-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Шапка - переиспользуемый компонент -->
+    <!-- Шапка -->
     <header class="top-bar">
         <div class="nav-container">
             <div class="nav-buttons">
-                <a href="/tutlist?name={{ name }}" class="nav-button">Мои репетиторы</a>
-                <a href="/home?name={{ name }}" class="nav-button">Мои задания</a>
-                <!-- <a href="/studtime?name={{ name }}" class="nav-button">Моё расписание</a> -->
+                <a href="/hometut?name={{ name }}" class="nav-button">Главная</a>
+                <a href="/homeworkstut?name={{ name }}" class="nav-button">Задания</a>
+                <!-- <a href="#" class="nav-button">Расписание</a> -->
             </div>
-            
-            <a href="/profile?name={{ name }}" class="account-widget">
+            <a href="/profiletut?name={{ name }}" class="account-widget">
                 <div class="user-avatar">
                     {{ avatar }}
                 </div>
@@ -421,7 +489,7 @@
                         {{ first_name }} {{ last_name }}
                     </div>
                     <div class="user-role">
-                        Ученик
+                        Преподаватель
                     </div>
                 </div>
             </a>
@@ -436,74 +504,32 @@
             </div>
             <div class="profile-info">
                 <h1 class="profile-name">{{ first_name }} {{ last_name }}</h1>
-                <div class="profile-role">Ученик {{ grade }} класса</div>
+                <!-- <div class="profile-role">Преподаватель математики и физики</div> -->
+                
+                <!-- Рейтинг -->
+                <div class="rating">
+                    <div class="stars">
+                        <span class="star">⭐</span>
+                        <span class="star">⭐</span>
+                        <span class="star">⭐</span>
+                        <span class="star">⭐</span>
+                        <span class="star">⭐</span>
+                    </div>
+                    <span class="rating-value">4.9</span>
+                </div>
+                
                 <div class="profile-stats">
                     <div class="profile-stat">
-                        <span class="stat-value">{{ tutors_count }}</span>
-                        <span class="stat-label">Репетиторов</span>
+                        <span class="stat-value">{{ student_colvo }}</span>
+                        <span class="stat-label">Учеников</span>
                     </div>
                     <div class="profile-stat">
-                        <span class="stat-value">{{ homework_colvo }}</span>
-                        <span class="stat-label">Заданий</span>
+                        <span class="stat-value">{{ experience }} лет</span>
+                        <span class="stat-label">Опыт работы</span>
                     </div>
-                    <div class="profile-stat">
-                        <span class="stat-value">{{ completed_homeworks }}</span>
-                        <span class="stat-label">Выполнено</span>
-                    </div>
-                    <!-- <div class="profile-stat">
-                        <span class="stat-value">{{ avg_grade }}</span>
-                        <span class="stat-label">Средний балл</span>
-                    </div> -->
                 </div>
             </div>
         </div>
-
-        <!-- Основная информация -->
-        <div class="info-grid">
-            <!-- Личная информация -->
-            <div class="card">
-                <h2 class="card-title">
-                    <span class="card-title-icon">👤</span>
-                    Личная информация
-                </h2>
-                <div class="info-list">
-                    <!-- Данные будут подставляться через шаблонизатор -->
-                    <div class="info-item">
-                        <span class="info-label">Имя</span>
-                        <span class="info-value">{{ first_name }}</span>
-                    </div>
-                    <div class="info-item">
-                        <span class="info-label">Фамилия</span>
-                        <span class="info-value">{{ last_name }}</span>
-                    </div>
-                    <div class="info-item">
-                        <span class="info-label">Класс</span>
-                        <span class="info-value">{{ grade }} класс</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Успеваемость -->
-            <div class="card">
-                <h2 class="card-title">
-                    <span class="card-title-icon">📊</span>
-                    Успеваемость
-                </h2>
-                <div class="info-list">
-                    <div class="progress-item">
-                        <div class="progress-header">
-                            <span class="progress-subject">Математика</span>
-                            <span class="progress-percent">{{ math_grade }}%</span>
-                        </div>
-                        <div class="progress-bar">
-                            <div class="progress-fill" style="width: 70%"></div>
-                        </div>
-                    </div>
-                    <!-- Остальные предметы -->
-                </div>
-            </div>
-        </div>
-
         <!-- Кнопка выхода -->
         <div class="logout-section">
             <a href="/login" class="btn btn-danger">
