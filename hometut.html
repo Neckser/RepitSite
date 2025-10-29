@@ -402,6 +402,7 @@
             <a href="/profiletut?name={{ name }}" class="user-info">
                 <div class="user-avatar">{{ avatar }}</div>
                 <span>{{ first_name }} {{ last_name }}</span>
+                
             </a>
         </nav>
     </header>
@@ -419,7 +420,7 @@
                 <div class="stat-label">Учеников</div>
             </div>
             <div class="stat-card">
-                <div class="stat-value">8</div>
+                <div class="stat-value">{{ homework_colvo }}</div>
                 <div class="stat-label">Активных заданий</div>
             </div>
             <div class="stat-card">
@@ -427,7 +428,7 @@
                 <div class="stat-label">Занятия сегодня</div>
             </div>
             <div class="stat-card">
-                <div class="stat-value">4.9</div>
+                <div class="stat-value">5.0</div>
                 <div class="stat-label">Ваш рейтинг</div>
             </div>
         </div>
@@ -439,8 +440,9 @@
                 <a href="#" class="view-all">Все ученики →</a>
             </div>
             <div class="students-grid">
+                {{ studtemplate }}
                 <!-- Ученик 1 -->
-                <div class="student-card">
+                <!-- <div class="student-card">
                     <div class="student-header">
                         <div class="student-avatar">АС</div>
                         <div class="student-info">
@@ -466,10 +468,10 @@
                         <a href="#" class="student-btn assignments-btn">Задания</a>
                         <a href="#" class="student-btn message-btn">Написать</a>
                     </div>
-                </div>
+                </div> -->
 
                 <!-- Ученик 2 -->
-                <div class="student-card">
+                <!-- <div class="student-card">
                     <div class="student-header">
                         <div class="student-avatar">ПЗ</div>
                         <div class="student-info">
@@ -495,10 +497,10 @@
                         <a href="#" class="student-btn assignments-btn">Задания</a>
                         <a href="#" class="student-btn message-btn">Написать</a>
                     </div>
-                </div>
+                </div> -->
 
                 <!-- Ученик 3 -->
-                <div class="student-card">
+                <!-- <div class="student-card">
                     <div class="student-header">
                         <div class="student-avatar">МК</div>
                         <div class="student-info">
@@ -524,7 +526,7 @@
                         <a href="#" class="student-btn assignments-btn">Задания</a>
                         <a href="#" class="student-btn message-btn">Написать</a>
                     </div>
-                </div>
+                </div> -->
             </div>
         </section>
 
