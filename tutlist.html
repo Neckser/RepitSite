@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Мои репетиторы | Учебный портал</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        body {
+            background-color: #f8f9fa;
+            min-height: 100vh;
+        }
+        
+        .top-bar {
+            background-color: #6b8e23;
+            padding: 12px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .nav-button {
+            background-color: rgba(255,255,255,0.2);
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .nav-button.active {
+            background-color: white;
+            color: #6b8e23;
+        }
+        
+        .nav-button:hover {
+            background-color: rgba(255,255,255,0.3);
+        }
+
+        /* Окошко аккаунта */
+        .account-widget {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: white;
+            cursor: pointer;
+            padding: 8px 15px;
+            border-radius: 20px;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+
+        .account-widget:hover {
+            background-color: rgba(255,255,255,0.2);
+        }
+
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background-color: white;
+            color: #6b8e23;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+            border: 2px solid rgba(255,255,255,0.3);
+        }
+
+        .user-info {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .user-name {
+            font-size: 14px;
+            font-weight: 600;
+            line-height: 1.2;
+        }
+
+        .user-role {
+            font-size: 12px;
+            opacity: 0.9;
+            line-height: 1.2;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 25px auto;
+            padding: 0 20px;
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 25px;
+            text-align: left;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        
+        .tutors-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .tutor-card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: 2px solid #e8f5e8;
+        }
+        
+        .tutor-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(107, 142, 35, 0.15);
+        }
+        
+        .tutor-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .tutor-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: #6b8e23;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+            font-weight: bold;
+            margin-right: 15px;
+            border: 2px solid #e8f5e8;
+        }
+        
+        .tutor-info h3 {
+            color: #6b8e23;
+            margin-bottom: 5px;
+            font-size: 16px;
+        }
+        
+        .tutor-subject {
+            color: #5a7a1f;
+            font-weight: 500;
+            background-color: #f1f8e9;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 13px;
+        }
+        
+        .tutor-stats {
+            display: flex;
+            justify-content: space-between;
+            margin: 12px 0;
+            padding: 12px 0;
+            border-top: 1px solid #e8f5e8;
+            border-bottom: 1px solid #e8f5e8;
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-value {
+            color: #6b8e23;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        
+        .stat-label {
+            color: #666;
+            font-size: 11px;
+        }
+        
+        .tutor-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 15px;
+        }
+        
+        .action-btn {
+            flex: 1;
+            padding: 8px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            text-align: center;
+            font-size: 13px;
+            display: block;
+        }
+        
+        .assignments-btn {
+            background-color: #6b8e23;
+            color: white;
+        }
+        
+        .assignments-btn:hover {
+            background-color: #5a7a1f;
+        }
+        
+        .message-btn {
+            background-color: #f1f8e9;
+            color: #6b8e23;
+            border: 1px solid #6b8e23;
+        }
+        
+        .message-btn:hover {
+            background-color: #6b8e23;
+            color: white;
+        }
+        
+        .add-tutor-card {
+            background: linear-gradient(135deg, #f8fff8 0%, #e8f5e8 100%);
+            border: 2px dashed #8fb84a;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: inherit;
+            min-height: 180px;
+        }
+        
+        .add-tutor-card:hover {
+            border-color: #6b8e23;
+            background: linear-gradient(135deg, #e8f5e8 0%, #d8e8d8 100%);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(107, 142, 35, 0.15);
+        }
+        
+        .add-icon {
+            font-size: 35px;
+            color: #6b8e23;
+            margin-bottom: 12px;
+        }
+        
+        .add-text {
+            color: #6b8e23;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #666;
+            grid-column: 1 / -1;
+        }
+
+        .empty-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+            opacity: 0.5;
+        }
+
+        .empty-text {
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+        
+        @media (max-width: 768px) {
+            .nav-container {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .account-widget .user-info {
+                display: none;
+            }
+            
+            .tutors-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .tutor-stats {
+                flex-direction: column;
+                gap: 8px;
+            }
+            
+            .tutor-actions {
+                flex-direction: column;
+            }
+            
+            .top-bar {
+                padding: 8px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="top-bar">
+        <div class="nav-container">
+            <div class="nav-buttons">
+                <a href="/tutlist?name={{ name }}" class="nav-button active">Мои репетиторы</a>
+                <a href="/home?name={{ name }}" class="nav-button">Мои задания</a>
+            </div>
+            
+            <!-- Окошко аккаунта -->
+            <a href="/profile?name={{ name }}" class="account-widget">
+                <div class="user-avatar">{{ avatar }}</div>
+                <div class="user-info">
+                    <div class="user-name">{{ first_name }} {{ last_name }}</div>
+                    <div class="user-role">Ученик</div>
+                </div>
+            </a>
+        </div>
+    </header>
+
+    <div class="container">
+        <h1>Мои репетиторы</h1>
+        
+        <div class="tutors-grid">
+            {{ tuttemplate }}
+            <!-- Демо-репетиторы -->
+            <!-- <div class="tutor-card">
+                <div class="tutor-header">
+                    <div class="tutor-avatar">АИ</div>
+                    <div class="tutor-info">
+                        <h3>Анна Иванова</h3>
+                        <span class="tutor-subject">Математика</span>
+                    </div>
+                </div>
+                
+                <div class="tutor-stats">
+                    <div class="stat-item">
+                        <div class="stat-value">24</div>
+                        <div class="stat-label">уроков</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">4.9</div>
+                        <div class="stat-label">рейтинг</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">15</div>
+                        <div class="stat-label">учеников</div>
+                    </div>
+                </div>
+                
+                <div class="tutor-actions">
+                    <a href="/assignments" class="action-btn assignments-btn">
+                        Задания
+                    </a>
+                    <a href="/messages" class="action-btn message-btn">
+                        Сообщения
+                    </a>
+                </div>
+            </div> -->
+
+            <!-- <div class="tutor-card">
+                <div class="tutor-header">
+                    <div class="tutor-avatar">ПС</div>
+                    <div class="tutor-info">
+                        <h3>Петр Сидоров</h3>
+                        <span class="tutor-subject">Физика</span>
+                    </div>
+                </div>
+                
+                <div class="tutor-stats">
+                    <div class="stat-item">
+                        <div class="stat-value">18</div>
+                        <div class="stat-label">уроков</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">4.7</div>
+                        <div class="stat-label">рейтинг</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">12</div>
+                        <div class="stat-label">учеников</div>
+                    </div>
+                </div>
+                
+                <div class="tutor-actions">
+                    <a href="/assignments" class="action-btn assignments-btn">
+                        Задания
+                    </a>
+                    <a href="/messages" class="action-btn message-btn">
+                        Сообщения
+                    </a>
+                </div>
+            </div> -->
+
+            <!-- <div class="tutor-card">
+                <div class="tutor-header">
+                    <div class="tutor-avatar">МК</div>
+                    <div class="tutor-info">
+                        <h3>Мария Козлова</h3>
+                        <span class="tutor-subject">Английский язык</span>
+                    </div>
+                </div>
+                
+                <div class="tutor-stats">
+                    <div class="stat-item">
+                        <div class="stat-value">32</div>
+                        <div class="stat-label">уроков</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">5.0</div>
+                        <div class="stat-label">рейтинг</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">22</div>
+                        <div class="stat-label">учеников</div>
+                    </div>
+                </div> -->
+                
+                <!-- <div class="tutor-actions"> -->
+                    <!-- <a href="/assignments" class="action-btn assignments-btn">
+                        Задания
+                    </a> -->
+                    <!-- <a href="/messages" class="action-btn message-btn">
+                        Сообщения
+                    </a> -->
+                <!-- </div> -->
+            </div>
+            <a href="/findtut?name={{ name }}" class="tutor-card add-tutor-card">
+                <div class="add-icon">+</div>
+                <div class="add-text">Добавить репетитора</div>
+            </a>
+        </div>
+    </div>
+</body>
+</html>

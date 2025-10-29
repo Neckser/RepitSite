@@ -299,6 +299,44 @@
             font-weight: 600;
         }
 
+        /* Код репетитора */
+        .tutor-code-section {
+            text-align: center;
+            margin: 30px 0;
+            padding: 25px;
+            background: linear-gradient(135deg, var(--white) 0%, var(--background-light) 100%);
+            border-radius: 15px;
+            border: 2px solid var(--border-light);
+            box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+        }
+
+        .tutor-code-title {
+            color: var(--primary-color);
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .tutor-code {
+            background: var(--white);
+            border: 2px dashed var(--primary-color);
+            border-radius: 10px;
+            padding: 15px 25px;
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--primary-color);
+            letter-spacing: 3px;
+            margin: 15px 0;
+            display: inline-block;
+            min-width: 200px;
+        }
+
+        .code-description {
+            color: var(--text-gray);
+            font-size: 14px;
+            margin-top: 10px;
+        }
+
         /* Предметы */
         .subjects-grid {
             display: grid;
@@ -407,7 +445,7 @@
         /* Кнопка выхода */
         .logout-section {
             text-align: center;
-            margin-top: 40px;
+            margin-top: 30px;
             padding-top: 30px;
             border-top: 2px solid var(--border-light);
         }
@@ -468,6 +506,12 @@
             .subjects-grid {
                 grid-template-columns: 1fr;
             }
+            
+            .tutor-code {
+                font-size: 20px;
+                padding: 12px 20px;
+                min-width: 150px;
+            }
         }
     </style>
 </head>
@@ -515,7 +559,7 @@
                         <span class="star">⭐</span>
                         <span class="star">⭐</span>
                     </div>
-                    <span class="rating-value">4.9</span>
+                    <span class="rating-value">5.0</span>
                 </div>
                 
                 <div class="profile-stats">
@@ -524,12 +568,22 @@
                         <span class="stat-label">Учеников</span>
                     </div>
                     <div class="profile-stat">
-                        <span class="stat-value">{{ experience }} лет</span>
+                        <span class="stat-value">{{ experience }}</span>
                         <span class="stat-label">Опыт работы</span>
                     </div>
                 </div>
             </div>
         </div>
+
+        <!-- Код репетитора -->
+        <div class="tutor-code-section">
+            <div class="tutor-code-title">Ваш код репетитора</div>
+            <div class="tutor-code">{{ repcode }}</div>
+            <div class="code-description">
+                Поделитесь этим кодом с учениками, чтобы они могли найти вас в системе
+            </div>
+        </div>
+
         <!-- Кнопка выхода -->
         <div class="logout-section">
             <a href="/login" class="btn btn-danger">
