@@ -595,11 +595,11 @@ def homeworkstut(name : str =  None):
     cursor = connection.cursor()
     try:
         try:
-            tutname = gettutfirstandlast(name)
+            tutname = gettutorinfo(name)
             tutfirst_name = tutname[0]
             tutlast_name = tutname[1]
         except Exception as e:
-            print(f'Произошла ошибка - {f}')
+            print(f'Произошла ошибка - {e}')
             return RedirectResponse(url="/login", status_code=303)
         
         cursor.execute('''SELECT s.student_id,s.first_name, s.last_name, s.login, s.grade FROM students s JOIN student_tutors st ON s.student_id = st.student_id JOIN tutors t ON st.tutor_id = t.tutor_id WHERE t.login = ? ORDER BY s.first_name, s.last_name''', (name,))
