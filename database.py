@@ -60,8 +60,9 @@ def init_database():
             tutor_id INTEGER NOT NULL,
             title TEXT UNIQUE NOT NULL,
             description TEXT,
+            subject TEXT NOT NULL,
             deadline DATETIME,
-            status TEXT DEFAULT 'assigned',
+            status TEXT DEFAULT 'Активно',
             created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
             FOREIGN KEY (student_id) REFERENCES students(student_id) ON DELETE CASCADE,
             FOREIGN KEY (tutor_id) REFERENCES tutors(tutor_id) ON DELETE CASCADE

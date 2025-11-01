@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Профиль преподавателя | Учебный портал</title>
     <style>
-        /* Базовые стили */
         * {
             margin: 0;
             padding: 0;
@@ -18,7 +17,6 @@
             min-height: 100vh;
         }
 
-        /* Цветовые переменные */
         :root {
             --primary-color: #6b8e23;
             --primary-dark: #5a7a1f;
@@ -32,7 +30,6 @@
             --danger-dark: #c82333;
         }
 
-        /* Шапка */
         .top-bar {
             background-color: var(--primary-color);
             padding: 12px 0;
@@ -74,7 +71,6 @@
             background-color: rgba(255,255,255,0.3);
         }
 
-        /* Окошко аккаунта */
         .account-widget {
             display: flex;
             align-items: center;
@@ -123,14 +119,12 @@
             line-height: 1.2;
         }
 
-        /* Основной контейнер */
         .container {
             max-width: 1200px;
             margin: 30px auto;
             padding: 0 20px;
         }
 
-        /* Карточки */
         .card {
             background: var(--white);
             border-radius: 15px;
@@ -154,7 +148,6 @@
             gap: 10px;
         }
 
-        /* Кнопки */
         .btn {
             padding: 12px 25px;
             border: none;
@@ -202,7 +195,6 @@
             box-shadow: 0 5px 15px rgba(220, 53, 69, 0.3);
         }
 
-        /* Заголовок профиля */
         .profile-header {
             display: flex;
             align-items: center;
@@ -259,7 +251,6 @@
             font-size: 14px;
         }
 
-        /* Сетка информации */
         .info-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
@@ -267,7 +258,6 @@
             margin-bottom: 30px;
         }
 
-        /* Списки информации */
         .info-list {
             display: flex;
             flex-direction: column;
@@ -299,7 +289,6 @@
             font-weight: 600;
         }
 
-        /* Код репетитора */
         .tutor-code-section {
             text-align: center;
             margin: 30px 0;
@@ -337,7 +326,6 @@
             margin-top: 10px;
         }
 
-        /* Предметы */
         .subjects-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -370,7 +358,6 @@
             color: var(--text-gray);
         }
 
-        /* Рейтинг */
         .rating {
             display: flex;
             align-items: center;
@@ -398,7 +385,6 @@
             font-size: 12px;
         }
 
-        /* Прогресс-бары */
         .progress-item {
             margin-bottom: 20px;
         }
@@ -434,7 +420,6 @@
             transition: width 0.5s ease;
         }
 
-        /* Группы кнопок */
         .action-buttons {
             display: flex;
             gap: 15px;
@@ -442,7 +427,6 @@
             justify-content: center;
         }
 
-        /* Кнопка выхода */
         .logout-section {
             text-align: center;
             margin-top: 30px;
@@ -450,7 +434,6 @@
             border-top: 2px solid var(--border-light);
         }
 
-        /* Адаптивность */
         @media (max-width: 768px) {
             .nav-container {
                 flex-direction: column;
@@ -516,7 +499,6 @@
     </style>
 </head>
 <body>
-    <!-- Шапка -->
     <header class="top-bar">
         <div class="nav-container">
             <div class="nav-buttons">
@@ -541,16 +523,14 @@
     </header>
 
     <div class="container">
-        <!-- Заголовок профиля -->
         <div class="profile-header">
             <div class="profile-avatar">
                 {{ avatar }}
             </div>
             <div class="profile-info">
                 <h1 class="profile-name">{{ first_name }} {{ last_name }}</h1>
-                <!-- <div class="profile-role">Преподаватель математики и физики</div> -->
+                <div class="profile-role">Преподаватель {{ tut_subject }}</div>
                 
-                <!-- Рейтинг -->
                 <div class="rating">
                     <div class="stars">
                         <span class="star">⭐</span>
@@ -575,7 +555,6 @@
             </div>
         </div>
 
-        <!-- Код репетитора -->
         <div class="tutor-code-section">
             <div class="tutor-code-title">Ваш код репетитора</div>
             <div class="tutor-code">{{ repcode }}</div>
@@ -584,7 +563,6 @@
             </div>
         </div>
 
-        <!-- Кнопка выхода -->
         <div class="logout-section">
             <a href="/login" class="btn btn-danger">
                 🚪 Выйти из профиля

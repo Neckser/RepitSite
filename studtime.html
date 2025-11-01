@@ -17,7 +17,6 @@
             min-height: 100vh;
         }
 
-        /* Шапка */
         .top-bar {
             background-color: #6b8e23;
             padding: 12px 0;
@@ -59,7 +58,6 @@
             background-color: rgba(255,255,255,0.3);
         }
 
-        /* Окошко аккаунта */
         .account-widget {
             display: flex;
             align-items: center;
@@ -108,14 +106,12 @@
             line-height: 1.2;
         }
 
-        /* Основной контейнер */
         .container {
             max-width: 1200px;
             margin: 30px auto;
             padding: 0 20px;
         }
 
-        /* Заголовок */
         .page-title {
             color: #6b8e23;
             font-size: 28px;
@@ -124,7 +120,6 @@
             text-align: center;
         }
 
-        /* Дни недели */
         .days {
             display: flex;
             gap: 10px;
@@ -151,7 +146,6 @@
             border-color: #6b8e23;
         }
 
-        /* Карточка занятия */
         .lesson-card {
             background: white;
             border-radius: 12px;
@@ -204,7 +198,6 @@
             gap: 10px;
         }
 
-        /* Кнопки */
         .btn {
             padding: 8px 16px;
             border: none;
@@ -235,7 +228,6 @@
             color: white;
         }
 
-        /* Ближайшие занятия */
         .upcoming {
             background: white;
             border-radius: 12px;
@@ -273,7 +265,6 @@
             font-weight: 600;
         }
 
-        /* Кнопки действий */
         .actions {
             display: flex;
             gap: 15px;
@@ -281,7 +272,6 @@
             justify-content: center;
         }
 
-        /* Адаптивность */
         @media (max-width: 768px) {
             .nav-container {
                 flex-direction: column;
@@ -342,7 +332,6 @@
     <div class="container">
         <h1 class="page-title">Моё расписание</h1>
 
-        <!-- Дни недели -->
         <div class="days">
             <div class="day">Пн 18.11</div>
             <div class="day">Вт 19.11</div>
@@ -353,7 +342,6 @@
             <div class="day">Вс 24.11</div>
         </div>
 
-        <!-- Занятия на выбранный день -->
         <div class="lesson-card">
             <div class="lesson-header">
                 <div class="lesson-time">09:00 - 10:30</div>
@@ -393,7 +381,6 @@
             </div>
         </div>
 
-        <!-- Ближайшие занятия -->
         <div class="upcoming">
             <div class="section-title">Ближайшие занятия</div>
             
@@ -422,7 +409,6 @@
             </div>
         </div>
 
-        <!-- Кнопки действий -->
         <div class="actions">
             <button class="btn btn-primary">Экспорт расписания</button>
             <button class="btn btn-secondary">Распечатать</button>

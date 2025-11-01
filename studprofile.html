@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Профиль ученика | Учебный портал</title>
     <style>
-        /* Базовые стили */
         * {
             margin: 0;
             padding: 0;
@@ -18,7 +17,6 @@
             min-height: 100vh;
         }
 
-        /* Цветовые переменные для единообразия */
         :root {
             --primary-color: #6b8e23;
             --primary-dark: #5a7a1f;
@@ -32,7 +30,6 @@
             --danger-dark: #c82333;
         }
 
-        /* Шапка - будет одинаковой на всех страницах */
         .top-bar {
             background-color: var(--primary-color);
             padding: 12px 0;
@@ -74,7 +71,6 @@
             background-color: rgba(255,255,255,0.3);
         }
 
-        /* Окошко аккаунта */
         .account-widget {
             display: flex;
             align-items: center;
@@ -123,14 +119,12 @@
             line-height: 1.2;
         }
 
-        /* Основной контейнер */
         .container {
             max-width: 1200px;
             margin: 30px auto;
             padding: 0 20px;
         }
 
-        /* Карточки - переиспользуемый компонент */
         .card {
             background: var(--white);
             border-radius: 15px;
@@ -154,7 +148,6 @@
             gap: 10px;
         }
 
-        /* Кнопки - переиспользуемый компонент */
         .btn {
             padding: 12px 25px;
             border: none;
@@ -202,7 +195,6 @@
             box-shadow: 0 5px 15px rgba(220, 53, 69, 0.3);
         }
 
-        /* Специфичные стили для страницы профиля */
         .profile-header {
             display: flex;
             align-items: center;
@@ -259,7 +251,6 @@
             font-size: 14px;
         }
 
-        /* Сетка информации */
         .info-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
@@ -267,7 +258,6 @@
             margin-bottom: 30px;
         }
 
-        /* Списки информации */
         .info-list {
             display: flex;
             flex-direction: column;
@@ -299,7 +289,6 @@
             font-weight: 600;
         }
 
-        /* Прогресс-бары */
         .progress-item {
             margin-bottom: 20px;
         }
@@ -335,7 +324,6 @@
             transition: width 0.5s ease;
         }
 
-        /* Группы кнопок */
         .action-buttons {
             display: flex;
             gap: 15px;
@@ -343,7 +331,6 @@
             justify-content: center;
         }
 
-        /* Кнопка выхода */
         .logout-section {
             text-align: center;
             margin-top: 40px;
@@ -351,7 +338,6 @@
             border-top: 2px solid var(--border-light);
         }
 
-        /* Адаптивность */
         @media (max-width: 768px) {
             .nav-container {
                 flex-direction: column;
@@ -403,7 +389,6 @@
     </style>
 </head>
 <body>
-    <!-- Шапка - переиспользуемый компонент -->
     <header class="top-bar">
         <div class="nav-container">
             <div class="nav-buttons">
@@ -429,7 +414,6 @@
     </header>
 
     <div class="container">
-        <!-- Заголовок профиля -->
         <div class="profile-header">
             <div class="profile-avatar">
                 {{ avatar }}
@@ -450,24 +434,21 @@
                         <span class="stat-value">{{ completed_homeworks }}</span>
                         <span class="stat-label">Выполнено</span>
                     </div>
-                    <!-- <div class="profile-stat">
+                    <div class="profile-stat">
                         <span class="stat-value">{{ avg_grade }}</span>
                         <span class="stat-label">Средний балл</span>
-                    </div> -->
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- Основная информация -->
         <div class="info-grid">
-            <!-- Личная информация -->
             <div class="card">
                 <h2 class="card-title">
                     <span class="card-title-icon">👤</span>
                     Личная информация
                 </h2>
                 <div class="info-list">
-                    <!-- Данные будут подставляться через шаблонизатор -->
                     <div class="info-item">
                         <span class="info-label">Имя</span>
                         <span class="info-value">{{ first_name }}</span>
@@ -483,7 +464,6 @@
                 </div>
             </div>
 
-            <!-- Успеваемость -->
             <div class="card">
                 <h2 class="card-title">
                     <span class="card-title-icon">📊</span>
@@ -499,12 +479,10 @@
                             <div class="progress-fill" style="width: 70%"></div>
                         </div>
                     </div>
-                    <!-- Остальные предметы -->
                 </div>
             </div>
         </div>
 
-        <!-- Кнопка выхода -->
         <div class="logout-section">
             <a href="/login" class="btn btn-danger">
                 🚪 Выйти из профиля

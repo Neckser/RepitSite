@@ -21,7 +21,6 @@
             padding: 20px;
         }
 
-        /* Карточка добавления */
         .add-tutor-card {
             background: linear-gradient(135deg, #ffffff 0%, #f8fff8 100%);
             border-radius: 20px;
@@ -53,7 +52,6 @@
             margin-bottom: 30px;
         }
 
-        /* Форма ввода кода */
         .code-form {
             margin-bottom: 25px;
         }
@@ -91,7 +89,6 @@
             font-style: italic;
         }
 
-        /* Кнопки */
         .action-buttons {
             display: flex;
             gap: 15px;
@@ -133,7 +130,6 @@
             color: white;
         }
 
-        /* Информационный блок */
         .info-section {
             margin-top: 30px;
             padding-top: 25px;
@@ -178,7 +174,6 @@
             margin-top: 1px;
         }
 
-        /* Адаптивность */
         @media (max-width: 768px) {
             .add-tutor-card {
                 padding: 30px 20px;
@@ -226,7 +221,6 @@
             Код можно получить у самого репетитора.
         </p>
 
-        <!-- Форма ввода кода -->
         <form class="code-form" action="/addtut" method="post">
             <input type="hidden" name="name" value="{{ name }}">
             <input 
@@ -239,7 +233,6 @@
             >
             <div class="code-hint">Код обычно состоит из 7-15 символов (буквы и цифры)</div>
             
-            <!-- Кнопки действий -->
             <div class="action-buttons">
                 <button type="submit" class="action-btn add-btn">
                     Добавить репетитора
@@ -249,8 +242,6 @@
                 </a>
             </div>
         </form>
-
-        <!-- Информационный блок -->
         <div class="info-section">
             <div class="info-title">Как получить код репетитора?</div>
             <div class="info-steps">

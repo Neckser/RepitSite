@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Задания | Учебный портал</title>
     <style>
-        /* Общие стили */
         * {
             margin: 0;
             padding: 0;
@@ -18,7 +17,6 @@
             min-height: 100vh;
         }
 
-        /* Шапка */
         .top-bar {
             background-color: #6b8e23;
             padding: 12px 0;
@@ -94,14 +92,12 @@
             font-size: 14px;
         }
 
-        /* Основной контейнер */
         .container {
             max-width: 1200px;
             margin: 25px auto;
             padding: 0 20px;
         }
 
-        /* Заголовок страницы */
         .page-header {
             display: flex;
             justify-content: space-between;
@@ -115,21 +111,18 @@
             font-weight: bold;
         }
 
-        /* Основной контент */
         .content-grid {
             display: grid;
             grid-template-columns: 300px 1fr;
             gap: 25px;
         }
 
-        /* Боковая панель */
         .sidebar {
             display: flex;
             flex-direction: column;
             gap: 20px;
         }
 
-        /* Карточки */
         .card {
             background: white;
             border-radius: 15px;
@@ -148,7 +141,6 @@
             gap: 10px;
         }
 
-        /* Форма создания задания */
         .assignment-form {
             display: flex;
             flex-direction: column;
@@ -188,7 +180,6 @@
             font-family: inherit;
         }
 
-        /* Кнопки */
         .btn {
             padding: 12px 25px;
             border: none;
@@ -226,14 +217,12 @@
             box-shadow: 0 5px 15px rgba(220, 53, 69, 0.3);
         }
 
-        /* Основная область */
         .main-content {
             display: flex;
             flex-direction: column;
             gap: 25px;
         }
 
-        /* История заданий */
         .assignments-history {
             display: flex;
             flex-direction: column;
@@ -302,7 +291,6 @@
             margin-bottom: 15px;
         }
 
-        /* Форма удаления задания */
         .delete-form {
             display: flex;
             flex-direction: column;
@@ -327,7 +315,36 @@
             box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.1);
         }
 
-        /* Адаптивность */
+        .subject-badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            color: white;
+            display: inline-block;
+            margin-bottom: 8px;
+        }
+        
+        .subject-badge.math {
+            background-color: #6b8e23;
+        }
+        
+        .subject-badge.physics {
+            background-color: #3a6ea5;
+        }
+        
+        .subject-badge.english {
+            background-color: #8e236b;
+        }
+        
+        .subject-badge.russian {
+            background-color: #236b8e;
+        }
+        
+        .subject-badge.chemistry {
+            background-color: #8e6b23; /* Добавил химию */
+        }
+
         @media (max-width: 968px) {
             .content-grid {
                 grid-template-columns: 1fr;
@@ -392,12 +409,9 @@
         </div>
 
         <div class="content-grid">
-            <!-- Боковая панель -->
             <div class="sidebar">
-                <!-- Форма создания задания -->
                 <div class="card">
                     <h2 class="card-title">
-                        <span>📝</span>
                         Новое задание
                     </h2>
                     <form class="assignment-form" method="POST" action="/createhw">
@@ -435,26 +449,20 @@
                         </div>
 
                         <button type="submit" class="btn btn-primary">
-                            <span>✅</span>
                             Создать задание
                         </button>
                     </form>
 
-                    <!-- Форма удаления задания -->
                     <form class="delete-form" method="POST" action="/deletehw">
                         <input type="text" class="delete-input" name="title" placeholder="Напишите название удаляемого задания" required>
                         <input type="hidden" name="name" value="{{ name }}">
                         <button type="submit" class="btn btn-danger">
-                            <span>🗑️</span>
                             Удалить задание
                         </button>
                     </form>
                 </div>
             </div>
-
-            <!-- Основная область -->
             <div class="main-content">
-                <!-- История заданий -->
                 <div class="card">
                     <h2 class="card-title">
                         <span>📚</span>
@@ -462,58 +470,6 @@
                     </h2>
                     <div class="assignments-history">
                         {{ hwtemplate }}
-                        <!-- <div class="assignment-item">
-                            <div class="assignment-header">
-                                <div class="assignment-info">
-                                    <h3>Решение квадратных уравнений</h3>
-                                    <div class="assignment-meta">
-                                        <span class="assignment-date">Срок: 25.11.2024</span>
-                                        <span>Анна Смирнова</span>
-                                        <span>Математика</span>
-                                    </div>
-                                </div>
-                                <div class="assignment-status status-active">Активно</div>
-                            </div>
-                            <div class="assignment-content">
-                                Решить 10 квадратных уравнений различными методами. Особое внимание уделить дискриминанту и теореме Виета.
-                            </div>
-                        </div> -->
-
-                        
-                        <!-- <div class="assignment-item">
-                            <div class="assignment-header">
-                                <div class="assignment-info">
-                                    <h3>Кинематика: равномерное движение</h3>
-                                    <div class="assignment-meta">
-                                        <span class="assignment-date">Срок: 26.11.2024</span>
-                                        <span>Петр Захаров</span>
-                                        <span>Физика</span>
-                                    </div>
-                                </div>
-                                <div class="assignment-status status-active">Активно</div>
-                            </div>
-                            <div class="assignment-content">
-                                Решить задачи на равномерное прямолинейное движение. Построить графики зависимости скорости и пути от времени.
-                            </div>
-                        </div> -->
-
-                        <!-- Задание 3 -->
-                        <!-- <div class="assignment-item">
-                            <div class="assignment-header">
-                                <div class="assignment-info">
-                                    <h3>Present Perfect vs Past Simple</h3>
-                                    <div class="assignment-meta">
-                                        <span class="assignment-date">Срок: 24.11.2024</span>
-                                        <span>Мария Козлова</span>
-                                        <span>Английский язык</span>
-                                    </div>
-                                </div>
-                                <div class="assignment-status status-completed">Выполнено</div>
-                            </div>
-                            <div class="assignment-content">
-                                Упражнения на различие времен Present Perfect и Past Simple. Составить 10 предложений с использованием обоих времен.
-                            </div>
-                        </div> -->
                     </div>
                 </div>
             </div>

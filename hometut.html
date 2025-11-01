@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Главная - Репетитор | Учебный портал</title>
     <style>
-        /* Общие стили */
         * {
             margin: 0;
             padding: 0;
@@ -18,7 +17,6 @@
             min-height: 100vh;
         }
 
-        /* Шапка */
         .top-bar {
             background-color: #6b8e23;
             padding: 12px 0;
@@ -94,14 +92,12 @@
             font-size: 14px;
         }
 
-        /* Основной контейнер */
         .container {
             max-width: 1200px;
             margin: 25px auto;
             padding: 0 20px;
         }
 
-        /* Приветствие */
         .welcome-section {
             background: linear-gradient(135deg, #ffffff 0%, #f8fff8 100%);
             border-radius: 15px;
@@ -124,7 +120,6 @@
             margin-bottom: 20px;
         }
 
-        /* Статистика */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -158,7 +153,6 @@
             font-size: 14px;
         }
 
-        /* Список учеников */
         .students-section {
             margin-bottom: 30px;
         }
@@ -303,7 +297,6 @@
             color: white;
         }
 
-        /* Ближайшие занятия */
         .lessons-section {
             margin-bottom: 30px;
         }
@@ -360,7 +353,6 @@
             display: inline-block;
         }
 
-        /* Адаптивность */
         @media (max-width: 768px) {
             .top-bar nav {
                 flex-direction: column;
@@ -408,12 +400,10 @@
     </header>
 
     <div class="container">
-        <!-- Приветствие -->
         <section class="welcome-section">
             <h1 class="welcome-title">Добро пожаловать, {{ first_name }} {{ last_name }}!</h1>
         </section>
 
-        <!-- Статистика -->
         <div class="stats-grid">
             <div class="stat-card">
                 <div class="stat-value">{{ student_colvo }}</div>
@@ -424,16 +414,15 @@
                 <div class="stat-label">Активных заданий</div>
             </div>
             <div class="stat-card">
-                <div class="stat-value">3</div>
+                <div class="stat-value">{{ lesson_colvo }}</div>
                 <div class="stat-label">Занятия сегодня</div>
             </div>
             <div class="stat-card">
-                <div class="stat-value">5.0</div>
+                <div class="stat-value">{{ rating }}</div>
                 <div class="stat-label">Ваш рейтинг</div>
             </div>
         </div>
 
-        <!-- Список учеников -->
         <section class="students-section">
             <div class="section-header">
                 <h2 class="section-title">Мои ученики</h2>
@@ -441,96 +430,10 @@
             </div>
             <div class="students-grid">
                 {{ studtemplate }}
-                <!-- Ученик 1 -->
-                <!-- <div class="student-card">
-                    <div class="student-header">
-                        <div class="student-avatar">АС</div>
-                        <div class="student-info">
-                            <h3>Анна Смирнова</h3>
-                            <span class="student-grade">10 класс</span>
-                        </div>
-                    </div>
-                    <div class="student-stats">
-                        <div class="student-stat">
-                            <div class="student-stat-value">5</div>
-                            <div class="student-stat-label">заданий</div>
-                        </div>
-                        <div class="student-stat">
-                            <div class="student-stat-value">12</div>
-                            <div class="student-stat-label">уроков</div>
-                        </div>
-                        <div class="student-stat">
-                            <div class="student-stat-value">4.8</div>
-                            <div class="student-stat-label">успеваемость</div>
-                        </div>
-                    </div>
-                    <div class="student-actions">
-                        <a href="#" class="student-btn assignments-btn">Задания</a>
-                        <a href="#" class="student-btn message-btn">Написать</a>
-                    </div>
-                </div> -->
-
-                <!-- Ученик 2 -->
-                <!-- <div class="student-card">
-                    <div class="student-header">
-                        <div class="student-avatar">ПЗ</div>
-                        <div class="student-info">
-                            <h3>Петр Захаров</h3>
-                            <span class="student-grade">9 класс</span>
-                        </div>
-                    </div>
-                    <div class="student-stats">
-                        <div class="student-stat">
-                            <div class="student-stat-value">3</div>
-                            <div class="student-stat-label">заданий</div>
-                        </div>
-                        <div class="student-stat">
-                            <div class="student-stat-value">8</div>
-                            <div class="student-stat-label">уроков</div>
-                        </div>
-                        <div class="student-stat">
-                            <div class="student-stat-value">4.5</div>
-                            <div class="student-stat-label">успеваемость</div>
-                        </div>
-                    </div>
-                    <div class="student-actions">
-                        <a href="#" class="student-btn assignments-btn">Задания</a>
-                        <a href="#" class="student-btn message-btn">Написать</a>
-                    </div>
-                </div> -->
-
-                <!-- Ученик 3 -->
-                <!-- <div class="student-card">
-                    <div class="student-header">
-                        <div class="student-avatar">МК</div>
-                        <div class="student-info">
-                            <h3>Мария Козлова</h3>
-                            <span class="student-grade">11 класс</span>
-                        </div>
-                    </div>
-                    <div class="student-stats">
-                        <div class="student-stat">
-                            <div class="student-stat-value">7</div>
-                            <div class="student-stat-label">заданий</div>
-                        </div>
-                        <div class="student-stat">
-                            <div class="student-stat-value">15</div>
-                            <div class="student-stat-label">уроков</div>
-                        </div>
-                        <div class="student-stat">
-                            <div class="student-stat-value">4.9</div>
-                            <div class="student-stat-label">успеваемость</div>
-                        </div>
-                    </div>
-                    <div class="student-actions">
-                        <a href="#" class="student-btn assignments-btn">Задания</a>
-                        <a href="#" class="student-btn message-btn">Написать</a>
-                    </div>
-                </div> -->
             </div>
         </section>
 
-        <!-- <section class="lessons-section">
+        <section class="lessons-section">
             <div class="section-header">
                 <h2 class="section-title">Ближайшие занятия</h2>
                 <a href="#" class="view-all">Все занятия →</a>
@@ -566,7 +469,7 @@
                     <span class="lesson-subject">Математика - Производные</span>
                 </div>
             </div>
-        </section> -->
+        </section>
     </div>
 </body>
 </html>

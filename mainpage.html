@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Мои задания - Учебный портал</title>
     <style>
-        /* Общие стили */
         body {
             font-family: 'Arial', sans-serif;
             margin: 0;
@@ -13,7 +12,6 @@
             background-color: #f8f9fa;
         }
 
-        /* Шапка */
         .top-bar {
             background-color: #6b8e23;
             padding: 12px 0;
@@ -57,7 +55,6 @@
             text-decoration: none;
         }
 
-        /* Окошко аккаунта */
         .account-widget {
             display: flex;
             align-items: center;
@@ -106,7 +103,6 @@
             line-height: 1.2;
         }
 
-        /* Основной контейнер */
         .container {
             max-width: 1200px;
             margin: 30px auto;
@@ -118,7 +114,6 @@
             margin-bottom: 30px;
         }
 
-        /* Стили для заданий */
         .assignments-container {
             margin-top: 20px;
         }
@@ -155,6 +150,33 @@
 
         .filter-btn:hover {
             background-color: rgba(107, 142, 35, 0.2);
+        }
+
+        .sort-options {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .sort-label {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .sort-select {
+            padding: 8px 12px;
+            border: 2px solid #e8f5e8;
+            border-radius: 20px;
+            background-color: white;
+            color: #333;
+            font-size: 14px;
+            cursor: pointer;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        .sort-select:focus {
+            border-color: #6b8e23;
         }
 
         .assignments-stats {
@@ -210,6 +232,17 @@
 
         .subject-badge.physics {
             background-color: #3a6ea5;
+        }
+
+        .subject-badge.english {
+            background-color: #8e236b;
+        }
+
+        .subject-badge.russian {
+            background-color: #236b8e;
+        }
+        .subject-badge.chemistry {
+            background-color: #8e6b23;
         }
 
         .due-date {
@@ -306,12 +339,18 @@
             }
             
             .user-info {
-                display: none; /* Скрываем текст на мобильных */
+                display: none;
             }
             
             .assignments-filters {
                 flex-direction: column;
                 align-items: flex-start;
+                gap: 15px;
+            }
+            
+            .sort-options {
+                width: 100%;
+                justify-content: space-between;
             }
         }
     </style>
@@ -322,10 +361,8 @@
             <div class="nav-buttons">
                 <a href="/tutlist?name={{ name }}" class="nav-button">Мои репетиторы</a>
                 <a href="/home?name={{ name }}" class="nav-button active">Мои задания</a>
-                <!-- <a href="/studtime?name={{ name }}" class="nav-button active">Моё расписание</a> -->
             </div>
             
-            <!-- Окошко аккаунта -->
             <a href="/profile?name={{ name }}" class="account-widget">
                 <div class="user-avatar">
                     {{ avatar }}
@@ -346,18 +383,28 @@
         <h1>Мои задания</h1>
         
         <div class="assignments-container">
-            <!-- Фильтры и статусы -->
             <div class="assignments-filters">
                 <div class="filter-buttons">
                     <button class="filter-btn active">Все</button>
                     <button class="filter-btn">Активные</button>
                     <button class="filter-btn">Завершенные</button>
-                    <button class="filter-btn">Просроченные</button>
                 </div>
+                
+                <div class="sort-options">
+                    <span class="sort-label">Сортировка:</span>
+                    <select class="sort-select" id="sortSelect">
+                        <option value="deadline-asc">По сроку (сначала ближайшие)</option>
+                        <option value="deadline-desc">По сроку (сначала дальние)</option>
+                        <option value="created-desc">Сначала новые</option>
+                        <option value="created-asc">Сначала старые</option>
+                        <option value="subject">По предмету</option>
+                    </select>
+                </div>
+                
                 <div class="assignments-stats">
                     <span class="stat-item">Всего: <strong>8</strong></span>
                     <span class="stat-item">Активные: <strong>5</strong></span>
-                    <span class="stat-item">Просрочено: <strong>1</strong></span>
+                    <span class="stat-item">Завершенные: <strong>1</strong></span>
                 </div>
             </div>
 
@@ -368,20 +415,20 @@
     </div>
 
     <script>
-        // Фильтрация заданий
         document.addEventListener('DOMContentLoaded', function() {
             const filterButtons = document.querySelectorAll('.filter-btn');
             const assignmentCards = document.querySelectorAll('.assignment-card');
             const statsItems = document.querySelectorAll('.stat-item strong');
+            const sortSelect = document.getElementById('sortSelect');
             
             function updateStats() {
                 const total = document.querySelectorAll('.assignment-card').length;
                 const active = document.querySelectorAll('.assignment-card .status.active').length;
-                const overdue = document.querySelectorAll('.assignment-card .status.overdue').length;
+                const completed = document.querySelectorAll('.assignment-card .status.completed').length;
                 
                 statsItems[0].textContent = total;
                 statsItems[1].textContent = active;
-                statsItems[2].textContent = overdue;
+                statsItems[2].textContent = completed;
             }
             
             function filterAssignments(filterType) {
@@ -398,14 +445,50 @@
                         case 'завершенные':
                             card.style.display = status.contains('completed') ? 'block' : 'none';
                             break;
-                        case 'просроченные':
-                            card.style.display = status.contains('overdue') ? 'block' : 'none';
-                            break;
                         default:
                             card.style.display = 'block';
                     }
                 });
                 updateStats();
+            }
+            
+            function sortAssignments(sortType) {
+                const container = document.querySelector('.assignments-list');
+                const cards = Array.from(assignmentCards);
+                
+                cards.sort((a, b) => {
+                    switch(sortType) {
+                        case 'deadline-asc':
+                            return getDeadlineValue(a) - getDeadlineValue(b);
+                        case 'deadline-desc':
+                            return getDeadlineValue(b) - getDeadlineValue(a);
+                        case 'created-desc':
+                            return getCreatedValue(b) - getCreatedValue(a);
+                        case 'created-asc':
+                            return getCreatedValue(a) - getCreatedValue(b);
+                        case 'subject':
+                            return getSubjectValue(a).localeCompare(getSubjectValue(b));
+                        default:
+                            return 0;
+                    }
+                });
+                cards.forEach(card => {
+                    container.appendChild(card);
+                });
+            }
+            
+            function getDeadlineValue(card) {
+                const deadlineText = card.querySelector('.due-date').textContent;
+                return new Date(deadlineText.replace('До ', '')).getTime() || 0;
+            }
+            
+            function getCreatedValue(card) {
+                return Array.from(assignmentCards).indexOf(card);
+            }
+            
+            function getSubjectValue(card) {
+                const subjectBadge = card.querySelector('.subject-badge');
+                return subjectBadge ? subjectBadge.textContent : '';
             }
             
             filterButtons.forEach(button => {
@@ -415,6 +498,10 @@
                     const filterType = this.textContent.toLowerCase();
                     filterAssignments(filterType);
                 });
+            });
+            
+            sortSelect.addEventListener('change', function() {
+                sortAssignments(this.value);
             });
             
             updateStats();

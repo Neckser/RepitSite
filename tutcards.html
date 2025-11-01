@@ -1,0 +1,33 @@
+<div class="tutor-card">
+    <div class="tutor-header">
+        <div class="tutor-avatar">{{ avatar }}</div>
+        <div class="tutor-info">
+            <h3>{{ first_name }} {{ last_name }}</h3>
+            <span class="tutor-subject">{{ tut_subject }}</span>
+        </div>
+    </div>
+                   
+    <div class="tutor-stats">
+        <div class="stat-item">
+            <div class="stat-value">{{ lesson_count }}</div>
+            <div class="stat-label">уроков</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-value">{{ rating }}</div>
+            <div class="stat-label">рейтинг</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-value">{{ student_colvo }}</div>
+            <div class="stat-label">ученика</div>
+        </div>
+    </div>
+
+    <div class="tutor-actions">
+        <a href="#" class="action-btn assignments-btn">
+            Задания
+        </a>
+        <a href="#" class="action-btn message-btn">
+            Сообщения
+        </a>
+    </div>
+</div>

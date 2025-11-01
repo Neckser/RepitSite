@@ -1,0 +1,27 @@
+<div class="student-card">
+    <div class="student-header">
+        <div class="student-avatar">{{ avatarstud }}</div>
+        <div class="student-info">
+            <h3>{{ first_name }} {{ last_name }}</h3>
+            <span class="student-grade">{{ grade }} класс</span>
+        </div>
+    </div>
+    <div class="student-stats">
+        <div class="student-stat">
+            <div class="student-stat-value">{{ hw_colvo_from_you }}</div>
+            <div class="student-stat-label">заданий</div>
+        </div>
+        <div class="student-stat">
+            <div class="student-stat-value">{{ lessons_colvo }}</div>
+            <div class="student-stat-label">уроков</div>
+        </div>
+        <div class="student-stat">
+            <div class="student-stat-value">{{ stud_rating }}</div>
+            <div class="student-stat-label">успеваемость</div>
+        </div>
+    </div>
+    <div class="student-actions">
+        <a href="#" class="student-btn assignments-btn">Задания</a>
+        <a href="#" class="student-btn message-btn">Написать</a>
+    </div>
+</div>
