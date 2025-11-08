@@ -1,0 +1,1059 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Расписание - Панель репетитора</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        body {
+            background-color: #f8f9fa;
+            min-height: 100vh;
+        }
+        
+        .top-bar {
+            background-color: #6b8e23;
+            padding: 12px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .nav-button {
+            background-color: rgba(255,255,255,0.2);
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .nav-button.active {
+            background-color: white;
+            color: #6b8e23;
+        }
+        
+        .nav-button:hover {
+            background-color: rgba(255,255,255,0.3);
+        }
+
+        .account-widget {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: white;
+            cursor: pointer;
+            padding: 8px 15px;
+            border-radius: 20px;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+
+        .account-widget:hover {
+            background-color: rgba(255,255,255,0.2);
+        }
+
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background-color: white;
+            color: #6b8e23;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+            border: 2px solid rgba(255,255,255,0.3);
+        }
+
+        .user-info {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .user-name {
+            font-size: 14px;
+            font-weight: 600;
+            line-height: 1.2;
+        }
+
+        .user-role {
+            font-size: 12px;
+            opacity: 0.9;
+            line-height: 1.2;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 25px auto;
+            padding: 0 20px;
+            position: relative;
+            min-height: 80vh;
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 25px;
+            text-align: left;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        
+        .schedule-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .week-selector {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .current-week {
+            font-size: 16px;
+            font-weight: bold;
+            color: #333;
+            min-width: 200px;
+            text-align: center;
+            background: white;
+            padding: 10px 20px;
+            border-radius: 10px;
+            border: 2px solid #e8f5e8;
+        }
+        
+        .week-picker-form {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        
+        .week-picker {
+            padding: 10px 15px;
+            border: 2px solid #e8f5e8;
+            border-radius: 8px;
+            font-size: 14px;
+            background: white;
+            cursor: pointer;
+            min-width: 150px;
+        }
+        
+        .week-picker:focus {
+            border-color: #6b8e23;
+            outline: none;
+        }
+        
+        .today-btn {
+            background-color: #f1f8e9;
+            color: #6b8e23;
+            border: 1px solid #6b8e23;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .today-btn:hover {
+            background-color: #6b8e23;
+            color: white;
+        }
+        
+        .add-lesson-btn {
+            background-color: #6b8e23;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .add-lesson-btn:hover {
+            background-color: #5a7a1f;
+            transform: translateY(-2px);
+        }
+        
+        .days-tabs {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 20px;
+            background: white;
+            border-radius: 10px;
+            padding: 5px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .day-tab {
+            flex: 1;
+            padding: 12px 8px;
+            text-align: center;
+            background: transparent;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+        
+        .day-tab.active {
+            background-color: #6b8e23;
+            color: white;
+        }
+        
+        .day-tab.current {
+            background-color: #f1f8e9;
+            color: #6b8e23;
+            font-weight: bold;
+        }
+        
+        .schedule-container {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+            margin-bottom: 30px;
+        }
+        
+        .day-schedule {
+            display: none;
+        }
+        
+        .day-schedule.active {
+            display: block;
+        }
+        
+        .lessons-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .lesson-card {
+            display: flex;
+            background: #f8fdf8;
+            border: 2px solid #e8f5e8;
+            border-radius: 10px;
+            padding: 20px;
+            transition: all 0.3s;
+            position: relative;
+        }
+        
+        .lesson-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(107, 142, 35, 0.15);
+            border-color: #6b8e23;
+        }
+        
+        .lesson-time {
+            min-width: 120px;
+            padding-right: 20px;
+            border-right: 2px solid #e8f5e8;
+        }
+        
+        .time-badge {
+            background: #6b8e23;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 14px;
+            text-align: center;
+            display: inline-block;
+        }
+        
+        .lesson-content {
+            flex: 1;
+            padding-left: 20px;
+        }
+        
+        .lesson-subject {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 8px;
+        }
+        
+        .lesson-student {
+            color: #6b8e23;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .lesson-details {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+        
+        .lesson-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .action-btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+        
+        .edit-btn {
+            background-color: #f1f8e9;
+            color: #6b8e23;
+            border: 1px solid #6b8e23;
+        }
+        
+        .edit-btn:hover {
+            background-color: #6b8e23;
+            color: white;
+        }
+        
+        .cancel-btn {
+            background-color: #ffebee;
+            color: #e53935;
+            border: 1px solid #e53935;
+        }
+        
+        .cancel-btn:hover {
+            background-color: #e53935;
+            color: white;
+        }
+        
+        .message-btn {
+            background-color: #e3f2fd;
+            color: #1976d2;
+            border: 1px solid #1976d2;
+        }
+        
+        .message-btn:hover {
+            background-color: #1976d2;
+            color: white;
+        }
+        
+        .no-lessons {
+            text-align: center;
+            padding: 40px 20px;
+            color: #666;
+        }
+        
+        .no-lessons-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+            opacity: 0.5;
+        }
+        
+        .add-lesson-section {
+            background: #f8fdf8;
+            border: 2px dashed #8fb84a;
+            border-radius: 10px;
+            padding: 30px;
+            text-align: center;
+            margin-top: 30px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .add-lesson-section:hover {
+            border-color: #6b8e23;
+            background: #f1f8e9;
+        }
+        
+        .add-lesson-icon {
+            font-size: 40px;
+            color: #6b8e23;
+            margin-bottom: 15px;
+        }
+        
+        .add-lesson-text {
+            color: #6b8e23;
+            font-weight: 600;
+            font-size: 16px;
+        }
+        
+        .schedule-stats {
+            display: flex;
+            gap: 20px;
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #f1f8e9;
+            border-radius: 8px;
+            flex-wrap: wrap;
+        }
+        
+        .stat-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 15px 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            min-width: 120px;
+        }
+        
+        .stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #6b8e23;
+        }
+        
+        .stat-label {
+            font-size: 12px;
+            color: #666;
+            text-align: center;
+        }
+        
+        /* Модальное окно */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        .modal-title {
+            color: #6b8e23;
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-label {
+            display: block;
+            color: #333;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        
+        .form-input, .form-select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e8f5e8;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+        
+        .form-input:focus, .form-select:focus {
+            border-color: #6b8e23;
+            outline: none;
+        }
+        
+        .form-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 25px;
+        }
+        
+        .btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            text-decoration: none;
+            text-align: center;
+            display: inline-block;
+        }
+        
+        .btn-primary {
+            background: #6b8e23;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #5a7a1f;
+        }
+        
+        .btn-secondary {
+            background: #f1f8e9;
+            color: #6b8e23;
+            border: 2px solid #6b8e23;
+        }
+        
+        .btn-secondary:hover {
+            background: #6b8e23;
+            color: white;
+        }
+
+        /* Логотип в углу */
+        .logo-corner {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            opacity: 0.8;
+            transition: all 0.3s;
+            background: white;
+            padding: 12px 15px;
+            border-radius: 10px;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.1);
+            border: 2px solid #e8f5e8;
+        }
+        
+        .logo-corner:hover {
+            opacity: 1;
+            transform: translateY(-2px);
+        }
+        
+        .logo-content {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+        
+        .logo-img {
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+        }
+        
+        .logo-text {
+            color: #6b8e23;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        
+        @media (max-width: 768px) {
+            .nav-container {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .account-widget .user-info {
+                display: none;
+            }
+            
+            .schedule-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 20px;
+            }
+            
+            .week-selector {
+                justify-content: center;
+                width: 100%;
+                gap: 10px;
+            }
+            
+            .current-week {
+                min-width: auto;
+                width: 100%;
+                text-align: center;
+            }
+            
+            .lesson-card {
+                flex-direction: column;
+            }
+            
+            .lesson-time {
+                min-width: auto;
+                padding-right: 0;
+                padding-bottom: 15px;
+                border-right: none;
+                border-bottom: 2px solid #e8f5e8;
+                text-align: center;
+            }
+            
+            .lesson-content {
+                padding-left: 0;
+                padding-top: 15px;
+            }
+            
+            .days-tabs {
+                flex-wrap: wrap;
+            }
+            
+            .day-tab {
+                flex: 1 0 calc(33.333% - 10px);
+                margin-bottom: 5px;
+            }
+            
+            .lesson-actions {
+                flex-direction: column;
+            }
+            
+            .form-actions {
+                flex-direction: column;
+            }
+            
+            .logo-corner {
+                bottom: 10px;
+                right: 10px;
+                padding: 8px 12px;
+            }
+            
+            .logo-text {
+                font-size: 12px;
+            }
+            
+            .week-picker {
+                width: 100%;
+                min-width: auto;
+            }
+            
+            .week-picker-form {
+                width: 100%;
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="top-bar">
+        <div class="nav-container">
+            <div class="nav-buttons">
+                <a href="/hometut?name=tutor" class="nav-button">Главная</a>
+                <a href="/homeworkstut?name=tutor" class="nav-button">Задания</a>
+                <a href="/scheduletut?name=tutor" class="nav-button active">Расписание</a>
+            </div>
+            
+            <a href="/profiletut?name=tutor" class="account-widget">
+                <div class="user-avatar">МГ</div>
+                <div class="user-info">
+                    <div class="user-name">Мульти Гений</div>
+                    <div class="user-role">Преподаватель</div>
+                </div>
+            </a>
+        </div>
+    </header>
+
+    <div class="container">
+        <h1>Моё расписание</h1>
+        
+        <div class="schedule-header">
+            <div class="week-selector">
+                <!-- Текущая неделя -->
+                <div class="current-week">18 - 24 ноября 2024</div>
+                
+                <!-- Форма выбора недели -->
+                <form action="/scheduletut" method="GET" class="week-picker-form">
+                    <input type="hidden" name="name" value="tutor">
+                    <input type="week" name="selected_week" class="week-picker" value="2024-W47" 
+                           onchange="this.form.submit()">
+                    <button type="submit" class="today-btn">Выбрать неделю</button>
+                </form>
+            </div>
+            
+            <button class="add-lesson-btn" id="addLessonBtn">
+                <span>+</span>
+                Назначить занятие
+            </button>
+        </div>
+        
+        <div class="days-tabs">
+            <!-- Понедельник -->
+            <a href="#day0" class="day-tab active">Пн<br>18</a>
+            <!-- Вторник -->
+            <a href="#day1" class="day-tab">Вт<br>19</a>
+            <!-- Среда (текущий день) -->
+            <a href="#day2" class="day-tab current">Ср<br>20</a>
+            <!-- Четверг -->
+            <a href="#day3" class="day-tab">Чт<br>21</a>
+            <!-- Пятница -->
+            <a href="#day4" class="day-tab">Пт<br>22</a>
+            <!-- Суббота -->
+            <a href="#day5" class="day-tab">Сб<br>23</a>
+            <!-- Воскресенье -->
+            <a href="#day6" class="day-tab">Вс<br>24</a>
+        </div>
+        
+        <div class="schedule-container">
+            <!-- Понедельник -->
+            <div class="day-schedule active" id="day0">
+                <div class="lessons-list">
+                    <div class="lesson-card">
+                        <div class="lesson-time">
+                            <div class="time-badge">10:00-11:30</div>
+                        </div>
+                        <div class="lesson-content">
+                            <div class="lesson-subject">Математика</div>
+                            <div class="lesson-student">Алёна Маркелова</div>
+                            <div class="lesson-details">Тема: Решение квадратных уравнений</div>
+                            <div class="lesson-actions">
+                                <button class="action-btn edit-btn" onclick="openRescheduleModal('lesson_123')">Перенести</button>
+                                <button class="action-btn cancel-btn" onclick="openCancelModal('lesson_123')">Отменить</button>
+                                <a href="/messages?student=alena" class="action-btn message-btn">Написать</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Вторник -->
+            <div class="day-schedule" id="day1">
+                <div class="lessons-list">
+                    <div class="no-lessons">
+                        <div class="no-lessons-icon">📚</div>
+                        <div class="no-lessons-text">Занятий нет</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Среда -->
+            <div class="day-schedule" id="day2">
+                <div class="lessons-list">
+                    <div class="lesson-card">
+                        <div class="lesson-time">
+                            <div class="time-badge">14:00-15:30</div>
+                        </div>
+                        <div class="lesson-content">
+                            <div class="lesson-subject">Английский язык</div>
+                            <div class="lesson-student">Алёна Маркелова</div>
+                            <div class="lesson-details">Тема: Present Perfect tense</div>
+                            <div class="lesson-actions">
+                                <button class="action-btn edit-btn" onclick="openRescheduleModal('lesson_124')">Перенести</button>
+                                <button class="action-btn cancel-btn" onclick="openCancelModal('lesson_124')">Отменить</button>
+                                <a href="/messages?student=alena" class="action-btn message-btn">Написать</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Четверг -->
+            <div class="day-schedule" id="day3">
+                <div class="lessons-list">
+                    <div class="no-lessons">
+                        <div class="no-lessons-icon">📚</div>
+                        <div class="no-lessons-text">Занятий нет</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Пятница -->
+            <div class="day-schedule" id="day4">
+                <div class="lessons-list">
+                    <div class="no-lessons">
+                        <div class="no-lessons-icon">📚</div>
+                        <div class="no-lessons-text">Занятий нет</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Суббота -->
+            <div class="day-schedule" id="day5">
+                <div class="lessons-list">
+                    <div class="no-lessons">
+                        <div class="no-lessons-icon">📚</div>
+                        <div class="no-lessons-text">Занятий нет</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Воскресенье -->
+            <div class="day-schedule" id="day6">
+                <div class="lessons-list">
+                    <div class="no-lessons">
+                        <div class="no-lessons-icon">📚</div>
+                        <div class="no-lessons-text">Занятий нет</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="add-lesson-section" id="addLessonSection">
+            <div class="add-lesson-icon">+</div>
+            <div class="add-lesson-text">Добавить занятие</div>
+        </div>
+        
+        <div class="schedule-stats">
+            <div class="stat-card">
+                <div class="stat-value">2</div>
+                <div class="stat-label">Занятий на неделе</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">1 ч 30 мин</div>
+                <div class="stat-label">Общее время</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">1</div>
+                <div class="stat-label">Ученик</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">2</div>
+                <div class="stat-label">Предмета</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальные окна (остаются без изменений) -->
+    <div class="modal" id="addLessonModal">
+        <div class="modal-content">
+            <div class="modal-title">Назначить новое занятие</div>
+            <form id="lessonForm" action="/add-lesson" method="POST">
+                <div class="form-group">
+                    <label class="form-label">Ученик</label>
+                    <select class="form-select" name="student_id" required>
+                        <option value="">Выберите ученика</option>
+                        <option value="student1">Алёна Маркелова</option>
+                        <option value="student2">Иван Петров</option>
+                        <option value="student3">Мария Сидорова</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Предмет</label>
+                    <select class="form-select" name="subject" required>
+                        <option value="">Выберите предмет</option>
+                        <option value="math">Математика</option>
+                        <option value="physics">Физика</option>
+                        <option value="chemistry">Химия</option>
+                        <option value="english">Английский язык</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Дата</label>
+                    <input type="date" class="form-input" name="date" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Время начала</label>
+                    <input type="time" class="form-input" name="time" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Продолжительность</label>
+                    <select class="form-select" name="duration" required>
+                        <option value="30">30 минут</option>
+                        <option value="60" selected>1 час</option>
+                        <option value="90">1.5 часа</option>
+                        <option value="120">2 часа</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Тема занятия</label>
+                    <input type="text" class="form-input" name="topic" placeholder="Введите тему занятия">
+                </div>
+                
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeAddLessonModal()">Отмена</button>
+                    <button type="submit" class="btn btn-primary">Назначить</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal" id="rescheduleModal">
+        <div class="modal-content">
+            <div class="modal-title">Перенести занятие</div>
+            <form id="rescheduleForm" action="/reschedule-lesson" method="POST">
+                <input type="hidden" name="lesson_id" id="rescheduleLessonId">
+                
+                <div class="form-group">
+                    <label class="form-label">Новая дата</label>
+                    <input type="date" name="new_date" class="form-input" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Новое время</label>
+                    <input type="time" name="new_time" class="form-input" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Причина переноса</label>
+                    <select name="reason" class="form-select" required>
+                        <option value="">Выберите причину</option>
+                        <option value="teacher_busy">Занят преподаватель</option>
+                        <option value="student_busy">Занят ученик</option>
+                        <option value="technical">Технические проблемы</option>
+                        <option value="other">Другая причина</option>
+                    </select>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeRescheduleModal()">Отмена</button>
+                    <button type="submit" class="btn btn-primary">Перенести</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal" id="cancelModal">
+        <div class="modal-content">
+            <div class="modal-title">Отменить занятие</div>
+            <form id="cancelForm" action="/cancel-lesson" method="POST">
+                <input type="hidden" name="lesson_id" id="cancelLessonId">
+                
+                <div class="form-group">
+                    <label class="form-label">Причина отмены</label>
+                    <select name="cancel_reason" class="form-select" required>
+                        <option value="">Выберите причину</option>
+                        <option value="sick">Болезнь</option>
+                        <option value="emergency">Экстренная ситуация</option>
+                        <option value="schedule">Изменение расписания</option>
+                        <option value="other">Другая причина</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Комментарий</label>
+                    <textarea name="comment" class="form-input" placeholder="Дополнительный комментарий" rows="3"></textarea>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeCancelModal()">Отмена</button>
+                    <button type="submit" class="btn btn-primary" style="background: #e53935;">Отменить занятие</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Логотип в правом нижнем углу -->
+    <div class="logo-corner">
+        <a href="/" class="logo-content">
+            <img src="/logo.png" alt="УчебныйПортал" class="logo-img" onerror="this.style.display='none'">
+            <span class="logo-text">УчебныйПортал</span>
+        </a>
+    </div>
+
+    <script>
+        // Только для модальных окон и переключения дней
+        document.addEventListener('DOMContentLoaded', function() {
+            const addLessonBtn = document.getElementById('addLessonBtn');
+            const addLessonSection = document.getElementById('addLessonSection');
+            
+            // Открытие модального окна добавления занятия
+            addLessonBtn.addEventListener('click', openAddLessonModal);
+            addLessonSection.addEventListener('click', openAddLessonModal);
+            
+            // Закрытие по клику вне модальных окон
+            document.getElementById('addLessonModal').addEventListener('click', function(e) {
+                if (e.target === this) closeAddLessonModal();
+            });
+            
+            document.getElementById('rescheduleModal').addEventListener('click', function(e) {
+                if (e.target === this) closeRescheduleModal();
+            });
+            
+            document.getElementById('cancelModal').addEventListener('click', function(e) {
+                if (e.target === this) closeCancelModal();
+            });
+            
+            // Переключение дней через якорные ссылки
+            const dayTabs = document.querySelectorAll('.day-tab');
+            const daySchedules = document.querySelectorAll('.day-schedule');
+            
+            dayTabs.forEach(tab => {
+                tab.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const targetId = this.getAttribute('href').substring(1);
+                    
+                    // Убираем активный класс у всех
+                    dayTabs.forEach(t => t.classList.remove('active'));
+                    daySchedules.forEach(s => s.classList.remove('active'));
+                    
+                    // Добавляем активный класс текущему
+                    this.classList.add('active');
+                    document.getElementById(targetId).classList.add('active');
+                });
+            });
+        });
+
+        // Функции для работы с модальными окнами
+        function openAddLessonModal() {
+            document.getElementById('addLessonModal').classList.add('active');
+        }
+
+        function closeAddLessonModal() {
+            document.getElementById('addLessonModal').classList.remove('active');
+        }
+
+        function openRescheduleModal(lessonId) {
+            document.getElementById('rescheduleLessonId').value = lessonId;
+            document.getElementById('rescheduleModal').classList.add('active');
+        }
+
+        function closeRescheduleModal() {
+            document.getElementById('rescheduleModal').classList.remove('active');
+        }
+
+        function openCancelModal(lessonId) {
+            document.getElementById('cancelLessonId').value = lessonId;
+            document.getElementById('cancelModal').classList.add('active');
+        }
+
+        function closeCancelModal() {
+            document.getElementById('cancelModal').classList.remove('active');
+        }
+    </script>
+</body>
+</html>

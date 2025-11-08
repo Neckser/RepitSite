@@ -161,21 +161,13 @@
             font-weight: bold;
             margin-right: 15px;
             border: 2px solid #e8f5e8;
+            flex-shrink: 0;
         }
         
         .tutor-info h3 {
             color: #6b8e23;
             margin-bottom: 5px;
             font-size: 16px;
-        }
-        
-        .tutor-subject {
-            color: #5a7a1f;
-            font-weight: 500;
-            background-color: #f1f8e9;
-            padding: 3px 10px;
-            border-radius: 12px;
-            font-size: 13px;
         }
         
         .tutor-stats {
@@ -291,6 +283,88 @@
         .empty-text {
             font-size: 16px;
             margin-bottom: 10px;
+        }
+        
+        .tutor-subjects {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            max-height: 50px;
+            overflow-y: auto;
+        }
+
+        .subject-badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            color: white;
+            display: inline-block;
+        }
+
+        .subject-badge.Математика {
+            background-color: #6b8e23;
+        }
+
+        .subject-badge.Физика {
+            background-color: #3a6ea5;
+        }
+
+        .subject-badge.Информатика {
+            background-color: #0288d1;
+        }
+
+        .subject-badge.Химия {
+            background-color: #7b1fa2;
+        }
+
+        .subject-badge.Английский {
+            background-color: #e53935;
+        }
+
+        .subject-badge.Русский {
+            background-color: #f57c00;
+        }
+
+        .subject-badge.Немецкий {
+            background-color: #43a047;
+        }
+
+        .subject-badge.Французский {
+            background-color: #5e35b1;
+        }
+
+        .subject-badge.Обществознание {
+            background-color: #5d4037;
+        }
+
+        .subject-badge.История {
+            background-color: #6d4c41;
+        }
+
+        .subject-badge.Литература {
+            background-color: #00897b;
+        }
+
+        .subject-badge.Биология {
+            background-color: #388e3c;
+        }
+
+        .subject-badge.География {
+            background-color: #0097a7;
+        }
+
+        .subject-badge.Экономика {
+            background-color: #fbc02d;
+            color: #333;
+        }
+
+        .subject-badge.ИЗО {
+            background-color: #ad1457;
+        }
+
+        .subject-badge.Музыка {
+            background-color: #8e24aa;
         }
         
         @media (max-width: 768px) {

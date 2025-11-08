@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Form, File, UploadFile
+from fastapi import FastAPI, Form, File, UploadFile, Request
 from fastapi.responses import HTMLResponse, RedirectResponse
 from database import init_database
 from typing import Optional, List
@@ -133,7 +133,7 @@ def gettutsubject(tutlogin):
         subjects_row = cursor.fetchone()
     
         if subjects_row:
-            subject_names = ["Математика", "Физика", "Химия", "Информатика", "Русский язык", "Английский язык", "Немецкий язык", "Французский язык", "История","Обществознание", "Литература", "Биология", "География", "Экономика","Искусство", "Музыка"]
+            subject_names = ["Математика", "Физика", "Химия", "Информатика", "Русский язык", "Английский язык", "Немецкий язык", "Французский язык", "История","Обществознание", "Литература", "Биология", "География", "Экономика","ИЗО", "Музыка"]
 
             return [subject_names[i] for i, subject in enumerate(subjects_row) if subject is not None]
 
@@ -329,7 +329,7 @@ def getstudcompletedhwcolvo(studlogin):
     try:
         connection = sqlite3.connect('basa.db')
         cursor = connection.cursor()
-        cursor.execute('''SELECT COUNT(*) FROM homeworks h JOIN students s ON h.student_id = s.student_id WHERE s.login = ? AND h.status = "completed"''', (studlogin,))
+        cursor.execute('''SELECT COUNT(*) FROM homeworks h JOIN students s ON h.student_id = s.student_id WHERE s.login = ? AND h.status = "Завершено"''', (studlogin,))
         res = cursor.fetchone()
         completed_homeworks = res[0]
         return completed_homeworks
@@ -346,7 +346,7 @@ def gettutlist(studlogin):
     try:
         connection = sqlite3.connect('basa.db')
         cursor = connection.cursor()
-        cursor.execute('''SELECT t.tutor_id, t.first_name, t.last_name, t.experience FROM tutors t INNER JOIN student_tutors st ON t.tutor_id = st.tutor_id INNER JOIN students s ON st.student_id = s.student_id WHERE s.login = ?''', (studlogin,))
+        cursor.execute('''SELECT t.tutor_id, t.first_name, t.last_name, t.experience, t.login FROM tutors t INNER JOIN student_tutors st ON t.tutor_id = st.tutor_id INNER JOIN students s ON st.student_id = s.student_id WHERE s.login = ?''', (studlogin,))
         tutlist = cursor.fetchall()
         return tutlist
     
@@ -663,10 +663,27 @@ def tutlist(name: str = None):
         tutorlist = gettutlist(name)
 
         for tutor in tutorlist:
+
+            tutfirst_name = tutor[1]
+            tutlast_name = tutor[2]
+            tutlogin = tutor[4]
+            student_colvo = getstudcolvo(tutlogin)
+            tutsubjects = gettutsubject(tutlogin)
+
+            subjecttemplate = ""
+
             tuttemplate += a
-            tuttemplate = tuttemplate.replace("{{ first_name }}", tutor[1])
-            tuttemplate = tuttemplate.replace("{{ last_name }}", tutor[2])
-            tuttemplate = tuttemplate.replace("{{ avatar }}", tutor[1][0] + tutor[2][0])
+
+            for tutsubject in tutsubjects:
+                subjecttemplate += f'''<span class="subject-badge {tutsubject}">{tutsubject}</span>'''
+
+            tuttemplate = tuttemplate.replace("{{ first_name }}", tutfirst_name)
+            tuttemplate = tuttemplate.replace("{{ last_name }}", tutlast_name)
+            tuttemplate = tuttemplate.replace("{{ avatar }}", tutfirst_name[0] + tutlast_name[0])
+            tuttemplate = tuttemplate.replace("{{ student_colvo }}", str(student_colvo))
+            tuttemplate = tuttemplate.replace("{{ subjecttemplate }}", subjecttemplate)
+            tuttemplate = tuttemplate.replace("{{ lesson_count }}", '🚧')
+            tuttemplate = tuttemplate.replace("{{ rating }}", '🚧')
 
         with open('tutlist.html', 'r', encoding="utf-8") as f:
             content = verstkaprofile(f.read(), name, studfirst_name, studlast_name)
@@ -736,19 +753,15 @@ def studprofile(name: str = None):
             content = content.replace("{{ tutors_count }}", str(tutor_count))
             content = content.replace("{{ homework_colvo }}", str(homework_colvo))
             content = content.replace("{{ completed_homeworks }}", str(completed_homeworks))
+            content = content.replace("{{ avg_grade }}", '🚧')
+            content = content.replace("{{ subject }}", '🚧')
+            content = content.replace("{{ subject_percentile }}", '🚧')
 
         return HTMLResponse(content=content)
 
     except Exception as e:
         print(f"Ловит ошибку - { e }")
         return RedirectResponse(url="/login", status_code=303)
-
-@app.get("/studtime")
-def studtime(name: str = None):
-    with open('studtime.html', 'r', encoding="utf-8") as f:
-        content = verstka(f.read(), name)
-    return HTMLResponse(content=content)
-
 
 @app.get("/profiletut")
 def profiletut(name : str =  None):
@@ -761,11 +774,19 @@ def profiletut(name : str =  None):
         
         student_colvo = getstudcolvo(name)
 
+        tutsubjects = gettutsubject(name)
+
+        profiletutsubjecttemplate = ""
+
+        for tutsubject in tutsubjects:
+                profiletutsubjecttemplate += f'''<span class="subject-badge {tutsubject}">{tutsubject}</span>'''
+
         with open('profiletut.html', 'r', encoding='utf-8') as f:
             content = verstkaprofile(f.read(), name, tutfirst_name, tutlast_name)
         content = content.replace("{{ experience }}", str(experience))
         content = content.replace("{{ student_colvo }}", str(student_colvo))
         content = content.replace("{{ repcode }}", str(tutor_id))
+        content = content.replace("{{ profiletutsubjecttemplate }}", profiletutsubjecttemplate)
         return HTMLResponse(content=content)
     
     except Exception as e:
@@ -849,5 +870,30 @@ def deletehw(name: str = Form(...), title: str = Form(...)):
     return RedirectResponse(url=f"/homeworkstut?name={name}", status_code=303)
 
 
+# @app.get("/studtime")
+# def studtime(name: str = None):
+#     with open('studtime.html', 'r', encoding="utf-8") as f:
+#         content = verstka(f.read(), name)
+#     return HTMLResponse(content=content)
+
+# @app.get("/tuttime")
+# def studtime(name: str = None):
+#     with open('tuttime.html', 'r', encoding="utf-8") as f:
+#         content = verstka(f.read(), name)
+#     return HTMLResponse(content=content)
+
+
+
+@app.exception_handler(404)
+def error404(request: Request, exc):
+    with open('error.html', 'r', encoding='utf-8') as f:
+        content = f.read()
+    return HTMLResponse(content=content)
+
+@app.exception_handler(500)
+def error500(request: Request, exc):
+    with open('error.html', 'r', encoding='utf-8') as f:
+        content = f.read()
+    return HTMLResponse(content=content)
 
 
