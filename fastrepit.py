@@ -1,5 +1,5 @@
 from fastapi import FastAPI, Form, File, UploadFile, Request
-from fastapi.responses import HTMLResponse, RedirectResponse
+from fastapi.responses import HTMLResponse, RedirectResponse, FileResponse
 from database import init_database
 from typing import Optional, List
 from datetime import datetime
@@ -888,12 +888,17 @@ def deletehw(name: str = Form(...), title: str = Form(...)):
 def error404(request: Request, exc):
     with open('error.html', 'r', encoding='utf-8') as f:
         content = f.read()
-    return HTMLResponse(content=content)
+    return HTMLResponse(content=content, status_code=404)
 
 @app.exception_handler(500)
 def error500(request: Request, exc):
     with open('error.html', 'r', encoding='utf-8') as f:
         content = f.read()
-    return HTMLResponse(content=content)
+    return HTMLResponse(content=content, status_code=500)
+
+
+@app.get("/favicon.ico")
+def favicon():
+    return FileResponse("favicon.ico")
 
 
