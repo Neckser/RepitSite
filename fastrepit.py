@@ -1,10 +1,12 @@
-from fastapi import FastAPI, Form, File, UploadFile, Request
+from fastapi import FastAPI, Form, File, UploadFile, Request, Depends, HTTPException
 from fastapi.responses import HTMLResponse, RedirectResponse, FileResponse
 from database import init_database
 from typing import Optional, List
 from datetime import datetime
 import sqlite3
 import random
+from auth import get_current_user, create_access_token
+
 
 app = FastAPI()
 
@@ -477,7 +479,16 @@ def get_login():
 def login(login: str = Form(...), password: str = Form(...)):
     try:
         if checkstudreg(login, password):
-            return RedirectResponse(url=f"/home?name={login}", status_code=303)
+            access_token = create_access_token(login, "student")
+            response = RedirectResponse(url="/home", status_code=303)
+            response.set_cookie(
+                key="access_token",
+                value=access_token,
+                httponly=True,
+                max_age=60,
+                path="/",
+            )
+            return response
         else:
             with open("loginstudfailed.html", "r", encoding='utf-8') as file:
                 content = file.read()
@@ -494,7 +505,16 @@ def login(login: str = Form(...), password: str = Form(...)):
 def logintut(login: str = Form(...), password: str = Form(...)):
     try:
         if checktutreg(login, password):
-            return RedirectResponse(url=f"/hometut?name={login}", status_code=303)
+            access_token = create_access_token(login, "tutor")
+            response = RedirectResponse(url=f"/hometut", status_code=303)
+            response.set_cookie(
+                key="access_token",
+                value=access_token,
+                httponly=True,
+                max_age=60,
+                path="/",
+            )
+            return response
         else:
             with open("loginrepfailed.html", "r", encoding='utf-8') as file:
                 content = file.read()
@@ -566,7 +586,15 @@ def post_registertut(first_name: str = Form(...), last_name: str = Form(...), ed
     return RedirectResponse(url="/login", status_code=303)
 
 @app.get("/home")
-def home(name: str = None):
+def home(request: Request):
+    try:
+        name, user_type = get_current_user(request)
+        if user_type != "student":
+            return RedirectResponse(url="/login", status_code=303)
+
+    except HTTPException:
+        return RedirectResponse(url="/login", status_code=303)
+
     try:
 
         updatehwstatus()
@@ -613,7 +641,15 @@ def home(name: str = None):
     
 
 @app.get("/hometut")
-def get_registertut(name: str = None):
+def get_registertut(request: Request):
+    try:
+        name, user_type = get_current_user(request)
+        if user_type != "tutor":
+            return RedirectResponse(url="/login", status_code=303)
+
+    except HTTPException:
+        return RedirectResponse(url="/login", status_code=303)
+
     try:
         studtemplate = ""
 
@@ -649,7 +685,16 @@ def get_registertut(name: str = None):
         return RedirectResponse(url="/login", status_code=303)
     
 @app.get("/tutlist")
-def tutlist(name: str = None):
+def tutlist(request: Request):
+    
+    try:
+        name, user_type = get_current_user(request)
+        if user_type != "student":
+            return RedirectResponse(url="/login", status_code=303)
+
+    except HTTPException:
+        return RedirectResponse(url="/login", status_code=303)
+
     try:
         tuttemplate = ""
 
@@ -697,13 +742,29 @@ def tutlist(name: str = None):
         return RedirectResponse(url="/login", status_code=303)
 
 @app.get("/findtut")
-def findtut(name: str = None):
+def findtut(request: Request):
+    try:
+        name, user_type = get_current_user(request)
+        if user_type != "student":
+            return RedirectResponse(url="/login", status_code=303)
+
+    except HTTPException:
+        return RedirectResponse(url="/login", status_code=303)
+
     with open("findtut.html", "r", encoding = "utf-8") as f:
         content = verstka(f.read(), name)
         return HTMLResponse(content=content)
     
 @app.post("/addtut")
-def addtut(tutor_code: str = Form(...), name: str = Form(...)):
+def addtut(request: Request, tutor_code: str = Form(...)):
+    try:
+        name, user_type = get_current_user(request)
+        if user_type != "student":
+            return RedirectResponse(url="/login", status_code=303)
+
+    except HTTPException:
+        return RedirectResponse(url="/login", status_code=303)
+
     try:
         studinfo = getstudinfo(name)
 
@@ -730,11 +791,19 @@ def addtut(tutor_code: str = Form(...), name: str = Form(...)):
         print(f"Произошла ошибка - {e}")
         return RedirectResponse(url="/login", status_code=303)   
     
-    return RedirectResponse(url=f"/tutlist?name={name}", status_code=303)
+    return RedirectResponse(url=f"/tutlist", status_code=303)
 
 
 @app.get("/profile")
-def studprofile(name: str = None):
+def studprofile(request: Request):
+    try:
+        name, user_type = get_current_user(request)
+        if user_type != "student":
+            return RedirectResponse(url="/login", status_code=303)
+
+    except HTTPException:
+        return RedirectResponse(url="/login", status_code=303)
+
     try:
         studinfo = getstudinfo(name)
         studfirst_name = studinfo[0]
@@ -764,7 +833,15 @@ def studprofile(name: str = None):
         return RedirectResponse(url="/login", status_code=303)
 
 @app.get("/profiletut")
-def profiletut(name : str =  None):
+def profiletut(request: Request):
+    try:
+        name, user_type = get_current_user(request)
+        if user_type != "tutor":
+            return RedirectResponse(url="/login", status_code=303)
+
+    except HTTPException:
+        return RedirectResponse(url="/login", status_code=303)
+
     try:
         tutinfo = gettutorinfo(name)
         tutfirst_name = tutinfo[0]
@@ -794,7 +871,15 @@ def profiletut(name : str =  None):
         return RedirectResponse(url="/login", status_code=303)
 
 @app.get("/homeworkstut")
-def homeworkstut(name : str =  None):
+def homeworkstut(request: Request):
+    try:
+        name, user_type = get_current_user(request)
+        if user_type != "tutor":
+            return RedirectResponse(url="/login", status_code=303)
+
+    except HTTPException:
+        return RedirectResponse(url="/login", status_code=303)
+
     try:
 
         updatehwstatus()
@@ -843,7 +928,15 @@ def homeworkstut(name : str =  None):
 
 
 @app.post("/createhw")
-def createhw(name: str = Form(...), student_id: str = Form(...), subject: str = Form(...), title: str = Form(...), deadline: str = Form(...), description: str = Form(...)):
+def createhw(request: Request, student_id: str = Form(...), subject: str = Form(...), title: str = Form(...), deadline: str = Form(...), description: str = Form(...)):
+    try:
+        name, user_type = get_current_user(request)
+        if user_type != "tutor":
+            return RedirectResponse(url="/login", status_code=303)
+
+    except HTTPException:
+        return RedirectResponse(url="/login", status_code=303)
+
     try:
         tutinfo = gettutorinfo(name)
         tutor_id = tutinfo[2]
@@ -854,11 +947,19 @@ def createhw(name: str = Form(...), student_id: str = Form(...), subject: str = 
         print(f"Произошла ошибка - {e}")
         return RedirectResponse(url="/login", status_code=303)
     
-    return RedirectResponse(url=f"/homeworkstut?name={name}", status_code=303)
+    return RedirectResponse(url=f"/homeworkstut", status_code=303)
 
 
 @app.post("/deletehw")
-def deletehw(name: str = Form(...), title: str = Form(...)):
+def deletehw(request: Request, title: str = Form(...)):
+    try:
+        name, user_type = get_current_user(request)
+        if user_type != "tutor":
+            return RedirectResponse(url="/login", status_code=303)
+
+    except HTTPException:
+        return RedirectResponse(url="/login", status_code=303)
+
     try:
 
         delhw(title)
@@ -867,7 +968,7 @@ def deletehw(name: str = Form(...), title: str = Form(...)):
         print(f"Произошла ошибка - {e}")
         return RedirectResponse(url="/login", status_code=303)
 
-    return RedirectResponse(url=f"/homeworkstut?name={name}", status_code=303)
+    return RedirectResponse(url=f"/homeworkstut", status_code=303)
 
 
 # @app.get("/studtime")
@@ -900,5 +1001,12 @@ def error500(request: Request, exc):
 @app.get("/favicon.ico")
 def favicon():
     return FileResponse("favicon.ico")
+
+@app.get("/logout")
+def logout():
+    response = RedirectResponse(url="/login")
+    response.delete_cookie(key="access_token")
+
+    return response
 
 

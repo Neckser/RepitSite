@@ -400,11 +400,11 @@
     <header class="top-bar">
         <div class="nav-container">
             <div class="nav-buttons">
-                <a href="/tutlist?name={{ name }}" class="nav-button active">Мои репетиторы</a>
-                <a href="/home?name={{ name }}" class="nav-button">Мои задания</a>
+                <a href="/tutlist" class="nav-button active">Мои репетиторы</a>
+                <a href="/home" class="nav-button">Мои задания</a>
             </div>
             
-            <a href="/profile?name={{ name }}" class="account-widget">
+            <a href="/profile" class="account-widget">
                 <div class="user-avatar">{{ avatar }}</div>
                 <div class="user-info">
                     <div class="user-name">{{ first_name }} {{ last_name }}</div>
@@ -420,7 +420,7 @@
         <div class="tutors-grid">
             {{ tuttemplate }}
             </div>
-            <a href="/findtut?name={{ name }}" class="tutor-card add-tutor-card">
+            <a href="/findtut" class="tutor-card add-tutor-card">
                 <div class="add-icon">+</div>
                 <div class="add-text">Добавить репетитора</div>
             </a>

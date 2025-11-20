@@ -437,10 +437,10 @@
     <header class="top-bar">
         <nav>
             <div class="nav-section">
-                <a href="/hometut?name={{ name }}" class="nav-button">Главная</a>
-                <a href="/homeworkstut?name={{ name }}" class="nav-button active">Задания</a>
+                <a href="/hometut" class="nav-button">Главная</a>
+                <a href="/homeworkstut" class="nav-button active">Задания</a>
             </div>
-            <a href="/profiletut?name={{ name }}" class="user-info">
+            <a href="/profiletut" class="user-info">
                 <div class="user-avatar">{{ avatar }}</div>
                 <span>{{ first_name }} {{ last_name }}</span>
                 
@@ -460,7 +460,7 @@
                         Новое задание
                     </h2>
                     <form class="assignment-form" method="POST" action="/createhw">
-                        <input type="hidden" name="name" value="{{ name }}">
+                        <!--  -->
                         <div class="form-group">
                             <label class="form-label" for="student_id">Ученик</label>
                             {{ selectForm }}

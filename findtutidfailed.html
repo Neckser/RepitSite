@@ -251,7 +251,7 @@
         </div>
 
         <form class="code-form" action="/addtut" method="post">
-            <input type="hidden" name="name" value="{{ name }}">
+            <!--  -->
             <input 
                 type="text" 
                 class="code-input {{ 'error' if error else '' }}"
@@ -266,7 +266,7 @@
                 <button type="submit" class="action-btn add-btn">
                     Добавить репетитора
                 </button>
-                <a href="/tutlist?name={{ name }}" class="action-btn back-btn">
+                <a href="/tutlist" class="action-btn back-btn">
                     Назад
                 </a>
             </div>
