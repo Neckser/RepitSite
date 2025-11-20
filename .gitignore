@@ -2,3 +2,4 @@ __pycache__
 basa.db
 .DS_Store
 nohub.out
+.vscode
