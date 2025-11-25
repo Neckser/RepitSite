@@ -485,7 +485,7 @@ def login(login: str = Form(...), password: str = Form(...)):
                 key="access_token",
                 value=access_token,
                 httponly=True,
-                max_age=60,
+                max_age=60 * 5,
                 path="/",
             )
             return response
@@ -511,7 +511,7 @@ def logintut(login: str = Form(...), password: str = Form(...)):
                 key="access_token",
                 value=access_token,
                 httponly=True,
-                max_age=60,
+                max_age=60 * 5,
                 path="/",
             )
             return response
@@ -750,10 +750,19 @@ def findtut(request: Request):
 
     except HTTPException:
         return RedirectResponse(url="/login", status_code=303)
+    try:
+        studinfo = getstudinfo(name)
+        studfirst_name = studinfo[0]
+        studlast_name = studinfo[1]
 
-    with open("templates/findtut.html", "r", encoding = "utf-8") as f:
-        content = verstka(f.read(), name)
-        return HTMLResponse(content=content)
+        with open("templates/findtut.html", "r", encoding = "utf-8") as f:
+            content = verstkaprofile(f.read(), name, studfirst_name, studlast_name)
+            return HTMLResponse(content=content)
+    
+    except Exception as e:
+        print(f"Ловит ошибку - { e }")
+        return RedirectResponse(url="/login", status_code=303)
+
     
 @app.post("/addtut")
 def addtut(request: Request, tutor_code: str = Form(...)):
@@ -982,6 +991,13 @@ def deletehw(request: Request, title: str = Form(...)):
 #     with open('templates/tuttime.html', 'r', encoding="utf-8") as f:
 #         content = verstka(f.read(), name)
 #     return HTMLResponse(content=content)
+
+
+@app.get("/edittutprofile")
+def edittutprofile(request: Request):
+    with open('templates/edittutprofile.html', 'r', encoding='utf-8') as f:
+        content = f.read()
+    return HTMLResponse(content=content)
 
 
 

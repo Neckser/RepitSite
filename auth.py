@@ -4,7 +4,7 @@ from fastapi import HTTPException, Depends, Request
 
 SECRET_KEY = "SUPER_SECRET_KEY_CHANGE_ME"
 ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE = 60
+ACCESS_TOKEN_EXPIRE = 60 * 5
 
 
 def create_access_token(username: str, user_type: str):

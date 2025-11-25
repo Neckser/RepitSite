@@ -15,10 +15,118 @@
         body {
             background-color: #f8f9fa;
             min-height: 100vh;
+        }
+
+        :root {
+            --primary-color: #6b8e23;
+            --primary-dark: #5a7a1f;
+            --primary-light: #8fb84a;
+            --background-light: #f8fff8;
+            --border-light: #e8f5e8;
+            --text-dark: #333;
+            --text-gray: #666;
+            --white: #ffffff;
+            --danger-color: #dc3545;
+            --danger-dark: #c82333;
+        }
+
+        .top-bar {
+            background-color: var(--primary-color);
+            padding: 12px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .nav-button {
+            background-color: rgba(255,255,255,0.2);
+            color: var(--white);
+            border: none;
+            padding: 8px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+
+        .nav-button.active {
+            background-color: var(--white);
+            color: var(--primary-color);
+        }
+
+        .nav-button:hover {
+            background-color: rgba(255,255,255,0.3);
+        }
+
+        .account-widget {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--white);
+            cursor: pointer;
+            padding: 8px 15px;
+            border-radius: 20px;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+
+        .account-widget:hover {
+            background-color: rgba(255,255,255,0.2);
+        }
+
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background-color: var(--white);
+            color: var(--primary-color);
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 20px;
+            font-weight: bold;
+            font-size: 14px;
+            border: 2px solid rgba(255,255,255,0.3);
+        }
+
+        .user-info {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .user-name {
+            font-size: 14px;
+            font-weight: 600;
+            line-height: 1.2;
+        }
+
+        .user-role {
+            font-size: 12px;
+            opacity: 0.9;
+            line-height: 1.2;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: calc(100vh - 80px);
         }
 
         .add-tutor-card {
@@ -175,6 +283,15 @@
         }
 
         @media (max-width: 768px) {
+            .nav-container {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .account-widget .user-info {
+                display: none;
+            }
+            
             .add-tutor-card {
                 padding: 30px 20px;
             }
@@ -195,6 +312,10 @@
 
         @media (max-width: 480px) {
             body {
+                padding: 0;
+            }
+            
+            .container {
                 padding: 15px;
             }
             
@@ -213,49 +334,74 @@
     </style>
 </head>
 <body>
-    <div class="add-tutor-card">
-        <div class="add-icon">👨‍🏫</div>
-        <h1 class="add-title">Добавить репетитора</h1>
-        <p class="add-description">
-            Введите код репетитора, чтобы добавить его в свой список. 
-            Код можно получить у самого репетитора.
-        </p>
-
-        <form class="code-form" action="/addtut" method="post">
-            <input type="hidden" name="name" value="{{ name }}">
-            <input 
-                type="text" 
-                class="code-input" 
-                name="tutor_code"
-                placeholder="Введите код репетитора"
-                maxlength="15"
-                required
-            >
-            <div class="code-hint">Код обычно состоит из 7-15 символов (буквы и цифры)</div>
-            
-            <div class="action-buttons">
-                <button type="submit" class="action-btn add-btn">
-                    Добавить репетитора
-                </button>
-                <a href="/tutlist" class="action-btn back-btn">
-                    Назад
-                </a>
+    <header class="top-bar">
+        <div class="nav-container">
+            <div class="nav-buttons">
+                <a href="/tutlist" class="nav-button">Мои репетиторы</a>
+                <a href="/home" class="nav-button">Мои задания</a>
+                <!-- <a href="/studtime?name={{ name }}" class="nav-button">Моё расписание</a> -->
             </div>
-        </form>
-        <div class="info-section">
-            <div class="info-title">Как получить код репетитора?</div>
-            <div class="info-steps">
-                <div class="info-step">
-                    <div class="step-number">1</div>
-                    <span>Попросите репетитора поделиться его уникальным кодом</span>
+            
+            <a href="/profile" class="account-widget">
+                <div class="user-avatar">
+                    {{ avatar }}
                 </div>
-                <div class="info-step">
-                    <div class="step-number">2</div>
-                    <span>Репетитор может найти код в своем личном кабинете в разделе "Мой код"</span>
+                <div class="user-info">
+                    <div class="user-name">
+                        {{ first_name }} {{ last_name }}
+                    </div>
+                    <div class="user-role">
+                        Ученик
+                    </div>
                 </div>
-                <div class="info-step">
-                    <div class="step-number">3</div>
-                    <span>Введите код в поле выше и нажмите "Добавить репетитора"</span>
+            </a>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="add-tutor-card">
+            <div class="add-icon">👨‍🏫</div>
+            <h1 class="add-title">Добавить репетитора</h1>
+            <p class="add-description">
+                Введите код репетитора, чтобы добавить его в свой список. 
+                Код можно получить у самого репетитора.
+            </p>
+
+            <form class="code-form" action="/addtut" method="post">
+                <input 
+                    type="text" 
+                    class="code-input" 
+                    name="tutor_code"
+                    placeholder="Введите код репетитора"
+                    maxlength="15"
+                    required
+                >
+                <div class="code-hint">Код обычно состоит из 7-15 символов (буквы и цифры)</div>
+                
+                <div class="action-buttons">
+                    <button type="submit" class="action-btn add-btn">
+                        Добавить репетитора
+                    </button>
+                    <a href="/tutlist" class="action-btn back-btn">
+                        Назад
+                    </a>
+                </div>
+            </form>
+            <div class="info-section">
+                <div class="info-title">Как получить код репетитора?</div>
+                <div class="info-steps">
+                    <div class="info-step">
+                        <div class="step-number">1</div>
+                        <span>Попросите репетитора поделиться его уникальным кодом</span>
+                    </div>
+                    <div class="info-step">
+                        <div class="step-number">2</div>
+                        <span>Репетитор может найти код в своем личном кабинете в разделе "Мой код"</span>
+                    </div>
+                    <div class="info-step">
+                        <div class="step-number">3</div>
+                        <span>Введите код в поле выше и нажмите "Добавить репетитора"</span>
+                    </div>
                 </div>
             </div>
         </div>

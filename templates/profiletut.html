@@ -127,7 +127,7 @@
         
         .profile-header {
             display: flex;
-            align-items: flex-start; /* ИЗМЕНЕНО: было center */
+            align-items: flex-start;
             gap: 30px;
             margin-bottom: 40px;
             background: linear-gradient(135deg, var(--white) 0%, var(--background-light) 100%);
@@ -135,10 +135,11 @@
             padding: 30px;
             box-shadow: 0 5px 20px rgba(107, 142, 35, 0.1);
             border: 2px solid var(--border-light);
+            position: relative; /* ДОБАВЛЕНО: для позиционирования кнопки редактирования */
         }
         
         .profile-avatar-section {
-            flex-shrink: 0; /* ДОБАВЛЕНО: запрещаем сжиматься */
+            flex-shrink: 0;
         }
         
         .profile-avatar {
@@ -157,32 +158,60 @@
         
         .profile-info {
             flex: 1;
-            min-width: 0; /* ДОБАВЛЕНО: для правильного переноса */
+            min-width: 0;
+        }
+        
+        .profile-name-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
         }
         
         .profile-name {
             color: var(--primary-color);
             font-size: 32px;
             font-weight: bold;
-            margin-bottom: 15px; /* УВЕЛИЧЕНО: было 5px */
+            margin: 0;
+        }
+        
+        .edit-profile-btn {
+            background: transparent;
+            border: 1px solid var(--primary-light);
+            color: var(--primary-color);
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .edit-profile-btn:hover {
+            background-color: rgba(107, 142, 35, 0.1);
+            border-color: var(--primary-color);
         }
         
         .profile-role {
             color: var(--text-gray);
             font-size: 16px;
-            margin-bottom: 15px; /* ДОБАВЛЕНО: отступ снизу */
+            margin-bottom: 15px;
         }
         
         .subjects-container {
-            margin-bottom: 20px; /* ДОБАВЛЕНО: отступ снизу */
+            margin-bottom: 20px;
         }
         
         .subjects-wrapper {
             display: flex;
-            flex-wrap: wrap; /* САМОЕ ВАЖНОЕ: перенос на новые строки */
-            gap: 8px; /* ДОБАВЛЕНО: отступ между предметами */
-            max-height: 80px; /* ОГРАНИЧЕНИЕ: максимальная высота */
-            overflow-y: auto; /* ДОБАВЛЕНО: прокрутка если много предметов */
+            flex-wrap: wrap;
+            gap: 8px;
+            max-height: 80px;
+            overflow-y: auto;
         }
         
         .rating {
@@ -340,6 +369,10 @@
                 gap: 20px;
             }
             
+            .profile-name-container {
+                justify-content: center;
+            }
+            
             .profile-stats {
                 justify-content: center;
             }
@@ -373,6 +406,11 @@
                 padding: 12px 20px;
                 min-width: 150px;
             }
+            
+            .edit-profile-btn {
+                padding: 5px 10px;
+                font-size: 11px;
+            }
         }
     </style>
 </head>
@@ -402,11 +440,18 @@
 
     <div class="container">
         <div class="profile-header">
-            <div class="profile-avatar">
-                {{ avatar }}
+            <div class="profile-avatar-section">
+                <div class="profile-avatar">
+                    {{ avatar }}
+                </div>
             </div>
             <div class="profile-info">
-                <h1 class="profile-name">{{ first_name }} {{ last_name }}</h1>
+                <div class="profile-name-container">
+                    <h1 class="profile-name">{{ first_name }} {{ last_name }}</h1>
+                    <a href="/edittutprofile" class="edit-profile-btn">
+                        ✏️ Редактировать
+                    </a>
+                </div>
                 <div class="profile-role">
                     {{ profiletutsubjecttemplate }}
                 </div>

@@ -197,7 +197,7 @@
 
         .profile-header {
             display: flex;
-            align-items: center;
+            align-items: flex-start;
             gap: 30px;
             margin-bottom: 40px;
             background: linear-gradient(135deg, var(--white) 0%, var(--background-light) 100%);
@@ -219,13 +219,47 @@
             font-size: 40px;
             font-weight: bold;
             border: 4px solid var(--border-light);
+            flex-shrink: 0;
+        }
+
+        .profile-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .profile-name-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
         }
 
         .profile-name {
             color: var(--primary-color);
             font-size: 32px;
             font-weight: bold;
-            margin-bottom: 5px;
+            margin: 0;
+        }
+
+        .edit-profile-btn {
+            background: transparent;
+            border: 1px solid var(--primary-light);
+            color: var(--primary-color);
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .edit-profile-btn:hover {
+            background-color: rgba(107, 142, 35, 0.1);
+            border-color: var(--primary-color);
         }
 
         .profile-role {
@@ -354,6 +388,10 @@
                 gap: 20px;
             }
             
+            .profile-name-container {
+                justify-content: center;
+            }
+            
             .profile-stats {
                 justify-content: center;
             }
@@ -384,6 +422,11 @@
             
             .stat-value {
                 font-size: 20px;
+            }
+            
+            .edit-profile-btn {
+                padding: 5px 10px;
+                font-size: 11px;
             }
         }
     </style>
@@ -419,7 +462,12 @@
                 {{ avatar }}
             </div>
             <div class="profile-info">
-                <h1 class="profile-name">{{ first_name }} {{ last_name }}</h1>
+                <div class="profile-name-container">
+                    <h1 class="profile-name">{{ first_name }} {{ last_name }}</h1>
+                    <a href="/editstudprofile" class="edit-profile-btn">
+                        ✏️ Редактировать
+                    </a>
+                </div>
                 <div class="profile-role">Ученик {{ grade }} класса</div>
                 <div class="profile-stats">
                     <div class="profile-stat">
