@@ -129,13 +129,13 @@
             display: flex;
             align-items: flex-start;
             gap: 30px;
-            margin-bottom: 40px;
+            margin-bottom: 30px;
             background: linear-gradient(135deg, var(--white) 0%, var(--background-light) 100%);
             border-radius: 20px;
             padding: 30px;
             box-shadow: 0 5px 20px rgba(107, 142, 35, 0.1);
             border: 2px solid var(--border-light);
-            position: relative; /* ДОБАВЛЕНО: для позиционирования кнопки редактирования */
+            position: relative;
         }
         
         .profile-avatar-section {
@@ -244,6 +244,7 @@
         .profile-stats {
             display: flex;
             gap: 30px;
+            margin-bottom: 20px;
         }
         
         .stat-value {
@@ -256,6 +257,63 @@
         .stat-label {
             color: var(--text-gray);
             font-size: 14px;
+        }
+        
+        /* Стили для блока биографии - теперь отдельный блок */
+        .bio-section {
+            margin-bottom: 30px;
+            padding: 30px;
+            background: linear-gradient(135deg, var(--white) 0%, var(--background-light) 100%);
+            border-radius: 20px;
+            border: 2px solid var(--border-light);
+            box-shadow: 0 5px 20px rgba(107, 142, 35, 0.1);
+        }
+        
+        .bio-title {
+            color: var(--primary-color);
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .bio-content {
+            color: var(--text-dark);
+            line-height: 1.7;
+            font-size: 16px;
+            padding: 20px;
+            background: var(--white);
+            border-radius: 15px;
+            border: 1px solid var(--border-light);
+            min-height: 120px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .bio-content.empty {
+            color: var(--text-gray);
+            font-style: italic;
+            background: var(--background-light);
+        }
+        
+        .bio-content::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        .bio-content::-webkit-scrollbar-track {
+            background: var(--border-light);
+            border-radius: 4px;
+        }
+        
+        .bio-content::-webkit-scrollbar-thumb {
+            background: var(--primary-light);
+            border-radius: 4px;
+        }
+        
+        .bio-content::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-color);
         }
         
         .tutor-code-section {
@@ -380,6 +438,19 @@
             .subjects-wrapper {
                 justify-content: center;
             }
+            
+            .bio-section {
+                padding: 20px;
+            }
+            
+            .bio-title {
+                font-size: 20px;
+            }
+            
+            .bio-content {
+                padding: 15px;
+                font-size: 14px;
+            }
         }
         
         @media (max-width: 480px) {
@@ -410,6 +481,20 @@
             .edit-profile-btn {
                 padding: 5px 10px;
                 font-size: 11px;
+            }
+            
+            .bio-section {
+                padding: 15px;
+            }
+            
+            .bio-title {
+                font-size: 18px;
+            }
+            
+            .bio-content {
+                padding: 12px;
+                font-size: 14px;
+                max-height: 200px;
             }
         }
     </style>
@@ -477,6 +562,16 @@
                         <span class="stat-label">Опыт работы</span>
                     </div>
                 </div>
+            </div>
+        </div>
+
+        <!-- Блок биографии - теперь отдельный полноразмерный блок -->
+        <div class="bio-section">
+            <div class="bio-title">
+                📝 О себе
+            </div>
+            <div class="bio-content {% if not bio %}empty{% endif %}">
+                {{ bio }}
             </div>
         </div>
 

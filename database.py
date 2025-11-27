@@ -37,6 +37,7 @@ def init_database():
             subject_art TEXT,
             subject_music TEXT,
             experience INTEGER,
+            bio TEXT,
             login TEXT UNIQUE NOT NULL,
             password TEXT NOT NULL,
             registration_date DATETIME DEFAULT CURRENT_TIMESTAMP

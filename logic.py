@@ -1,0 +1,502 @@
+import sqlite3
+import random
+from datetime import datetime
+
+def create_id():
+    return random.randint(1000000, 100000000000000)
+
+def verstka(file, name):
+    formatted_content = file.replace("{{ name }}", name)
+    return formatted_content
+
+def verstkaprofile(file, name, first_name, last_name):
+    formatted_content = file.replace("{{ name }}", name)
+    formatted_content = formatted_content.replace("{{ first_name }}", first_name)
+    formatted_content = formatted_content.replace("{{ last_name }}", last_name)
+    formatted_content = formatted_content.replace("{{ avatar }}", first_name[0] + last_name[0])
+    
+    return formatted_content
+
+def gethwstatus(deadline):
+    try:
+        deadline = datetime.fromisoformat(deadline.replace('Z', '+00:00'))
+        now = datetime.now()
+        if now > deadline:
+            return "Завершено"
+        else:
+            return "Активно"
+            
+    except Exception as e:
+        print(f"Произошла ошибка - {e}")
+        return "Активно"
+    
+def updatehwstatus():
+    try:
+        connection = sqlite3.connect('basa.db')
+        cursor = connection.cursor()
+        
+        cursor.execute('''UPDATE homeworks SET status = 'Завершено' WHERE deadline < datetime('now') AND status != 'Завершено' ''')
+        connection.commit()
+        
+    except Exception as e:
+        print(f"Произошла ошибка - {e}")
+        raise e
+    
+    finally:
+        connection.close()
+
+def studregister(studfirst_name, studlast_name, grade, studlogin, password):
+    try:
+        connection = sqlite3.connect('basa.db')
+        cursor = connection.cursor()
+
+        cursor.execute("INSERT INTO students (student_id, first_name, last_name, grade, login, password) VALUES (?, ?, ?, ?, ?, ?)", (create_id(), studfirst_name, studlast_name, grade, studlogin, password))
+        connection.commit()
+
+    except Exception as e:
+        print(f"Произошла ошибка - {e}")
+        raise e
+    
+    finally:
+        connection.close()
+
+def tutregister(tutfirst_name, tutlast_name, subject_math, subject_physics, subject_chemistry, subject_computer, subject_russian, subject_english, subject_german, subject_french, subject_history, subject_social, subject_literature, subject_biology, subject_geography, subject_economics, subject_art, subject_music, experience, tutlogin, password):
+    try:
+        connection = sqlite3.connect('basa.db')
+        cursor = connection.cursor()
+
+        cursor.execute("INSERT INTO tutors (tutor_id, first_name, last_name, subject_math, subject_physics, subject_chemistry, subject_computer, subject_russian, subject_english, subject_german, subject_french, subject_history, subject_social, subject_literature, subject_biology, subject_geography, subject_economics, subject_art, subject_music, experience, login, password) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", (create_id(), tutfirst_name, tutlast_name, subject_math, subject_physics, subject_chemistry, subject_computer, subject_russian, subject_english, subject_german, subject_french, subject_history, subject_social, subject_literature, subject_biology, subject_geography, subject_economics, subject_art, subject_music, experience, tutlogin, password))
+        connection.commit()
+
+    except Exception as e:
+        print(f"Произошла ошибка - {e}")
+        raise e
+    
+    finally:
+        connection.close()
+
+def checkstudreg(login, password):
+    try:
+        connection = sqlite3.connect('basa.db')
+        cursor = connection.cursor()
+
+        cursor.execute("SELECT * FROM students WHERE login = ? AND password = ?", (login, password))
+        res = cursor.fetchall()
+        if res:
+            return True
+        else:
+            return False
+    
+    except Exception as e:
+        print(f'Произошла ошибка - {e}')
+        raise e
+    
+    finally:
+        connection.close()
+
+def checktutreg(login, password):
+    try:
+        connection = sqlite3.connect('basa.db')
+        cursor = connection.cursor()
+
+        cursor.execute("SELECT * FROM tutors WHERE login = ? AND password = ?", (login, password))
+        res = cursor.fetchall()
+        if res:
+            return True
+        else:
+            return False
+    
+    except Exception as e:
+        print(f'Произошла ошибка - {e}')
+        raise e
+    
+    finally:
+        connection.close()
+
+
+def gettutsubject(tutlogin):
+    try:
+        connection = sqlite3.connect('basa.db')
+        cursor = connection.cursor()
+    
+        cursor.execute('''SELECT subject_math, subject_physics, subject_chemistry, subject_computer, subject_russian, subject_english, subject_german, subject_french, subject_history, subject_social, subject_literature, subject_biology, subject_geography, subject_economics, subject_art, subject_music FROM tutors WHERE login = ?''', (tutlogin,))
+        subjects_row = cursor.fetchone()
+    
+        if subjects_row:
+            subject_names = ["Математика", "Физика", "Химия", "Информатика", "Русский язык", "Английский язык", "Немецкий язык", "Французский язык", "История","Обществознание", "Литература", "Биология", "География", "Экономика","ИЗО", "Музыка"]
+
+            return [subject_names[i] for i, subject in enumerate(subjects_row) if subject is not None]
+
+        return None
+    
+    except Exception as e:
+        print(f'Произошла ошибка - {e}')
+        raise e
+    
+    finally:
+        connection.close()
+
+def gettutorinfo(tutlogin):
+    try:
+        connection = sqlite3.connect('basa.db')
+        cursor = connection.cursor()
+
+        cursor.execute("SELECT first_name, last_name, tutor_id, experience, bio FROM tutors WHERE login = ?", (tutlogin,))
+        res = cursor.fetchone()
+        if res:
+            first_name = res[0]
+            last_name = res[1]
+            tutor_id = res[2]
+            experience = res[3]
+            bio = res[4]
+            return [first_name, last_name, tutor_id, experience, bio]
+        else:
+            return None
+        
+    except Exception as e:
+        print(f'Произошла ошибка - {e}')
+        raise e
+    
+    finally:
+        connection.close()
+
+def gettutinfobyid(tutor_id):
+    try:
+        connection = sqlite3.connect('basa.db')
+        cursor = connection.cursor()
+
+        cursor.execute("SELECT first_name, last_name, login, experience FROM tutors WHERE tutor_id = ?", (tutor_id,))
+        res = cursor.fetchone()
+        if res:
+            tutfirst_name = res[0]
+            tutlast_name = res[1]
+            tutlogin = res[2]
+            experience = res[3]
+            return [tutfirst_name, tutlast_name, tutlogin, experience]
+        else:
+            return None
+
+    except Exception as e:
+        print(f"Произошла ошибка - {e}")
+        raise e
+    
+    finally:
+        connection.close()
+
+def checktutexistsbyid(tutor_id):
+    try:
+        connection = sqlite3.connect('basa.db')
+        cursor = connection.cursor()
+
+        cursor.execute("SELECT tutor_id FROM tutors WHERE tutor_id = ?", (tutor_id,))
+        tutor_exists = cursor.fetchone()
+        if tutor_exists:
+            return True
+        else:
+            return False
+
+    except Exception as e:
+        print(f"Произошла ошибка - {e}")
+        raise e
+    
+    finally:
+        connection.close()
+    
+def getstudinfo(studlogin):
+    try:
+        connection = sqlite3.connect('basa.db')
+        cursor = connection.cursor()
+
+        cursor.execute("SELECT first_name, last_name, student_id, grade FROM students WHERE login = ?", (studlogin,))
+        res = cursor.fetchone()
+        if res:
+            studfirst_name = res[0]
+            studlast_name = res[1]
+            student_id = res[2]
+            grade = res[3]
+            return [studfirst_name, studlast_name, student_id, grade]
+        else:
+            return None
+        
+    except Exception as e:
+        print(f'Произошла ошибка - {e}')
+        raise e
+    
+    finally:
+        connection.close()
+
+def getstudinfobyid(student_id):
+    try:
+        connection = sqlite3.connect('basa.db')
+        cursor = connection.cursor()
+
+        cursor.execute("SELECT first_name, last_name, login, grade FROM students WHERE student_id = ?", (student_id,))
+        res = cursor.fetchone()
+        if res:
+            studfirst_name = res[0]
+            studlast_name = res[1]
+            studlogin = res[2]
+            grade = res[3]
+            return [studfirst_name, studlast_name, studlogin, grade]
+        else:
+            return None
+
+    except Exception as e:
+        print(f"Произошла ошибка - {e}")
+        raise e
+
+    finally:
+        connection.close()
+
+def getstudhwcolvo(studlogin):
+    try:
+        connection = sqlite3.connect('basa.db')
+        cursor = connection.cursor()
+        cursor.execute('''SELECT COUNT(*) FROM homeworks h JOIN students s ON h.student_id = s.student_id WHERE s.login = ?''', (studlogin,))
+        res = cursor.fetchone()
+        homework_colvo = res[0]
+        return homework_colvo
+            
+    except Exception as e:
+        print(f'Произошла ошибка - {e}')
+        raise e
+
+    finally:
+        connection.close()
+
+def gettutorcount(studlogin):
+    try:
+        connection = sqlite3.connect('basa.db')
+        cursor = connection.cursor()
+
+        cursor.execute('''SELECT COUNT(*) FROM student_tutors st JOIN students s ON st.student_id = s.student_id WHERE s.login = ?''', (studlogin,))
+        res = cursor.fetchone()
+        tutor_count = res[0]
+        return tutor_count
+    
+    except Exception as e:
+        print(f"Произошла ошибка - {e}")
+        raise e
+    
+    finally:
+        connection.close()
+
+def getstudhw(student_id):
+    try:
+        connection = sqlite3.connect('basa.db')
+        cursor = connection.cursor()
+
+        cursor.execute(''' SELECT h.title, h.description, h.deadline, h.status, t.first_name, t.last_name, h.subject FROM homeworks h JOIN tutors t ON h.tutor_id = t.tutor_id WHERE h.student_id = ? ORDER BY h.deadline ASC''', (student_id,))
+        homeworks = cursor.fetchall()
+        if homeworks:
+            return homeworks
+        else:
+            return None
+
+    except Exception as e:
+        print(f"Произошла ошибка - {e}")
+        raise e
+    
+    finally:
+        connection.close()
+
+def gettuthw(tutor_id):
+    try:
+        connection = sqlite3.connect('basa.db')
+        cursor = connection.cursor()
+
+        cursor.execute('''SELECT h.title, h.description, h.deadline, h.status, h.subject FROM homeworks h JOIN tutors t ON h.tutor_id = t.tutor_id WHERE h.tutor_id = ? ORDER BY h.deadline ASC''', (tutor_id,))
+        homeworks = cursor.fetchall()
+        return homeworks
+
+    except Exception as e:
+        print(f"Произошла ошибка - {e}")
+        raise e
+    
+    finally:
+        connection.close()
+
+def getstudcompletedhwcolvo(studlogin):
+    try:
+        connection = sqlite3.connect('basa.db')
+        cursor = connection.cursor()
+        cursor.execute('''SELECT COUNT(*) FROM homeworks h JOIN students s ON h.student_id = s.student_id WHERE s.login = ? AND h.status = "Завершено"''', (studlogin,))
+        res = cursor.fetchone()
+        completed_homeworks = res[0]
+        return completed_homeworks
+    
+    except Exception as e:
+        print(f"Произошла ошибка - {e}")
+        raise e
+    
+    finally:
+        connection.close()
+
+
+def gettutlist(studlogin):
+    try:
+        connection = sqlite3.connect('basa.db')
+        cursor = connection.cursor()
+        cursor.execute('''SELECT t.tutor_id, t.first_name, t.last_name, t.experience, t.login FROM tutors t INNER JOIN student_tutors st ON t.tutor_id = st.tutor_id INNER JOIN students s ON st.student_id = s.student_id WHERE s.login = ?''', (studlogin,))
+        tutlist = cursor.fetchall()
+        return tutlist
+    
+    except Exception as e:
+        print(f"Произошла ошибка - {e}")
+        raise e
+    
+    finally:
+        connection.close()
+
+def addtutor(student_id, tutor_id):
+    try:
+        connection = sqlite3.connect('basa.db')
+        cursor = connection.cursor()
+
+        cursor.execute('''SELECT 1 FROM student_tutors WHERE student_id = ? AND tutor_id = ?''', (student_id, tutor_id))
+        if cursor.fetchone():
+            #Доделать верстку когда такой репетитор уже есть
+            pass
+        else:
+            cursor.execute("INSERT INTO student_tutors (student_id, tutor_id) VALUES (?, ?)", (student_id, tutor_id))
+            connection.commit()
+
+    except Exception as e:
+        print(f"Произошла ошибка - {e}")
+        raise e
+
+    finally:
+        connection.close()
+
+
+def getstudcolvo(tutlogin):
+    try:
+        connection = sqlite3.connect('basa.db')
+        cursor = connection.cursor()
+
+        cursor.execute('''SELECT COUNT(*) FROM student_tutors st JOIN tutors t ON st.tutor_id = t.tutor_id WHERE t.login = ?''', (tutlogin,))
+        res = cursor.fetchone()
+        student_colvo = res[0]
+        return student_colvo
+
+    except Exception as e:
+        print(f"Произошла ошибка - {e}")
+        raise e
+    
+    finally:
+        connection.close()
+    
+def gettuthwcolvo(tutlogin):
+    try:
+        connection = sqlite3.connect('basa.db')
+        cursor = connection.cursor()
+
+        cursor.execute('''SELECT COUNT(*) FROM homeworks st JOIN tutors t ON st.tutor_id = t.tutor_id WHERE t.login = ?''', (tutlogin,))
+        res = cursor.fetchone()
+        if res:
+            tuthomework_colvo = res[0]
+            return tuthomework_colvo
+
+    except Exception as e:
+        print(f"Произошла ошибка - {e}")
+        raise e
+    
+    finally:
+        connection.close()
+
+def getstudents(tutlogin):
+    try:
+        connection = sqlite3.connect('basa.db')
+        cursor = connection.cursor()
+        
+        cursor.execute('''SELECT s.student_id, s.first_name,  s.last_name,  s.login, s.registration_date, s.grade FROM students s INNER JOIN student_tutors st ON s.student_id = st.student_id INNER JOIN tutors t ON st.tutor_id = t.tutor_id WHERE t.login = ?''', (tutlogin,))
+        students = cursor.fetchall()
+        return students
+
+    except Exception as e:
+        print(f"Произошла ошибка - {e}")
+        raise e
+    
+    finally:
+        connection.close()
+
+def addhw(student_id, tutor_id, title, description, subject, deadline):
+    try:
+        connection = sqlite3.connect('basa.db')
+        cursor = connection.cursor()
+
+        status = gethwstatus(deadline)
+        
+        cursor.execute('''INSERT INTO homeworks (student_id, tutor_id, title, description, subject, deadline, status) VALUES (?, ?, ?, ?, ?, ?, ?)''', (student_id, tutor_id, title, description, subject, deadline, status))
+        connection.commit()
+
+    except Exception as e:
+        print(f"Произошла ошибка - {e}")
+        raise e
+    
+    finally:
+        connection.close()
+
+def delhw(title):
+    try:
+        connection = sqlite3.connect('basa.db')
+        cursor = connection.cursor()
+        
+        cursor.execute('''DELETE FROM homeworks WHERE title = ?''', (title,))
+        connection.commit()
+
+    except Exception as e:
+        print(f"Произошла ошибка - {e}")
+        raise e
+    
+    finally:
+        connection.close()
+
+def edittutbasic(studfirst_name, studlast_name, experience, tutlogin):
+    try:
+        connection = sqlite3.connect('basa.db')
+        cursor = connection.cursor()
+        
+        cursor.execute("UPDATE tutors SET first_name = ?, last_name = ?, experience = ? WHERE login = ?", (studfirst_name, studlast_name, experience, tutlogin))
+
+        connection.commit()
+        connection.close()
+    
+    except Exception as e:
+        print(f"Произошла ошибка - {e}")
+        raise e
+
+def eduttutsubjects(subjects, tutlogin):
+    try:
+        connection = sqlite3.connect('basa.db')
+        cursor = connection.cursor()
+
+        cursor.execute('''UPDATE tutors SET subject_math = NULL, subject_physics = NULL, subject_chemistry = NULL, subject_computer = NULL, subject_russian = NULL, subject_english = NULL, subject_german = NULL, subject_french = NULL, subject_history = NULL, subject_social = NULL, subject_literature = NULL, subject_biology = NULL, subject_geography = NULL, subject_economics = NULL, subject_art = NULL, subject_music = NULL WHERE login = ?''', (tutlogin,))
+
+        subject_mapping = {"Математика": "subject_math", "Физика": "subject_physics", "Химия": "subject_chemistry", "Информатика": "subject_computer", "Русский": "subject_russian", "Английский": "subject_english", "Немецкий": "subject_german", "Французский": "subject_french", "История": "subject_history", "Обществознание": "subject_social", "Литература": "subject_literature", "Биология": "subject_biology", "География": "subject_geography", "Экономика": "subject_economics", "ИЗО": "subject_art", "Музыка": "subject_music"}
+
+        for subject in subjects:
+            if subject in subject_mapping:
+                column_name = subject_mapping[subject]
+                cursor.execute(f"UPDATE tutors SET {column_name} = ? WHERE login = ?", (subject, tutlogin))
+
+        connection.commit()
+        connection.close()
+
+    except Exception as e:
+        print(f"Произошла ошибка - {e}")
+        raise e
+
+def edittutbio(bio, tutlogin):
+    try:
+        connection = sqlite3.connect('basa.db')
+        cursor = connection.cursor()
+        
+        cursor.execute("UPDATE tutors SET bio = ? WHERE login = ?", (bio, tutlogin))
+
+        connection.commit()
+        connection.close()
+
+    except Exception as e:
+        print(f"Произошла ошибка - {e}")
+        raise e
