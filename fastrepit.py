@@ -368,12 +368,16 @@ def studprofile(request: Request):
         studfirst_name = studinfo[0]
         studlast_name = studinfo[1]
         grade = studinfo[3]
+        bio = studinfo[4]
             
         homework_colvo = getstudhwcolvo(name)
 
         completed_homeworks = getstudcompletedhwcolvo(name)
         
         tutor_count = gettutorcount(name)
+
+        if bio is None or bio == "":
+            bio = "Всем привет - я использую RepitHub"
 
         with open("templates/studprofile.html", "r", encoding = "utf-8") as f:
             content = verstkaprofile(f.read(), name, studfirst_name, studlast_name)
@@ -384,6 +388,7 @@ def studprofile(request: Request):
             content = content.replace("{{ avg_grade }}", '🚧')
             content = content.replace("{{ subject }}", '🚧')
             content = content.replace("{{ subject_percentile }}", '🚧')
+            content = content.replace("{{ bio }}", bio)
 
         return HTMLResponse(content=content)
 
@@ -415,7 +420,7 @@ def profiletut(request: Request):
 
         profiletutsubjecttemplate = ""
 
-        if bio is None:
+        if bio is None or bio == "":
             bio = "Всем привет - я использую RepitHub"
 
         for tutsubject in tutsubjects:
@@ -550,9 +555,48 @@ def deletehw(request: Request, title: str = Form(...)):
 
 @app.get("/edittutprofile")
 def edittutprofile(request: Request):
-    with open('templates/edittutprofile.html', 'r', encoding='utf-8') as f:
-        content = f.read()
-    return HTMLResponse(content=content)
+    try:
+        name, user_type = get_current_user(request)
+        if user_type != "tutor":
+            return RedirectResponse(url="/login", status_code=303)
+
+    except HTTPException:
+        return RedirectResponse(url="/login", status_code=303)
+    try:
+        tutorinfo = gettutorinfo(name)
+        tutfirst_name = tutorinfo[0]
+        tutlast_name = tutorinfo[1]
+
+        with open('templates/edittutprofile.html', 'r', encoding='utf-8') as f:
+            content = verstkaprofile(f.read(), name, tutfirst_name, tutlast_name)
+        return HTMLResponse(content=content)
+
+    except Exception as e:
+        print(f"Произошла ошибка - {e}")
+        return RedirectResponse(url="/login", status_code=303)
+
+
+@app.get("/editstudprofile")
+def edittutprofile(request: Request):
+    try:
+        name, user_type = get_current_user(request)
+        if user_type != "student":
+            return RedirectResponse(url="/login", status_code=303)
+
+    except HTTPException:
+        return RedirectResponse(url="/login", status_code=303)
+    try:
+        studinfo = getstudinfo(name)
+        studfirst_name = studinfo[0]
+        studlast_name = studinfo[1]
+
+        with open('templates/editstudprofile.html', 'r', encoding='utf-8') as f:
+            content = verstkaprofile(f.read(), name, studfirst_name, studlast_name)
+        return HTMLResponse(content=content)
+    
+    except Exception as e:
+        print(f"Произошла ошибка - {e}")
+        return RedirectResponse(url="/login", status_code=303)
 
 
 
@@ -581,7 +625,7 @@ def logout():
 
 
 @app.post("/updatetutbasic")
-def update_basic(request: Request, first_name: str = Form(...), last_name: str = Form(...), experience: int = Form(...)):
+def updatetutbasic(request: Request, first_name: str = Form(...), last_name: str = Form(...), experience: int = Form(...)):
     try:
         name, user_type = get_current_user(request)
 
@@ -626,7 +670,7 @@ async def updatetutsubjects(request: Request):
         return RedirectResponse(url="/login", status_code=303)
 
 @app.post("/updatetutbio")
-def update_tut_bio(request: Request, bio: str = Form("")):
+def updatetutbio(request: Request, bio: str = Form("")):
     try:
         name, user_type = get_current_user(request)
 
@@ -641,6 +685,49 @@ def update_tut_bio(request: Request, bio: str = Form("")):
         edittutbio(bio, name)
 
         return RedirectResponse(url="/profiletut", status_code=303)
+        
+    except Exception as e:
+        print(f"Произошла ошибка - {e}")
+        return RedirectResponse(url="/login", status_code=303)
+
+
+@app.post("/updatestudbasic")
+def updatestudbasic(request: Request, first_name: str = Form(...), last_name: str = Form(...), grade: int = Form(...)):
+    try:
+        name, user_type = get_current_user(request)
+
+        if user_type != "student":
+            return RedirectResponse(url="/login", status_code=303)
+
+    except HTTPException:
+        return RedirectResponse(url="/login", status_code=303)
+
+    try:
+
+        editstudbasic(first_name, last_name, grade, name)
+
+        return RedirectResponse(url="/profile", status_code=303)
+        
+    except Exception as e:
+        print(f"Произошла ошибка - {e}")
+        return RedirectResponse(url="/login", status_code=303)
+
+@app.post("/updatestudbio")
+def updatetutbio(request: Request, bio: str = Form("")):
+    try:
+        name, user_type = get_current_user(request)
+
+        if user_type != "student":
+            return RedirectResponse(url="/login", status_code=303)
+
+    except HTTPException:
+        return RedirectResponse(url="/login", status_code=303)
+
+    try:
+
+        editstudbio(bio, name)
+
+        return RedirectResponse(url="/profile", status_code=303)
         
     except Exception as e:
         print(f"Произошла ошибка - {e}")

@@ -199,7 +199,7 @@
             display: flex;
             align-items: flex-start;
             gap: 30px;
-            margin-bottom: 40px;
+            margin-bottom: 30px;
             background: linear-gradient(135deg, var(--white) 0%, var(--background-light) 100%);
             border-radius: 20px;
             padding: 30px;
@@ -271,6 +271,7 @@
         .profile-stats {
             display: flex;
             gap: 30px;
+            margin-bottom: 20px;
         }
 
         .stat-value {
@@ -283,6 +284,63 @@
         .stat-label {
             color: var(--text-gray);
             font-size: 14px;
+        }
+
+        /* Стили для блока биографии */
+        .bio-section {
+            margin-bottom: 30px;
+            padding: 30px;
+            background: linear-gradient(135deg, var(--white) 0%, var(--background-light) 100%);
+            border-radius: 20px;
+            border: 2px solid var(--border-light);
+            box-shadow: 0 5px 20px rgba(107, 142, 35, 0.1);
+        }
+        
+        .bio-title {
+            color: var(--primary-color);
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .bio-content {
+            color: var(--text-dark);
+            line-height: 1.7;
+            font-size: 16px;
+            padding: 20px;
+            background: var(--white);
+            border-radius: 15px;
+            border: 1px solid var(--border-light);
+            min-height: 120px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .bio-content.empty {
+            color: var(--text-gray);
+            font-style: italic;
+            background: var(--background-light);
+        }
+        
+        .bio-content::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        .bio-content::-webkit-scrollbar-track {
+            background: var(--border-light);
+            border-radius: 4px;
+        }
+        
+        .bio-content::-webkit-scrollbar-thumb {
+            background: var(--primary-light);
+            border-radius: 4px;
+        }
+        
+        .bio-content::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-color);
         }
 
         .info-grid {
@@ -363,6 +421,51 @@
             gap: 15px;
             margin-top: 30px;
             justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .action-card {
+            background: var(--white);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+            border: 2px solid var(--border-light);
+            transition: all 0.3s ease;
+            text-align: center;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .action-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(107, 142, 35, 0.15);
+            border-color: var(--primary-color);
+        }
+
+        .action-icon {
+            font-size: 40px;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .action-title {
+            color: var(--primary-color);
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .action-description {
+            color: var(--text-gray);
+            font-size: 14px;
+            line-height: 1.4;
         }
 
         .logout-section {
@@ -403,6 +506,23 @@
             .action-buttons {
                 flex-direction: column;
             }
+            
+            .quick-actions {
+                grid-template-columns: 1fr;
+            }
+            
+            .bio-section {
+                padding: 20px;
+            }
+            
+            .bio-title {
+                font-size: 20px;
+            }
+            
+            .bio-content {
+                padding: 15px;
+                font-size: 14px;
+            }
         }
 
         @media (max-width: 480px) {
@@ -427,6 +547,20 @@
             .edit-profile-btn {
                 padding: 5px 10px;
                 font-size: 11px;
+            }
+            
+            .bio-section {
+                padding: 15px;
+            }
+            
+            .bio-title {
+                font-size: 18px;
+            }
+            
+            .bio-content {
+                padding: 12px;
+                font-size: 14px;
+                max-height: 200px;
             }
         }
     </style>
@@ -490,47 +624,29 @@
             </div>
         </div>
 
-        <div class="info-grid">
-            <div class="card">
-                <h2 class="card-title">
-                    <span class="card-title-icon">👤</span>
-                    Личная информация
-                </h2>
-                <div class="info-list">
-                    <div class="info-item">
-                        <span class="info-label">Имя</span>
-                        <span class="info-value">{{ first_name }}</span>
-                    </div>
-                    <div class="info-item">
-                        <span class="info-label">Фамилия</span>
-                        <span class="info-value">{{ last_name }}</span>
-                    </div>
-                    <div class="info-item">
-                        <span class="info-label">Класс</span>
-                        <span class="info-value">{{ grade }} класс</span>
-                    </div>
-                </div>
+        <!-- Блок "О себе" -->
+        <div class="bio-section">
+            <div class="bio-title">
+                📝 О себе
             </div>
-
-            <div class="card">
-                <h2 class="card-title">
-                    <span class="card-title-icon">📊</span>
-                    Успеваемость
-                </h2>
-                <div class="info-list">
-                    <div class="progress-item">
-                        <div class="progress-header">
-                            <span class="progress-subject">{{ subject }}</span>
-                            <span class="progress-percent">{{ subject_percentile }}%</span>
-                        </div>
-                        <div class="progress-bar">
-                            <div class="progress-fill" style="width: 70%"></div>
-                        </div>
-                    </div>
-                </div>
+            <div class="bio-content {% if not bio %}empty{% endif %}">
+                {{ bio }}
             </div>
         </div>
 
+        <div class="quick-actions">
+            <a href="/grades" class="action-card">
+                <span class="action-icon">📊</span>
+                <div class="action-title">Ведомость оценок</div>
+                <div class="action-description">Просмотр ваших оценок и успеваемости по всем предметам</div>
+            </a>
+            
+            <a href="/achievements" class="action-card">
+                <span class="action-icon">🏆</span>
+                <div class="action-title">Достижения</div>
+                <div class="action-description">Ваши учебные достижения и награды</div>
+            </a>
+        </div>
         <div class="logout-section">
             <a href="/logout" class="btn btn-danger">
                 Выйти из профиля

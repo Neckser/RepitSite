@@ -207,14 +207,15 @@ def getstudinfo(studlogin):
         connection = sqlite3.connect('basa.db')
         cursor = connection.cursor()
 
-        cursor.execute("SELECT first_name, last_name, student_id, grade FROM students WHERE login = ?", (studlogin,))
+        cursor.execute("SELECT first_name, last_name, student_id, grade, bio FROM students WHERE login = ?", (studlogin,))
         res = cursor.fetchone()
         if res:
             studfirst_name = res[0]
             studlast_name = res[1]
             student_id = res[2]
             grade = res[3]
-            return [studfirst_name, studlast_name, student_id, grade]
+            bio = res[4]
+            return [studfirst_name, studlast_name, student_id, grade, bio]
         else:
             return None
         
@@ -466,6 +467,9 @@ def edittutbasic(studfirst_name, studlast_name, experience, tutlogin):
         print(f"Произошла ошибка - {e}")
         raise e
 
+    finally:
+        connection.close()
+
 def eduttutsubjects(subjects, tutlogin):
     try:
         connection = sqlite3.connect('basa.db')
@@ -481,11 +485,13 @@ def eduttutsubjects(subjects, tutlogin):
                 cursor.execute(f"UPDATE tutors SET {column_name} = ? WHERE login = ?", (subject, tutlogin))
 
         connection.commit()
-        connection.close()
 
     except Exception as e:
         print(f"Произошла ошибка - {e}")
         raise e
+
+    finally:
+        connection.close()
 
 def edittutbio(bio, tutlogin):
     try:
@@ -495,8 +501,43 @@ def edittutbio(bio, tutlogin):
         cursor.execute("UPDATE tutors SET bio = ? WHERE login = ?", (bio, tutlogin))
 
         connection.commit()
-        connection.close()
 
     except Exception as e:
         print(f"Произошла ошибка - {e}")
         raise e
+
+    finally:
+        connection.close()
+
+def editstudbasic(tutfirst_name, tutlast_name, grade, studlogin):
+    try:
+        connection = sqlite3.connect('basa.db')
+        cursor = connection.cursor()
+        
+        cursor.execute("UPDATE students SET first_name = ?, last_name = ?, grade = ? WHERE login = ?", (tutfirst_name, tutlast_name, grade, studlogin))
+
+        connection.commit()
+    
+    except Exception as e:
+        print(f"Произошла ошибка - {e}")
+        raise e
+
+    finally:
+        connection.close()
+
+
+def editstudbio(bio, studlogin):
+    try:
+        connection = sqlite3.connect('basa.db')
+        cursor = connection.cursor()
+        
+        cursor.execute("UPDATE students SET bio = ? WHERE login = ?", (bio, studlogin))
+
+        connection.commit()
+
+    except Exception as e:
+        print(f"Произошла ошибка - {e}")
+        raise e
+
+    finally:
+        connection.close()

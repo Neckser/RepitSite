@@ -10,6 +10,7 @@ def init_database():
             first_name TEXT NOT NULL,
             last_name TEXT NOT NULL,
             grade INTEGER NOT NULL,
+            bio TEXT,
             login TEXT UNIQUE NOT NULL,
             password TEXT NOT NULL,
             registration_date DATETIME DEFAULT CURRENT_TIMESTAMP
