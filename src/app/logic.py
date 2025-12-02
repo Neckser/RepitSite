@@ -2,6 +2,8 @@ import sqlite3
 import random
 from datetime import datetime
 
+DB_PATH = '../../data/basa.db'
+
 def create_id():
     return random.randint(1000000, 100000000000000)
 
@@ -32,7 +34,7 @@ def gethwstatus(deadline):
     
 def updatehwstatus():
     try:
-        connection = sqlite3.connect('basa.db')
+        connection = sqlite3.connect(DB_PATH)
         cursor = connection.cursor()
         
         cursor.execute('''UPDATE homeworks SET status = 'Завершено' WHERE deadline < datetime('now') AND status != 'Завершено' ''')
@@ -47,7 +49,7 @@ def updatehwstatus():
 
 def studregister(studfirst_name, studlast_name, grade, studlogin, password):
     try:
-        connection = sqlite3.connect('basa.db')
+        connection = sqlite3.connect(DB_PATH)
         cursor = connection.cursor()
 
         cursor.execute("INSERT INTO students (student_id, first_name, last_name, grade, login, password) VALUES (?, ?, ?, ?, ?, ?)", (create_id(), studfirst_name, studlast_name, grade, studlogin, password))
@@ -62,7 +64,7 @@ def studregister(studfirst_name, studlast_name, grade, studlogin, password):
 
 def tutregister(tutfirst_name, tutlast_name, subject_math, subject_physics, subject_chemistry, subject_computer, subject_russian, subject_english, subject_german, subject_french, subject_history, subject_social, subject_literature, subject_biology, subject_geography, subject_economics, subject_art, subject_music, experience, tutlogin, password):
     try:
-        connection = sqlite3.connect('basa.db')
+        connection = sqlite3.connect(DB_PATH)
         cursor = connection.cursor()
 
         cursor.execute("INSERT INTO tutors (tutor_id, first_name, last_name, subject_math, subject_physics, subject_chemistry, subject_computer, subject_russian, subject_english, subject_german, subject_french, subject_history, subject_social, subject_literature, subject_biology, subject_geography, subject_economics, subject_art, subject_music, experience, login, password) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", (create_id(), tutfirst_name, tutlast_name, subject_math, subject_physics, subject_chemistry, subject_computer, subject_russian, subject_english, subject_german, subject_french, subject_history, subject_social, subject_literature, subject_biology, subject_geography, subject_economics, subject_art, subject_music, experience, tutlogin, password))
@@ -77,7 +79,7 @@ def tutregister(tutfirst_name, tutlast_name, subject_math, subject_physics, subj
 
 def checkstudreg(login, password):
     try:
-        connection = sqlite3.connect('basa.db')
+        connection = sqlite3.connect(DB_PATH)
         cursor = connection.cursor()
 
         cursor.execute("SELECT * FROM students WHERE login = ? AND password = ?", (login, password))
@@ -96,7 +98,7 @@ def checkstudreg(login, password):
 
 def checktutreg(login, password):
     try:
-        connection = sqlite3.connect('basa.db')
+        connection = sqlite3.connect(DB_PATH)
         cursor = connection.cursor()
 
         cursor.execute("SELECT * FROM tutors WHERE login = ? AND password = ?", (login, password))
@@ -116,7 +118,7 @@ def checktutreg(login, password):
 
 def gettutsubject(tutlogin):
     try:
-        connection = sqlite3.connect('basa.db')
+        connection = sqlite3.connect(DB_PATH)
         cursor = connection.cursor()
     
         cursor.execute('''SELECT subject_math, subject_physics, subject_chemistry, subject_computer, subject_russian, subject_english, subject_german, subject_french, subject_history, subject_social, subject_literature, subject_biology, subject_geography, subject_economics, subject_art, subject_music FROM tutors WHERE login = ?''', (tutlogin,))
@@ -138,7 +140,7 @@ def gettutsubject(tutlogin):
 
 def gettutorinfo(tutlogin):
     try:
-        connection = sqlite3.connect('basa.db')
+        connection = sqlite3.connect(DB_PATH)
         cursor = connection.cursor()
 
         cursor.execute("SELECT first_name, last_name, tutor_id, experience, bio FROM tutors WHERE login = ?", (tutlogin,))
@@ -162,7 +164,7 @@ def gettutorinfo(tutlogin):
 
 def gettutinfobyid(tutor_id):
     try:
-        connection = sqlite3.connect('basa.db')
+        connection = sqlite3.connect(DB_PATH)
         cursor = connection.cursor()
 
         cursor.execute("SELECT first_name, last_name, login, experience FROM tutors WHERE tutor_id = ?", (tutor_id,))
@@ -185,7 +187,7 @@ def gettutinfobyid(tutor_id):
 
 def checktutexistsbyid(tutor_id):
     try:
-        connection = sqlite3.connect('basa.db')
+        connection = sqlite3.connect(DB_PATH)
         cursor = connection.cursor()
 
         cursor.execute("SELECT tutor_id FROM tutors WHERE tutor_id = ?", (tutor_id,))
@@ -204,7 +206,7 @@ def checktutexistsbyid(tutor_id):
     
 def getstudinfo(studlogin):
     try:
-        connection = sqlite3.connect('basa.db')
+        connection = sqlite3.connect(DB_PATH)
         cursor = connection.cursor()
 
         cursor.execute("SELECT first_name, last_name, student_id, grade, bio FROM students WHERE login = ?", (studlogin,))
@@ -228,7 +230,7 @@ def getstudinfo(studlogin):
 
 def getstudinfobyid(student_id):
     try:
-        connection = sqlite3.connect('basa.db')
+        connection = sqlite3.connect(DB_PATH)
         cursor = connection.cursor()
 
         cursor.execute("SELECT first_name, last_name, login, grade FROM students WHERE student_id = ?", (student_id,))
@@ -251,7 +253,7 @@ def getstudinfobyid(student_id):
 
 def getstudhwcolvo(studlogin):
     try:
-        connection = sqlite3.connect('basa.db')
+        connection = sqlite3.connect(DB_PATH)
         cursor = connection.cursor()
         cursor.execute('''SELECT COUNT(*) FROM homeworks h JOIN students s ON h.student_id = s.student_id WHERE s.login = ?''', (studlogin,))
         res = cursor.fetchone()
@@ -267,7 +269,7 @@ def getstudhwcolvo(studlogin):
 
 def gettutorcount(studlogin):
     try:
-        connection = sqlite3.connect('basa.db')
+        connection = sqlite3.connect(DB_PATH)
         cursor = connection.cursor()
 
         cursor.execute('''SELECT COUNT(*) FROM student_tutors st JOIN students s ON st.student_id = s.student_id WHERE s.login = ?''', (studlogin,))
@@ -284,7 +286,7 @@ def gettutorcount(studlogin):
 
 def getstudhw(student_id):
     try:
-        connection = sqlite3.connect('basa.db')
+        connection = sqlite3.connect(DB_PATH)
         cursor = connection.cursor()
 
         cursor.execute(''' SELECT h.title, h.description, h.deadline, h.status, t.first_name, t.last_name, h.subject FROM homeworks h JOIN tutors t ON h.tutor_id = t.tutor_id WHERE h.student_id = ? ORDER BY h.deadline ASC''', (student_id,))
@@ -303,7 +305,7 @@ def getstudhw(student_id):
 
 def gettuthw(tutor_id):
     try:
-        connection = sqlite3.connect('basa.db')
+        connection = sqlite3.connect(DB_PATH)
         cursor = connection.cursor()
 
         cursor.execute('''SELECT h.title, h.description, h.deadline, h.status, h.subject FROM homeworks h JOIN tutors t ON h.tutor_id = t.tutor_id WHERE h.tutor_id = ? ORDER BY h.deadline ASC''', (tutor_id,))
@@ -319,7 +321,7 @@ def gettuthw(tutor_id):
 
 def getstudcompletedhwcolvo(studlogin):
     try:
-        connection = sqlite3.connect('basa.db')
+        connection = sqlite3.connect(DB_PATH)
         cursor = connection.cursor()
         cursor.execute('''SELECT COUNT(*) FROM homeworks h JOIN students s ON h.student_id = s.student_id WHERE s.login = ? AND h.status = "Завершено"''', (studlogin,))
         res = cursor.fetchone()
@@ -336,7 +338,7 @@ def getstudcompletedhwcolvo(studlogin):
 
 def gettutlist(studlogin):
     try:
-        connection = sqlite3.connect('basa.db')
+        connection = sqlite3.connect(DB_PATH)
         cursor = connection.cursor()
         cursor.execute('''SELECT t.tutor_id, t.first_name, t.last_name, t.experience, t.login FROM tutors t INNER JOIN student_tutors st ON t.tutor_id = st.tutor_id INNER JOIN students s ON st.student_id = s.student_id WHERE s.login = ?''', (studlogin,))
         tutlist = cursor.fetchall()
@@ -351,7 +353,7 @@ def gettutlist(studlogin):
 
 def addtutor(student_id, tutor_id):
     try:
-        connection = sqlite3.connect('basa.db')
+        connection = sqlite3.connect(DB_PATH)
         cursor = connection.cursor()
 
         cursor.execute('''SELECT 1 FROM student_tutors WHERE student_id = ? AND tutor_id = ?''', (student_id, tutor_id))
@@ -372,7 +374,7 @@ def addtutor(student_id, tutor_id):
 
 def getstudcolvo(tutlogin):
     try:
-        connection = sqlite3.connect('basa.db')
+        connection = sqlite3.connect(DB_PATH)
         cursor = connection.cursor()
 
         cursor.execute('''SELECT COUNT(*) FROM student_tutors st JOIN tutors t ON st.tutor_id = t.tutor_id WHERE t.login = ?''', (tutlogin,))
@@ -389,7 +391,7 @@ def getstudcolvo(tutlogin):
     
 def gettuthwcolvo(tutlogin):
     try:
-        connection = sqlite3.connect('basa.db')
+        connection = sqlite3.connect(DB_PATH)
         cursor = connection.cursor()
 
         cursor.execute('''SELECT COUNT(*) FROM homeworks st JOIN tutors t ON st.tutor_id = t.tutor_id WHERE t.login = ?''', (tutlogin,))
@@ -407,7 +409,7 @@ def gettuthwcolvo(tutlogin):
 
 def getstudents(tutlogin):
     try:
-        connection = sqlite3.connect('basa.db')
+        connection = sqlite3.connect(DB_PATH)
         cursor = connection.cursor()
         
         cursor.execute('''SELECT s.student_id, s.first_name,  s.last_name,  s.login, s.registration_date, s.grade FROM students s INNER JOIN student_tutors st ON s.student_id = st.student_id INNER JOIN tutors t ON st.tutor_id = t.tutor_id WHERE t.login = ?''', (tutlogin,))
@@ -423,7 +425,7 @@ def getstudents(tutlogin):
 
 def addhw(student_id, tutor_id, title, description, subject, deadline):
     try:
-        connection = sqlite3.connect('basa.db')
+        connection = sqlite3.connect(DB_PATH)
         cursor = connection.cursor()
 
         status = gethwstatus(deadline)
@@ -440,7 +442,7 @@ def addhw(student_id, tutor_id, title, description, subject, deadline):
 
 def delhw(title):
     try:
-        connection = sqlite3.connect('basa.db')
+        connection = sqlite3.connect(DB_PATH)
         cursor = connection.cursor()
         
         cursor.execute('''DELETE FROM homeworks WHERE title = ?''', (title,))
@@ -455,7 +457,7 @@ def delhw(title):
 
 def edittutbasic(studfirst_name, studlast_name, experience, tutlogin):
     try:
-        connection = sqlite3.connect('basa.db')
+        connection = sqlite3.connect(DB_PATH)
         cursor = connection.cursor()
         
         cursor.execute("UPDATE tutors SET first_name = ?, last_name = ?, experience = ? WHERE login = ?", (studfirst_name, studlast_name, experience, tutlogin))
@@ -472,7 +474,7 @@ def edittutbasic(studfirst_name, studlast_name, experience, tutlogin):
 
 def eduttutsubjects(subjects, tutlogin):
     try:
-        connection = sqlite3.connect('basa.db')
+        connection = sqlite3.connect(DB_PATH)
         cursor = connection.cursor()
 
         cursor.execute('''UPDATE tutors SET subject_math = NULL, subject_physics = NULL, subject_chemistry = NULL, subject_computer = NULL, subject_russian = NULL, subject_english = NULL, subject_german = NULL, subject_french = NULL, subject_history = NULL, subject_social = NULL, subject_literature = NULL, subject_biology = NULL, subject_geography = NULL, subject_economics = NULL, subject_art = NULL, subject_music = NULL WHERE login = ?''', (tutlogin,))
@@ -495,7 +497,7 @@ def eduttutsubjects(subjects, tutlogin):
 
 def edittutbio(bio, tutlogin):
     try:
-        connection = sqlite3.connect('basa.db')
+        connection = sqlite3.connect(DB_PATH)
         cursor = connection.cursor()
         
         cursor.execute("UPDATE tutors SET bio = ? WHERE login = ?", (bio, tutlogin))
@@ -511,7 +513,7 @@ def edittutbio(bio, tutlogin):
 
 def editstudbasic(tutfirst_name, tutlast_name, grade, studlogin):
     try:
-        connection = sqlite3.connect('basa.db')
+        connection = sqlite3.connect(DB_PATH)
         cursor = connection.cursor()
         
         cursor.execute("UPDATE students SET first_name = ?, last_name = ?, grade = ? WHERE login = ?", (tutfirst_name, tutlast_name, grade, studlogin))
@@ -528,7 +530,7 @@ def editstudbasic(tutfirst_name, tutlast_name, grade, studlogin):
 
 def editstudbio(bio, studlogin):
     try:
-        connection = sqlite3.connect('basa.db')
+        connection = sqlite3.connect(DB_PATH)
         cursor = connection.cursor()
         
         cursor.execute("UPDATE students SET bio = ? WHERE login = ?", (bio, studlogin))

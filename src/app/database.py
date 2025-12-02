@@ -1,7 +1,9 @@
 import sqlite3
 
+DB_PATH = '../../data/basa.db'
+
 def init_database():
-    connection = sqlite3.connect('basa.db')
+    connection = sqlite3.connect(DB_PATH)
     cursor = connection.cursor()
 
     cursor.execute('''

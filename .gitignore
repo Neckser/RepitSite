@@ -1,5 +1,12 @@
 __pycache__
-basa.db
 .DS_Store
 nohup.out
 .vscode
+
+data/
+*.db
+*.sqlite3
+
+.env
+.env.local
+.env.*.local

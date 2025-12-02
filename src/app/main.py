@@ -615,7 +615,7 @@ def error500(request: Request, exc):
 
 @app.get("/favicon.ico")
 def favicon():
-    return FileResponse("favicon.ico")
+    return FileResponse("static/favicon.ico")
 
 @app.get("/logout")
 def logout():
