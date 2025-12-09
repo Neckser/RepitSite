@@ -15,13 +15,13 @@ def startup_event():
 
 @app.get("/")
 def startlog():
-    with open("templates/login.html", "r", encoding='utf-8') as file:
+    with open("templates/auth/login.html", "r", encoding='utf-8') as file:
         content = file.read()
     return HTMLResponse(content=content)
 
 @app.get("/login")
 def get_login():
-    with open("templates/login.html", "r", encoding='utf-8') as file:
+    with open("templates/auth/login.html", "r", encoding='utf-8') as file:
         content = file.read()
     return HTMLResponse(content=content)
 
@@ -40,12 +40,12 @@ def login(login: str = Form(...), password: str = Form(...)):
             )
             return response
         else:
-            with open("templates/loginstudfailed.html", "r", encoding='utf-8') as file:
+            with open("templates/auth/loginstudfailed.html", "r", encoding='utf-8') as file:
                 content = file.read()
             return HTMLResponse(content=content)
     except Exception as e:
         print(f"Произошла ошибка - {e}")
-        with open("templates/loginstudfailed.html", "r", encoding='utf-8') as file:
+        with open("templates/auth/loginstudfailed.html", "r", encoding='utf-8') as file:
             content = file.read()
         return HTMLResponse(content=content)
 
@@ -66,13 +66,13 @@ def logintut(login: str = Form(...), password: str = Form(...)):
             )
             return response
         else:
-            with open("templates/loginrepfailed.html", "r", encoding='utf-8') as file:
+            with open("templates/auth/loginrepfailed.html", "r", encoding='utf-8') as file:
                 content = file.read()
             return HTMLResponse(content=content)
         
     except Exception as e:
         print(f"Произошла ошибка - {e}")
-        with open("templates/loginrepfailed.html", "r", encoding='utf-8') as file:
+        with open("templates/auth/loginrepfailed.html", "r", encoding='utf-8') as file:
             content = file.read()
         return HTMLResponse(content=content)
 
@@ -80,7 +80,7 @@ def logintut(login: str = Form(...), password: str = Form(...)):
 
 @app.get("/register")
 def get_registration():
-    with open('templates/regstud.html', 'r', encoding='utf-8') as file:
+    with open('templates/register/regstud.html', 'r', encoding='utf-8') as file:
         content = file.read()
     return HTMLResponse(content=content)
 
@@ -98,7 +98,7 @@ def post_registration(first_name: str = Form(), last_name: str = Form(), grade: 
 
 @app.get("/registertut")
 def get_registertut():
-    with open('templates/regtut.html', 'r', encoding='utf-8') as file:
+    with open('templates/register/regtut.html', 'r', encoding='utf-8') as file:
         content = file.read()
     return HTMLResponse(content=content)
 
@@ -151,7 +151,7 @@ def home(request: Request):
 
         hwtemplate = ""
 
-        with open('templates/hwcard.html', 'r', encoding='utf-8') as f:
+        with open('templates/cards/hwcard.html', 'r', encoding='utf-8') as f:
             a = f.read()
 
         studinfo = getstudinfo(name)
@@ -178,9 +178,9 @@ def home(request: Request):
                 
         
         else:
-            with open('templates/nohw.html', 'r', encoding="utf-8") as f:
+            with open('templates/cards/nohw.html', 'r', encoding="utf-8") as f:
                 hwtemplate = f.read() 
-        with open("templates/mainpage.html", "r", encoding = "utf-8") as f:
+        with open("templates/mainpages/mainpage.html", "r", encoding = "utf-8") as f:
             content = verstkaprofile(f.read(), name, first_name, last_name)
         content = content.replace("{{ hwtemplate }}", hwtemplate)
         return HTMLResponse(content=content)
@@ -203,7 +203,7 @@ def get_registertut(request: Request):
     try:
         studtemplate = ""
 
-        with open('templates/studcard.html', 'r', encoding='utf-8') as f:
+        with open('templates/cards/studcard.html', 'r', encoding='utf-8') as f:
             a = f.read()
 
         tutinfo = gettutorinfo(name)
@@ -223,7 +223,7 @@ def get_registertut(request: Request):
             studtemplate = studtemplate.replace("{{ grade }}", str(student[5]))
             studtemplate = studtemplate.replace("{{ avatarstud }}", str(student[1][0] + student[2][0]))
 
-        with open('templates/hometut.html', 'r', encoding='utf-8') as file:
+        with open('templates/mainpages/hometut.html', 'r', encoding='utf-8') as file:
             content = verstkaprofile(file.read(), name, tutfirst_name, tutlast_name)
         content = content.replace("{{ student_colvo }}", str(student_colvo))
         content = content.replace("{{ homework_colvo }}", str(tuthomework_colvo))
@@ -248,7 +248,7 @@ def tutlist(request: Request):
     try:
         tuttemplate = ""
 
-        with open('templates/tutcards.html', 'r', encoding='utf-8') as f:
+        with open('templates/cards/tutcards.html', 'r', encoding='utf-8') as f:
             a = f.read()
 
         studinfo = getstudinfo(name)
@@ -280,7 +280,7 @@ def tutlist(request: Request):
             tuttemplate = tuttemplate.replace("{{ lesson_count }}", '🚧')
             tuttemplate = tuttemplate.replace("{{ rating }}", '🚧')
 
-        with open('templates/tutlist.html', 'r', encoding="utf-8") as f:
+        with open('templates/findtut/tutlist.html', 'r', encoding="utf-8") as f:
             content = verstkaprofile(f.read(), name, studfirst_name, studlast_name)
 
         content = content.replace("{{ tuttemplate }}", tuttemplate)
@@ -305,7 +305,7 @@ def findtut(request: Request):
         studfirst_name = studinfo[0]
         studlast_name = studinfo[1]
 
-        with open("templates/findtut.html", "r", encoding = "utf-8") as f:
+        with open("templates/findtut/findtut.html", "r", encoding = "utf-8") as f:
             content = verstkaprofile(f.read(), name, studfirst_name, studlast_name)
             return HTMLResponse(content=content)
     
@@ -330,19 +330,19 @@ def addtut(request: Request, tutor_code: str = Form(...)):
         if studinfo:
             student_id = studinfo[2]
         else:
-            with open("templates/findtutstudidfailed.html", "r", encoding='utf-8') as file:
+            with open("templates/findtut/findtutstudidfailed.html", "r", encoding='utf-8') as file:
                 content = verstka(file.read(), name)
             return HTMLResponse(content=content) 
         
         if not(checktutexistsbyid(tutor_code)):
-            with open("templates/findtutidfailed.html", "r", encoding='utf-8') as file:
+            with open("templates/findtut/findtutidfailed.html", "r", encoding='utf-8') as file:
                 content = verstka(file.read(), name)
             return HTMLResponse(content=content) 
 
         if checktutexistsbyid(tutor_code):
             addtutor(student_id, tutor_code)
         else:
-            with open("templates/findtutidfailed.html", "r", encoding='utf-8') as file:
+            with open("templates/findtut/findtutidfailed.html", "r", encoding='utf-8') as file:
                 content = verstka(file.read(), name)
             return HTMLResponse(content=content)
         
@@ -379,7 +379,7 @@ def studprofile(request: Request):
         if bio is None or bio == "":
             bio = "Всем привет - я использую RepitHub"
 
-        with open("templates/studprofile.html", "r", encoding = "utf-8") as f:
+        with open("templates/profiles/studprofile.html", "r", encoding = "utf-8") as f:
             content = verstkaprofile(f.read(), name, studfirst_name, studlast_name)
             content = content.replace("{{ grade }}", str(grade))
             content = content.replace("{{ tutors_count }}", str(tutor_count))
@@ -426,7 +426,7 @@ def profiletut(request: Request):
         for tutsubject in tutsubjects:
                 profiletutsubjecttemplate += f'''<span class="subject-badge {tutsubject}">{tutsubject}</span>'''
 
-        with open('templates/profiletut.html', 'r', encoding='utf-8') as f:
+        with open('templates/profiles/profiletut.html', 'r', encoding='utf-8') as f:
             content = verstkaprofile(f.read(), name, tutfirst_name, tutlast_name)
         content = content.replace("{{ experience }}", str(experience))
         content = content.replace("{{ student_colvo }}", str(student_colvo))
@@ -458,7 +458,7 @@ def homeworkstut(request: Request):
 
         hwtemplate = ""
 
-        with open('templates/hwtutcard.html', 'r', encoding='utf-8') as f:
+        with open('templates/cards/hwtutcard.html', 'r', encoding='utf-8') as f:
             a = f.read()
 
         tutinfo = gettutorinfo(name)
@@ -485,7 +485,7 @@ def homeworkstut(request: Request):
                 hwtemplate = hwtemplate.replace("{{ description }}", str(hw[1]))
                 hwtemplate = hwtemplate.replace("{{ subject }}", str(hw[4]))
         
-        with open('templates/homeworkstut.html', 'r', encoding='utf-8') as f:
+        with open('templates/homeworks/homeworkstut.html', 'r', encoding='utf-8') as f:
             content = verstkaprofile(f.read(), name, tutfirst_name, tutlast_name)
         content = content.replace("{{ selectForm }}", optionTemaplate)
         content = content.replace("{{ hwtemplate }}", hwtemplate)
@@ -552,6 +552,154 @@ def deletehw(request: Request, title: str = Form(...)):
 #         content = verstka(f.read(), name)
 #     return HTMLResponse(content=content)
 
+@app.get("/studgrades")
+def studgrades(request: Request):
+    try:
+        name, user_type = get_current_user(request)
+        if user_type != "student":
+            return RedirectResponse(url="/login", status_code=303)
+
+    except HTTPException:
+        return RedirectResponse(url="/login", status_code=303)
+    
+    try:
+        avg_grade = getavggrade(name)
+        colvo_grades = getcolvogrades(name)
+        colvo_fives = getcolvofives(name)
+        
+        grades = getstrgrades(name)
+
+        studinfo = getstudinfo(name)
+        studfirst_name = studinfo[0]
+        studlast_name = studinfo[1]
+
+        grade_template = ""
+
+        with open('templates/cards/gradestr.html', 'r', encoding='utf-8') as f:
+            a = f.read()
+
+        if grades:
+            for grade in grades:
+                grade_template += a
+                grade_template = grade_template.replace("{{ subject }}", str(grade[3]))
+                grade_template = grade_template.replace("{{ grade }}", str(grade[4]))
+                grade_template = grade_template.replace("{{ date }}", str(grade[5]))
+                grade_template = grade_template.replace("{{ description }}", str(grade[6]))
+                grade_template = grade_template.replace("{{ comment }}", str(grade[7]))
+
+        with open('templates/grades/studgrades.html', 'r', encoding='utf-8') as f:
+            content = verstkaprofile(f.read(), name, studfirst_name, studlast_name)
+        content = content.replace("{{ grade_template }}", grade_template)
+        content = content.replace("{{ average_grade }}", str(avg_grade))
+        content = content.replace("{{ colvo_grades }}", str(colvo_grades))
+        content = content.replace("{{ colvo_fives }}", str(colvo_fives))
+
+        return HTMLResponse(content=content)
+    except Exception as e:
+        print(f"Произошла ошибка - {e}")
+        return RedirectResponse(url="/login", status_code=303)
+    
+
+@app.get("/tutgrades")
+def tutgrades(request: Request):
+    try:
+        name, user_type = get_current_user(request)
+        if user_type != "tutor":
+            return RedirectResponse(url="/login", status_code=303)
+
+    except HTTPException:
+        return RedirectResponse(url="/login", status_code=303)
+
+    optionTemplate = '''<select class="form-select" id="student_id" name="student_id" required>
+    <option value="">Выберите ученика</option>'''
+
+    students = getstudents(name)
+
+    if students:
+        for student in students:
+            optionTemplate += f'   <option value="{student[0]}">{student[1]} {student[2]} ({student[5]} класс)</option>'
+    optionTemplate += "</select>"
+
+    try:
+        tutorgrades = gettutorgrades(name)
+
+        a = ""
+        gradestemplate = ""
+
+        with open ('templates/cards/gradestemplate.html', 'r', encoding='utf-8') as f:
+            a = f.read()
+
+        tutinfo = gettutorinfo(name)
+        tutfirst_name = tutinfo[0]
+        tutlast_name = tutinfo[1]
+        
+
+        if tutorgrades:
+            for grade in tutorgrades:
+                gradestemplate += a
+                studinfo = getstudinfobyid(grade[1])
+                gradestemplate = gradestemplate.replace("{{ first_name }}", studinfo[0])
+                gradestemplate = gradestemplate.replace("{{ last_name }}", studinfo[1])
+                gradestemplate = gradestemplate.replace("{{ grade_id }}", str(grade[0]))
+                gradestemplate = gradestemplate.replace("{{ grade }}", str(grade[3]))
+                gradestemplate = gradestemplate.replace("{{ description }}", grade[5])
+                gradestemplate = gradestemplate.replace("{{ date }}", grade[4])
+                gradestemplate = gradestemplate.replace("{{ comment }}", grade[6])
+                gradestemplate = gradestemplate.replace("{{ subject }}", grade[2])
+
+    except Exception as e:
+        print(f"Произошла ошибка - {e}")
+        return RedirectResponse(url='/login', status_code=303)
+        
+
+    with open('templates/grades/tutgrades.html', 'r', encoding='utf-8') as f:
+        content = verstkaprofile(f.read(), name, tutfirst_name, tutlast_name)
+    content = content.replace("{{ selectForm }}", optionTemplate)
+    content = content.replace("{{ gradestemplate }}", gradestemplate)
+    return HTMLResponse(content=content)
+
+@app.post('/creategrade')
+def creategrade(request: Request, student_id: str = Form(...), subject: str = Form(...), grade: str = Form(...), reason: str = Form(...), comment: str = Form(...)):
+    try:
+        name, user_type = get_current_user(request)
+        if user_type != "tutor":
+            return RedirectResponse(url="/login", status_code=303)
+
+    except HTTPException:
+        return RedirectResponse(url="/login", status_code=303)
+
+    try:
+        tutinfo = gettutorinfo(name)
+        tutor_id = tutinfo[2]
+
+        addgrade(student_id, tutor_id, subject, grade, reason, comment)
+
+    except Exception as e:
+        print(f"Произошла ошибка - {e}")
+        return RedirectResponse(url="/login", status_code=303)
+    
+    return RedirectResponse(url=f"/tutgrades", status_code=303)
+
+
+@app.post("/deletegrade")
+def deletehw(request: Request, grade_id: str = Form(...)):
+    try:
+        name, user_type = get_current_user(request)
+        if user_type != "tutor":
+            return RedirectResponse(url="/login", status_code=303)
+
+    except HTTPException:
+        return RedirectResponse(url="/login", status_code=303)
+
+    try:
+
+        delgrade(grade_id)
+
+    except Exception as e:
+        print(f"Произошла ошибка - {e}")
+        return RedirectResponse(url="/login", status_code=303)
+
+    return RedirectResponse(url=f"/tutgrades", status_code=303)
 
 @app.get("/edittutprofile")
 def edittutprofile(request: Request):
@@ -567,7 +715,7 @@ def edittutprofile(request: Request):
         tutfirst_name = tutorinfo[0]
         tutlast_name = tutorinfo[1]
 
-        with open('templates/edittutprofile.html', 'r', encoding='utf-8') as f:
+        with open('templates/profiles/edittutprofile.html', 'r', encoding='utf-8') as f:
             content = verstkaprofile(f.read(), name, tutfirst_name, tutlast_name)
         return HTMLResponse(content=content)
 
@@ -590,7 +738,7 @@ def edittutprofile(request: Request):
         studfirst_name = studinfo[0]
         studlast_name = studinfo[1]
 
-        with open('templates/editstudprofile.html', 'r', encoding='utf-8') as f:
+        with open('templates/profiles/editstudprofile.html', 'r', encoding='utf-8') as f:
             content = verstkaprofile(f.read(), name, studfirst_name, studlast_name)
         return HTMLResponse(content=content)
     
@@ -602,7 +750,7 @@ def edittutprofile(request: Request):
 
 @app.exception_handler(404)
 def error404(request: Request, exc):
-    with open('templates/error.html', 'r', encoding='utf-8') as f:
+    with open('templates/errors/error.html', 'r', encoding='utf-8') as f:
         content = f.read()
     return HTMLResponse(content=content, status_code=404)
 

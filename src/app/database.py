@@ -87,5 +87,20 @@ def init_database():
         )
     ''')
 
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS grades (
+            grade_id INTEGER PRIMARY KEY AUTOINCREMENT,
+            student_id INTEGER NOT NULL,
+            tutor_id INTEGER NOT NULL,
+            subject TEXT NOT NULL,
+            grade INTEGER NOT NULL CHECK(grade BETWEEN 2 AND 5),
+            date DATETIME DEFAULT CURRENT_TIMESTAMP,
+            description TEXT,
+            tutor_comment TEXT,
+            FOREIGN KEY (student_id) REFERENCES students(student_id) ON DELETE CASCADE,
+            FOREIGN KEY (tutor_id) REFERENCES tutors(tutor_id) ON DELETE CASCADE
+        )
+    ''')
+
     connection.commit()
     connection.close()

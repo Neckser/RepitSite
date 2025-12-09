@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Задания | RepitHub</title>
+    <title>Проставление оценок | RepitHub</title>
     <style>
         * {
             margin: 0;
@@ -52,12 +52,10 @@
         .nav-button.active {
             background-color: white;
             color: #6b8e23;
-            text-decoration: none;
         }
 
         .nav-button:hover {
             background-color: rgba(255,255,255,0.3);
-            text-decoration: none;
         }
 
         .account-widget {
@@ -74,8 +72,6 @@
 
         .account-widget:hover {
             background-color: rgba(255,255,255,0.2);
-            text-decoration: none;
-            color: white;
         }
 
         .user-avatar {
@@ -112,7 +108,7 @@
 
         .container {
             max-width: 1200px;
-            margin: 0 auto;
+            margin: 25px auto;
             padding: 30px 20px;
         }
 
@@ -343,70 +339,22 @@
             margin-bottom: 8px;
         }
         
-        .subject-badge.Математика {
-            background-color: #6b8e23;
-        }
-
-        .subject-badge.Физика {
-            background-color: #3a6ea5;
-        }
-
-        .subject-badge.Информатика {
-            background-color: #0288d1;
-        }
-
-        .subject-badge.Химия {
-            background-color: #7b1fa2;
-        }
-
-        .subject-badge.Английский {
-            background-color: #e53935;
-        }
-
-        .subject-badge.Русский {
-            background-color: #f57c00;
-        }
-
-        .subject-badge.Немецкий {
-            background-color: #43a047;
-        }
-
-        .subject-badge.Французский {
-            background-color: #5e35b1;
-        }
-
-        .subject-badge.Обществознание {
-            background-color: #5d4037;
-        }
-
-        .subject-badge.История {
-            background-color: #6d4c41;
-        }
-
-        .subject-badge.Литература {
-            background-color: #00897b;
-        }
-
-        .subject-badge.Биология {
-            background-color: #388e3c;
-        }
-
-        .subject-badge.География {
-            background-color: #0097a7;
-        }
-
-        .subject-badge.Экономика {
-            background-color: #fbc02d;
-            color: #333;
-        }
-
-        .subject-badge.ИЗО {
-            background-color: #ad1457;
-        }
-
-        .subject-badge.Музыка {
-            background-color: #8e24aa;
-        }
+        .subject-badge.Математика { background-color: #6b8e23; }
+        .subject-badge.Физика { background-color: #3a6ea5; }
+        .subject-badge.Информатика { background-color: #0288d1; }
+        .subject-badge.Химия { background-color: #7b1fa2; }
+        .subject-badge.Английский { background-color: #e53935; }
+        .subject-badge.Русский { background-color: #f57c00; }
+        .subject-badge.Немецкий { background-color: #43a047; }
+        .subject-badge.Французский { background-color: #5e35b1; }
+        .subject-badge.Обществознание { background-color: #5d4037; }
+        .subject-badge.История { background-color: #6d4c41; }
+        .subject-badge.Литература { background-color: #00897b; }
+        .subject-badge.Биология { background-color: #388e3c; }
+        .subject-badge.География { background-color: #0097a7; }
+        .subject-badge.Экономика { background-color: #fbc02d; color:#333; }
+        .subject-badge.ИЗО { background-color: #ad1457; }
+        .subject-badge.Музыка { background-color: #8e24aa; }
 
         @media (max-width: 968px) {
             .content-grid {
@@ -455,7 +403,8 @@
         <div class="nav-container">
             <div class="nav-buttons">
                 <a href="/hometut" class="nav-button">Главная</a>
-                <a href="/homeworkstut" class="nav-button active">Задания</a>
+                <a href="/homeworkstut" class="nav-button">Задания</a>
+                <a href="/tutgrades" class="nav-button active">Оценки</a>
             </div>
             
             <a href="/profiletut" class="account-widget">
@@ -474,17 +423,14 @@
 
     <div class="container">
         <div class="page-header">
-            <h1 class="page-title">Задания для учеников</h1>
+            <h1 class="page-title">Проставление оценок ученикам</h1>
         </div>
 
         <div class="content-grid">
             <div class="sidebar">
                 <div class="card">
-                    <h2 class="card-title">
-                        Новое задание
-                    </h2>
-                    <form class="assignment-form" method="POST" action="/createhw">
-                        <!--  -->
+                    <h2 class="card-title">Новая оценка</h2>
+                    <form class="assignment-form" method="POST" action="/creategrade">
                         <div class="form-group">
                             <label class="form-label" for="student_id">Ученик</label>
                             {{ selectForm }}
@@ -496,8 +442,8 @@
                                 <option value="">Выберите предмет</option>
                                 <option value="Математика">Математика</option>
                                 <option value="Физика">Физика</option>
-                                <option value="Русский язык">Русский язык</option>
-                                <option value="Английский язык">Английский язык</option>
+                                <option value="Русский">Русский</option>
+                                <option value="Английский">Английский</option>
                                 <option value="Информатика">Информатика</option>
                                 <option value="Немецкий">Немецкий</option>
                                 <option value="Французский">Французский</option>
@@ -508,46 +454,49 @@
                                 <option value="География">География</option>
                                 <option value="Экономика">Экономика</option>
                                 <option value="ИЗО">ИЗО</option>
+                                <option value="Музыка">Музыка</option>
                             </select>
                         </div>
 
                         <div class="form-group">
-                            <label class="form-label" for="title">Тема задания</label>
-                            <input type="text" class="form-input" id="title" name="title" placeholder="Введите тему задания" required>
+                            <label class="form-label" for="grade">Оценка</label>
+                            <select class="form-select" id="grade" name="grade" required>
+                                <option value="">Выберите оценку</option>
+                                <option value="5">5</option>
+                                <option value="4">4</option>
+                                <option value="3">3</option>
+                                <option value="2">2</option>
+                            </select>
                         </div>
 
                         <div class="form-group">
-                            <label class="form-label" for="deadline">Срок выполнения</label>
-                            <input type="date" class="form-input" id="deadline" name="deadline" required>
+                            <label class="form-label" for="reason">За что оценка</label>
+                            <select class="form-select" id="reason" name="reason" required>
+                                <option value="">Выберите причину</option>
+                                <option value="Домашнее задание">Домашнее задание</option>
+                                <option value="Контрольная работа">Контрольная работа</option>
+                                <option value="Работа на уроке">Работа на уроке</option>
+                                <option value="Проект">Проект</option>
+                                <option value="Эссе">Эссе</option>
+                            </select>
                         </div>
+
 
                         <div class="form-group">
-                            <label class="form-label" for="description">Описание задания</label>
-                            <textarea class="form-textarea" id="description" name="description" placeholder="Опишите задание подробно..." required></textarea>
+                            <label class="form-label" for="comment">Комментарий репетитора</label>
+                            <textarea class="form-textarea" id="comment" name="comment" placeholder="Напишите комментарий..." required></textarea>
                         </div>
 
-                        <button type="submit" class="btn btn-primary">
-                            Создать задание
-                        </button>
-                    </form>
-
-                    <form class="delete-form" method="POST" action="/deletehw">
-                        <input type="text" class="delete-input" name="title" placeholder="Напишите название удаляемого задания" required>
-                        <input type="hidden" name="name" value="{{ name }}">
-                        <button type="submit" class="btn btn-danger">
-                            Удалить задание
-                        </button>
+                        <button type="submit" class="btn btn-primary">Проставить оценку</button>
                     </form>
                 </div>
             </div>
+
             <div class="main-content">
                 <div class="card">
-                    <h2 class="card-title">
-                        <span>📚</span>
-                        Активные задания
-                    </h2>
+                    <h2 class="card-title">Активные оценки</h2>
                     <div class="assignments-history">
-                        {{ hwtemplate }}
+                        {{ gradestemplate }}
                     </div>
                 </div>
             </div>

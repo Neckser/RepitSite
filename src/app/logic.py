@@ -543,3 +543,120 @@ def editstudbio(bio, studlogin):
 
     finally:
         connection.close()
+
+def getstrgrades(studlogin):
+    try:
+        connection = sqlite3.connect(DB_PATH)
+        cursor = connection.cursor()
+
+        cursor.execute("""SELECT grades.* FROM grades JOIN students ON grades.student_id = students.student_id WHERE students.login = ?""", (studlogin,))
+        allgrades = cursor.fetchall()
+        
+        return allgrades
+
+    except Exception as e:
+        print(f"Произошла ошибка - {e}")
+        raise e
+    
+    finally:
+        connection.close()
+
+def getavggrade(studlogin):
+    try:
+        connection = sqlite3.connect(DB_PATH)
+        cursor = connection.cursor()
+
+        cursor.execute("""SELECT AVG(grades.grade) FROM grades JOIN students ON grades.student_id = students.student_id WHERE students.login = ?""", (studlogin,))
+        avggrade = cursor.fetchone()[0]
+        if avggrade is None:
+            avggrade = 0
+
+        return avggrade
+    
+    except Exception as e:
+        print(f"Произошла ошибка - {e}")
+        raise e
+    
+    finally:
+        connection.close()
+
+def getcolvofives(studlogin):
+    try:
+        connection = sqlite3.connect(DB_PATH)
+        cursor = connection.cursor()
+        
+        cursor.execute("""SELECT COUNT(*) FROM grades JOIN students ON grades.student_id = students.student_id WHERE students.login = ? AND grades.grade = 5""", (studlogin,))
+        colvo_fives = cursor.fetchone()[0]
+
+        return colvo_fives
+    
+    except Exception as e:
+        print(f"Произошла ошибка - {e}")
+        raise e
+    
+    finally:
+        connection.close()
+
+def getcolvogrades(studlogin):
+    try:
+        connection = sqlite3.connect(DB_PATH)
+        cursor = connection.cursor()
+        
+        cursor.execute("""SELECT COUNT(*) FROM grades JOIN students ON grades.student_id = students.student_id WHERE students.login = ?""", (studlogin,))
+        colvo_grades = cursor.fetchone()[0]
+
+        return colvo_grades
+    
+    except Exception as e:
+        print(f"Произошла ошибка - {e}")
+        raise e
+    
+    finally:
+        connection.close()
+
+def gettutorgrades(tutlogin):
+    try:
+        connection = sqlite3.connect(DB_PATH)
+        cursor = connection.cursor()
+
+        cursor.execute("SELECT g.grade_id, g.student_id, g.subject, g.grade, g.date, g.description, g.tutor_comment FROM grades g JOIN tutors t ON g.tutor_id = t.tutor_id WHERE t.login = ?", (tutlogin,))
+        res = cursor.fetchall()
+        return res
+
+    except Exception as e:
+        print(f"Произошла ошибка - {e}")
+        raise e
+    
+    finally:
+        connection.close()
+
+def addgrade(student_id, tutor_id, subject, grade, reason, comment):
+    try:
+        connection = sqlite3.connect(DB_PATH)
+        cursor = connection.cursor()
+
+        cursor.execute("""INSERT INTO grades (student_id, tutor_id, subject, grade, description, tutor_comment) VALUES (?, ?, ?, ?, ?, ?) """, (student_id, tutor_id, subject, grade, reason, comment))
+        connection.commit()
+
+    except Exception as e:
+        print(f"Произошла ошибка - {e}")
+        raise e
+    
+    finally:
+        connection.close()
+
+
+def delgrade(grade_id):
+    try:
+        connection = sqlite3.connect(DB_PATH)
+        cursor = connection.cursor()
+        
+        cursor.execute('''DELETE FROM grades WHERE grade_id = ?''', (grade_id,))
+        connection.commit()
+
+    except Exception as e:
+        print(f"Произошла ошибка - {e}")
+        raise e
+    
+    finally:
+        connection.close()
