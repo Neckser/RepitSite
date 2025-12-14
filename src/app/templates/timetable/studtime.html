@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Расписание занятий | RepitHub</title>
+    <title>Моё расписание | RepitHub</title>
     <style>
         * {
             margin: 0;
@@ -17,12 +17,28 @@
             min-height: 100vh;
         }
         
+        :root {
+            --primary-color: #6b8e23;
+            --primary-dark: #5a7a1f;
+            --primary-light: #8fb84a;
+            --background-light: #f8fff8;
+            --border-light: #e8f5e8;
+            --text-dark: #333;
+            --text-gray: #666;
+            --white: #ffffff;
+            --danger-color: #dc3545;
+            --danger-dark: #c82333;
+            --success-color: #388e3c;
+            --warning-color: #f57c00;
+            --info-color: #0288d1;
+        }
+        
         .top-bar {
-            background-color: #6b8e23;
+            background-color: var(--primary-color);
             padding: 12px 0;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
-
+        
         .nav-container {
             max-width: 1200px;
             margin: 0 auto;
@@ -31,7 +47,7 @@
             align-items: center;
             padding: 0 20px;
         }
-
+        
         .nav-buttons {
             display: flex;
             gap: 10px;
@@ -39,7 +55,7 @@
         
         .nav-button {
             background-color: rgba(255,255,255,0.2);
-            color: white;
+            color: var(--white);
             border: none;
             padding: 8px 20px;
             border-radius: 20px;
@@ -47,40 +63,39 @@
             font-size: 14px;
             transition: all 0.3s;
             text-decoration: none;
-            display: inline-block;
         }
         
         .nav-button.active {
-            background-color: white;
-            color: #6b8e23;
+            background-color: var(--white);
+            color: var(--primary-color);
         }
         
         .nav-button:hover {
             background-color: rgba(255,255,255,0.3);
         }
-
+        
         .account-widget {
             display: flex;
             align-items: center;
             gap: 12px;
-            color: white;
+            color: var(--white);
             cursor: pointer;
             padding: 8px 15px;
             border-radius: 20px;
             transition: all 0.3s;
             text-decoration: none;
         }
-
+        
         .account-widget:hover {
             background-color: rgba(255,255,255,0.2);
         }
-
+        
         .user-avatar {
             width: 36px;
             height: 36px;
             border-radius: 50%;
-            background-color: white;
-            color: #6b8e23;
+            background-color: var(--white);
+            color: var(--primary-color);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -88,19 +103,19 @@
             font-size: 14px;
             border: 2px solid rgba(255,255,255,0.3);
         }
-
+        
         .user-info {
             display: flex;
             flex-direction: column;
             align-items: flex-start;
         }
-
+        
         .user-name {
             font-size: 14px;
             font-weight: 600;
             line-height: 1.2;
         }
-
+        
         .user-role {
             font-size: 12px;
             opacity: 0.9;
@@ -109,231 +124,323 @@
         
         .container {
             max-width: 1200px;
-            margin: 25px auto;
-            padding: 0 20px;
+            margin: 0 auto;
+            padding: 30px 20px;
         }
         
         h1 {
             color: #333;
-            margin-bottom: 25px;
-            text-align: left;
-            font-size: 28px;
-            font-weight: bold;
+            margin-bottom: 30px;
         }
         
-        .schedule-header {
+        .schedule-container {
+            background: linear-gradient(135deg, var(--white) 0%, var(--background-light) 100%);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 5px 20px rgba(107, 142, 35, 0.1);
+            border: 2px solid var(--border-light);
+            margin-bottom: 30px;
+        }
+        
+        .week-selector {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 25px;
-            flex-wrap: wrap;
-            gap: 15px;
+            padding: 20px;
+            background: var(--white);
+            border-radius: 15px;
+            border: 1px solid var(--border-light);
+            box-shadow: 0 2px 8px rgba(107, 142, 35, 0.05);
         }
         
-        .week-navigation {
+        .week-nav {
             display: flex;
             align-items: center;
             gap: 15px;
         }
         
-        .week-nav-btn {
-            background-color: #6b8e23;
-            color: white;
-            border: none;
-            width: 36px;
-            height: 36px;
+        .nav-button-week {
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
+            border: 2px solid var(--primary-color);
+            background: var(--white);
+            color: var(--primary-color);
+            font-size: 18px;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 18px;
-            transition: all 0.3s;
+            transition: all 0.3s ease;
         }
         
-        .week-nav-btn:hover {
-            background-color: #5a7a1f;
+        .nav-button-week:hover {
+            background: var(--primary-color);
+            color: var(--white);
+            transform: scale(1.05);
         }
         
         .current-week {
-            font-size: 16px;
-            font-weight: bold;
-            color: #333;
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--primary-color);
             min-width: 200px;
             text-align: center;
         }
         
-        .today-btn {
-            background-color: #f1f8e9;
-            color: #6b8e23;
-            border: 1px solid #6b8e23;
-            padding: 8px 16px;
-            border-radius: 20px;
-            cursor: pointer;
-            font-size: 14px;
-            transition: all 0.3s;
-        }
-        
-        .today-btn:hover {
-            background-color: #6b8e23;
-            color: white;
-        }
-        
-        .days-tabs {
-            display: flex;
-            gap: 5px;
-            margin-bottom: 20px;
-            background: white;
-            border-radius: 10px;
-            padding: 5px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
-        
-        .day-tab {
-            flex: 1;
-            padding: 12px 8px;
-            text-align: center;
-            background: transparent;
+        .today-button {
+            padding: 10px 24px;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            color: var(--white);
             border: none;
-            border-radius: 8px;
-            cursor: pointer;
+            border-radius: 20px;
             font-size: 14px;
-            transition: all 0.3s;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 10px rgba(107, 142, 35, 0.2);
         }
         
-        .day-tab.active {
-            background-color: #6b8e23;
+        .today-button:hover {
+            background: linear-gradient(135deg, var(--primary-dark) 0%, #4a6419 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(107, 142, 35, 0.3);
+        }
+        
+        .days-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .day-header {
+            text-align: center;
+            padding: 15px;
+            background: #6b8e23;
+            border-radius: 15px;
+            border: 2px solid #5a7a1f;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            color: white;
+        }
+
+        .day-header:hover {
+            background: #5a7a1f;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(107, 142, 35, 0.2);
+        }
+
+        .day-name, .day-number {
             color: white;
         }
         
-        .day-tab.current {
-            background-color: #f1f8e9;
-            color: #6b8e23;
-            font-weight: bold;
+        .lessons-container {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 10px;
+            margin-bottom: 30px;
+            min-height: 400px;
         }
         
-        .schedule-container {
-            background: white;
-            border-radius: 10px;
-            padding: 25px;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
-        }
-        
-        .day-schedule {
-            display: none;
-        }
-        
-        .day-schedule.active {
-            display: block;
-        }
-        
-        .lessons-list {
+        .day-column {
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 12px;
         }
         
         .lesson-card {
-            display: flex;
-            background: #f8fdf8;
-            border: 2px solid #e8f5e8;
-            border-radius: 10px;
-            padding: 20px;
-            transition: all 0.3s;
+            background: var(--white);
+            border-radius: 12px;
+            padding: 18px;
+            border: 2px solid var(--border-light);
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
         }
         
         .lesson-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(107, 142, 35, 0.15);
-            border-color: #6b8e23;
+            transform: translateY(-4px);
+            border-color: var(--primary-light);
+            box-shadow: 0 8px 20px rgba(107, 142, 35, 0.15);
+        }
+        
+        .lesson-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--primary-color);
         }
         
         .lesson-time {
-            min-width: 120px;
-            padding-right: 20px;
-            border-right: 2px solid #e8f5e8;
+            font-size: 12px;
+            color: var(--text-gray);
+            margin-bottom: 8px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
         
-        .time-badge {
-            background: #6b8e23;
-            color: white;
-            padding: 8px 12px;
-            border-radius: 20px;
-            font-weight: bold;
-            font-size: 14px;
-            text-align: center;
-            display: inline-block;
-        }
-        
-        .lesson-content {
-            flex: 1;
-            padding-left: 20px;
+        .lesson-time::before {
+            content: '🕐';
+            font-size: 11px;
         }
         
         .lesson-subject {
-            font-size: 18px;
+            font-size: 16px;
             font-weight: bold;
-            color: #333;
+            color: var(--text-dark);
             margin-bottom: 8px;
+            line-height: 1.3;
         }
         
         .lesson-tutor {
-            color: #6b8e23;
-            font-weight: 600;
-            margin-bottom: 5px;
-        }
-        
-        .lesson-details {
-            color: #666;
             font-size: 14px;
-        }
-        
-        .no-lessons {
-            text-align: center;
-            padding: 40px 20px;
-            color: #666;
-        }
-        
-        .no-lessons-icon {
-            font-size: 48px;
-            margin-bottom: 15px;
-            opacity: 0.5;
-        }
-        
-        .schedule-stats {
+            color: var(--primary-color);
+            margin-bottom: 4px;
             display: flex;
-            gap: 20px;
-            margin-top: 30px;
-            padding: 20px;
-            background-color: #f1f8e9;
-            border-radius: 8px;
-            flex-wrap: wrap;
-        }
-        
-        .stat-card {
-            display: flex;
-            flex-direction: column;
             align-items: center;
-            padding: 15px 20px;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            min-width: 120px;
+            gap: 5px;
         }
         
-        .stat-value {
-            font-size: 24px;
-            font-weight: bold;
-            color: #6b8e23;
-        }
-        
-        .stat-label {
+        .lesson-tutor::before {
+            content: '👤';
             font-size: 12px;
-            color: #666;
+        }
+        
+        .lesson-status {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-top: 10px;
             text-align: center;
+        }
+        
+        .status-upcoming {
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+            color: #1976d2;
+            border: 1px solid #bbdefb;
+        }
+        
+        .status-in-progress {
+            background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+            color: #f57c00;
+            border: 1px solid #ffe0b2;
+        }
+        
+        .status-completed {
+            background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+            color: var(--success-color);
+            border: 1px solid #c8e6c9;
+        }
+        
+        .status-cancelled {
+            background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%);
+            color: var(--danger-color);
+            border: 1px solid #ffcdd2;
+        }
+        
+        .empty-day {
+            text-align: center;
+            padding: 40px 15px;
+            color: var(--text-gray);
+            font-size: 14px;
+            background: var(--background-light);
+            border-radius: 12px;
+            border: 2px dashed var(--border-light);
+            font-style: italic;
+        }
+        
+        .subject-badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            color: white;
+            display: inline-block;
+            margin-top: 5px;
+        }
+        
+        .subject-badge.Математика { background-color: #6b8e23; }
+        .subject-badge.Физика { background-color: #3a6ea5; }
+        .subject-badge.Информатика { background-color: #0288d1; }
+        .subject-badge.Химия { background-color: #7b1fa2; }
+        .subject-badge.Английский { background-color: #e53935; }
+        .subject-badge.Русский { background-color: #f57c00; }
+        .subject-badge.Немецкий { background-color: #43a047; }
+        .subject-badge.Французский { background-color: #5e35b1; }
+        .subject-badge.Обществознание { background-color: #5d4037; }
+        .subject-badge.История { background-color: #6d4c41; }
+        .subject-badge.Литература { background-color: #00897b; }
+        .subject-badge.Биология { background-color: #388e3c; }
+        .subject-badge.География { background-color: #0097a7; }
+        .subject-badge.Экономика { background-color: #fbc02d; color: #333; }
+        .subject-badge.ИЗО { background-color: #ad1457; }
+        .subject-badge.Музыка { background-color: #8e24aa; }
+
+
+        .nav-week-button {
+            display: inline-block;
+            padding: 8px 16px;
+            margin: 0 5px;
+            background: #6b8e23; 
+            color: var(--white);
+            font-weight: 600;
+            border-radius: 20px;
+            text-decoration: none;
+            text-align: center;
+            transition: none;
+            box-shadow: none;
+        }
+
+        .nav-week-button:hover {
+            background: #5a7a1f;
+        }
+
+        .today-week-button {
+            background: #6b8e23;
+        }
+
+        .today-week-button:hover {
+            background: #5a7a1f;
+        }
+
+        
+        @media (max-width: 1200px) {
+            .days-grid,
+            .lessons-container {
+                grid-template-columns: repeat(4, 1fr);
+            }
         }
         
         @media (max-width: 768px) {
+            .days-grid,
+            .lessons-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .week-selector {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .week-nav {
+                order: 2;
+            }
+            
+            .today-button {
+                order: 1;
+            }
+            
             .nav-container {
                 flex-direction: column;
                 gap: 15px;
@@ -342,37 +449,32 @@
             .account-widget .user-info {
                 display: none;
             }
+        }
+        
+        @media (max-width: 480px) {
+            .days-grid,
+            .lessons-container {
+                grid-template-columns: 1fr;
+            }
             
-            .schedule-header {
-                flex-direction: column;
-                align-items: flex-start;
+            .container {
+                padding: 0 15px;
+            }
+            
+            .schedule-container {
+                padding: 15px;
+            }
+            
+            .page-header {
+                padding: 20px;
+            }
+            
+            .page-title {
+                font-size: 22px;
             }
             
             .lesson-card {
-                flex-direction: column;
-            }
-            
-            .lesson-time {
-                min-width: auto;
-                padding-right: 0;
-                padding-bottom: 15px;
-                border-right: none;
-                border-bottom: 2px solid #e8f5e8;
-                text-align: center;
-            }
-            
-            .lesson-content {
-                padding-left: 0;
-                padding-top: 15px;
-            }
-            
-            .days-tabs {
-                flex-wrap: wrap;
-            }
-            
-            .day-tab {
-                flex: 1 0 calc(33.333% - 10px);
-                margin-bottom: 5px;
+                padding: 15px;
             }
         }
     </style>
@@ -383,166 +485,110 @@
             <div class="nav-buttons">
                 <a href="/tutlist" class="nav-button">Мои репетиторы</a>
                 <a href="/home" class="nav-button">Мои задания</a>
-                <a href="/schedule" class="nav-button active">Расписание</a>
+                <a href="/studgrades" class="nav-button">Мои оценки</a>
+                <a href="/studtime" class="nav-button active">Моё расписание</a>
             </div>
-            
             <a href="/profile" class="account-widget">
-                <div class="user-avatar">АМ</div>
+                <div class="user-avatar">
+                    {{ avatar }}
+                </div>
                 <div class="user-info">
-                    <div class="user-name">Алёна Маркелова</div>
-                    <div class="user-role">Ученик</div>
+                    <div class="user-name">
+                        {{ first_name }} {{ last_name }}
+                    </div>
+                    <div class="user-role">
+                        Ученик
+                    </div>
                 </div>
             </a>
         </div>
     </header>
 
     <div class="container">
-        <h1>Расписание занятий</h1>
-        
-        <div class="schedule-header">
-            <div class="week-navigation">
-                <button class="week-nav-btn">←</button>
-                <div class="current-week">18 - 24 ноября 2024</div>
-                <button class="week-nav-btn">→</button>
-                <button class="today-btn">Сегодня</button>
-            </div>
-        </div>
-        
-        <div class="days-tabs">
-            <button class="day-tab">Пн<br>18</button>
-            <button class="day-tab">Вт<br>19</button>
-            <button class="day-tab active current">Ср<br>20</button>
-            <button class="day-tab">Чт<br>21</button>
-            <button class="day-tab">Пт<br>22</button>
-            <button class="day-tab">Сб<br>23</button>
-            <button class="day-tab">Вс<br>24</button>
-        </div>
+        <!-- Заголовок в том же стиле, что и "Мои задания" -->
+        <h1>Моё расписание</h1>
         
         <div class="schedule-container">
-            <!-- Среда -->
-            <div class="day-schedule active">
-                <div class="lessons-list">
-                    <div class="lesson-card">
-                        <div class="lesson-time">
-                            <div class="time-badge">10:00-11:30</div>
-                        </div>
-                        <div class="lesson-content">
-                            <div class="lesson-subject">Математика</div>
-                            <div class="lesson-tutor">Мульти Гений</div>
-                            <div class="lesson-details">Тема: Решение квадратных уравнений. Домашнее задание выдано</div>
-                        </div>
-                    </div>
-                    
-                    <div class="lesson-card">
-                        <div class="lesson-time">
-                            <div class="time-badge">16:00-17:00</div>
-                        </div>
-                        <div class="lesson-content">
-                            <div class="lesson-subject">Физика</div>
-                            <div class="lesson-tutor">Мульти Гений</div>
-                            <div class="lesson-details">Тема: Законы Ньютона. Подготовка к контрольной</div>
-                        </div>
-                    </div>
+            <!-- Навигация по неделям -->
+            <div class="week-selector">
+                <div class="week-nav">
+                    <a href="/studtime?week_offset={{ week_offset - 1 }}" class="nav-week-button">← Назад</a>
+                    <a href="/studtime?week_offset=0" class="nav-week-button today-week-button">Сегодня</a>
+                    <a href="/studtime?week_offset={{ week_offset + 1 }}" class="nav-week-button">Вперёд →</a>
+                </div>
+            </div>
+
+            
+            <!-- Дни недели -->
+            <div class="days-grid">
+                <div class="day-header today">
+                    <div class="day-name">Понедельник</div>
+                    <div class="day-number">{{ mon }}</div>
+                </div>
+                <div class="day-header">
+                    <div class="day-name">Вторник</div>
+                    <div class="day-number">{{ tue }}</div>
+                </div>
+                <div class="day-header">
+                    <div class="day-name">Среда</div>
+                    <div class="day-number">{{ wed }}</div>
+                </div>
+                <div class="day-header">
+                    <div class="day-name">Четверг</div>
+                    <div class="day-number">{{ thu }}</div>
+                </div>
+                <div class="day-header">
+                    <div class="day-name">Пятница</div>
+                    <div class="day-number">{{ fri }}</div>
+                </div>
+                <div class="day-header">
+                    <div class="day-name">Суббота</div>
+                    <div class="day-number">{{ sat }}</div>
+                </div>
+                <div class="day-header">
+                    <div class="day-name">Воскресенье</div>
+                    <div class="day-number">{{ sun }}</div>
                 </div>
             </div>
             
-            <!-- Вторник -->
-            <div class="day-schedule">
-                <div class="lessons-list">
-                    <div class="lesson-card">
-                        <div class="lesson-time">
-                            <div class="time-badge">14:00-15:30</div>
-                        </div>
-                        <div class="lesson-content">
-                            <div class="lesson-subject">Английский язык</div>
-                            <div class="lesson-tutor">sjdhfjkhsdf</div>
-                            <div class="lesson-details">Тема: Present Perfect tense. Разговорная практика</div>
-                        </div>
-                    </div>
+            <!-- Занятия по дням -->
+            <div class="lessons-container">
+                <!-- Понедельник -->
+                <div class="day-column">
+                    {{ monday_lessons }}
                 </div>
-            </div>
-            
-            <!-- Четверг -->
-            <div class="day-schedule">
-                <div class="lessons-list">
-                    <div class="lesson-card">
-                        <div class="lesson-time">
-                            <div class="time-badge">12:00-13:00</div>
-                        </div>
-                        <div class="lesson-content">
-                            <div class="lesson-subject">Химия</div>
-                            <div class="lesson-tutor">Наталья Васнецова</div>
-                            <div class="lesson-details">Тема: Органическая химия. Строение молекул</div>
-                        </div>
-                    </div>
+                
+                <!-- Вторник -->
+                <div class="day-column">
+                    {{ tuesday_lessons }}
                 </div>
-            </div>
-            
-            <!-- Остальные дни -->
-            <div class="day-schedule">
-                <div class="no-lessons">
-                    <div class="no-lessons-icon">📚</div>
-                    <div class="no-lessons-text">Занятий нет</div>
-                    <div class="no-lessons-subtext">Отдыхайте или занимайтесь самостоятельно</div>
+                
+                <!-- Среда -->
+                <div class="day-column">
+                    {{ wednesday_lessons }}
                 </div>
-            </div>
-        </div>
-        
-        <div class="schedule-stats">
-            <div class="stat-card">
-                <div class="stat-value">5</div>
-                <div class="stat-label">Занятий на неделе</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-value">3 ч 30 мин</div>
-                <div class="stat-label">Общее время</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-value">3</div>
-                <div class="stat-label">Репетитора</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-value">4</div>
-                <div class="stat-label">Предмета</div>
+                
+                <!-- Четверг -->
+                <div class="day-column">
+                    {{ thursday_lessons }}
+                </div>
+                
+                <!-- Пятница -->
+                <div class="day-column">
+                    {{ friday_lessons }}
+                </div>
+                
+                <!-- Суббота -->
+                <div class="day-column">
+                    {{ saturday_lessons }}
+                </div>
+                
+                <!-- Воскресенье -->
+                <div class="day-column">
+                    {{ sunday_lessons }}
+                </div>
             </div>
         </div>
     </div>
-
-    <script>
-        // Простой скрипт для переключения дней
-        document.addEventListener('DOMContentLoaded', function() {
-            const dayTabs = document.querySelectorAll('.day-tab');
-            const daySchedules = document.querySelectorAll('.day-schedule');
-            
-            dayTabs.forEach((tab, index) => {
-                tab.addEventListener('click', function() {
-                    // Убираем активный класс у всех
-                    dayTabs.forEach(t => t.classList.remove('active'));
-                    daySchedules.forEach(s => s.classList.remove('active'));
-                    
-                    // Добавляем активный класс текущему
-                    this.classList.add('active');
-                    if (daySchedules[index]) {
-                        daySchedules[index].classList.add('active');
-                    }
-                });
-            });
-            
-            // Кнопка "Сегодня"
-            document.querySelector('.today-btn').addEventListener('click', function() {
-                dayTabs.forEach(t => t.classList.remove('active'));
-                daySchedules.forEach(s => s.classList.remove('active'));
-                
-                // Находим и активируем текущий день (среда в примере)
-                const currentDay = document.querySelector('.day-tab.current');
-                const currentIndex = Array.from(dayTabs).indexOf(currentDay);
-                
-                if (currentDay) {
-                    currentDay.classList.add('active');
-                    daySchedules[currentIndex].classList.add('active');
-                }
-            });
-        });
-    </script>
 </body>
 </html>

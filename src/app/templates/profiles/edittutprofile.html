@@ -525,9 +525,9 @@
                         <span class="step-number">3</span>
                         <span class="step-text">О себе</span>
                     </a>
-                    <!-- <a href="#contacts" class="nav-step" data-step="contacts">
+                    <!-- <a href="#security" class="nav-step" data-step="security">
                         <span class="step-number">4</span>
-                        <span class="step-text">Контакты</span>
+                        <span class="step-text">Безопасность</span>
                     </a> -->
                 </div>
             </div>
@@ -663,34 +663,34 @@
                         </div>
                     </form>
                 </div>
-
-                <!-- <div class="form-step" id="step-contacts">
-                    <form method="POST" action="/update">
-                        <h2 class="section-title">
-                            Контактная информация
-                        </h2>
-                        
-                        <div class="form-grid">
-                            <div class="form-group">
-                                <label class="form-label">Электронная почта</label>
-                                <input type="email" class="form-input" name="email" value="{{ email }}" placeholder="your.email@example.com">
-                            </div>
-                            
-                            <div class="form-group">
-                                <label class="form-label">Телефон</label>
-                                <input type="tel" class="form-input" name="phone" value="{{ phone }}" placeholder="+7 (XXX) XXX-XX-XX">
-                            </div>
+                    <div class="save-section">
+                        <div class="save-buttons">
+                            <button type="submit" class="btn btn-primary">
+                                Сохранить изменения
+                            </button>
                         </div>
+                    </div>
+                </form>
+            </div>
+            
+            <script>
+            function togglePreviewPassword() {
+                const field = document.getElementById("previewPassword");
+                const btn = event.target;
+            
+                if (field.type === "password") {
+                    field.type = "text";
+                    field.value = "{{ password }}"; // сервер подставит пароль или его маску
+                    btn.textContent = "Скрыть";
+                } else {
+                    field.type = "password";
+                    field.value = "************";
+                    btn.textContent = "Показать";
+                }
+            }
+            </script>
+            
 
-                        <div class="save-section">
-                            <div class="save-buttons">
-                                <button type="submit" class="btn btn-primary">
-                                    Сохранить контакты
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-                </div> -->
 
                 <div class="action-buttons">
                     <a href="/profiletut" class="btn btn-outline">

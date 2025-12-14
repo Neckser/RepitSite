@@ -1,8 +1,11 @@
 import sqlite3
 import random
-from datetime import datetime
+import locale 
+from datetime import datetime, timedelta
 
 DB_PATH = '../../data/basa.db'
+
+locale.setlocale(locale.LC_TIME, 'ru_RU.UTF-8')
 
 def create_id():
     return random.randint(1000000, 100000000000000)
@@ -660,3 +663,86 @@ def delgrade(grade_id):
     
     finally:
         connection.close()
+
+# def getmonday(date):
+#     date = datetime.strptime(date, "%Y-%m-%d")
+#     monday = date - timedelta(days=date.weekday())
+#     return monday
+
+def get_base_monday():
+    today = datetime.today()
+    return today - timedelta(days=today.weekday())
+
+
+def getstudentweektimetable(studlogin, monday):
+    try:
+        connection = sqlite3.connect(DB_PATH)
+        cursor = connection.cursor()
+
+        cursor.execute("""
+            SELECT
+                t.lesson_date,
+                t.lesson_time,
+                t.subject,
+                t.tutor_id,
+                t.status,
+                t.notes,
+                t.duration
+            FROM timetable t
+            JOIN students s ON t.student_id = s.student_id
+            WHERE s.login = ?
+              AND t.lesson_date BETWEEN DATE(?) AND DATE(?, '+6 days')
+            ORDER BY t.lesson_date, t.lesson_time
+        """, (
+            studlogin,
+            monday.strftime("%Y-%m-%d"),
+            monday.strftime("%Y-%m-%d")
+        ))
+
+        rows = cursor.fetchall()
+        return build_week(monday, rows)
+
+    except Exception as e:
+        print(f"Произошла ошибка - {e}")
+        raise e
+
+    finally:
+        connection.close()
+
+
+
+def build_week(monday_date, rows):
+    today = datetime.today().strftime("%Y-%m-%d")
+    week = {}
+
+    for i in range(7):
+        day = monday_date + timedelta(days=i)
+        date_str = day.strftime("%Y-%m-%d")
+        week[date_str] = {
+            "is_today": date_str == today,
+            "lessons": []
+        }
+    for row in rows:
+        lesson_date, lesson_time, subject, tutor_id, status, notes, duration = row
+        week[lesson_date]["lessons"].append({
+            "time": lesson_time,
+            "subject": subject,
+            "tutor_id": tutor_id,
+            "status": status,
+            "notes": notes,
+            "duration": duration
+        })
+
+    for day in week:
+        if not week[day]["lessons"]:
+            week[day]["lessons"] = "Нет занятий"
+
+    return week
+
+def getweekdates(monday):
+    return [f"{(monday + timedelta(days=i)).day} {(monday + timedelta(days=i)).strftime('%B')}" for i in range(7)]
+
+
+
+
+

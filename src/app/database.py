@@ -80,6 +80,7 @@ def init_database():
             subject TEXT NOT NULL,
             lesson_date DATE NOT NULL,
             lesson_time TIME NOT NULL,
+            duration INTEGER,
             status TEXT DEFAULT 'scheduled' CHECK(status IN ('scheduled', 'completed', 'cancelled')),
             notes TEXT,
             FOREIGN KEY (student_id) REFERENCES students(student_id) ON DELETE CASCADE,
