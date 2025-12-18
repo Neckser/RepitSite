@@ -1,0 +1,105 @@
+document.addEventListener('DOMContentLoaded', function (): void {
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    const assignmentCards = document.querySelectorAll('.assignment-card');
+    const statsItems = document.querySelectorAll('.stat-item strong');
+    const sortSelect = document.getElementById('sortSelect') as HTMLSelectElement;
+
+    if (!sortSelect) {
+        console.error('Элемент sortSelect не найден');
+        return;
+    }
+
+    function updateStats(): void {
+        const total = document.querySelectorAll('.assignment-card').length;
+        const active = document.querySelectorAll('.assignment-card .status.active').length;
+        const completed = document.querySelectorAll('.assignment-card .status.completed').length;
+
+        if (statsItems[0]) statsItems[0].textContent = total.toString();
+        if (statsItems[1]) statsItems[1].textContent = active.toString();
+        if (statsItems[2]) statsItems[2].textContent = completed.toString();
+    }
+
+    function filterAssignments(filterType: string): void {
+        assignmentCards.forEach(card => {
+            const cardElement = card as HTMLElement;
+            const statusElement = card.querySelector('.status');
+
+            if (!statusElement) return;
+
+            switch (filterType) {
+                case 'все':
+                    cardElement.style.display = 'block';
+                    break;
+                case 'активные':
+                    cardElement.style.display = statusElement.classList.contains('active') ? 'block' : 'none';
+                    break;
+                case 'завершенные':
+                    cardElement.style.display = statusElement.classList.contains('completed') ? 'block' : 'none';
+                    break;
+                default:
+                    cardElement.style.display = 'block';
+            }
+        });
+        updateStats();
+    }
+
+    function sortAssignments(sortType: string): void {
+        const container = document.querySelector('.assignments-list');
+        if (!container) return;
+
+        const cards = Array.from(assignmentCards) as HTMLElement[];
+        cards.sort((a, b) => {
+            switch (sortType) {
+                case 'deadline-asc':
+                    return getDeadlineValue(a) - getDeadlineValue(b);
+                case 'deadline-desc':
+                    return getDeadlineValue(b) - getDeadlineValue(a);
+                case 'created-desc':
+                    return getCreatedValue(b) - getCreatedValue(a);
+                case 'created-asc':
+                    return getCreatedValue(a) - getCreatedValue(b);
+                case 'subject':
+                    return getSubjectValue(a).localeCompare(getSubjectValue(b));
+                default:
+                    return 0;
+            }
+        });
+
+        cards.forEach(card => {
+            container.appendChild(card);
+        });
+    }
+
+    function getDeadlineValue(card: Element): number {
+        const dueDateElement = card.querySelector('.due-date');
+        if (!dueDateElement || !dueDateElement.textContent) return 0;
+
+        const deadlineText = dueDateElement.textContent;
+        const date = new Date(deadlineText.replace('До ', ''));
+        return isNaN(date.getTime()) ? 0 : date.getTime();
+    }
+
+    function getCreatedValue(card: Element): number {
+        return Array.from(assignmentCards).indexOf(card);
+    }
+
+    function getSubjectValue(card: Element): string {
+        const subjectBadge = card.querySelector('.subject-badge');
+        return subjectBadge && subjectBadge.textContent ? subjectBadge.textContent : '';
+    }
+
+    filterButtons.forEach(button => {
+        button.addEventListener('click', function (this: HTMLButtonElement) {
+            filterButtons.forEach(btn => btn.classList.remove('active'));
+            this.classList.add('active');
+            const filterType = this.textContent?.toLowerCase() || 'все';
+            filterAssignments(filterType);
+        });
+    });
+
+    sortSelect.addEventListener('change', function (this: HTMLSelectElement) {
+        sortAssignments(this.value);
+    });
+
+    updateStats();
+});

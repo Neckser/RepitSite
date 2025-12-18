@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="ru">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Мои репетиторы | RepitHub</title>
+    </head>
+    <body class="page">
+        <header class="top-bar">
+            <div class="nav-container">
+                <div class="nav-buttons">
+                    <a href="/tutlist" class="nav-button active">Мои репетиторы</a>
+                    <a href="/home" class="nav-button">Мои задания</a>
+                    <a href="/studgrades" class="nav-button">Мои оценки</a>
+                    <a href="/studtime" class="nav-button">Моё расписание</a>
+                </div>
+
+                <a href="/profile" class="account-widget">
+                    <div class="user-avatar">{{ avatar }}</div>
+                    <div class="user-info">
+                        <div class="user-name">{{ first_name }} {{ last_name }}</div>
+                        <div class="user-role">Ученик</div>
+                    </div>
+                </a>
+            </div>
+        </header>
+
+        <main class="tutors-page">
+            <h1 class="tutors-page__title">Мои репетиторы</h1>
+
+            <div class="tutors-grid">{{ tuttemplate }}</div>
+            <a href="/findtut" class="tutor-card add-tutor-card">
+                <div class="add-tutor-card__icon">+</div>
+                <div class="add-tutor-card__text">Добавить репетитора</div>
+            </a>
+        </main>
+    </body>
+</html>

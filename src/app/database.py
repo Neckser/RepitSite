@@ -62,7 +62,7 @@ def init_database():
             homework_id INTEGER PRIMARY KEY AUTOINCREMENT,
             student_id INTEGER NOT NULL,
             tutor_id INTEGER NOT NULL,
-            title TEXT UNIQUE NOT NULL,
+            title TEXT NOT NULL,
             description TEXT,
             subject TEXT NOT NULL,
             deadline DATETIME,

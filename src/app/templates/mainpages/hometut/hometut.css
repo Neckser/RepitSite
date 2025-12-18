@@ -1,0 +1,444 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+}
+
+.page {
+    background-color: #f8f9fa;
+    min-height: 100vh;
+}
+
+:root {
+    --primary-color: #6b8e23;
+    --primary-dark: #5a7a1f;
+    --primary-light: #8fb84a;
+    --background-light: #f8fff8;
+    --border-light: #e8f5e8;
+    --text-dark: #333;
+    --text-gray: #666;
+    --white: #ffffff;
+}
+
+.top-bar {
+    background-color: var(--primary-color);
+    padding: 12px 0;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+}
+
+.nav-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.nav-button {
+    background-color: rgba(255, 255, 255, 0.2);
+    color: var(--white);
+    border: none;
+    padding: 8px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s;
+    text-decoration: none;
+}
+
+.nav-button.active {
+    background-color: var(--white);
+    color: var(--primary-color);
+}
+
+.nav-button:hover {
+    background-color: rgba(255, 255, 255, 0.3);
+}
+
+.account-widget {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: var(--white);
+    cursor: pointer;
+    padding: 8px 15px;
+    border-radius: 20px;
+    transition: all 0.3s;
+    text-decoration: none;
+}
+
+.account-widget:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.user-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background-color: var(--white);
+    color: var(--primary-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 14px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.user-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.user-name {
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.2;
+}
+
+.user-role {
+    font-size: 12px;
+    opacity: 0.9;
+    line-height: 1.2;
+}
+
+.tutor-dashboard {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 30px 20px;
+}
+
+.welcome-section {
+    background: linear-gradient(135deg, #ffffff 0%, #f8fff8 100%);
+    border-radius: 15px;
+    padding: 30px;
+    margin-bottom: 30px;
+    box-shadow: 0 5px 20px rgba(107, 142, 35, 0.1);
+    border: 2px solid #e8f5e8;
+}
+
+.welcome-title {
+    color: #6b8e23;
+    font-size: 28px;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.stat-card {
+    background: white;
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+    border: 2px solid #e8f5e8;
+    transition: transform 0.3s;
+}
+
+.stat-card:hover {
+    transform: translateY(-3px);
+}
+
+.stat-value {
+    color: #6b8e23;
+    font-size: 32px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.stat-label {
+    color: #666;
+    font-size: 14px;
+}
+
+.students-section {
+    margin-bottom: 30px;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.section-title {
+    color: #6b8e23;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.students-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+.student-card {
+    background: white;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+    border: 2px solid #e8f5e8;
+    transition: transform 0.3s;
+}
+
+.student-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(107, 142, 35, 0.1);
+}
+
+.student-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.student-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #6b8e23;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+    margin-right: 15px;
+    font-size: 16px;
+}
+
+.student-info h3 {
+    color: #333;
+    margin-bottom: 5px;
+    font-size: 16px;
+}
+
+.student-grade {
+    color: #5a7a1f;
+    font-size: 14px;
+    background-color: #f1f8e9;
+    padding: 2px 8px;
+    border-radius: 10px;
+}
+
+.student-stats {
+    display: flex;
+    justify-content: space-between;
+    margin: 15px 0;
+    padding: 15px 0;
+    border-top: 1px solid #e8f5e8;
+    border-bottom: 1px solid #e8f5e8;
+}
+
+.student-stat {
+    text-align: center;
+}
+
+.student-stat-value {
+    color: #6b8e23;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.student-stat-label {
+    color: #666;
+    font-size: 12px;
+}
+
+.student-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.student-button {
+    flex: 1;
+    padding: 8px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.3s;
+    text-decoration: none;
+    text-align: center;
+    font-size: 13px;
+}
+
+.student-button--assignments {
+    background-color: #6b8e23;
+    color: white;
+}
+
+.student-button--assignments:hover {
+    background-color: #5a7a1f;
+}
+
+.student-button--message {
+    background-color: #f1f8e9;
+    color: #6b8e23;
+    border: 1px solid #6b8e23;
+}
+
+.student-button--message:hover {
+    background-color: #6b8e23;
+    color: white;
+}
+
+.lessons-section {
+    margin-bottom: 30px;
+}
+
+.lessons-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.lesson-card {
+    background: white;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+    border: 2px solid #e8f5e8;
+    transition: transform 0.3s;
+}
+
+.lesson-card:hover {
+    transform: translateY(-2px);
+}
+
+.lesson-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.lesson-time {
+    color: #6b8e23;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.lesson-date {
+    color: #666;
+    font-size: 14px;
+}
+
+.lesson-student {
+    color: #333;
+    font-weight: 500;
+    margin-bottom: 5px;
+}
+
+.lesson-subject {
+    color: #5a7a1f;
+    background-color: #f1f8e9;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 13px;
+    display: inline-block;
+}
+
+@media (max-width: 1023px) {
+    .tutor-dashboard {
+        padding: 25px 15px;
+    }
+
+    .welcome-section {
+        padding: 25px 20px;
+    }
+
+    .welcome-title {
+        font-size: 26px;
+    }
+
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .section-title {
+        font-size: 22px;
+    }
+}
+
+@media (max-width: 767px) {
+    .nav-container {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .account-widget .user-info {
+        display: none;
+    }
+
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+    }
+
+    .students-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .student-stats {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .student-actions {
+        flex-direction: column;
+    }
+
+    .stat-card {
+        padding: 15px;
+    }
+
+    .stat-value {
+        font-size: 28px;
+    }
+}
+
+@media (max-width: 480px) {
+    .tutor-dashboard {
+        padding: 20px 10px;
+    }
+
+    .welcome-section {
+        padding: 20px 15px;
+    }
+
+    .welcome-title {
+        font-size: 22px;
+    }
+
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .section-title {
+        font-size: 20px;
+    }
+
+    .student-card {
+        padding: 15px;
+    }
+
+    .lesson-card {
+        padding: 15px;
+    }
+}

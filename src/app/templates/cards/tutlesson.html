@@ -1,0 +1,13 @@
+<form class="lesson-card" method="POST" action="/deletelesson">
+    <input type="hidden" name="lesson_id" value="{{ schedule_id }}" />
+    <div class="schedule__lesson-card">
+        <div class="schedule__lesson-content">
+            <div class="schedule__lesson-time">{{ starttime }} - {{ endtime }}</div>
+            <div class="subject-badge {{ subject }}">{{ subject }}</div>
+            <div class="schedule__lesson-student">
+                <span>{{ studfirst_name }} {{ studlast_name }}</span>
+            </div>
+        </div>
+        <button type="submit" class="schedule__lesson-action-btn_delete">Удалить</button>
+    </div>
+</form>

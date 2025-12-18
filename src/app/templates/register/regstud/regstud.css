@@ -1,0 +1,145 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+}
+
+.page {
+    background-color: #6b8e23;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+}
+
+.registration-page {
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 10px;
+    padding: 30px;
+    width: 100%;
+    max-width: 450px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.registration-page__title {
+    color: #6b8e23;
+    text-align: center;
+    margin-bottom: 25px;
+    font-size: 28px;
+}
+
+.registration-form__group {
+    margin-bottom: 20px;
+}
+
+.registration-form__label {
+    display: block;
+    margin-bottom: 8px;
+    color: #333;
+    font-weight: bold;
+}
+
+.registration-form__input {
+    width: 100%;
+    padding: 12px 15px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    font-size: 16px;
+    background-color: white;
+}
+
+.registration-form__input:focus {
+    outline: none;
+    border-color: #6b8e23;
+}
+
+.registration-form__submit {
+    width: 100%;
+    padding: 12px;
+    border-radius: 5px;
+    border: none;
+    background-color: #6b8e23;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 10px;
+}
+
+.registration-form__submit:hover {
+    background-color: #5a7a1f;
+}
+
+.registration-page__login-link {
+    text-align: center;
+    margin-top: 20px;
+    color: #666;
+}
+
+.registration-page__login-link a {
+    color: #6b8e23;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.registration-page__login-link a:hover {
+    text-decoration: underline;
+}
+
+.registration-form__hint {
+    font-size: 13px;
+    color: #666;
+    margin-top: 5px;
+}
+
+@media (max-width: 1023px) {
+    .registration-page {
+        max-width: 400px;
+        padding: 25px;
+    }
+
+    .registration-page__title {
+        font-size: 26px;
+        margin-bottom: 20px;
+    }
+}
+
+@media (max-width: 767px) {
+    .page {
+        padding: 20px;
+    }
+
+    .registration-page {
+        padding: 25px 20px;
+        max-width: 100%;
+    }
+
+    .registration-page__title {
+        font-size: 24px;
+        margin-bottom: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .registration-page {
+        padding: 20px 15px;
+        margin: 0;
+    }
+
+    .registration-page__title {
+        font-size: 22px;
+    }
+
+    .registration-form__input {
+        padding: 10px 12px;
+        font-size: 15px;
+    }
+
+    .registration-form__submit {
+        padding: 12px;
+        font-size: 15px;
+    }
+}

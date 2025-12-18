@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="ru">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Профиль ученика | RepitHub</title>
+    </head>
+    <body class="page">
+        <header class="top-bar">
+            <div class="nav-container">
+                <div class="nav-buttons">
+                    <a href="/tutlist" class="nav-button">Мои репетиторы</a>
+                    <a href="/home" class="nav-button">Мои задания</a>
+                    <a href="/studgrades" class="nav-button">Мои оценки</a>
+                    <a href="/studtime" class="nav-button">Моё расписание</a>
+                </div>
+
+                <a href="/profile" class="account-widget">
+                    <div class="user-avatar">{{ avatar }}</div>
+                    <div class="user-info">
+                        <div class="user-name">{{ first_name }} {{ last_name }}</div>
+                        <div class="user-role">Ученик</div>
+                    </div>
+                </a>
+            </div>
+        </header>
+
+        <main class="profile-page">
+            <div class="profile-header">
+                <div class="profile-header__avatar">{{ avatar }}</div>
+                <div class="profile-header__info">
+                    <div class="profile-header__name-container">
+                        <h1 class="profile-header__name">{{ first_name }} {{ last_name }}</h1>
+                        <a href="/editstudprofile" class="profile-header__edit-button">✏️ Редактировать</a>
+                    </div>
+                    <div class="profile-header__role">Ученик {{ grade }} класса</div>
+                    <div class="profile-header__stats">
+                        <div class="profile-header__stat">
+                            <span class="profile-header__stat-value">{{ tutors_count }}</span>
+                            <span class="profile-header__stat-label">Репетиторов</span>
+                        </div>
+                        <div class="profile-header__stat">
+                            <span class="profile-header__stat-value">{{ homework_colvo }}</span>
+                            <span class="profile-header__stat-label">Заданий</span>
+                        </div>
+                        <div class="profile-header__stat">
+                            <span class="profile-header__stat-value">{{ completed_homeworks }}</span>
+                            <span class="profile-header__stat-label">Выполнено</span>
+                        </div>
+                        <div class="profile-header__stat">
+                            <span class="profile-header__stat-value">{{ avg_grade }}</span>
+                            <span class="profile-header__stat-label">Средний балл</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bio-section">
+                <div class="bio-section__title">📝 О себе</div>
+                <div class="bio-section__content {% if not bio %}bio-section__content--empty{% endif %}">{{ bio }}</div>
+            </div>
+
+            <div class="profile-actions">
+                <a href="/studgrades" class="profile-action-card">
+                    <span class="profile-action-card__icon">📊</span>
+                    <div class="profile-action-card__title">Ведомость оценок</div>
+                    <div class="profile-action-card__description">Просмотр ваших оценок и успеваемости по всем предметам</div>
+                </a>
+
+                <a href="/achievements" class="profile-action-card">
+                    <span class="profile-action-card__icon">🏆</span>
+                    <div class="profile-action-card__title">Достижения</div>
+                    <div class="profile-action-card__description">Ваши учебные достижения и награды</div>
+                </a>
+            </div>
+
+            <div class="profile-page__logout">
+                <a href="/logout" class="profile-button profile-button--danger">Выйти из профиля</a>
+            </div>
+        </main>
+    </body>
+</html>

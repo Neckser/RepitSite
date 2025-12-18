@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="ru">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Профиль Репетитора | RepitHub</title>
+    </head>
+    <body class="page">
+        <header class="top-bar">
+            <div class="nav-container">
+                <div class="nav-buttons">
+                    <a href="/hometut" class="nav-button">Главная</a>
+                    <a href="/homeworkstut" class="nav-button">Задания</a>
+                    <a href="/tutgrades" class="nav-button">Оценки</a>
+                    <a href="/tuttime" class="nav-button">Расписание</a>
+                </div>
+                <a href="/profiletut" class="account-widget">
+                    <div class="user-avatar">{{ avatar }}</div>
+                    <div class="user-info">
+                        <div class="user-name">{{ first_name }} {{ last_name }}</div>
+                        <div class="user-role">Репетитор</div>
+                    </div>
+                </a>
+            </div>
+        </header>
+
+        <main class="tutor-profile-page">
+            <div class="tutor-profile-header">
+                <div class="tutor-profile-avatar-section">
+                    <div class="tutor-profile-avatar">{{ avatar }}</div>
+                </div>
+                <div class="tutor-profile-info">
+                    <div class="tutor-profile-name-container">
+                        <h1 class="tutor-profile-name">{{ first_name }} {{ last_name }}</h1>
+                        <a href="/edittutprofile" class="tutor-profile-edit-button">✏️ Редактировать</a>
+                    </div>
+                    <div class="tutor-profile-role">Репетитор</div>
+                    <div class="tutor-profile-subjects">
+                        <div class="tutor-profile-subjects-wrapper">{{ profiletutsubjecttemplate }}</div>
+                    </div>
+
+                    <!-- <div class="tutor-profile-rating">
+                        <div class="tutor-profile-stars">
+                            <span class="tutor-profile-star">⭐</span>
+                            <span class="tutor-profile-star">⭐</span>
+                            <span class="tutor-profile-star">⭐</span>
+                            <span class="tutor-profile-star">⭐</span>
+                            <span class="tutor-profile-star">⭐</span>
+                        </div>
+                        <span class="tutor-profile-rating-value">5.0</span>
+                    </div> -->
+
+                    <div class="tutor-profile-stats">
+                        <div class="tutor-profile-stat">
+                            <span class="tutor-profile-stat-value">{{ student_colvo }}</span>
+                            <span class="tutor-profile-stat-label">Учеников</span>
+                        </div>
+                        <div class="tutor-profile-stat">
+                            <span class="tutor-profile-stat-value">{{ experience }}</span>
+                            <span class="tutor-profile-stat-label">Опыт работы</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tutor-bio-section">
+                <div class="tutor-bio-section__title">📝 О себе</div>
+                <div class="tutor-bio-section__content {% if not bio %}tutor-bio-section__content--empty{% endif %}">{{ bio }}</div>
+            </div>
+
+            <div class="tutor-code-section">
+                <div class="tutor-code-section__title">Ваш код репетитора</div>
+                <div class="tutor-code-section__code">{{ repcode }}</div>
+                <div class="tutor-code-section__description">Поделитесь этим кодом с учениками, чтобы они могли найти вас в системе</div>
+            </div>
+
+            <div class="tutor-profile-page__logout">
+                <a href="/logout" class="tutor-profile-button tutor-profile-button--danger">Выйти из профиля</a>
+            </div>
+        </main>
+    </body>
+</html>

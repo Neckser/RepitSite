@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="ru">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Редактирование профиля | RepitHub</title>
+    </head>
+    <body class="page">
+        <header class="top-bar">
+            <div class="nav-container">
+                <div class="nav-buttons">
+                    <a href="/hometut" class="nav-button">Главная</a>
+                    <a href="/homeworkstut" class="nav-button">Задания</a>
+                    <a href="/tutgrades" class="nav-button">Оценки</a>
+                    <a href="/tuttime" class="nav-button">Расписание</a>
+                </div>
+
+                <a href="/profiletut" class="account-widget">
+                    <div class="user-avatar">{{ avatar }}</div>
+                    <div class="user-info">
+                        <div class="user-name">{{ first_name }} {{ last_name }}</div>
+                        <div class="user-role">Репетитор</div>
+                    </div>
+                </a>
+            </div>
+        </header>
+
+        <main class="edit-profile-page">
+            <div class="edit-profile-layout">
+                <div class="edit-profile-sidebar">
+                    <h3 class="edit-profile-sidebar__title">Редактирование профиля</h3>
+                    <div class="edit-profile-steps">
+                        <a href="#basic" class="edit-profile-step edit-profile-step--active" data-step="basic">
+                            <span class="edit-profile-step__number">1</span>
+                            <span class="edit-profile-step__text">Основная информация</span>
+                        </a>
+                        <a href="#subjects" class="edit-profile-step" data-step="subjects">
+                            <span class="edit-profile-step__number">2</span>
+                            <span class="edit-profile-step__text">Предметы</span>
+                        </a>
+                        <a href="#about" class="edit-profile-step" data-step="about">
+                            <span class="edit-profile-step__number">3</span>
+                            <span class="edit-profile-step__text">О себе</span>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="edit-profile-content">
+                    <div class="edit-profile-content__header">
+                        <h1 class="edit-profile-content__title">Редактирование профиля</h1>
+                    </div>
+
+                    <div class="edit-profile-form__step edit-profile-form__step--active" id="step-basic">
+                        <form method="POST" action="/updatetutbasic" class="edit-profile-form__section">
+                            <h2 class="edit-profile-form__title">Основная информация</h2>
+
+                            <div class="edit-profile-form__grid">
+                                <div class="edit-profile-form__group">
+                                    <label class="edit-profile-form__label">
+                                        Имя
+                                        <span class="edit-profile-form__label--required">*</span>
+                                    </label>
+                                    <input type="text" class="edit-profile-form__input" name="first_name" required placeholder="Введите ваше имя" />
+                                </div>
+
+                                <div class="edit-profile-form__group">
+                                    <label class="edit-profile-form__label">
+                                        Фамилия
+                                        <span class="edit-profile-form__label--required">*</span>
+                                    </label>
+                                    <input type="text" class="edit-profile-form__input" name="last_name" required placeholder="Введите вашу фамилию" />
+                                </div>
+
+                                <div class="edit-profile-form__group">
+                                    <label class="edit-profile-form__label">
+                                        Опыт работы
+                                        <span class="edit-profile-form__label--required">*</span>
+                                    </label>
+                                    <input type="number" class="edit-profile-form__input" name="experience" min="0" max="50" required placeholder="Лет преподавания" />
+                                </div>
+                            </div>
+
+                            <div class="edit-profile-form__save">
+                                <div class="edit-profile-form__save-buttons">
+                                    <button type="submit" class="edit-profile-button edit-profile-button--primary">Сохранить основную информацию</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="edit-profile-form__step" id="step-subjects">
+                        <form method="POST" action="/updatetutsubjects" class="edit-profile-form__section">
+                            <h2 class="edit-profile-form__title">Предметы преподавания</h2>
+
+                            <div class="edit-profile-form__group edit-profile-form__group--full-width">
+                                <div class="edit-profile-form__subjects-grid">
+                                    <input type="checkbox" id="math" name="subjects" value="Математика" class="edit-profile-form__subject-checkbox" checked />
+                                    <label for="math" class="edit-profile-form__subject-label">Математика</label>
+
+                                    <input type="checkbox" id="physics" name="subjects" value="Физика" class="edit-profile-form__subject-checkbox" />
+                                    <label for="physics" class="edit-profile-form__subject-label">Физика</label>
+
+                                    <input type="checkbox" id="chemistry" name="subjects" value="Химия" class="edit-profile-form__subject-checkbox" />
+                                    <label for="chemistry" class="edit-profile-form__subject-label">Химия</label>
+
+                                    <input type="checkbox" id="informatics" name="subjects" value="Информатика" class="edit-profile-form__subject-checkbox" />
+                                    <label for="informatics" class="edit-profile-form__subject-label">Информатика</label>
+
+                                    <input type="checkbox" id="russian" name="subjects" value="Русский" class="edit-profile-form__subject-checkbox" />
+                                    <label for="russian" class="edit-profile-form__subject-label">Русский язык</label>
+
+                                    <input type="checkbox" id="english" name="subjects" value="Английский" class="edit-profile-form__subject-checkbox" />
+                                    <label for="english" class="edit-profile-form__subject-label">Английский язык</label>
+
+                                    <input type="checkbox" id="german" name="subjects" value="Немецкий" class="edit-profile-form__subject-checkbox" />
+                                    <label for="german" class="edit-profile-form__subject-label">Немецкий</label>
+
+                                    <input type="checkbox" id="french" name="subjects" value="Французский" class="edit-profile-form__subject-checkbox" />
+                                    <label for="french" class="edit-profile-form__subject-label">Французский</label>
+
+                                    <input type="checkbox" id="history" name="subjects" value="История" class="edit-profile-form__subject-checkbox" />
+                                    <label for="history" class="edit-profile-form__subject-label">История</label>
+
+                                    <input type="checkbox" id="social" name="subjects" value="Обществознание" class="edit-profile-form__subject-checkbox" />
+                                    <label for="social" class="edit-profile-form__subject-label">Обществознание</label>
+
+                                    <input type="checkbox" id="literature" name="subjects" value="Литература" class="edit-profile-form__subject-checkbox" />
+                                    <label for="literature" class="edit-profile-form__subject-label">Литература</label>
+
+                                    <input type="checkbox" id="biology" name="subjects" value="Биология" class="edit-profile-form__subject-checkbox" />
+                                    <label for="biology" class="edit-profile-form__subject-label">Биология</label>
+
+                                    <input type="checkbox" id="geography" name="subjects" value="География" class="edit-profile-form__subject-checkbox" />
+                                    <label for="geography" class="edit-profile-form__subject-label">География</label>
+
+                                    <input type="checkbox" id="economics" name="subjects" value="Экономика" class="edit-profile-form__subject-checkbox" />
+                                    <label for="economics" class="edit-profile-form__subject-label">Экономика</label>
+
+                                    <input type="checkbox" id="art" name="subjects" value="ИЗО" class="edit-profile-form__subject-checkbox" />
+                                    <label for="art" class="edit-profile-form__subject-label">ИЗО</label>
+
+                                    <input type="checkbox" id="music" name="subjects" value="Музыка" class="edit-profile-form__subject-checkbox" />
+                                    <label for="music" class="edit-profile-form__subject-label">Музыка</label>
+                                </div>
+                            </div>
+
+                            <div class="edit-profile-form__save">
+                                <div class="edit-profile-form__save-buttons">
+                                    <button type="submit" class="edit-profile-button edit-profile-button--primary">Сохранить предметы</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="edit-profile-form__step" id="step-about">
+                        <form method="POST" action="/updatetutbio" class="edit-profile-form__section">
+                            <h2 class="edit-profile-form__title">О себе</h2>
+
+                            <div class="edit-profile-form__group edit-profile-form__group--full-width">
+                                <label class="edit-profile-form__label">Описание профиля</label>
+                                <textarea class="edit-profile-form__textarea" name="bio" placeholder="Расскажите о своем образовании, методике преподавания, достижениях..."></textarea>
+                            </div>
+
+                            <div class="edit-profile-form__save">
+                                <div class="edit-profile-form__save-buttons">
+                                    <button type="submit" class="edit-profile-button edit-profile-button--primary">Сохранить описание</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="edit-profile-page__actions">
+                        <a href="/profiletut" class="edit-profile-button edit-profile-button--outline">Вернуться в профиль</a>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </body>
+</html>

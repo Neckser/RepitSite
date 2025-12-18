@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="ru">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Мои задания | RepitHub</title>
+    </head>
+    <body class="page">
+        <header class="top-bar">
+            <div class="nav-container">
+                <div class="nav-buttons">
+                    <a href="/tutlist" class="nav-button">Мои репетиторы</a>
+                    <a href="/home" class="nav-button active">Мои задания</a>
+                    <a href="/studgrades" class="nav-button">Мои оценки</a>
+                    <a href="/studtime" class="nav-button">Моё расписание</a>
+                </div>
+
+                <a href="/profile" class="account-widget">
+                    <div class="user-avatar">{{ avatar }}</div>
+                    <div class="user-info">
+                        <div class="user-name">{{ first_name }} {{ last_name }}</div>
+                        <div class="user-role">Ученик</div>
+                    </div>
+                </a>
+            </div>
+        </header>
+
+        <main class="dashboard-container">
+            <h1 class="dashboard-title">Мои задания</h1>
+
+            <div class="assignments-container">
+                <div class="assignments-filters">
+                    <div class="filter-buttons">
+                        <button class="filter-btn active">Все</button>
+                        <button class="filter-btn">Активные</button>
+                        <button class="filter-btn">Завершенные</button>
+                    </div>
+
+                    <div class="sort-options">
+                        <span class="sort-label">Сортировка:</span>
+                        <select class="sort-select" id="sortSelect">
+                            <option value="deadline-asc">По сроку (сначала ближайшие)</option>
+                            <option value="deadline-desc">По сроку (сначала дальние)</option>
+                            <option value="created-desc">Сначала новые</option>
+                            <option value="created-asc">Сначала старые</option>
+                            <option value="subject">По предмету</option>
+                        </select>
+                    </div>
+
+                    <div class="assignments-stats">
+                        <span class="stat-item">
+                            Всего:
+                            <strong>8</strong>
+                        </span>
+                        <span class="stat-item">
+                            Активные:
+                            <strong>5</strong>
+                        </span>
+                        <span class="stat-item">
+                            Завершенные:
+                            <strong>1</strong>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="assignments-list">{{ hwtemplate }}</div>
+            </div>
+        </main>
+    </body>
+</html>

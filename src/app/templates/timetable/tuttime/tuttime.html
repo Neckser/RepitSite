@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="ru">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Расписание занятий | RepitHub</title>
+    </head>
+    <body class="body">
+        <header class="top-bar">
+            <div class="top-bar__container">
+                <div class="top-bar__nav">
+                    <a href="/hometut" class="top-bar__nav-button">Главная</a>
+                    <a href="/homeworkstut" class="top-bar__nav-button">Задания</a>
+                    <a href="/tutgrades" class="top-bar__nav-button">Оценки</a>
+                    <a href="/tuttime" class="top-bar__nav-button top-bar__nav-button_active">Расписание</a>
+                </div>
+
+                <a href="/profiletut" class="top-bar__account">
+                    <div class="top-bar__avatar">{{ avatar }}</div>
+                    <div class="top-bar__user-info">
+                        <div class="top-bar__user-name">{{ first_name }} {{ last_name }}</div>
+                        <div class="top-bar__user-role">Репетитор</div>
+                    </div>
+                </a>
+            </div>
+        </header>
+
+        <div class="container">
+            <div class="page-header">
+                <h1 class="page-header__title">Расписание занятий</h1>
+            </div>
+
+            <div class="content-grid">
+                <div class="sidebar">
+                    <div class="card">
+                        <h2 class="card__title">Новое занятие</h2>
+                        <form class="lesson-form" method="POST" action="/createlesson">
+                            <div class="lesson-form__group">
+                                <label class="lesson-form__label" for="student_id">Ученик</label>
+                                <select class="lesson-form__select" id="student_id" name="student_id" required>
+                                    <option value="">Выберите ученика</option>
+                                    {{ selectForm }}
+                                </select>
+                            </div>
+
+                            <div class="lesson-form__group">
+                                <label class="lesson-form__label" for="subject">Предмет</label>
+                                <select class="lesson-form__select" id="subject" name="subject" required>
+                                    <option value="">Выберите предмет</option>
+                                    <option value="Математика">Математика</option>
+                                    <option value="Физика">Физика</option>
+                                    <option value="Информатика">Информатика</option>
+                                    <option value="Химия">Химия</option>
+                                    <option value="Английский">Английский</option>
+                                    <option value="Русский">Русский</option>
+                                    <option value="Немецкий">Немецкий</option>
+                                    <option value="Французский">Французский</option>
+                                    <option value="Обществознание">Обществознание</option>
+                                    <option value="История">История</option>
+                                    <option value="Литература">Литература</option>
+                                    <option value="Биология">Биология</option>
+                                    <option value="География">География</option>
+                                    <option value="Экономика">Экономика</option>
+                                    <option value="ИЗО">ИЗО</option>
+                                    <option value="Музыка">Музыка</option>
+                                </select>
+                            </div>
+
+                            <div class="lesson-form__group">
+                                <label class="lesson-form__label" for="lesson_date">Дата занятия</label>
+                                <input type="date" class="lesson-form__input" id="lesson_date" name="lesson_date" required />
+                            </div>
+
+                            <div class="lesson-form__group">
+                                <label class="lesson-form__label" for="lesson_time">Время начала</label>
+                                <input type="time" class="lesson-form__input" id="lesson_time" name="lesson_time" required />
+                            </div>
+
+                            <div class="lesson-form__group">
+                                <label class="lesson-form__label" for="duration">Продолжительность</label>
+                                <select class="lesson-form__select" id="duration" name="duration" required>
+                                    <option value="">Выберите продолжительность</option>
+                                    <option value="45">45 минут</option>
+                                    <option value="60">1 час</option>
+                                    <option value="90">1.5 часа</option>
+                                    <option value="120">2 часа</option>
+                                </select>
+                            </div>
+
+                            <!-- <div class="lesson-form__group">
+                                <label class="lesson-form__label" for="notes">Заметки и материалы</label>
+                                <textarea class="lesson-form__textarea" id="notes" name="notes" placeholder="Дополнительные заметки и материалы для занятия..."></textarea>
+                            </div> -->
+
+                            <button type="submit" class="btn btn_primary">Добавить занятие</button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="main-content">
+                    <div class="card">
+                        <div class="schedule__controls">
+                            <div class="schedule__nav-buttons">
+                                <a href="/tuttime?week_offset={{ week_offset - 1 }}" class="schedule__nav-button">←</a>
+                                <a href="/tuttime=0" class="schedule__today-button">Текущая неделя</a>
+                                <a href="/tuttime?week_offset={{ week_offset + 1 }}" class="schedule__nav-button">→</a>
+                            </div>
+                        </div>
+
+                        <div class="schedule__table">
+                            <div class="schedule__table-inner">
+                                <div class="schedule__days-header">
+                                    <div class="schedule__day-header">
+                                        <div class="schedule__day-name">Понедельник</div>
+                                        <div class="schedule__day-number">{{ mon }}</div>
+                                    </div>
+                                    <div class="schedule__day-header">
+                                        <div class="schedule__day-name">Вторник</div>
+                                        <div class="schedule__day-number">{{ tue }}</div>
+                                    </div>
+                                    <div class="schedule__day-header">
+                                        <div class="schedule__day-name">Среда</div>
+                                        <div class="schedule__day-number">{{ wed }}</div>
+                                    </div>
+                                    <div class="schedule__day-header">
+                                        <div class="schedule__day-name">Четверг</div>
+                                        <div class="schedule__day-number">{{ thu }}</div>
+                                    </div>
+                                    <div class="schedule__day-header">
+                                        <div class="schedule__day-name">Пятница</div>
+                                        <div class="schedule__day-number">{{ fri }}</div>
+                                    </div>
+                                    <div class="schedule__day-header">
+                                        <div class="schedule__day-name">Суббота</div>
+                                        <div class="schedule__day-number">{{ sat }}</div>
+                                    </div>
+                                    <div class="schedule__day-header">
+                                        <div class="schedule__day-name">Воскресенье</div>
+                                        <div class="schedule__day-number">{{ sun }}</div>
+                                    </div>
+                                </div>
+
+                                <div class="schedule__lessons-container">
+                                    <div class="schedule__day-column">{{ monday_lessons }}</div>
+                                    <div class="schedule__day-column">{{ tuesday_lessons }}</div>
+                                    <div class="schedule__day-column">{{ wednesday_lessons }}</div>
+                                    <div class="schedule__day-column">{{ thursday_lessons }}</div>
+                                    <div class="schedule__day-column">{{ friday_lessons }}</div>
+                                    <div class="schedule__day-column">{{ saturday_lessons }}</div>
+                                    <div class="schedule__day-column">{{ sunday_lessons }}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

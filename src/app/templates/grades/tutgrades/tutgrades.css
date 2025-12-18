@@ -1,0 +1,657 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+}
+
+.body {
+    background-color: #f8f9fa;
+    min-height: 100vh;
+}
+
+.top-bar {
+    background-color: #6b8e23;
+    padding: 12px 0;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.top-bar__container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+}
+
+.top-bar__nav {
+    display: flex;
+    gap: 10px;
+}
+
+.top-bar__nav-button {
+    background-color: rgba(255, 255, 255, 0.2);
+    color: white;
+    border: none;
+    padding: 8px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s;
+    text-decoration: none;
+}
+
+.top-bar__nav-button_active {
+    background-color: white;
+    color: #6b8e23;
+    text-decoration: none;
+}
+
+.top-bar__nav-button:hover {
+    background-color: rgba(255, 255, 255, 0.3);
+    text-decoration: none;
+}
+
+.top-bar__account {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: white;
+    cursor: pointer;
+    padding: 8px 15px;
+    border-radius: 20px;
+    transition: all 0.3s;
+    text-decoration: none;
+}
+
+.top-bar__account:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    text-decoration: none;
+    color: white;
+}
+
+.top-bar__avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background-color: white;
+    color: #6b8e23;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 14px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.top-bar__user-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.top-bar__user-name {
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.2;
+}
+
+.top-bar__user-role {
+    font-size: 12px;
+    opacity: 0.9;
+    line-height: 1.2;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 25px auto;
+    padding: 30px 20px;
+}
+
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.page-header__title {
+    color: #6b8e23;
+    font-size: 32px;
+    font-weight: bold;
+}
+
+.content-grid {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: 25px;
+}
+
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.card {
+    background: white;
+    border-radius: 15px;
+    padding: 25px;
+    box-shadow: 0 3px 15px rgba(0, 0, 0, 0.08);
+    border: 2px solid #e8f5e8;
+}
+
+.card__title {
+    color: #6b8e23;
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.grade-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.grade-form__group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.grade-form__label {
+    color: #333;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.grade-form__input,
+.grade-form__select,
+.grade-form__textarea {
+    padding: 12px 15px;
+    border: 2px solid #e8f5e8;
+    border-radius: 10px;
+    font-size: 14px;
+    transition: all 0.3s;
+    background: white;
+}
+
+.grade-form__input:focus,
+.grade-form__select:focus,
+.grade-form__textarea:focus {
+    outline: none;
+    border-color: #6b8e23;
+    box-shadow: 0 0 0 3px rgba(107, 142, 35, 0.1);
+}
+
+.grade-form__textarea {
+    resize: vertical;
+    min-height: 120px;
+    font-family: inherit;
+}
+
+.btn {
+    padding: 12px 25px;
+    border: none;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.btn_primary {
+    background: linear-gradient(135deg, #6b8e23 0%, #5a7a1f 100%);
+    color: white;
+}
+
+.btn_primary:hover {
+    background: linear-gradient(135deg, #5a7a1f 0%, #4a661a 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(107, 142, 35, 0.3);
+}
+
+.btn_danger {
+    background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+    color: white;
+}
+
+.btn_danger:hover {
+    background: linear-gradient(135deg, #c82333 0%, #a71e2a 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(220, 53, 69, 0.3);
+}
+
+.main-content {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.grades-history {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.grade-item {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+    border: 2px solid #e8f5e8;
+    transition: all 0.3s;
+}
+
+.grade-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.grade-item__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 15px;
+}
+
+.grade-item__info {
+    flex-grow: 1;
+}
+
+.grade-item__title {
+    color: #333;
+    font-size: 16px;
+    margin-bottom: 5px;
+}
+
+.grade-item__meta {
+    display: flex;
+    gap: 15px;
+    font-size: 13px;
+    color: #666;
+}
+
+.grade-item__date {
+    color: #6b8e23;
+    font-weight: 600;
+}
+
+.grade-item__content {
+    color: #333;
+    line-height: 1.5;
+    margin-bottom: 15px;
+}
+
+.subject-badge {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: bold;
+    color: white;
+    display: inline-block;
+    margin-bottom: 8px;
+}
+
+.subject-badge.Математика {
+    background-color: #6b8e23;
+}
+.subject-badge.Физика {
+    background-color: #3a6ea5;
+}
+.subject-badge.Информатика {
+    background-color: #0288d1;
+}
+.subject-badge.Химия {
+    background-color: #7b1fa2;
+}
+.subject-badge.Английский {
+    background-color: #e53935;
+}
+.subject-badge.Русский {
+    background-color: #f57c00;
+}
+.subject-badge.Немецкий {
+    background-color: #43a047;
+}
+.subject-badge.Французский {
+    background-color: #5e35b1;
+}
+.subject-badge.Обществознание {
+    background-color: #5d4037;
+}
+.subject-badge.История {
+    background-color: #6d4c41;
+}
+.subject-badge.Литература {
+    background-color: #00897b;
+}
+.subject-badge.Биология {
+    background-color: #388e3c;
+}
+.subject-badge.География {
+    background-color: #0097a7;
+}
+.subject-badge.Экономика {
+    background-color: #fbc02d;
+    color: #333;
+}
+.subject-badge.ИЗО {
+    background-color: #ad1457;
+}
+.subject-badge.Музыка {
+    background-color: #8e24aa;
+}
+
+.grade-item {
+    width: 100%;
+    background: #fff;
+    border-radius: 12px;
+    padding: 14px 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 10px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+    border: 2px solid #e8f5e8;
+    transition: all 0.3s;
+}
+
+.grade-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.grade-item__left {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 70px;
+    width: 70px;
+    flex-shrink: 0;
+}
+
+.grade-item__value {
+    margin-top: 4px;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #333;
+}
+
+.grade-item__center {
+    flex-grow: 1;
+}
+
+.grade-item__name {
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-bottom: 4px;
+    color: #333;
+}
+
+.grade-item__meta {
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.grade-item__description,
+.grade-item__comment {
+    display: block;
+    margin-top: 2px;
+}
+
+.grade-item__right {
+    text-align: right;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 6px;
+    min-width: 80px;
+    width: 80px;
+    flex-shrink: 0;
+}
+
+.grade-item__date {
+    font-size: 0.85rem;
+    color: #999;
+}
+
+@media (max-width: 1023px) {
+    .top-bar__container {
+        max-width: 100%;
+        padding: 0 15px;
+    }
+
+    .container {
+        max-width: 100%;
+        padding: 25px 15px;
+    }
+
+    .content-grid {
+        grid-template-columns: 280px 1fr;
+        gap: 20px;
+    }
+
+    .card {
+        padding: 20px;
+    }
+
+    .page-header__title {
+        font-size: 28px;
+    }
+}
+
+@media (max-width: 767px) {
+    .top-bar__container {
+        flex-direction: column;
+        gap: 15px;
+        padding: 10px 15px;
+    }
+
+    .top-bar__user-info {
+        display: none;
+    }
+
+    .top-bar__nav {
+        width: 100%;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .top-bar__nav-button {
+        padding: 6px 15px;
+        font-size: 13px;
+    }
+
+    .page-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+        margin-bottom: 20px;
+    }
+
+    .page-header__title {
+        font-size: 24px;
+    }
+
+    .content-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+    .sidebar {
+        order: 2;
+    }
+
+    .main-content {
+        order: 1;
+    }
+
+    .card {
+        padding: 15px;
+    }
+
+    .grade-form {
+        gap: 15px;
+    }
+
+    .grade-form__input,
+    .grade-form__select,
+    .grade-form__textarea {
+        padding: 10px 12px;
+        font-size: 13px;
+    }
+
+    .btn {
+        padding: 10px 20px;
+        font-size: 13px;
+    }
+
+    .grade-item__header {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .grade-item__meta {
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .grade-item {
+        padding: 15px;
+    }
+
+    .grade-item__title {
+        font-size: 15px;
+    }
+
+    .grade-item__meta {
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .top-bar {
+        padding: 8px 0;
+    }
+
+    .top-bar__container {
+        padding: 8px 10px;
+        gap: 10px;
+    }
+
+    .top-bar__nav {
+        gap: 5px;
+    }
+
+    .top-bar__nav-button {
+        padding: 5px 12px;
+        font-size: 12px;
+        border-radius: 15px;
+    }
+
+    .top-bar__account {
+        padding: 5px 10px;
+    }
+
+    .top-bar__avatar {
+        width: 32px;
+        height: 32px;
+        font-size: 12px;
+    }
+
+    .container {
+        padding: 15px 10px;
+    }
+
+    .page-header {
+        margin-bottom: 15px;
+        gap: 10px;
+    }
+
+    .page-header__title {
+        font-size: 20px;
+        line-height: 1.2;
+    }
+
+    .content-grid {
+        gap: 10px;
+    }
+
+    .card {
+        padding: 12px;
+        border-radius: 10px;
+    }
+
+    .card__title {
+        font-size: 16px;
+        margin-bottom: 15px;
+        gap: 8px;
+    }
+
+    .grade-form {
+        gap: 12px;
+    }
+
+    .grade-form__group {
+        gap: 5px;
+    }
+
+    .grade-form__label {
+        font-size: 13px;
+    }
+
+    .grade-form__input,
+    .grade-form__select,
+    .grade-form__textarea {
+        padding: 8px 10px;
+        font-size: 12px;
+        border-radius: 8px;
+    }
+
+    .grade-form__textarea {
+        min-height: 100px;
+    }
+
+    .btn {
+        padding: 8px 16px;
+        font-size: 12px;
+        border-radius: 8px;
+    }
+
+    .grade-item {
+        padding: 12px;
+        border-radius: 8px;
+    }
+
+    .grade-item__title {
+        font-size: 14px;
+    }
+
+    .grade-item__meta {
+        font-size: 11px;
+        gap: 8px;
+    }
+
+    .grade-item__content {
+        font-size: 13px;
+        line-height: 1.4;
+    }
+
+    .subject-badge {
+        font-size: 11px;
+        padding: 3px 8px;
+        margin-bottom: 5px;
+    }
+}

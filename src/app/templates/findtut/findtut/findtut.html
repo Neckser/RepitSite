@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="ru">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Добавить репетитора | RepitHub</title>
+    </head>
+    <body class="page">
+        <header class="top-bar">
+            <div class="nav-container">
+                <div class="nav-buttons">
+                    <a href="/tutlist" class="nav-button">Мои репетиторы</a>
+                    <a href="/home" class="nav-button">Мои задания</a>
+                    <a href="/studgrades" class="nav-button">Мои оценки</a>
+                    <a href="/studtime" class="nav-button">Моё расписание</a>
+                </div>
+
+                <a href="/profile" class="account-widget">
+                    <div class="user-avatar">{{ avatar }}</div>
+                    <div class="user-info">
+                        <div class="user-name">{{ first_name }} {{ last_name }}</div>
+                        <div class="user-role">Ученик</div>
+                    </div>
+                </a>
+            </div>
+        </header>
+
+        <main class="add-tutor-page">
+            <div class="add-tutor-card">
+                <div class="add-tutor-card__icon">👨‍🏫</div>
+                <h1 class="add-tutor-card__title">Добавить репетитора</h1>
+                <p class="add-tutor-card__description">Введите код репетитора, чтобы добавить его в свой список. Код можно получить у самого репетитора.</p>
+
+                <form class="code-form" action="/addtut" method="post">
+                    <input type="text" class="code-form__input" name="tutor_code" placeholder="Введите код репетитора" maxlength="15" required />
+                    <div class="code-form__hint">Код обычно состоит из 7-15 цифр</div>
+
+                    <div class="add-tutor-card__buttons">
+                        <button type="submit" class="add-tutor-card__button add-tutor-card__button--add">Добавить репетитора</button>
+                        <a href="/tutlist" class="add-tutor-card__button add-tutor-card__button--back">Назад</a>
+                    </div>
+                </form>
+
+                <div class="add-tutor-card__info">
+                    <div class="add-tutor-card__info-title">Как получить код репетитора?</div>
+                    <div class="add-tutor-card__steps">
+                        <div class="add-tutor-card__step">
+                            <div class="add-tutor-card__step-number">1</div>
+                            <span>Попросите репетитора поделиться его уникальным кодом</span>
+                        </div>
+                        <div class="add-tutor-card__step">
+                            <div class="add-tutor-card__step-number">2</div>
+                            <span>Репетитор может найти код в своем личном профиле</span>
+                        </div>
+                        <div class="add-tutor-card__step">
+                            <div class="add-tutor-card__step-number">3</div>
+                            <span>Введите код в поле выше и нажмите "Добавить репетитора"</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </body>
+</html>

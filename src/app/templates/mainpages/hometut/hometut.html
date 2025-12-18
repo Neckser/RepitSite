@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="ru">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Репетитор | RepitHub</title>
+    </head>
+    <body class="page">
+        <header class="top-bar">
+            <div class="nav-container">
+                <div class="nav-buttons">
+                    <a href="/hometut" class="nav-button active">Главная</a>
+                    <a href="/homeworkstut" class="nav-button">Задания</a>
+                    <a href="/tutgrades" class="nav-button">Оценки</a>
+                    <a href="/tuttime" class="nav-button">Расписание</a>
+                </div>
+
+                <a href="/profiletut" class="account-widget">
+                    <div class="user-avatar">{{ avatar }}</div>
+                    <div class="user-info">
+                        <div class="user-name">{{ first_name }} {{ last_name }}</div>
+                        <div class="user-role">Репетитор</div>
+                    </div>
+                </a>
+            </div>
+        </header>
+
+        <main class="tutor-dashboard">
+            <section class="welcome-section">
+                <h1 class="welcome-title">Добро пожаловать, {{ first_name }} {{ last_name }}!</h1>
+            </section>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value">{{ student_colvo }}</div>
+                    <div class="stat-label">Учеников</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">{{ homework_colvo }}</div>
+                    <div class="stat-label">Активных заданий</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">🚧</div>
+                    <div class="stat-label">Занятия сегодня</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">🚧</div>
+                    <div class="stat-label">Ваш рейтинг</div>
+                </div>
+            </div>
+
+            <section class="students-section">
+                <div class="section-header">
+                    <h2 class="section-title">Мои ученики</h2>
+                </div>
+                <div class="students-grid">{{ studtemplate }}</div>
+            </section>
+
+            <!-- <section class="lessons-section">
+                <div class="section-header">
+                    <h2 class="section-title">Ближайшие занятия</h2>
+                </div>
+                <div class="lessons-list">
+                    <div class="lesson-card">
+                        <div class="lesson-header">
+                            <div class="lesson-time">14:00 - 15:30</div>
+                            <div class="lesson-date">Сегодня</div>
+                        </div>
+                        <div class="lesson-student">Анна Смирнова</div>
+                        <span class="lesson-subject">Математика - Подготовка к ЕГЭ</span>
+                    </div>
+
+                    <div class="lesson-card">
+                        <div class="lesson-header">
+                            <div class="lesson-time">16:00 - 17:30</div>
+                            <div class="lesson-date">Сегодня</div>
+                        </div>
+                        <div class="lesson-student">Петр Захаров</div>
+                        <span class="lesson-subject">Физика - Кинематика</span>
+                    </div>
+
+                    <div class="lesson-card">
+                        <div class="lesson-header">
+                            <div class="lesson-time">10:00 - 11:30</div>
+                            <div class="lesson-date">Завтра</div>
+                        </div>
+                        <div class="lesson-student">Мария Козлова</div>
+                        <span class="lesson-subject">Математика - Производные</span>
+                    </div>
+                </div>
+            </section> -->
+        </main>
+    </body>
+</html>

@@ -311,7 +311,7 @@ def gettuthw(tutor_id):
         connection = sqlite3.connect(DB_PATH)
         cursor = connection.cursor()
 
-        cursor.execute('''SELECT h.title, h.description, h.deadline, h.status, h.subject FROM homeworks h JOIN tutors t ON h.tutor_id = t.tutor_id WHERE h.tutor_id = ? ORDER BY h.deadline ASC''', (tutor_id,))
+        cursor.execute('''SELECT h.title, h.description, h.deadline, h.status, h.subject, h.homework_id FROM homeworks h JOIN tutors t ON h.tutor_id = t.tutor_id WHERE h.tutor_id = ? ORDER BY h.deadline ASC''', (tutor_id,))
         homeworks = cursor.fetchall()
         return homeworks
 
@@ -443,12 +443,12 @@ def addhw(student_id, tutor_id, title, description, subject, deadline):
     finally:
         connection.close()
 
-def delhw(title):
+def delhw(homework_id):
     try:
         connection = sqlite3.connect(DB_PATH)
         cursor = connection.cursor()
         
-        cursor.execute('''DELETE FROM homeworks WHERE title = ?''', (title,))
+        cursor.execute('''DELETE FROM homeworks WHERE homework_id = ?''', (homework_id,))
         connection.commit()
 
     except Exception as e:
@@ -700,7 +700,7 @@ def getstudentweektimetable(studlogin, monday):
         ))
 
         rows = cursor.fetchall()
-        return build_week(monday, rows)
+        return build_week_for_students(monday, rows)
 
     except Exception as e:
         print(f"Произошла ошибка - {e}")
@@ -711,7 +711,7 @@ def getstudentweektimetable(studlogin, monday):
 
 
 
-def build_week(monday_date, rows):
+def build_week_for_students(monday_date, rows):
     today = datetime.today().strftime("%Y-%m-%d")
     week = {}
 
@@ -743,6 +743,101 @@ def getweekdates(monday):
     return [f"{(monday + timedelta(days=i)).day} {(monday + timedelta(days=i)).strftime('%B')}" for i in range(7)]
 
 
+def gettutorweektimetable(tutlogin, monday):
+    try:
+        connection = sqlite3.connect(DB_PATH)
+        cursor = connection.cursor()
 
+        cursor.execute("""
+            SELECT
+                t.schedule_id,
+                t.lesson_date,
+                t.lesson_time,
+                t.subject,
+                t.student_id,
+                t.status,
+                t.notes,
+                t.duration
+            FROM timetable t
+            JOIN tutors tu ON t.tutor_id = tu.tutor_id
+            WHERE tu.login = ?
+              AND t.lesson_date BETWEEN DATE(?) AND DATE(?, '+6 days')
+            ORDER BY t.lesson_date, t.lesson_time
+        """, (
+            tutlogin,
+            monday.strftime("%Y-%m-%d"),
+            monday.strftime("%Y-%m-%d")
+        ))
+
+        rows = cursor.fetchall()
+        return build_week_for_tutors(monday, rows)
+
+    except Exception as e:
+        print(f"Произошла ошибка - {e}")
+        raise e
+
+    finally:
+        connection.close()
+
+def build_week_for_tutors(monday_date, rows):
+    today = datetime.today().strftime("%Y-%m-%d")
+    week = {}
+
+    for i in range(7):
+        day = monday_date + timedelta(days=i)
+        date_str = day.strftime("%Y-%m-%d")
+        week[date_str] = {
+            "is_today": date_str == today,
+            "lessons": []
+        }
+    
+    for row in rows:
+        schedule_id, lesson_date, lesson_time, subject, student_id, status, notes, duration = row
+        week[lesson_date]["lessons"].append({
+            "schedule_id": schedule_id,
+            "time": lesson_time,
+            "subject": subject,
+            "student_id": student_id,
+            "status": status,
+            "notes": notes,
+            "duration": duration
+        })
+
+    for day in week:
+        if not week[day]["lessons"]:
+            week[day]["lessons"] = "Нет занятий"
+
+    return week
+
+def addlesson(student_id, tutor_id, subject, lesson_date, lesson_time, duration):
+    try:
+        connection = sqlite3.connect(DB_PATH)
+        cursor = connection.cursor()
+
+        cursor.execute("""INSERT INTO timetable (student_id, tutor_id, subject, lesson_date, lesson_time, duration) VALUES (?, ?, ?, ?, ?, ?) """, (student_id, tutor_id, subject, lesson_date, lesson_time, duration))
+        connection.commit()
+
+    except Exception as e:
+        print(f"Произошла ошибка - {e}")
+        raise e
+    
+    finally:
+        connection.close()
+
+
+def dellesson(schedule_id):
+    try:
+        connection = sqlite3.connect(DB_PATH)
+        cursor = connection.cursor()
+        
+        cursor.execute('''DELETE FROM timetable WHERE schedule_id = ?''', (schedule_id,))
+        connection.commit()
+
+    except Exception as e:
+        print(f"Произошла ошибка - {e}")
+        raise e
+    
+    finally:
+        connection.close()
 
 

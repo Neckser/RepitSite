@@ -6,6 +6,7 @@ from datetime import datetime
 from auth import get_current_user, create_access_token
 from logic import *
 
+TEMPLATES_PATH = "../../build/"
 
 app = FastAPI()
 
@@ -15,13 +16,13 @@ def startup_event():
 
 @app.get("/")
 def startlog():
-    with open("templates/auth/login.html", "r", encoding='utf-8') as file:
+    with open(f"{TEMPLATES_PATH}auth/login.html", "r", encoding='utf-8') as file:
         content = file.read()
     return HTMLResponse(content=content)
 
 @app.get("/login")
 def get_login():
-    with open("templates/auth/login.html", "r", encoding='utf-8') as file:
+    with open(f"{TEMPLATES_PATH}auth/login.html", "r", encoding='utf-8') as file:
         content = file.read()
     return HTMLResponse(content=content)
 
@@ -40,12 +41,12 @@ def login(login: str = Form(...), password: str = Form(...)):
             )
             return response
         else:
-            with open("templates/auth/loginstudfailed.html", "r", encoding='utf-8') as file:
+            with open(f"{TEMPLATES_PATH}auth/loginstudfailed.html", "r", encoding='utf-8') as file:
                 content = file.read()
             return HTMLResponse(content=content)
     except Exception as e:
         print(f"Произошла ошибка - {e}")
-        with open("templates/auth/loginstudfailed.html", "r", encoding='utf-8') as file:
+        with open(f"{TEMPLATES_PATH}auth/loginstudfailed.html", "r", encoding='utf-8') as file:
             content = file.read()
         return HTMLResponse(content=content)
 
@@ -66,13 +67,13 @@ def logintut(login: str = Form(...), password: str = Form(...)):
             )
             return response
         else:
-            with open("templates/auth/loginrepfailed.html", "r", encoding='utf-8') as file:
+            with open(f"{TEMPLATES_PATH}auth/loginrepfailed.html", "r", encoding='utf-8') as file:
                 content = file.read()
             return HTMLResponse(content=content)
         
     except Exception as e:
         print(f"Произошла ошибка - {e}")
-        with open("templates/auth/loginrepfailed.html", "r", encoding='utf-8') as file:
+        with open(f"{TEMPLATES_PATH}auth/loginrepfailed.html", "r", encoding='utf-8') as file:
             content = file.read()
         return HTMLResponse(content=content)
 
@@ -80,7 +81,7 @@ def logintut(login: str = Form(...), password: str = Form(...)):
 
 @app.get("/register")
 def get_registration():
-    with open('templates/register/regstud.html', 'r', encoding='utf-8') as file:
+    with open(f'{TEMPLATES_PATH}register/regstud.html', 'r', encoding='utf-8') as file:
         content = file.read()
     return HTMLResponse(content=content)
 
@@ -98,14 +99,12 @@ def post_registration(first_name: str = Form(), last_name: str = Form(), grade: 
 
 @app.get("/registertut")
 def get_registertut():
-    with open('templates/register/regtut.html', 'r', encoding='utf-8') as file:
+    with open(f'{TEMPLATES_PATH}register/regtut.html', 'r', encoding='utf-8') as file:
         content = file.read()
     return HTMLResponse(content=content)
 
 @app.post("/registertut")
 def post_registertut(first_name: str = Form(...), last_name: str = Form(...), education: str = Form(...), experience: int = Form(...), login: str = Form(...), password: str = Form(...),
-    photo: UploadFile = File(...), 
-    resume: Optional[UploadFile] = File(None),
     subject_math: Optional[str] = Form(None),
     subject_physics: Optional[str] = Form(None),
     subject_chemistry: Optional[str] = Form(None),
@@ -151,7 +150,7 @@ def home(request: Request):
 
         hwtemplate = ""
 
-        with open('templates/cards/hwcard.html', 'r', encoding='utf-8') as f:
+        with open(f'{TEMPLATES_PATH}cards/hwcard.html', 'r', encoding='utf-8') as f:
             a = f.read()
 
         studinfo = getstudinfo(name)
@@ -178,9 +177,9 @@ def home(request: Request):
                 
         
         else:
-            with open('templates/cards/nohw.html', 'r', encoding="utf-8") as f:
+            with open(f'{TEMPLATES_PATH}cards/nohw.html', 'r', encoding="utf-8") as f:
                 hwtemplate = f.read() 
-        with open("templates/mainpages/mainpage.html", "r", encoding = "utf-8") as f:
+        with open(f"{TEMPLATES_PATH}mainpages/mainpage.html", "r", encoding = "utf-8") as f:
             content = verstkaprofile(f.read(), name, first_name, last_name)
         content = content.replace("{{ hwtemplate }}", hwtemplate)
         return HTMLResponse(content=content)
@@ -203,7 +202,7 @@ def get_registertut(request: Request):
     try:
         studtemplate = ""
 
-        with open('templates/cards/studcard.html', 'r', encoding='utf-8') as f:
+        with open(f'{TEMPLATES_PATH}cards/studcard.html', 'r', encoding='utf-8') as f:
             a = f.read()
 
         tutinfo = gettutorinfo(name)
@@ -223,7 +222,7 @@ def get_registertut(request: Request):
             studtemplate = studtemplate.replace("{{ grade }}", str(student[5]))
             studtemplate = studtemplate.replace("{{ avatarstud }}", str(student[1][0] + student[2][0]))
 
-        with open('templates/mainpages/hometut.html', 'r', encoding='utf-8') as file:
+        with open(f'{TEMPLATES_PATH}mainpages/hometut.html', 'r', encoding='utf-8') as file:
             content = verstkaprofile(file.read(), name, tutfirst_name, tutlast_name)
         content = content.replace("{{ student_colvo }}", str(student_colvo))
         content = content.replace("{{ homework_colvo }}", str(tuthomework_colvo))
@@ -248,7 +247,7 @@ def tutlist(request: Request):
     try:
         tuttemplate = ""
 
-        with open('templates/cards/tutcards.html', 'r', encoding='utf-8') as f:
+        with open(f'{TEMPLATES_PATH}cards/tutcards.html', 'r', encoding='utf-8') as f:
             a = f.read()
 
         studinfo = getstudinfo(name)
@@ -280,7 +279,7 @@ def tutlist(request: Request):
             tuttemplate = tuttemplate.replace("{{ lesson_count }}", '🚧')
             tuttemplate = tuttemplate.replace("{{ rating }}", '🚧')
 
-        with open('templates/findtut/tutlist.html', 'r', encoding="utf-8") as f:
+        with open(f'{TEMPLATES_PATH}findtut/tutlist.html', 'r', encoding="utf-8") as f:
             content = verstkaprofile(f.read(), name, studfirst_name, studlast_name)
 
         content = content.replace("{{ tuttemplate }}", tuttemplate)
@@ -305,7 +304,7 @@ def findtut(request: Request):
         studfirst_name = studinfo[0]
         studlast_name = studinfo[1]
 
-        with open("templates/findtut/findtut.html", "r", encoding = "utf-8") as f:
+        with open(f"{TEMPLATES_PATH}findtut/findtut.html", "r", encoding = "utf-8") as f:
             content = verstkaprofile(f.read(), name, studfirst_name, studlast_name)
             return HTMLResponse(content=content)
     
@@ -326,25 +325,19 @@ def addtut(request: Request, tutor_code: str = Form(...)):
 
     try:
         studinfo = getstudinfo(name)
-
-        if studinfo:
-            student_id = studinfo[2]
-        else:
-            with open("templates/findtut/findtutstudidfailed.html", "r", encoding='utf-8') as file:
-                content = verstka(file.read(), name)
-            return HTMLResponse(content=content) 
-        
-        if not(checktutexistsbyid(tutor_code)):
-            with open("templates/findtut/findtutidfailed.html", "r", encoding='utf-8') as file:
-                content = verstka(file.read(), name)
-            return HTMLResponse(content=content) 
+        student_id = studinfo[2]
+        studfirst_name = studinfo[0]
+        studlast_name = studinfo[1]
 
         if checktutexistsbyid(tutor_code):
+
             addtutor(student_id, tutor_code)
+
         else:
-            with open("templates/findtut/findtutidfailed.html", "r", encoding='utf-8') as file:
-                content = verstka(file.read(), name)
+            with open(f"{TEMPLATES_PATH}findtut/findtutidfailed.html", "r", encoding='utf-8') as file:
+                content = verstkaprofile(file.read(), name, studfirst_name, studlast_name)
             return HTMLResponse(content=content)
+
         
     except Exception as e:
         print(f"Произошла ошибка - {e}")
@@ -381,7 +374,7 @@ def studprofile(request: Request):
         if bio is None or bio == "":
             bio = "Всем привет - я использую RepitHub"
 
-        with open("templates/profiles/studprofile.html", "r", encoding = "utf-8") as f:
+        with open(f"{TEMPLATES_PATH}profiles/studprofile.html", "r", encoding = "utf-8") as f:
             content = verstkaprofile(f.read(), name, studfirst_name, studlast_name)
             content = content.replace("{{ grade }}", str(grade))
             content = content.replace("{{ tutors_count }}", str(tutor_count))
@@ -426,7 +419,7 @@ def profiletut(request: Request):
         for tutsubject in tutsubjects:
                 profiletutsubjecttemplate += f'''<span class="subject-badge {tutsubject}">{tutsubject}</span>'''
 
-        with open('templates/profiles/profiletut.html', 'r', encoding='utf-8') as f:
+        with open(f'{TEMPLATES_PATH}profiles/profiletut.html', 'r', encoding='utf-8') as f:
             content = verstkaprofile(f.read(), name, tutfirst_name, tutlast_name)
         content = content.replace("{{ experience }}", str(experience))
         content = content.replace("{{ student_colvo }}", str(student_colvo))
@@ -453,12 +446,12 @@ def homeworkstut(request: Request):
 
         updatehwstatus()
 
-        optionTemaplate = '''<select class="form-select" id="student_id" name="student_id" required>
+        optionTemaplate = '''<select class="assignment-form__select" id="student_id" name="student_id" required>
         <option value="">Выберите ученика</option>'''
 
         hwtemplate = ""
 
-        with open('templates/cards/hwtutcard.html', 'r', encoding='utf-8') as f:
+        with open(f'{TEMPLATES_PATH}cards/hwtutcard.html', 'r', encoding='utf-8') as f:
             a = f.read()
 
         tutinfo = gettutorinfo(name)
@@ -484,8 +477,9 @@ def homeworkstut(request: Request):
                 hwtemplate = hwtemplate.replace("{{ data }}", str(hw[2]))
                 hwtemplate = hwtemplate.replace("{{ description }}", str(hw[1]))
                 hwtemplate = hwtemplate.replace("{{ subject }}", str(hw[4]))
+                hwtemplate = hwtemplate.replace("{{ homework_id }}", str(hw[5]))
         
-        with open('templates/homeworks/homeworkstut.html', 'r', encoding='utf-8') as f:
+        with open(f'{TEMPLATES_PATH}homeworks/homeworkstut.html', 'r', encoding='utf-8') as f:
             content = verstkaprofile(f.read(), name, tutfirst_name, tutlast_name)
         content = content.replace("{{ selectForm }}", optionTemaplate)
         content = content.replace("{{ hwtemplate }}", hwtemplate)
@@ -520,7 +514,7 @@ def createhw(request: Request, student_id: str = Form(...), subject: str = Form(
 
 
 @app.post("/deletehw")
-def deletehw(request: Request, title: str = Form(...)):
+def deletehw(request: Request, homework_id: str = Form(...)):
     try:
         name, user_type = get_current_user(request)
         if user_type != "tutor":
@@ -531,7 +525,7 @@ def deletehw(request: Request, title: str = Form(...)):
 
     try:
 
-        delhw(title)
+        delhw(homework_id)
 
     except Exception as e:
         print(f"Произошла ошибка - {e}")
@@ -572,10 +566,10 @@ def studtime(request: Request, week_offset: int = Query(0)):
         monday_date = list(week.keys())[0]
         monday_lessons = week[monday_date]["lessons"]
         if monday_lessons == "Нет занятий":
-            with open('templates/cards/nolessons.html', 'r', encoding='utf-8') as f:
+            with open(f'{TEMPLATES_PATH}cards/nolessons.html', 'r', encoding='utf-8') as f:
                 monday_template = f.read()
         else:
-            with open('templates/cards/lesson.html', 'r', encoding='utf-8') as f:
+            with open(f'{TEMPLATES_PATH}cards/lesson.html', 'r', encoding='utf-8') as f:
                 a = f.read()
             monday_template = ""
             for lesson in monday_lessons:
@@ -598,10 +592,10 @@ def studtime(request: Request, week_offset: int = Query(0)):
         tuesday_date = list(week.keys())[1]
         tuesday_lessons = week[tuesday_date]["lessons"]
         if tuesday_lessons == "Нет занятий":
-            with open('templates/cards/nolessons.html', 'r', encoding='utf-8') as f:
+            with open(f'{TEMPLATES_PATH}cards/nolessons.html', 'r', encoding='utf-8') as f:
                 tuesday_template = f.read()
         else:
-            with open('templates/cards/lesson.html', 'r', encoding='utf-8') as f:
+            with open(f'{TEMPLATES_PATH}cards/lesson.html', 'r', encoding='utf-8') as f:
                 a = f.read()
             tuesday_template = ""
             for lesson in tuesday_lessons:
@@ -624,10 +618,10 @@ def studtime(request: Request, week_offset: int = Query(0)):
         wednesday_date = list(week.keys())[2]
         wednesday_lessons = week[wednesday_date]["lessons"]
         if wednesday_lessons == "Нет занятий":
-            with open('templates/cards/nolessons.html', 'r', encoding='utf-8') as f:
+            with open(f'{TEMPLATES_PATH}cards/nolessons.html', 'r', encoding='utf-8') as f:
                 wednesday_template = f.read()
         else:
-            with open('templates/cards/lesson.html', 'r', encoding='utf-8') as f:
+            with open(f'{TEMPLATES_PATH}cards/lesson.html', 'r', encoding='utf-8') as f:
                 a = f.read()
             wednesday_template = ""
             for lesson in wednesday_lessons:
@@ -650,10 +644,10 @@ def studtime(request: Request, week_offset: int = Query(0)):
         thursday_date = list(week.keys())[3]
         thursday_lessons = week[thursday_date]["lessons"]
         if thursday_lessons == "Нет занятий":
-            with open('templates/cards/nolessons.html', 'r', encoding='utf-8') as f:
+            with open(f'{TEMPLATES_PATH}cards/nolessons.html', 'r', encoding='utf-8') as f:
                 thursday_template = f.read()
         else:
-            with open('templates/cards/lesson.html', 'r', encoding='utf-8') as f:
+            with open(f'{TEMPLATES_PATH}cards/lesson.html', 'r', encoding='utf-8') as f:
                 a = f.read()
             thursday_template = ""
             for lesson in thursday_lessons:
@@ -677,10 +671,10 @@ def studtime(request: Request, week_offset: int = Query(0)):
         friday_date = list(week.keys())[4]
         friday_lessons = week[friday_date]["lessons"]
         if friday_lessons == "Нет занятий":
-            with open('templates/cards/nolessons.html', 'r', encoding='utf-8') as f:
+            with open(f'{TEMPLATES_PATH}cards/nolessons.html', 'r', encoding='utf-8') as f:
                 friday_template = f.read()
         else:
-            with open('templates/cards/lesson.html', 'r', encoding='utf-8') as f:
+            with open(f'{TEMPLATES_PATH}cards/lesson.html', 'r', encoding='utf-8') as f:
                 a = f.read()
             friday_template = ""
             for lesson in friday_lessons:
@@ -703,10 +697,10 @@ def studtime(request: Request, week_offset: int = Query(0)):
         saturday_date = list(week.keys())[5]
         saturday_lessons = week[saturday_date]["lessons"]
         if saturday_lessons == "Нет занятий":
-            with open('templates/cards/nolessons.html', 'r', encoding='utf-8') as f:
+            with open(f'{TEMPLATES_PATH}cards/nolessons.html', 'r', encoding='utf-8') as f:
                 saturday_template = f.read()
         else:
-            with open('templates/cards/lesson.html', 'r', encoding='utf-8') as f:
+            with open(f'{TEMPLATES_PATH}cards/lesson.html', 'r', encoding='utf-8') as f:
                 a = f.read()
             saturday_template = ""
             for lesson in saturday_lessons:
@@ -729,10 +723,10 @@ def studtime(request: Request, week_offset: int = Query(0)):
         sunday_date = list(week.keys())[6]
         sunday_lessons = week[sunday_date]["lessons"]
         if sunday_lessons == "Нет занятий":
-            with open('templates/cards/nolessons.html', 'r', encoding='utf-8') as f:
+            with open(f'{TEMPLATES_PATH}cards/nolessons.html', 'r', encoding='utf-8') as f:
                 sunday_template = f.read()
         else:
-            with open('templates/cards/lesson.html', 'r', encoding='utf-8') as f:
+            with open(f'{TEMPLATES_PATH}cards/lesson.html', 'r', encoding='utf-8') as f:
                 a = f.read()
             sunday_template = ""
             for lesson in sunday_lessons:
@@ -752,7 +746,7 @@ def studtime(request: Request, week_offset: int = Query(0)):
                 sunday_template = sunday_template.replace('{{ starttime }}', str(start_time_str))
                 sunday_template = sunday_template.replace('{{ endtime }}', str(end_time_str))
 
-        with open('templates/timetable/studtime.html', 'r', encoding="utf-8") as f:
+        with open(f'{TEMPLATES_PATH}timetable/studtime.html', 'r', encoding="utf-8") as f:
             content = verstkaprofile(f.read(), name, studfirst_name, studlast_name)
         content = content.replace("{{ mon }}", str(mon))
         content = content.replace("{{ tue }}", str(tue))
@@ -777,11 +771,302 @@ def studtime(request: Request, week_offset: int = Query(0)):
         print(f"Произошла ошибка - {e}")
         return RedirectResponse(url="/login", status_code=303)
 
-# @app.get("/tuttime")
-# def studtime(name: str = None):
-#     with open('templates/tuttime.html', 'r', encoding="utf-8") as f:
-#         content = verstka(f.read(), name)
-#     return HTMLResponse(content=content)
+@app.get("/tuttime")
+def tuttime(request: Request, week_offset: int = Query(0)):
+    try:
+        name, user_type = get_current_user(request)
+        if user_type != "tutor":
+            return RedirectResponse(url="/login", status_code=303)
+
+    except HTTPException:
+        return RedirectResponse(url="/login", status_code=303)
+
+    try:
+        base_monday = get_base_monday()
+        target_monday = base_monday + timedelta(days=week_offset * 7)
+        week = gettutorweektimetable(name, target_monday)
+
+        optionTemplate = ""
+
+        students = getstudents(name)
+
+        if students:
+            for student in students:
+                optionTemplate += f'   <option value="{student[0]}">{student[1]} {student[2]} ({student[5]} класс)</option>'
+        optionTemplate += "</select>"
+
+
+        tutorinfo = gettutorinfo(name)
+        tutfirst_name = tutorinfo[0]
+        tutlast_name = tutorinfo[1]
+
+        weekdates = getweekdates(target_monday)
+        mon = weekdates[0]
+        tue = weekdates[1]
+        wed = weekdates[2]
+        thu = weekdates[3]
+        fri = weekdates[4]
+        sat = weekdates[5]
+        sun = weekdates[6]
+
+        monday_date = list(week.keys())[0]
+        monday_lessons = week[monday_date]["lessons"]
+        if monday_lessons == "Нет занятий":
+            with open(f'{TEMPLATES_PATH}cards/nolessons.html', 'r', encoding='utf-8') as f:
+                monday_template = f.read()
+        else:
+            with open(f'{TEMPLATES_PATH}cards/tutlesson.html', 'r', encoding='utf-8') as f:
+                a = f.read()
+            monday_template = ""
+            for lesson in monday_lessons:
+                start_time = datetime.strptime(lesson["time"], "%H:%M")
+                duration_minutes = lesson.get("duration", 60)
+                duration = timedelta(minutes=duration_minutes)
+                start_time_str = start_time.strftime("%H:%M")
+                end_time_str = (start_time + duration).strftime("%H:%M")
+                monday_template += a
+                studinfo = getstudinfobyid(lesson["student_id"])
+                studfirst_name = studinfo[0]
+                studlast_name = studinfo[1]
+                monday_template = monday_template.replace('{{ subject }}', lesson["subject"])
+                monday_template = monday_template.replace('{{ schedule_id }}', str(lesson["schedule_id"]))
+                monday_template = monday_template.replace('{{ studfirst_name }}', studfirst_name)
+                monday_template = monday_template.replace('{{ studlast_name }}', studlast_name)
+                monday_template = monday_template.replace('{{ starttime }}', str(start_time_str))
+                monday_template = monday_template.replace('{{ endtime }}', str(end_time_str))
+
+
+        tuesday_date = list(week.keys())[1]
+        tuesday_lessons = week[tuesday_date]["lessons"]
+        if tuesday_lessons == "Нет занятий":
+            with open(f'{TEMPLATES_PATH}cards/nolessons.html', 'r', encoding='utf-8') as f:
+                tuesday_template = f.read()
+        else:
+            with open(f'{TEMPLATES_PATH}cards/tutlesson.html', 'r', encoding='utf-8') as f:
+                a = f.read()
+            tuesday_template = ""
+            for lesson in tuesday_lessons:
+                start_time = datetime.strptime(lesson["time"], "%H:%M")
+                duration_minutes = lesson.get("duration", 60)
+                duration = timedelta(minutes=duration_minutes)
+                start_time_str = start_time.strftime("%H:%M")
+                end_time_str = (start_time + duration).strftime("%H:%M")
+                tuesday_template += a
+                studinfo = getstudinfobyid(lesson["student_id"])
+                studfirst_name = studinfo[0]
+                studlast_name = studinfo[1]
+                tuesday_template = tuesday_template.replace('{{ subject }}', lesson["subject"])
+                tuesday_template = tuesday_template.replace('{{ schedule_id }}', str(lesson["schedule_id"]))
+                # tuesday_template = tuesday_template.replace('{{ status }}', lesson["status"])
+                tuesday_template = tuesday_template.replace('{{ studfirst_name }}', studfirst_name)
+                tuesday_template = tuesday_template.replace('{{ studlast_name }}', studlast_name)
+                tuesday_template = tuesday_template.replace('{{ starttime }}', str(start_time_str))
+                tuesday_template = tuesday_template.replace('{{ endtime }}', str(end_time_str))
+
+        wednesday_date = list(week.keys())[2]
+        wednesday_lessons = week[wednesday_date]["lessons"]
+        if wednesday_lessons == "Нет занятий":
+            with open(f'{TEMPLATES_PATH}cards/nolessons.html', 'r', encoding='utf-8') as f:
+                wednesday_template = f.read()
+        else:
+            with open(f'{TEMPLATES_PATH}cards/tutlesson.html', 'r', encoding='utf-8') as f:
+                a = f.read()
+            wednesday_template = ""
+            for lesson in wednesday_lessons:
+                start_time = datetime.strptime(lesson["time"], "%H:%M")
+                duration_minutes = lesson.get("duration", 60)
+                duration = timedelta(minutes=duration_minutes)
+                start_time_str = start_time.strftime("%H:%M")
+                end_time_str = (start_time + duration).strftime("%H:%M")
+                wednesday_template += a
+                studinfo = getstudinfobyid(lesson["student_id"])
+                studfirst_name = studinfo[0]
+                studlast_name = studinfo[1]
+                wednesday_template = wednesday_template.replace('{{ studfirst_name }}', studfirst_name)
+                wednesday_template = wednesday_template.replace('{{ studlast_name }}', studlast_name)
+                wednesday_template = wednesday_template.replace('{{ subject }}', lesson["subject"])
+                wednesday_template = wednesday_template.replace('{{ schedule_id }}', str(lesson["schedule_id"]))
+                # wednesday_template = wednesday_template.replace('{{ status }}', lesson["status"])
+                wednesday_template = wednesday_template.replace('{{ starttime }}', str(start_time_str))
+                wednesday_template = wednesday_template.replace('{{ endtime }}', str(end_time_str))
+
+        thursday_date = list(week.keys())[3]
+        thursday_lessons = week[thursday_date]["lessons"]
+        if thursday_lessons == "Нет занятий":
+            with open(f'{TEMPLATES_PATH}cards/nolessons.html', 'r', encoding='utf-8') as f:
+                thursday_template = f.read()
+        else:
+            with open(f'{TEMPLATES_PATH}cards/tutlesson.html', 'r', encoding='utf-8') as f:
+                a = f.read()
+            thursday_template = ""
+            for lesson in thursday_lessons:
+                start_time = datetime.strptime(lesson["time"], "%H:%M")
+                duration_minutes = lesson.get("duration", 60)
+                duration = timedelta(minutes=duration_minutes)
+                start_time_str = start_time.strftime("%H:%M")
+                end_time_str = (start_time + duration).strftime("%H:%M")
+                thursday_template += a
+                studinfo = getstudinfobyid(lesson["student_id"])
+                studfirst_name = studinfo[0]
+                studlast_name = studinfo[1]
+                thursday_template = thursday_template.replace('{{ studfirst_name }}', studfirst_name)
+                thursday_template = thursday_template.replace('{{ studlast_name }}', studlast_name)
+                thursday_template = thursday_template.replace('{{ subject }}', lesson["subject"])
+                thursday_template = thursday_template.replace('{{ schedule_id }}', str(lesson["schedule_id"]))
+                # thursday_template = thursday_template.replace('{{ status }}', lesson["status"])
+                thursday_template = thursday_template.replace('{{ starttime }}', str(start_time_str))
+                thursday_template = thursday_template.replace('{{ endtime }}', str(end_time_str))
+                
+
+        friday_date = list(week.keys())[4]
+        friday_lessons = week[friday_date]["lessons"]
+        if friday_lessons == "Нет занятий":
+            with open(f'{TEMPLATES_PATH}cards/nolessons.html', 'r', encoding='utf-8') as f:
+                friday_template = f.read()
+        else:
+            with open(f'{TEMPLATES_PATH}cards/tutlesson.html', 'r', encoding='utf-8') as f:
+                a = f.read()
+            friday_template = ""
+            for lesson in friday_lessons:
+                start_time = datetime.strptime(lesson["time"], "%H:%M")
+                duration_minutes = lesson.get("duration", 60)
+                duration = timedelta(minutes=duration_minutes)
+                start_time_str = start_time.strftime("%H:%M")
+                end_time_str = (start_time + duration).strftime("%H:%M")
+                friday_template += a
+                studinfo = getstudinfobyid(lesson["student_id"])
+                studfirst_name = studinfo[0]
+                studlast_name = studinfo[1]
+                friday_template = friday_template.replace('{{ studfirst_name }}', studfirst_name)
+                friday_template = friday_template.replace('{{ studlast_name }}', studlast_name)
+                friday_template = friday_template.replace('{{ subject }}', lesson["subject"])
+                friday_template = friday_template.replace('{{ schedule_id }}', str(lesson["schedule_id"]))
+                # friday_template = friday_template.replace('{{ status }}', lesson["status"])
+                friday_template = friday_template.replace('{{ starttime }}', str(start_time_str))
+                friday_template = friday_template.replace('{{ endtime }}', str(end_time_str))
+
+        saturday_date = list(week.keys())[5]
+        saturday_lessons = week[saturday_date]["lessons"]
+        if saturday_lessons == "Нет занятий":
+            with open(f'{TEMPLATES_PATH}cards/nolessons.html', 'r', encoding='utf-8') as f:
+                saturday_template = f.read()
+        else:
+            with open(f'{TEMPLATES_PATH}cards/tutlesson.html', 'r', encoding='utf-8') as f:
+                a = f.read()
+            saturday_template = ""
+            for lesson in saturday_lessons:
+                start_time = datetime.strptime(lesson["time"], "%H:%M")
+                duration_minutes = lesson.get("duration", 60)
+                duration = timedelta(minutes=duration_minutes)
+                start_time_str = start_time.strftime("%H:%M")
+                end_time_str = (start_time + duration).strftime("%H:%M")
+                saturday_template += a
+                studinfo = getstudinfobyid(lesson["student_id"])
+                studfirst_name = studinfo[0]
+                studlast_name = studinfo[1]
+                saturday_template = saturday_template.replace('{{ studfirst_name }}', studfirst_name)
+                saturday_template = saturday_template.replace('{{ studlast_name }}', studlast_name)
+                saturday_template = saturday_template.replace('{{ subject }}', lesson["subject"])
+                saturday_template = saturday_template.replace('{{ schedule_id }}', str(lesson["schedule_id"]))
+                # saturday_template = saturday_template.replace('{{ status }}', lesson["status"])
+                saturday_template = saturday_template.replace('{{ starttime }}', str(start_time_str))
+                saturday_template = saturday_template.replace('{{ endtime }}', str(end_time_str))
+
+        sunday_date = list(week.keys())[6]
+        sunday_lessons = week[sunday_date]["lessons"]
+        if sunday_lessons == "Нет занятий":
+            with open(f'{TEMPLATES_PATH}cards/nolessons.html', 'r', encoding='utf-8') as f:
+                sunday_template = f.read()
+        else:
+            with open(f'{TEMPLATES_PATH}cards/tutlesson.html', 'r', encoding='utf-8') as f:
+                a = f.read()
+            sunday_template = ""
+            for lesson in sunday_lessons:
+                start_time = datetime.strptime(lesson["time"], "%H:%M")
+                duration_minutes = lesson.get("duration", 60)
+                duration = timedelta(minutes=duration_minutes)
+                start_time_str = start_time.strftime("%H:%M")
+                end_time_str = (start_time + duration).strftime("%H:%M")
+                sunday_template += a
+                studinfo = getstudinfobyid(lesson["student_id"])
+                studfirst_name = studinfo[0]
+                studlast_name = studinfo[1]
+                sunday_template = sunday_template.replace('{{ studfirst_name }}', studfirst_name)
+                sunday_template = sunday_template.replace('{{ studlast_name }}', studlast_name)
+                sunday_template = sunday_template.replace('{{ subject }}', lesson["subject"])
+                sunday_template = sunday_template.replace('{{ schedule_id }}', str(lesson["schedule_id"]))
+                # sunday_template = sunday_template.replace('{{ status }}', lesson["status"])
+                sunday_template = sunday_template.replace('{{ starttime }}', str(start_time_str))
+                sunday_template = sunday_template.replace('{{ endtime }}', str(end_time_str))
+
+        with open(f'{TEMPLATES_PATH}timetable/tuttime.html', 'r', encoding="utf-8") as f:
+            content = verstkaprofile(f.read(), name, tutfirst_name, tutlast_name)
+        content = content.replace("{{ mon }}", str(mon))
+        content = content.replace("{{ tue }}", str(tue))
+        content = content.replace("{{ wed }}", str(wed))
+        content = content.replace("{{ thu }}", str(thu))
+        content = content.replace("{{ fri }}", str(fri))
+        content = content.replace("{{ sat }}", str(sat))
+        content = content.replace("{{ sun }}", str(sun))
+        content = content.replace("{{ selectForm }}", optionTemplate)
+        content = content.replace("{{ monday_lessons }}", monday_template)
+        content = content.replace("{{ tuesday_lessons }}", tuesday_template)
+        content = content.replace("{{ wednesday_lessons }}", wednesday_template)
+        content = content.replace("{{ thursday_lessons }}", thursday_template)
+        content = content.replace("{{ friday_lessons }}", friday_template)
+        content = content.replace("{{ saturday_lessons }}", saturday_template)
+        content = content.replace("{{ sunday_lessons }}", sunday_template)
+        content = content.replace("{{ week_offset }}", str(week_offset))
+        content = content.replace("{{ week_offset - 1 }}", str(week_offset - 1))
+        content = content.replace("{{ week_offset + 1 }}", str(week_offset + 1))
+        return HTMLResponse(content=content)
+    
+    except Exception as e:
+        print(f"Произошла ошибка - {e}")
+        return RedirectResponse(url="/login", status_code=303)
+    
+@app.post("/createlesson")
+def createlesson(request: Request, student_id: str = Form(...), subject: str = Form(...), lesson_date: str = Form(...), lesson_time: str = Form(...), duration: str = Form(...)):
+    try:
+        name, user_type = get_current_user(request)
+        if user_type != "tutor":
+            return RedirectResponse(url="/login", status_code=303)
+
+    except HTTPException:
+        return RedirectResponse(url="/login", status_code=303)
+
+    try:
+        tutinfo = gettutorinfo(name)
+        tutor_id = tutinfo[2]
+
+        addlesson(student_id, tutor_id, subject, lesson_date, lesson_time, duration)
+
+    except Exception as e:
+        print(f"Произошла ошибка - {e}")
+        return RedirectResponse(url="/login", status_code=303)
+    
+    return RedirectResponse(url=f"/tuttime", status_code=303)
+
+@app.post("/deletelesson")
+def deletelesson(request: Request, lesson_id: str = Form(...)):
+    try:
+        name, user_type = get_current_user(request)
+        if user_type != "tutor":
+            return RedirectResponse(url="/login", status_code=303)
+
+    except HTTPException:
+        return RedirectResponse(url="/login", status_code=303)
+
+    try:
+
+        dellesson(lesson_id)
+
+    except Exception as e:
+        print(f"Произошла ошибка - {e}")
+        return RedirectResponse(url="/login", status_code=303)
+
+    return RedirectResponse(url=f"/tuttime", status_code=303)
+
 
 @app.get("/studgrades")
 def studgrades(request: Request):
@@ -806,7 +1091,7 @@ def studgrades(request: Request):
 
         grade_template = ""
 
-        with open('templates/cards/gradestr.html', 'r', encoding='utf-8') as f:
+        with open(f'{TEMPLATES_PATH}cards/gradestr.html', 'r', encoding='utf-8') as f:
             a = f.read()
 
         if grades:
@@ -818,7 +1103,7 @@ def studgrades(request: Request):
                 grade_template = grade_template.replace("{{ description }}", str(grade[6]))
                 grade_template = grade_template.replace("{{ comment }}", str(grade[7]))
 
-        with open('templates/grades/studgrades.html', 'r', encoding='utf-8') as f:
+        with open(f'{TEMPLATES_PATH}grades/studgrades.html', 'r', encoding='utf-8') as f:
             content = verstkaprofile(f.read(), name, studfirst_name, studlast_name)
         content = content.replace("{{ grade_template }}", grade_template)
         content = content.replace("{{ average_grade }}", str(avg_grade))
@@ -842,7 +1127,7 @@ def tutgrades(request: Request):
     except HTTPException:
         return RedirectResponse(url="/login", status_code=303)
 
-    optionTemplate = '''<select class="form-select" id="student_id" name="student_id" required>
+    optionTemplate = '''<select class="grade-form__select" id="student_id" name="student_id" required>
     <option value="">Выберите ученика</option>'''
 
     students = getstudents(name)
@@ -858,7 +1143,7 @@ def tutgrades(request: Request):
         a = ""
         gradestemplate = ""
 
-        with open ('templates/cards/gradestemplate.html', 'r', encoding='utf-8') as f:
+        with open (f'{TEMPLATES_PATH}cards/gradestemplate.html', 'r', encoding='utf-8') as f:
             a = f.read()
 
         tutinfo = gettutorinfo(name)
@@ -884,7 +1169,7 @@ def tutgrades(request: Request):
         return RedirectResponse(url='/login', status_code=303)
         
 
-    with open('templates/grades/tutgrades.html', 'r', encoding='utf-8') as f:
+    with open(f'{TEMPLATES_PATH}grades/tutgrades.html', 'r', encoding='utf-8') as f:
         content = verstkaprofile(f.read(), name, tutfirst_name, tutlast_name)
     content = content.replace("{{ selectForm }}", optionTemplate)
     content = content.replace("{{ gradestemplate }}", gradestemplate)
@@ -947,7 +1232,7 @@ def edittutprofile(request: Request):
         tutfirst_name = tutorinfo[0]
         tutlast_name = tutorinfo[1]
 
-        with open('templates/profiles/edittutprofile.html', 'r', encoding='utf-8') as f:
+        with open(f'{TEMPLATES_PATH}profiles/edittutprofile.html', 'r', encoding='utf-8') as f:
             content = verstkaprofile(f.read(), name, tutfirst_name, tutlast_name)
         return HTMLResponse(content=content)
 
@@ -970,7 +1255,7 @@ def edittutprofile(request: Request):
         studfirst_name = studinfo[0]
         studlast_name = studinfo[1]
 
-        with open('templates/profiles/editstudprofile.html', 'r', encoding='utf-8') as f:
+        with open(f'{TEMPLATES_PATH}profiles/editstudprofile.html', 'r', encoding='utf-8') as f:
             content = verstkaprofile(f.read(), name, studfirst_name, studlast_name)
         return HTMLResponse(content=content)
     
@@ -982,13 +1267,13 @@ def edittutprofile(request: Request):
 
 @app.exception_handler(404)
 def error404(request: Request, exc):
-    with open('templates/errors/error.html', 'r', encoding='utf-8') as f:
+    with open(f'{TEMPLATES_PATH}errors/error.html', 'r', encoding='utf-8') as f:
         content = f.read()
     return HTMLResponse(content=content, status_code=404)
 
 @app.exception_handler(500)
 def error500(request: Request, exc):
-    with open('templates/errors/error.html', 'r', encoding='utf-8') as f:
+    with open(f'{TEMPLATES_PATH}errors/error.html', 'r', encoding='utf-8') as f:
         content = f.read()
     return HTMLResponse(content=content, status_code=500)
 

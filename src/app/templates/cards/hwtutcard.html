@@ -1,15 +1,20 @@
-<div class="assignment-item">
-    <div class="assignment-header">
-        <div class="assignment-info">
+<form class="assignment-item" method="POST" action="/deletehw">
+    <input type="hidden" name="homework_id" value="{{ homework_id }}" />
+
+    <div class="assignment-item__header">
+        <div class="assignment-item__info">
             <span class="subject-badge {{ subject }}">{{ subject }}</span>
-            <h3>{{ title }}</h3>
-            <div class="assignment-meta">
-                <span class="assignment-date">Срок: {{ data }}</span>
+            <h3 class="assignment-item__title">{{ title }}</h3>
+            <div class="assignment-item__meta">
+                <span class="assignment-item__date">Срок: {{ data }}</span>
             </div>
         </div>
-        <div class="assignment-status status-active">{{ status }}</div>
+        <div class="assignment-item__status assignment-item__status_active">{{ status }}</div>
     </div>
-    <div class="assignment-content">
-        {{ description }}
+
+    <div class="assignment-item__content">{{ description }}</div>
+
+    <div class="assignment-item__actions">
+        <button type="submit" class="btn btn_danger btn_delete">Удалить</button>
     </div>
-</div>
+</form>

@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="ru">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Задания | RepitHub</title>
+    </head>
+    <body class="body">
+        <header class="top-bar">
+            <div class="top-bar__container">
+                <div class="top-bar__nav">
+                    <a href="/hometut" class="top-bar__nav-button">Главная</a>
+                    <a href="/homeworkstut" class="top-bar__nav-button top-bar__nav-button_active">Задания</a>
+                    <a href="/tutgrades" class="top-bar__nav-button">Оценки</a>
+                    <a href="/tuttime" class="top-bar__nav-button">Расписание</a>
+                </div>
+
+                <a href="/profiletut" class="top-bar__account">
+                    <div class="top-bar__avatar">{{ avatar }}</div>
+                    <div class="top-bar__user-info">
+                        <div class="top-bar__user-name">{{ first_name }} {{ last_name }}</div>
+                        <div class="top-bar__user-role">Репетитор</div>
+                    </div>
+                </a>
+            </div>
+        </header>
+
+        <div class="container">
+            <div class="page-header">
+                <h1 class="page-header__title">Задания для учеников</h1>
+            </div>
+
+            <div class="content-grid">
+                <div class="sidebar">
+                    <div class="card">
+                        <h2 class="card__title">Новое задание</h2>
+                        <form class="assignment-form" method="POST" action="/createhw">
+                            <div class="assignment-form__group">
+                                <label class="assignment-form__label" for="student_id">Ученик</label>
+                                {{ selectForm }}
+                            </div>
+
+                            <div class="assignment-form__group">
+                                <label class="assignment-form__label" for="subject">Предмет</label>
+                                <select class="assignment-form__select" id="subject" name="subject" required>
+                                    <option value="">Выберите предмет</option>
+                                    <option value="Математика">Математика</option>
+                                    <option value="Физика">Физика</option>
+                                    <option value="Русский язык">Русский язык</option>
+                                    <option value="Английский язык">Английский язык</option>
+                                    <option value="Информатика">Информатика</option>
+                                    <option value="Немецкий">Немецкий</option>
+                                    <option value="Французский">Французский</option>
+                                    <option value="Обществознание">Обществознание</option>
+                                    <option value="История">История</option>
+                                    <option value="Литература">Литература</option>
+                                    <option value="Биология">Биология</option>
+                                    <option value="География">География</option>
+                                    <option value="Экономика">Экономика</option>
+                                    <option value="ИЗО">ИЗО</option>
+                                </select>
+                            </div>
+
+                            <div class="assignment-form__group">
+                                <label class="assignment-form__label" for="title">Тема задания</label>
+                                <input type="text" class="assignment-form__input" id="title" name="title" placeholder="Введите тему задания" required />
+                            </div>
+
+                            <div class="assignment-form__group">
+                                <label class="assignment-form__label" for="deadline">Срок выполнения</label>
+                                <input type="date" class="assignment-form__input" id="deadline" name="deadline" required />
+                            </div>
+
+                            <div class="assignment-form__group">
+                                <label class="assignment-form__label" for="description">Описание задания</label>
+                                <textarea class="assignment-form__textarea" id="description" name="description" placeholder="Опишите задание подробно..." required></textarea>
+                            </div>
+
+                            <button type="submit" class="btn btn_primary">Создать задание</button>
+                        </form>
+                    </div>
+                </div>
+                <div class="main-content">
+                    <div class="card">
+                        <h2 class="card__title">
+                            <span>📚</span>
+                            Активные задания
+                        </h2>
+                        <div class="assignments-history">{{ hwtemplate }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

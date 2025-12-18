@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="ru">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+        <title>Вход | RepitHub</title>
+    </head>
+    <body class="page">
+        <main class="login-page">
+            <section class="login-section login-section--student">
+                <div class="login-section__container">
+                    <h2 class="login-section__title">Вход для учеников</h2>
+                    <form class="login-form" action="/login" method="post">
+                        <div class="login-form__group">
+                            <label for="student-login" class="login-form__label">Логин</label>
+                            <input type="text" id="student-login" name="login" class="login-form__input" placeholder="Логин" required pattern="[A-Za-z0-9]+" />
+                        </div>
+                        <div class="login-form__group">
+                            <label for="student-password" class="login-form__label">Пароль</label>
+                            <input type="password" id="student-password" name="password" class="login-form__input" placeholder="Пароль" required pattern="[A-Za-z0-9]+" />
+                        </div>
+                        <button type="submit" class="login-form__submit login-form__submit--student">Войти</button>
+                    </form>
+
+                    <button type="button" class="login-section__register-btn" onclick="location.href = '/register'">Зарегистрироваться как ученик</button>
+                </div>
+            </section>
+
+            <div class="login-page__divider"></div>
+
+            <section class="login-section login-section--tutor">
+                <div class="login-section__container">
+                    <h2 class="login-section__title">Вход для репетиторов</h2>
+                    <form class="login-form" action="/logintut" method="post">
+                        <div class="login-form__group">
+                            <label for="tutor-login" class="login-form__label">Логин</label>
+                            <input type="text" id="tutor-login" name="login" class="login-form__input" placeholder="Логин" required pattern="[A-Za-z0-9]+" />
+                        </div>
+                        <div class="login-form__group">
+                            <label for="tutor-password" class="login-form__label">Пароль</label>
+                            <input type="password" id="tutor-password" name="password" class="login-form__input" placeholder="Пароль" required pattern="[A-Za-z0-9]+" />
+                        </div>
+                        <button type="submit" class="login-form__submit login-form__submit--tutor">Войти</button>
+                    </form>
+
+                    <button type="button" class="login-section__register-btn" onclick="location.href = '/registertut'">Зарегистрироваться как репетитор</button>
+                </div>
+            </section>
+        </main>
+    </body>
+</html>

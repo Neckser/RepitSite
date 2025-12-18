@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="ru">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Моё расписание | RepitHub</title>
+    </head>
+    <body class="body">
+        <header class="top-bar">
+            <div class="top-bar__container">
+                <div class="top-bar__nav">
+                    <a href="/tutlist" class="top-bar__nav-button">Мои репетиторы</a>
+                    <a href="/home" class="top-bar__nav-button">Мои задания</a>
+                    <a href="/studgrades" class="top-bar__nav-button">Мои оценки</a>
+                    <a href="/studtime" class="top-bar__nav-button top-bar__nav-button_active">Моё расписание</a>
+                </div>
+                <a href="/profile" class="top-bar__account">
+                    <div class="top-bar__avatar">{{ avatar }}</div>
+                    <div class="top-bar__user-info">
+                        <div class="top-bar__user-name">{{ first_name }} {{ last_name }}</div>
+                        <div class="top-bar__user-role">Ученик</div>
+                    </div>
+                </a>
+            </div>
+        </header>
+
+        <div class="container">
+            <h1 class="page-title">Моё расписание</h1>
+
+            <div class="schedule-container">
+                <div class="schedule__week-selector">
+                    <div class="schedule__week-nav">
+                        <a href="/studtime?week_offset={{ week_offset - 1 }}" class="schedule__nav-button">←</a>
+                        <a href="/studtime?week_offset=0" class="schedule__today-button">Текущая неделя</a>
+                        <a href="/studtime?week_offset={{ week_offset + 1 }}" class="schedule__nav-button">→</a>
+                    </div>
+                </div>
+
+                <div class="schedule__days-grid">
+                    <div class="schedule__day-header">
+                        <div class="schedule__day-name">Понедельник</div>
+                        <div class="schedule__day-number">{{ mon }}</div>
+                    </div>
+                    <div class="schedule__day-header">
+                        <div class="schedule__day-name">Вторник</div>
+                        <div class="schedule__day-number">{{ tue }}</div>
+                    </div>
+                    <div class="schedule__day-header">
+                        <div class="schedule__day-name">Среда</div>
+                        <div class="schedule__day-number">{{ wed }}</div>
+                    </div>
+                    <div class="schedule__day-header">
+                        <div class="schedule__day-name">Четверг</div>
+                        <div class="schedule__day-number">{{ thu }}</div>
+                    </div>
+                    <div class="schedule__day-header">
+                        <div class="schedule__day-name">Пятница</div>
+                        <div class="schedule__day-number">{{ fri }}</div>
+                    </div>
+                    <div class="schedule__day-header">
+                        <div class="schedule__day-name">Суббота</div>
+                        <div class="schedule__day-number">{{ sat }}</div>
+                    </div>
+                    <div class="schedule__day-header">
+                        <div class="schedule__day-name">Воскресенье</div>
+                        <div class="schedule__day-number">{{ sun }}</div>
+                    </div>
+                </div>
+
+                <div class="schedule__lessons-container">
+                    <div class="schedule__day-column">{{ monday_lessons }}</div>
+                    <div class="schedule__day-column">{{ tuesday_lessons }}</div>
+                    <div class="schedule__day-column">{{ wednesday_lessons }}</div>
+                    <div class="schedule__day-column">{{ thursday_lessons }}</div>
+                    <div class="schedule__day-column">{{ friday_lessons }}</div>
+                    <div class="schedule__day-column">{{ saturday_lessons }}</div>
+                    <div class="schedule__day-column">{{ sunday_lessons }}</div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
