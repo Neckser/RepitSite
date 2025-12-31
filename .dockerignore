@@ -1,0 +1,16 @@
+data/
+*.db
+*.sqlite
+node_modules/
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+env/
+.git/
+.env
+.secrets/
+*.log
+.DS_Store
+Thumbs.db
