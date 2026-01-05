@@ -1,15 +1,18 @@
-# **RepitHub** - LMS for Tutors and Students
+# **RepitHub** — LMS for Tutors and Students
 
-[![FastAPI](https://img.shields.io/badge/FastAPI-005571?style=for-the-badge&logo=fastapi)](https://fastapi.tiangolo.com/)
-[![SQLite](https://img.shields.io/badge/SQLite-07405E?style=for-the-badge&logo=sqlite&logoColor=white)](https://www.sqlite.org/)
-[![JWT](https://img.shields.io/badge/JWT-000000?style=for-the-badge&logo=JSON%20web%20tokens&logoColor=white)](https://jwt.io/)
-[![Python](https://img.shields.io/badge/Python-3.12+-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-005571?style=for-the-badge\&logo=fastapi)](https://fastapi.tiangolo.com/)
+[![SQLite](https://img.shields.io/badge/SQLite-07405E?style=for-the-badge\&logo=sqlite\&logoColor=white)](https://www.sqlite.org/)
+[![JWT](https://img.shields.io/badge/JWT-000000?style=for-the-badge\&logo=JSON%20web%20tokens\&logoColor=white)](https://jwt.io/)
+[![Python](https://img.shields.io/badge/Python-3.12+-3776AB?style=for-the-badge\&logo=python\&logoColor=white)](https://www.python.org/)
 
-## **Link -> http://repithub.online**
+**RepitHub** — это LMS-платформа для репетиторов и учеников
+(расписание, задания, оценки, профили, взаимодействие).
 
-##  Project Structure
+🌐 **Live:**  [RepitHub](https://repithub.online)
 
+---
 ```
+
 .
 ├── README.md
 ├── build.mjs
@@ -22,6 +25,9 @@
 ├── package-lock.json
 ├── package.json
 ├── requirements.txt
+├── dockerfile
+├── .dockerignore
+├── docker-compose.yml
 ├── src
 │   └── app
 │       ├── QR.py
@@ -113,19 +119,50 @@
 │                   └── studtime.html
 └── start.sh
 
-
 ```
 
 
+---
 
-## **How to run?**
-```
-# 1. manual run
+## How to run the project
+
+
+### 1️⃣ Run with Docker (recommended)
+
+```bash
 git clone https://github.com/Neckser/RepitSite.git
+cd RepitSite
 
-./start.sh
-
-# 2. run by docker
-(IN DEVELOPMENT)
-
+docker compose build
+docker compose up
 ```
+
+или одной командой:
+
+```bash
+docker compose up --build
+```
+> ⚠️ Requires:
+>
+> * docker
+> * docker-compose
+---
+
+## 🛠️ Technologies
+
+* **Backend:** FastAPI
+* **Auth:** JWT
+* **Database:** SQLite
+* **Frontend:** HTML / CSS / TypeScript
+* **Deploy:** Docker, Nginx
+* **Python:** 3.12+
+
+---
+
+## 📌 Status
+
+🟢 Active development
+🟡 Docker support — stable
+🔵 New tutor tools (workdesk, tests) — in progress
+
+
