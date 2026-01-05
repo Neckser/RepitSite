@@ -36,7 +36,7 @@ def login(login: str = Form(...), password: str = Form(...)):
                 key="access_token",
                 value=access_token,
                 httponly=True,
-                max_age=60 * 5,
+                max_age=60 * 60,
                 path="/",
             )
             return response
@@ -62,7 +62,7 @@ def logintut(login: str = Form(...), password: str = Form(...)):
                 key="access_token",
                 value=access_token,
                 httponly=True,
-                max_age=60 * 5,
+                max_age=60 * 60,
                 path="/",
             )
             return response
