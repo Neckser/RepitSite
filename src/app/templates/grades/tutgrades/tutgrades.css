@@ -251,6 +251,8 @@
     box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
     border: 2px solid #e8f5e8;
     transition: all 0.3s;
+    max-width: 100%;
+    overflow: hidden;
 }
 
 .grade-item:hover {
@@ -391,6 +393,7 @@
 
 .grade-item__center {
     flex-grow: 1;
+    min-width: 0;
 }
 
 .grade-item__name {
@@ -409,6 +412,9 @@
 .grade-item__comment {
     display: block;
     margin-top: 2px;
+    word-break: break-word;
+    overflow-wrap: anywhere;
+    white-space: normal;
 }
 
 .grade-item__right {

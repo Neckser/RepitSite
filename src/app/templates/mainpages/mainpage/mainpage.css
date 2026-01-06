@@ -227,6 +227,9 @@
     margin-bottom: 15px;
     flex-wrap: wrap;
     gap: 10px;
+    min-width: 0;
+    word-break: break-word;
+    overflow-wrap: anywhere;
 }
 
 .subject-badge {
@@ -338,12 +341,16 @@
     color: #333;
     margin: 0 0 10px 0;
     font-size: 18px;
+    word-break: break-word;
+    overflow-wrap: anywhere;
 }
 
 .assignment-description {
     color: #666;
     margin: 0 0 15px 0;
     line-height: 1.5;
+    word-break: break-word;
+    overflow-wrap: anywhere;
 }
 
 .assignment-footer {
@@ -506,12 +513,15 @@
 
     .assignment-card {
         padding: 15px;
+        max-width: 100%;
+        overflow: hidden;
     }
 
     .assignment-header {
         flex-direction: column;
         align-items: flex-start;
         gap: 8px;
+        min-width: 0;
     }
 
     .assignment-footer {
