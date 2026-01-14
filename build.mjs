@@ -106,10 +106,48 @@ const entries = [
     css: 'src/app/templates/errors/error/error.css',
     out: 'build/errors/error.html',
   },
-
   {
-    html: 'src/app/templates/cards/nohw.html',
-    out: 'build/cards/nohw.html',
+    html: 'src/app/templates/ctests/tutctest/tutctest.html',
+    css: 'src/app/templates/ctests/tutctest/tutctest.css',
+    js: 'src/app/templates/ctests/tutctest/tutctest.js',
+    out: 'build/ctests/tutctest.html',
+  },
+  {
+    html: 'src/app/templates/ctests/tuttests/tuttests.html',
+    css: 'src/app/templates/ctests/tuttests/tuttests.css',
+    out: 'build/ctests/tuttests.html',
+  },
+  {
+    html: "src/app/templates/landing/mainlanding/mainlanding.html",
+    css: "src/app/templates/landing/mainlanding/mainlanding.css",
+    out: "build/landing/mainlanding.html",
+  },
+  {
+    html: "src/app/templates/landing/policy/policy.html",
+    css: "src/app/templates/landing/policy/policy.css",
+    js: "src/app/templates/landing/policy/policy.js",
+    out: "build/landing/policy.html",
+  },
+  {
+    html: "src/app/templates/landing/cookies/cookies.html",
+    css: "src/app/templates/landing/cookies/cookies.css",
+    js: "src/app/templates/landing/cookies/cookies.js",
+    out: "build/landing/cookies.html",
+  },
+  {
+    html: "src/app/templates/landing/terms/terms.html",
+    css: "src/app/templates/landing/terms/terms.css",
+    out: "build/landing/terms.html",
+  },
+  {
+    html: "src/app/templates/landing/contact/contact.html",
+    css: "src/app/templates/landing/contact/contact.css",
+    out: "build/landing/contact.html",
+  },
+  {
+    html: "src/app/templates/landing/faq/faq.html",
+    css: "src/app/templates/landing/faq/faq.css",
+    out: "build/landing/faq.html",
   },
   {
     html: 'src/app/templates/cards/hwcard.html',
@@ -146,6 +184,10 @@ const entries = [
   {
     html: 'src/app/templates/cards/gradestemplate.html',
     out: 'build/cards/gradestemplate.html',
+  },
+  {
+    html: 'src/app/templates/cards/tuttest.html',
+    out: 'build/cards/tuttest.html',
   },
 ];
 

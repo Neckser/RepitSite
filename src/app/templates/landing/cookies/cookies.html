@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Политика использования файлов cookie | RepitHub</title>
+</head>
+<body>
+    <div class="container">
+        <div class="cookies-container">
+            <div class="cookies-header-section">
+                <h1 class="cookies-title">Политика использования файлов cookie</h1>
+                <div class="last-updated">Последнее обновление: 1 февраля 2024 года</div>
+            </div>
+
+            <div class="content-section">
+                <h2 class="section-title">1. Что такое файлы cookie?</h2>
+                <div class="section-content">
+                    <p>Файлы cookie — это небольшие текстовые файлы, которые сохраняются на вашем устройстве (компьютере, планшете или смартфоне) при посещении веб-сайта. Они помогают сайтам запоминать информацию о вашем посещении.</p>
+                    <p>В RepitHub мы используем файлы cookie исключительно для технических целей, связанных с безопасностью и удобством пользования платформой.</p>
+                </div>
+            </div>
+
+            <div class="content-section">
+                <h2 class="section-title">2. Какие cookie мы используем?</h2>
+                <div class="section-content">
+                    <p>На платформе RepitHub используются только строго необходимые cookie, которые обеспечивают базовую функциональность:</p>
+                    
+                    <div class="info-box">
+                        <div class="info-title">
+                            <span class="icon">🔒</span>
+                            Основные cookie (Essential)
+                        </div>
+                        <p>Эти cookie необходимы для работы платформы. Без них основные функции сайта не будут работать.</p>
+                    </div>
+                    
+                    <table class="cookie-table">
+                        <thead>
+                            <tr>
+                                <th>Название cookie</th>
+                                <th>Тип</th>
+                                <th>Назначение</th>
+                                <th>Срок хранения</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>session_id</strong></td>
+                                <td><span class="cookie-badge">Сессионный</span></td>
+                                <td>Идентификатор сессии для поддержания состояния входа пользователя</td>
+                                <td>До закрытия браузера</td>
+                            </tr>
+                            <tr>
+                                <td><strong>jwt_token</strong></td>
+                                <td><span class="cookie-badge">Постоянный</span></td>
+                                <td>JSON Web Token для аутентификации и авторизации пользователей</td>
+                                <td>7 дней</td>
+                            </tr>
+                            <tr>
+                                <td><strong>csrf_token</strong></td>
+                                <td><span class="cookie-badge">Сессионный</span></td>
+                                <td>Защита от межсайтовой подделки запросов (CSRF)</td>
+                                <td>До закрытия браузера</td>
+                            </tr>
+                            <tr>
+                                <td><strong>theme_preference</strong></td>
+                                <td><span class="cookie-badge">Постоянный</span></td>
+                                <td>Запоминание выбранной темы оформления (светлая/темная)</td>
+                                <td>30 дней</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="content-section">
+                <h2 class="section-title">3. JWT токены в cookie</h2>
+                <div class="section-content">
+                    <div class="info-box">
+                        <div class="info-title">
+                            <span class="icon">🔐</span>
+                            Безопасность JWT токенов
+                        </div>
+                        <p>Мы используем современные методы защиты JWT (JSON Web Token) токенов:</p>
+                        <ul>
+                            <li>Токены подписываются с использованием алгоритма HS256</li>
+                            <li>Токены хранятся в cookie с флагами <code>HttpOnly</code> и <code>Secure</code></li>
+                            <li>Установлен флаг <code>SameSite=Strict</code> для защиты от CSRF-атак</li>
+                            <li>Срок действия токенов ограничен 7 днями</li>
+                        </ul>
+                    </div>
+                    
+                    <p><strong>Важно:</strong> JWT токены содержат только техническую информацию, необходимую для идентификации пользователя и его роли на платформе. В токенах НЕ хранятся персональные данные или пароли.</p>
+                </div>
+            </div>
+
+            <div class="content-section">
+                <h2 class="section-title">4. Что мы НЕ используем?</h2>
+                <div class="section-content">
+                    <p>В RepitHub мы сознательно НЕ используем следующие типы cookie:</p>
+                    <ul>
+                        <li><strong>Рекламные cookie</strong> — для показа таргетированной рекламы</li>
+                        <li><strong>Аналитические cookie сторонних сервисов</strong> — Google Analytics, Яндекс.Метрика и т.д.</li>
+                        <li><strong>Cookie социальных сетей</strong> — кнопки "Поделиться", лайки</li>
+                        <li><strong>Cookie отслеживания поведения</strong> — для создания профилей пользователей</li>
+                    </ul>
+                    
+                    <p>Мы уважаем вашу приватность и считаем, что обучение должно происходить без лишнего отслеживания.</p>
+                </div>
+            </div>
+
+            <div class="content-section">
+                <h2 class="section-title">5. Управление cookie</h2>
+                <div class="section-content">
+                    <p>Вы можете управлять файлами cookie через настройки вашего браузера:</p>
+                    
+                    <h3>Как отключить cookie:</h3>
+                    <ul>
+                        <li><strong>Chrome:</strong> Настройки → Конфиденциальность и безопасность → Файлы cookie и другие данные сайтов</li>
+                        <li><strong>Firefox:</strong> Настройки → Приватность и защита → Файлы cookie и данные сайтов</li>
+                        <li><strong>Safari:</strong> Настройки → Конфиденциальность → Управление данными сайтов</li>
+                        <li><strong>Edge:</strong> Настройки → Файлы cookie и разрешения сайтов</li>
+                    </ul>
+                    
+                    <div class="info-box">
+                        <div class="info-title">
+                            <span class="icon">⚠️</span>
+                            Важное предупреждение
+                        </div>
+                        <p>Если вы отключите основные cookie, некоторые функции RepitHub могут работать некорректно или стать недоступными:</p>
+                        <ul>
+                            <li>Авторизация и вход в аккаунт</li>
+                            <li>Создание и редактирование заданий</li>
+                            <li>Проведение онлайн-уроков</li>
+                            <li>Сохранение прогресса обучения</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content-section">
+                <h2 class="section-title">6. Изменения в политике</h2>
+                <div class="section-content">
+                    <p>Мы можем обновлять данную Политику использования файлов cookie. Все изменения будут опубликованы на этой странице.</p>
+                    <p>Продолжая использовать RepitHub, вы соглашаетесь с использованием файлов cookie в соответствии с текущей версией данной политики.</p>
+                </div>
+            </div>
+
+            <div class="version-info">
+                Версия 1.0 • Действует с 1 февраля 2026 года
+            </div>
+
+            <div class="actions-section">
+                <a href="/" class="back-btn">
+                    <span class="icon">←</span> Вернуться на главную
+                </a>
+            </div>
+
+            <div class="simple-footer">
+                <p>&copy; 2026 RepitHub. Все права защищены.</p>
+                <p>Разработано с <span class="heart">❤️</span> для образования</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

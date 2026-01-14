@@ -15,9 +15,39 @@ def startup_event():
     init_database()
 
 @app.get("/")
-def startlog():
-    with open(f"{TEMPLATES_PATH}auth/login.html", "r", encoding='utf-8') as file:
+def start():
+    with open(f"{TEMPLATES_PATH}landing/mainlanding.html", "r", encoding='utf-8') as file:
         content = file.read()
+    return HTMLResponse(content=content)
+
+@app.get("/policy")
+def policy():
+    with open(f"{TEMPLATES_PATH}landing/policy.html", 'r', encoding='utf-8') as f:
+        content = f.read()
+    return HTMLResponse(content=content)
+
+@app.get("/cookies")
+def policy():
+    with open(f"{TEMPLATES_PATH}landing/cookies.html", 'r', encoding='utf-8') as f:
+        content = f.read()
+    return HTMLResponse(content=content)
+
+@app.get("/terms")
+def terms():
+    with open(f"{TEMPLATES_PATH}landing/terms.html", 'r', encoding='utf-8') as f:
+        content = f.read()
+    return HTMLResponse(content=content)
+
+@app.get("/contact")
+def terms():
+    with open(f"{TEMPLATES_PATH}landing/contact.html", 'r', encoding='utf-8') as f:
+        content = f.read()
+    return HTMLResponse(content=content)
+
+@app.get("/faq")
+def terms():
+    with open(f"{TEMPLATES_PATH}landing/faq.html", 'r', encoding='utf-8') as f:
+        content = f.read()
     return HTMLResponse(content=content)
 
 @app.get("/login")
@@ -1396,4 +1426,129 @@ def updatetutbio(request: Request, bio: str = Form("")):
         
     except Exception as e:
         print(f"Произошла ошибка - {e}")
+        return RedirectResponse(url="/login", status_code=303)
+    
+@app.get("/tuttests")
+def tuttests(request: Request):
+    try:
+        name, user_type = get_current_user(request)
+        if user_type != "tutor":
+            return RedirectResponse(url="/login", status_code=303)
+
+    except HTTPException:
+        return RedirectResponse(url="/login", status_code=303)
+    try:
+        tutorinfo = gettutorinfo(name)
+        tutfirst_name = tutorinfo[0]
+        tutlast_name = tutorinfo[1]
+        tutor_id = tutorinfo[2]
+
+        with open(f'{TEMPLATES_PATH}cards/tuttest.html', 'r', encoding='utf-8') as f:
+            a = f.read()
+
+        tests_template = ""
+        tuttests = gettuttests(tutor_id)
+
+        if tuttests is not None:
+            for tuttest in tuttests:
+                tests_template += a
+                studinfo = getstudinfobyid(tuttest[2])
+                studfirst_name = studinfo[0]
+                studlast_name = studinfo[1]
+                tests_template = tests_template.replace("{{ test_id }}", str(tuttest[0]))
+                tests_template = tests_template.replace("{{ title }}", str(tuttest[3]))
+                tests_template = tests_template.replace("{{ subject }}", str(tuttest[4]))
+                tests_template = tests_template.replace("{{ studfirst_name }}", studfirst_name)
+                tests_template = tests_template.replace("{{ studlast_name }}", studlast_name)
+                tests_template = tests_template.replace("{{ question_colvo }}", str(getquestioncolvo(tuttest[0])))
+                tests_template = tests_template.replace("{{ data }}", str(tuttest[7]))
+                tests_template = tests_template.replace("{{ date_start }}", str(tuttest[5]))
+                tests_template = tests_template.replace("{{ date_end }}", str(tuttest[6]))
+
+        with open(f'{TEMPLATES_PATH}ctests/tuttests.html', 'r', encoding='utf-8') as f:
+            content = verstkaprofile(f.read(), name, tutfirst_name, tutlast_name)
+        content = content.replace("{{ tests_template }}", tests_template)
+        return HTMLResponse(content=content)
+    
+    except Exception as e:
+        print(f"Произошла ошибка - {e}")
+        return RedirectResponse(url="/login", status_code=303)
+
+    
+@app.get("/tutctest")
+def tutctest(request: Request):
+    try:
+        name, user_type = get_current_user(request)
+        if user_type != "tutor":
+            return RedirectResponse(url="/login", status_code=303)
+
+    except HTTPException:
+        return RedirectResponse(url="/login", status_code=303)
+    
+    try:
+        tutorinfo = gettutorinfo(name)
+        tutfirst_name = tutorinfo[0]
+        tutlast_name = tutorinfo[1]
+
+        select_form = ""
+        students = getstudents(name)
+        for student in students:
+            select_form += f'<option value="{student[0]}">{student[1]} {student[2]} ({student[5]} класс)</option>'
+
+        with open(f'{TEMPLATES_PATH}ctests/tutctest.html', 'r', encoding='utf-8') as f:
+            content = verstkaprofile(f.read(), name, tutfirst_name, tutlast_name)
+        content = content.replace("{{ select_form }}", select_form)
+        return HTMLResponse(content=content)
+    
+    except Exception as e:
+        print(f"Произошла ошибка - {e}")
+        return RedirectResponse(url="/login", status_code=303)
+
+
+@app.post("/createtest")
+async def create_test(request: Request):
+    try:
+        name, user_type = get_current_user(request)
+
+        if user_type != "tutor":
+            return RedirectResponse(url="/login", status_code=303)
+
+    except HTTPException:
+        return RedirectResponse(url="/login", status_code=303)
+
+    try:
+        tutorinfo = gettutorinfo(name)
+        tutor_id = tutorinfo[2]
+
+        form = await request.form()
+
+        createtest(tutor_id, form)
+
+        return RedirectResponse(url="/tuttests", status_code=303)
+        
+    except Exception as e:
+        print(f"Произошла ошибка - {e}")
+        return RedirectResponse(url="/login", status_code=303)
+    
+@app.post("/deletetest")
+def deletetest(request: Request, test_id: str = Form(...)):
+    try:
+        name, user_type = get_current_user(request)
+
+        if user_type != "tutor":
+            return RedirectResponse(url="/login", status_code=303)
+
+    except HTTPException:
+        return RedirectResponse(url="/login", status_code=303)
+
+    try:
+        tutorinfo = gettutorinfo(name)
+        tutor_id = tutorinfo[2]
+
+        deltest(tutor_id,test_id)
+
+        return RedirectResponse(url="/tuttests", status_code=303)
+
+    except Exception as e:
+        print(f"Произола ошибка - {e}")
         return RedirectResponse(url="/login", status_code=303)

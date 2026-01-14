@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Создание теста | RepitHub</title>
+</head>
+<body>
+<header class="top-bar">
+    <div class="nav-container">
+        <div class="nav-buttons">
+            <a href="/hometut" class="nav-button">Главная</a>
+            <a href="/homeworkstut" class="nav-button">Задания</a>
+            <a href="/tutgrades" class="nav-button">Оценки</a>
+            <a href="/tuttime" class="nav-button">Расписание</a>
+            <a href="/tuttests" class="nav-button active">Тесты</a>
+        </div>
+        <a href="/profiletut" class="account-widget">
+            <div class="user-avatar">{{ avatar }}</div>
+            <div class="user-info">
+                <div class="user-name">{{ first_name }} {{ last_name }}</div>
+                <div class="user-role">Репетитор</div>
+            </div>
+        </a>
+    </div>
+</header>
+
+<div class="container">
+    <div class="page-header">
+        <h1>Создать тест</h1>
+    </div>
+
+    <form class="test-form" method="POST" action="/createtest">
+        <div class="test-form__group">
+            <label for="test_title">Название теста</label>
+            <input type="text" id="test_title" name="test_title" placeholder="Введите название теста" required>
+        </div>
+
+        <div class="test-form__group">
+            <label for="subject">Предмет</label>
+            <select id="subject" name="subject" required>
+                <option value="">Выберите предмет</option>
+                <option value="Математика">Математика</option>
+                <option value="Физика">Физика</option>
+                <option value="Русский">Русский</option>
+                <option value="Английский">Английский</option>
+                <option value="Информатика">Информатика</option>
+                <option value="Немецкий">Немецкий</option>
+                <option value="Французский">Французский</option>
+                <option value="Обществознание">Обществознание</option>
+                <option value="История">История</option>
+                <option value="Литература">Литература</option>
+                <option value="Биология">Биология</option>
+                <option value="География">География</option>
+                <option value="Экономика">Экономика</option>
+                <option value="ИЗО">ИЗО</option>
+                <option value="Музыка">Музыка</option>
+            </select>
+        </div>
+
+        <div class="test-form__group">
+            <label for="student">Ученик</label>
+            <select id="student" name="student_id" required>
+                <option value="">Выберите ученика</option>
+                {{ select_form }}
+            </select>
+        </div>
+        <div class="test-form__group">
+            <label for="date_start">Начало теста</label>
+            <input type="datetime-local" id="date_start" name="date_start" required>
+        </div>
+
+        <div class="test-form__group">
+            <label for="date_end">Окончание теста</label>
+            <input type="datetime-local" id="date_end" name="date_end" required>
+        </div>
+
+
+        <div class="questions-list" id="questions-list">
+            <div class="question-card">
+                <input type="text" name="question[]" placeholder="Вопрос" required>
+                <input type="text" name="answer[]" placeholder="Правильный ответ" required>
+                <button type="button" class="remove-btn" onclick="this.parentElement.remove()">Удалить</button>
+            </div>
+        </div>
+
+        <button type="button" class="add-btn" onclick="addQuestion()">Добавить вопрос с письменным ответом</button>
+        <button type="button" class="add-btn" onclick="addMultipleChoiceQuestion()">Добавить вопрос с выбором одного правильного ответа</button>
+        <button type="button" class="add-btn" onclick="addMultiAnswerQuestion()">Добавить вопросс выбором нескольких правильных ответов</button>
+        
+
+        <div class="form-actions">
+            <a href="/tuttests" class="back-btn">Назад</a>
+            <button type="submit" class="submit-btn">Сохранить тест</button>
+        </div>
+    </form>
+</div>
+</body>
+</html>

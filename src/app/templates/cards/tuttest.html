@@ -1,0 +1,42 @@
+<div class="test-card">
+    <div class="test-header">
+        <span class="subject-badge {{ subject }}">{{ subject }}</span>
+        <div class="test-title">{{ title }}</div>
+    </div>
+
+    <div class="test-info">
+        <div><strong>Ученик:</strong> {{ studfirst_name }} {{ studlast_name }}</div>
+        <div><strong>Вопросов:</strong> {{ question_colvo }}</div>
+        <div><strong>Начало:</strong> {{ date_start }}</div>
+        <div><strong>Дедлайн:</strong> {{ date_end }}</div>
+        <div><strong>Создан:</strong> {{ data }}</div>
+    </div>
+
+    <div class="test-actions">
+        <button type="button" class="copy-btn" data-link="{{ test_link }}" onclick="copyTestLink(this)">
+            <span class="copy-text">Скопировать</span>
+        </button>
+
+        <a href="/viewtest/{{ test_id }}" class="view-btn">Результаты</a>
+
+        <form method="POST" action="/deletetest" style="margin:0;">
+            <input type="hidden" name="test_id" value="{{ test_id }}">
+            <button type="submit" class="delete-btn">Удалить</button>
+        </form>
+    </div>
+</div>
+<script>
+function copyTestLink(btn) {
+    const link = btn.dataset.link;
+    navigator.clipboard.writeText(link).then(() => {
+        btn.textContent = "Скопировано ✓";
+        btn.style.backgroundColor = "#2e7d32";
+
+        setTimeout(() => {
+            btn.innerHTML = '<span class="copy-text">Скопировать<br>ссылку</span>';
+            btn.style.backgroundColor = "#0288d1";
+        }, 1500);
+    });
+}
+</script>
+

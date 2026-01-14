@@ -1,0 +1,366 @@
+/* Общие стили для страницы FAQ */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+}
+
+body {
+    background-color: #f8f9fa;
+    color: #333;
+    line-height: 1.6;
+    min-height: 100vh;
+    padding: 20px 0;
+}
+
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Основной контейнер */
+.faq-container {
+    background: white;
+    border-radius: 15px;
+    padding: 40px;
+    box-shadow: 0 3px 15px rgba(0, 0, 0, 0.08);
+    border: 2px solid #e8f5e8;
+}
+
+/* Шапка */
+.faq-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.faq-title {
+    font-size: 32px;
+    color: #6b8e23;
+    margin-bottom: 10px;
+}
+
+.faq-subtitle {
+    color: #666;
+    font-size: 18px;
+    margin-bottom: 30px;
+}
+
+/* Категории FAQ */
+.faq-category {
+    margin-bottom: 40px;
+}
+
+.category-title {
+    color: #6b8e23;
+    font-size: 24px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.category-icon {
+    font-size: 24px;
+}
+
+/* Аккордеон FAQ */
+.faq-item {
+    margin-bottom: 15px;
+    border: 2px solid #e8f5e8;
+    border-radius: 10px;
+    overflow: hidden;
+    transition: all 0.3s;
+}
+
+.faq-item:hover {
+    border-color: #6b8e23;
+}
+
+.faq-question {
+    background: #f8fff8;
+    padding: 20px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    user-select: none;
+}
+
+.faq-question:hover {
+    background: #e8f5e8;
+}
+
+.toggle-icon {
+    color: #6b8e23;
+    font-size: 20px;
+    font-weight: bold;
+    min-width: 20px;
+    text-align: center;
+}
+
+.faq-answer {
+    max-height: 0;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    padding: 0 20px;
+    background: white;
+}
+
+.faq-answer p {
+    margin-bottom: 15px;
+}
+
+.faq-answer ul, .faq-answer ol {
+    margin-left: 25px;
+    margin-bottom: 15px;
+}
+
+.faq-answer li {
+    margin-bottom: 8px;
+}
+
+.faq-answer strong {
+    color: #6b8e23;
+}
+
+/* Добавляем отступ в конце ответа */
+.answer-spacing {
+    height: 20px;
+    margin: 0;
+    padding: 0;
+}
+
+/* Секция помощи */
+.help-section {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin: 50px 0;
+    padding-top: 30px;
+    border-top: 2px solid #e8f5e8;
+}
+
+@media (max-width: 768px) {
+    .help-section {
+        grid-template-columns: 1fr;
+    }
+}
+
+.help-card {
+    background: #f8fff8;
+    border-radius: 12px;
+    padding: 25px;
+    text-align: center;
+    border: 2px solid #e8f5e8;
+    transition: all 0.3s;
+}
+
+.help-card:hover {
+    transform: translateY(-5px);
+    border-color: #6b8e23;
+    box-shadow: 0 10px 25px rgba(107, 142, 35, 0.1);
+}
+
+.help-icon {
+    font-size: 40px;
+    margin-bottom: 15px;
+    color: #6b8e23;
+}
+
+.help-title {
+    color: #333;
+    font-size: 18px;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+.help-text {
+    color: #666;
+    font-size: 14px;
+    margin-bottom: 20px;
+    line-height: 1.4;
+}
+
+.help-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.help-btn {
+    display: block;
+    padding: 12px 20px;
+    border-radius: 25px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+    transition: all 0.3s;
+    border: 2px solid;
+}
+
+.help-btn.primary {
+    background: #6b8e23;
+    color: white;
+    border-color: #6b8e23;
+}
+
+.help-btn.primary:hover {
+    background: #5a7a1f;
+    border-color: #5a7a1f;
+}
+
+.help-btn.secondary {
+    background: transparent;
+    color: #6b8e23;
+    border-color: #6b8e23;
+}
+
+.help-btn.secondary:hover {
+    background: #6b8e23;
+    color: white;
+}
+
+.help-btn:not(.primary):not(.secondary) {
+    background: #6b8e23;
+    color: white;
+    border-color: #6b8e23;
+}
+
+.help-btn:not(.primary):not(.secondary):hover {
+    background: #5a7a1f;
+    border-color: #5a7a1f;
+}
+
+/* Навигация */
+.actions-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 2px solid #e8f5e8;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: #6b8e23;
+    text-decoration: none;
+    font-weight: 600;
+    padding: 10px 20px;
+    border: 2px solid #e8f5e8;
+    border-radius: 25px;
+    transition: all 0.3s;
+}
+
+.back-btn:hover {
+    background: #f8fff8;
+    border-color: #6b8e23;
+}
+
+.policy-links {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.policy-link {
+    color: #6b8e23;
+    text-decoration: none;
+    padding: 8px 15px;
+    border: 1px solid #e8f5e8;
+    border-radius: 20px;
+    font-size: 14px;
+    transition: all 0.3s;
+}
+
+.policy-link:hover {
+    background: #6b8e23;
+    color: white;
+    border-color: #6b8e23;
+}
+
+/* Футер */
+.simple-footer {
+    text-align: center;
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid #e8f5e8;
+    color: #666;
+    font-size: 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.heart {
+    color: #ff6b6b;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .faq-container {
+        padding: 25px;
+    }
+    
+    .faq-title {
+        font-size: 26px;
+    }
+    
+    .actions-section {
+        flex-direction: column;
+        align-items: stretch;
+        text-align: center;
+    }
+    
+    .policy-links {
+        justify-content: center;
+    }
+    
+    .simple-footer {
+        flex-direction: column;
+        text-align: center;
+        gap: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .faq-container {
+        padding: 20px;
+    }
+    
+    .faq-title {
+        font-size: 22px;
+    }
+    
+    .category-title {
+        font-size: 20px;
+    }
+    
+    .faq-question {
+        padding: 15px;
+        font-size: 15px;
+    }
+    
+    body {
+        padding: 10px 0;
+    }
+    
+    .help-section {
+        gap: 15px;
+    }
+    
+    .help-card {
+        padding: 20px;
+    }
+}

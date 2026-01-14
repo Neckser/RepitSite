@@ -1,0 +1,667 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+}
+
+body {
+    background-color: #f8f9fa;
+    color: #333;
+    line-height: 1.6;
+    min-height: 100vh;
+    padding: 20px 0;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Основной контейнер */
+.contact-container {
+    background: white;
+    border-radius: 15px;
+    padding: 40px;
+    box-shadow: 0 3px 15px rgba(0, 0, 0, 0.08);
+    border: 2px solid #e8f5e8;
+}
+
+/* Шапка */
+.contact-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.contact-title {
+    font-size: 32px;
+    color: #6b8e23;
+    margin-bottom: 10px;
+}
+
+.contact-subtitle {
+    color: #666;
+    font-size: 18px;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Сетка контактов */
+.contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    margin-bottom: 50px;
+}
+
+@media (max-width: 768px) {
+    .contact-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Контактные карточки */
+.contact-info-section {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+@media (max-width: 768px) {
+    .contact-info-section {
+        grid-template-columns: 1fr;
+    }
+}
+
+.contact-card {
+    background: #f8fff8;
+    border-radius: 12px;
+    padding: 25px;
+    border: 2px solid #e8f5e8;
+    transition: all 0.3s;
+    text-align: center;
+}
+
+.contact-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(107, 142, 35, 0.1);
+    border-color: #6b8e23;
+}
+
+.contact-icon {
+    font-size: 40px;
+    margin-bottom: 15px;
+    color: #6b8e23;
+}
+
+.contact-card-title {
+    color: #333;
+    font-size: 18px;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+.contact-card-text {
+    color: #666;
+    font-size: 14px;
+    margin-bottom: 15px;
+    line-height: 1.4;
+}
+
+.contact-link {
+    display: block;
+    color: #6b8e23;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 16px;
+    margin-bottom: 10px;
+    transition: color 0.3s;
+}
+
+.contact-link:hover {
+    color: #5a7a1f;
+    text-decoration: underline;
+}
+
+.contact-address {
+    color: #333;
+    font-weight: 500;
+    margin-bottom: 10px;
+    font-size: 15px;
+}
+
+.contact-note {
+    color: #888;
+    font-size: 13px;
+    line-height: 1.4;
+    margin-top: 10px;
+}
+
+/* Кнопка чата */
+.chat-btn {
+    background: linear-gradient(135deg, #6b8e23 0%, #5a7a1f 100%);
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 25px;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s;
+    width: 100%;
+    margin: 10px 0;
+}
+
+.chat-btn:hover {
+    background: linear-gradient(135deg, #5a7a1f 0%, #4a661a 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(107, 142, 35, 0.3);
+}
+
+/* Форма обратной связи */
+.form-card {
+    background: white;
+    border-radius: 12px;
+    padding: 30px;
+    border: 2px solid #e8f5e8;
+    height: 100%;
+}
+
+.form-title {
+    color: #6b8e23;
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.form-subtitle {
+    color: #666;
+    font-size: 14px;
+    margin-bottom: 25px;
+}
+
+.contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-label {
+    color: #333;
+    font-weight: 600;
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+
+.form-input,
+.form-select,
+.form-textarea {
+    padding: 12px 15px;
+    border: 2px solid #e8f5e8;
+    border-radius: 10px;
+    font-size: 14px;
+    transition: all 0.3s;
+    background: white;
+    color: #333;
+}
+
+.form-input:focus,
+.form-select:focus,
+.form-textarea:focus {
+    outline: none;
+    border-color: #6b8e23;
+    box-shadow: 0 0 0 3px rgba(107, 142, 35, 0.1);
+}
+
+.form-select {
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236b8e23' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 15px center;
+    background-size: 16px;
+    padding-right: 40px;
+}
+
+.form-textarea {
+    resize: vertical;
+    min-height: 120px;
+    font-family: inherit;
+}
+
+/* Чекбокс */
+.checkbox-group {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.checkbox-group input[type="checkbox"] {
+    margin-top: 3px;
+    accent-color: #6b8e23;
+}
+
+.checkbox-label {
+    color: #666;
+    font-size: 13px;
+    line-height: 1.4;
+}
+
+.inline-link {
+    color: #6b8e23;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.inline-link:hover {
+    text-decoration: underline;
+}
+
+/* Кнопка отправки */
+.submit-btn {
+    background: linear-gradient(135deg, #6b8e23 0%, #5a7a1f 100%);
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    border-radius: 25px;
+    font-weight: 600;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s;
+    margin-top: 10px;
+}
+
+.submit-btn:hover {
+    background: linear-gradient(135deg, #5a7a1f 0%, #4a661a 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(107, 142, 35, 0.3);
+}
+
+/* FAQ секция */
+.faq-section {
+    margin: 50px 0;
+    padding-top: 30px;
+    border-top: 2px solid #e8f5e8;
+}
+
+.faq-title {
+    color: #6b8e23;
+    font-size: 28px;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.faq-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+@media (max-width: 768px) {
+    .faq-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.faq-item {
+    background: #f8fff8;
+    border-radius: 12px;
+    padding: 20px;
+    border: 2px solid #e8f5e8;
+    transition: all 0.3s;
+}
+
+.faq-item:hover {
+    border-color: #6b8e23;
+}
+
+.faq-question {
+    color: #333;
+    font-weight: 600;
+    font-size: 16px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.faq-icon {
+    color: #6b8e23;
+    font-size: 18px;
+}
+
+.faq-answer {
+    color: #666;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+/* Социальные сети */
+.additional-contacts {
+    text-align: center;
+    margin: 40px 0;
+    padding-top: 30px;
+    border-top: 2px solid #e8f5e8;
+}
+
+.additional-title {
+    color: #6b8e23;
+    font-size: 24px;
+    margin-bottom: 25px;
+}
+
+.social-links {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.social-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #f8fff8;
+    color: #6b8e23;
+    padding: 15px 25px;
+    border-radius: 12px;
+    text-decoration: none;
+    border: 2px solid #e8f5e8;
+    transition: all 0.3s;
+    min-width: 150px;
+}
+
+.social-link:hover {
+    background: #6b8e23;
+    color: white;
+    border-color: #6b8e23;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(107, 142, 35, 0.2);
+}
+
+.social-icon {
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.social-text {
+    font-weight: 600;
+    font-size: 14px;
+}
+
+/* Действия */
+.actions-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 2px solid #e8f5e8;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: #6b8e23;
+    text-decoration: none;
+    font-weight: 600;
+    padding: 10px 20px;
+    border: 2px solid #e8f5e8;
+    border-radius: 25px;
+    transition: all 0.3s;
+}
+
+.back-btn:hover {
+    background: #f8fff8;
+    border-color: #6b8e23;
+}
+
+.policy-links {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.policy-link {
+    color: #6b8e23;
+    text-decoration: none;
+    padding: 8px 15px;
+    border: 1px solid #e8f5e8;
+    border-radius: 20px;
+    font-size: 14px;
+    transition: all 0.3s;
+}
+
+.policy-link:hover {
+    background: #6b8e23;
+    color: white;
+    border-color: #6b8e23;
+}
+
+/* Футер */
+.simple-footer {
+    text-align: center;
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid #e8f5e8;
+    color: #666;
+    font-size: 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.heart {
+    color: #ff6b6b;
+}
+
+/* Модальное окно чата */
+.chat-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.chat-modal-content {
+    background: white;
+    border-radius: 15px;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+}
+
+.chat-header {
+    background: #6b8e23;
+    color: white;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.chat-title {
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0;
+}
+
+.chat-close {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+    line-height: 1;
+    padding: 0;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: background-color 0.3s;
+}
+
+.chat-close:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.chat-body {
+    padding: 20px;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.chat-message {
+    display: flex;
+    margin-bottom: 15px;
+    align-items: flex-start;
+}
+
+.chat-message.chat-bot {
+    flex-direction: row;
+}
+
+.chat-message.chat-user {
+    flex-direction: row-reverse;
+}
+
+.chat-avatar {
+    width: 30px;
+    height: 30px;
+    background: #6b8e23;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: bold;
+    margin: 0 10px;
+    flex-shrink: 0;
+}
+
+.chat-text {
+    background: #f8fff8;
+    padding: 10px 15px;
+    border-radius: 15px;
+    max-width: 70%;
+    font-size: 14px;
+    line-height: 1.4;
+    border: 1px solid #e8f5e8;
+}
+
+.chat-message.chat-user .chat-text {
+    background: #6b8e23;
+    color: white;
+    border-color: #6b8e23;
+}
+
+.chat-footer {
+    padding: 20px;
+    border-top: 1px solid #e8f5e8;
+    display: flex;
+    gap: 10px;
+}
+
+.chat-input {
+    flex: 1;
+    padding: 10px 15px;
+    border: 2px solid #e8f5e8;
+    border-radius: 25px;
+    font-size: 14px;
+}
+
+.chat-input:focus {
+    outline: none;
+    border-color: #6b8e23;
+}
+
+.chat-send-btn {
+    background: #6b8e23;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 25px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.chat-send-btn:hover {
+    background: #5a7a1f;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .contact-container {
+        padding: 25px;
+    }
+    
+    .contact-title {
+        font-size: 26px;
+    }
+    
+    .actions-section {
+        flex-direction: column;
+        align-items: stretch;
+        text-align: center;
+    }
+    
+    .policy-links {
+        justify-content: center;
+    }
+    
+    .simple-footer {
+        flex-direction: column;
+        text-align: center;
+        gap: 10px;
+    }
+    
+    .social-links {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .social-link {
+        width: 100%;
+        max-width: 250px;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .contact-container {
+        padding: 20px;
+    }
+    
+    .contact-title {
+        font-size: 22px;
+    }
+    
+    .form-title {
+        font-size: 20px;
+    }
+    
+    body {
+        padding: 10px 0;
+    }
+}

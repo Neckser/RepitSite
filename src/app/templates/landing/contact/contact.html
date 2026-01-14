@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Связаться с нами | RepitHub</title>
+    <link rel="stylesheet" href="contact.css">
+</head>
+<body>
+    <div class="container">
+        <div class="contact-container">
+            <div class="contact-header">
+                <h1 class="contact-title">Связаться с нами</h1>
+                <p class="contact-subtitle">Мы всегда рады помочь вам. Выберите удобный способ связи</p>
+            </div>
+
+            <div class="contact-grid">
+                <!-- Контактная информация -->
+                <div class="contact-info-section">
+                    <div class="contact-card">
+                        <div class="contact-icon">📧</div>
+                        <h3 class="contact-card-title">Электронная почта</h3>
+                        <p class="contact-card-text">Отправьте нам письмо, и мы ответим в течение 24 часов</p>
+                        <a href="mailto:support@repithub.ru" class="contact-link">support@repithub.ru</a>
+                        <p class="contact-note">Техническая поддержка и общие вопросы</p>
+                    </div>
+
+                    <div class="contact-card">
+                        <div class="contact-icon">📞</div>
+                        <h3 class="contact-card-title">Телефон</h3>
+                        <p class="contact-card-text">Позвоните нам в рабочее время</p>
+                        <a href="tel:+78001234567" class="contact-link">+7 (800) 123-45-67</a>
+                        <p class="contact-note">Бесплатный звонок по России<br>Пн-Пт, 9:00-18:00 (МСК)</p>
+                    </div>
+
+                    <div class="contact-card">
+                        <div class="contact-icon">💬</div>
+                        <h3 class="contact-card-title">Чат поддержки</h3>
+                        <p class="contact-card-text">Получите помощь прямо сейчас</p>
+                        <button class="chat-btn" id="openChatBtn">Открыть чат</button>
+                        <p class="contact-note">Доступен 24/7 для экстренных вопросов</p>
+                    </div>
+
+                    <div class="contact-card">
+                        <div class="contact-icon">📍</div>
+                        <h3 class="contact-card-title">Офис</h3>
+                        <p class="contact-card-text">Приезжайте к нам в офис</p>
+                        <p class="contact-address">г. Москва, ул. Образовательная, д. 1, офис 101</p>
+                        <p class="contact-note">Предварительная запись обязательна</p>
+                    </div>
+                </div>
+
+                <!-- Форма обратной связи -->
+                <div class="contact-form-section">
+                    <div class="form-card">
+                        <h2 class="form-title">Форма обратной связи</h2>
+                        <p class="form-subtitle">Заполните форму, и мы свяжемся с вами в ближайшее время</p>
+                        
+                        <form id="contactForm" class="contact-form">
+                            <div class="form-group">
+                                <label for="name" class="form-label">Ваше имя *</label>
+                                <input type="text" id="name" name="name" class="form-input" placeholder="Иван Иванов" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="email" class="form-label">Электронная почта *</label>
+                                <input type="email" id="email" name="email" class="form-input" placeholder="ivan@example.com" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="phone" class="form-label">Телефон</label>
+                                <input type="tel" id="phone" name="phone" class="form-input" placeholder="+7 (999) 123-45-67">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="topic" class="form-label">Тема обращения *</label>
+                                <select id="topic" name="topic" class="form-select" required>
+                                    <option value="">Выберите тему</option>
+                                    <option value="technical">Техническая проблема</option>
+                                    <option value="account">Вопрос по аккаунту</option>
+                                    <option value="payment">Платежи и финансы</option>
+                                    <option value="partnership">Сотрудничество</option>
+                                    <option value="feedback">Отзыв и предложения</option>
+                                    <option value="other">Другое</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="message" class="form-label">Сообщение *</label>
+                                <textarea id="message" name="message" class="form-textarea" placeholder="Опишите ваш вопрос подробно..." rows="5" required></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="checkbox-group">
+                                    <input type="checkbox" id="agreement" name="agreement" required>
+                                    <label for="agreement" class="checkbox-label">
+                                        Я согласен с <a href="/policy" class="inline-link">Политикой конфиденциальности</a> и обработкой персональных данных
+                                    </label>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="submit-btn">Отправить сообщение</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Часто задаваемые вопросы -->
+            <div class="faq-section">
+                <h2 class="faq-title">Часто задаваемые вопросы</h2>
+                
+                <div class="faq-grid">
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <span class="faq-icon">❓</span>
+                            Как восстановить доступ к аккаунту?
+                        </div>
+                        <div class="faq-answer">
+                            На странице входа нажмите "Забыли пароль". Вам на почту придет инструкция по восстановлению. Если не помогло, напишите на support@repithub.ru.
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <span class="faq-icon">💰</span>
+                            Когда приходит выплата репетиторам?
+                        </div>
+                        <div class="faq-answer">
+                            Выплаты осуществляются каждую среду за предыдущую неделю. Минимальная сумма для вывода — 500 рублей.
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <span class="faq-icon">👨‍🏫</span>
+                            Как стать репетитором на платформе?
+                        </div>
+                        <div class="faq-answer">
+                            Зарегистрируйтесь как репетитор, заполните профиль, пройдите проверку квалификации (1-2 дня) и начинайте преподавать!
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question">
+                            <span class="faq-icon">🔧</span>
+                            Что делать, если не работает видео-звонок?
+                        </div>
+                        <div class="faq-answer">
+                            1. Проверьте подключение к интернету<br>
+                            2. Дайте разрешение на использование камеры и микрофона<br>
+                            3. Обновите страницу<br>
+                            4. Если не помогло — напишите в чат поддержки
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Дополнительные контакты -->
+            <div class="additional-contacts">
+                <h2 class="additional-title">Другие способы связи</h2>
+                
+                <div class="social-links">
+                    <a href="https://vk.com/repithub" class="social-link" target="_blank">
+                        <span class="social-icon">VK</span>
+                        <span class="social-text">ВКонтакте</span>
+                    </a>
+                    
+                    <a href="https://t.me/repithub" class="social-link" target="_blank">
+                        <span class="social-icon">TG</span>
+                        <span class="social-text">Telegram</span>
+                    </a>
+                    
+                    <a href="https://www.youtube.com/@repithub" class="social-link" target="_blank">
+                        <span class="social-icon">YT</span>
+                        <span class="social-text">YouTube</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Вернуться на главную -->
+            <div class="actions-section">
+                <a href="/" class="back-btn">
+                    <span>←</span> Вернуться на главную
+                </a>
+                <div class="policy-links">
+                    <a href="/policy" class="policy-link">Политика конфиденциальности</a>
+                    <a href="/terms" class="policy-link">Условия использования</a>
+                    <a href="/faq" class="policy-link">Все вопросы</a>
+                </div>
+            </div>
+
+            <!-- Футер -->
+            <div class="simple-footer">
+                <p>&copy; 2024 RepitHub. Все права защищены.</p>
+                <p>Разработано с <span class="heart">❤️</span> для образования</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно чата -->
+    <div class="chat-modal" id="chatModal">
+        <div class="chat-modal-content">
+            <div class="chat-header">
+                <h3 class="chat-title">Чат поддержки</h3>
+                <button class="chat-close" id="closeChatBtn">&times;</button>
+            </div>
+            <div class="chat-body">
+                <div class="chat-message chat-bot">
+                    <div class="chat-avatar">RH</div>
+                    <div class="chat-text">Здравствуйте! Чем могу помочь?</div>
+                </div>
+                <div class="chat-message chat-user">
+                    <div class="chat-text">Привет! У меня вопрос по оплате...</div>
+                </div>
+            </div>
+            <div class="chat-footer">
+                <input type="text" class="chat-input" placeholder="Введите ваше сообщение...">
+                <button class="chat-send-btn">Отправить</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Открытие/закрытие чата
+        document.getElementById('openChatBtn').addEventListener('click', function() {
+            document.getElementById('chatModal').style.display = 'flex';
+        });
+
+        document.getElementById('closeChatBtn').addEventListener('click', function() {
+            document.getElementById('chatModal').style.display = 'none';
+        });
+
+        // Закрытие чата по клику вне окна
+        document.getElementById('chatModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                this.style.display = 'none';
+            }
+        });
+
+        // Отправка формы
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Спасибо! Ваше сообщение отправлено. Мы свяжемся с вами в ближайшее время.');
+            this.reset();
+        });
+    </script>
+</body>
+</html>

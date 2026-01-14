@@ -1,6 +1,7 @@
 import sqlite3
 import random
 import locale 
+import json
 from datetime import datetime, timedelta
 
 DB_PATH = '../../data/basa.db'
@@ -840,4 +841,100 @@ def dellesson(schedule_id):
     finally:
         connection.close()
 
+def gettuttests(tutor_id):
+    try:
+        connection = sqlite3.connect(DB_PATH)
+        cursor = connection.cursor()
 
+        cursor.execute("SELECT * FROM tests WHERE tutor_id = ? ORDER BY date_start DESC", (tutor_id,))
+        tests = cursor.fetchall()
+
+        return tests
+        
+    except Exception as e:
+        print(f"Произошла ошибка - {e}")
+        raise e
+    
+    finally:
+        connection.close()
+
+def createtest(tutor_id, form):
+    connection = sqlite3.connect(DB_PATH)
+    cursor = connection.cursor()
+
+    cursor.execute("""INSERT INTO tests (tutor_id, student_id, title, subject, date_start, date_end) VALUES (?, ?, ?, ?, ?, ?)""", ( tutor_id, form['student_id'], form['test_title'], form['subject'], form['date_start'], form['date_end']))
+    test_id = cursor.lastrowid
+
+    questions = form.getlist('question[]')
+    answers = form.getlist('answer[]')
+
+    for q_text, answer in zip(questions, answers):
+        options = {"correct_answer": answer}
+
+        cursor.execute("""INSERT INTO test_questions (test_id, question_type, question_text, options) VALUES (?, 'text', ?, ?)""", (test_id, q_text, json.dumps(options, ensure_ascii=False)))
+
+    mcq_questions = form.getlist('mcq_question[]')
+
+    for index, q_text in enumerate(mcq_questions, start=1):
+        options_list = form.getlist(f'mcq_option_{index}[]')
+        correct = form.get(f'mcq_correct_{index}')
+
+        if not correct:
+            continue
+
+        options = {
+            "options": options_list,
+            "correct": int(correct) - 1
+        }
+
+        cursor.execute("""INSERT INTO test_questions (test_id, question_type, question_text, options) VALUES (?, 'single_choice', ?, ?)""", (test_id, q_text, json.dumps(options, ensure_ascii=False)))
+
+    multi_questions = form.getlist('multi_question[]')
+
+    for index, q_text in enumerate(multi_questions, start=1):
+        options_list = form.getlist(f'multi_option_{index}[]')
+        correct_list = form.getlist(f'multi_correct_{index}[]')
+
+        correct_indexes = [int(i) - 1 for i in correct_list]
+
+        options = {
+            "options": options_list,
+            "correct": correct_indexes
+        }
+
+        cursor.execute("""INSERT INTO test_questions (test_id, question_type, question_text, options) VALUES (?, 'multi_choice', ?, ?)""", (test_id, q_text, json.dumps(options, ensure_ascii=False)))
+    connection.commit()
+    connection.close()
+
+    return test_id
+
+def deltest(tutor_id, test_id):
+    try:
+        connection = sqlite3.connect(DB_PATH)
+        cursor = connection.cursor()
+
+        cursor.execute("DELETE FROM test_questions WHERE test_id = ?",(test_id,))
+
+        cursor.execute("DELETE FROM tests WHERE test_id = ? AND tutor_id = ?",(test_id, tutor_id))
+        connection.commit()
+    
+    except Exception as e:
+        print(f'Произошла ошибка - {e}')
+        raise e
+    
+    finally:
+        connection.close()
+
+def getquestioncolvo(test_id):
+    try:
+        connection = sqlite3.connect(DB_PATH)
+        cursor = connection.cursor()
+
+        cursor.execute('''SELECT COUNT(*) FROM test_questions WHERE test_id = ? ORDER BY question_id; ''', (test_id,))
+        question_colvo = cursor.fetchone()[0]
+
+        return question_colvo
+    
+    except Exception as e:
+        print(f"Произошла ошибка - {e}")
+        raise e

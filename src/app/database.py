@@ -102,6 +102,27 @@ def init_database():
             FOREIGN KEY (tutor_id) REFERENCES tutors(tutor_id) ON DELETE CASCADE
         )
     ''')
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS tests (
+            test_id INTEGER PRIMARY KEY AUTOINCREMENT,
+            tutor_id INTEGER NOT NULL,
+            student_id INTEGER NOT NULL,
+            title TEXT NOT NULL,
+            subject TEXT NOT NULL,
+            date_start DATETIME NOT NULL,
+            date_end DATETIME NOT NULL,
+            created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+        )
+    ''')
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS test_questions (
+            question_id INTEGER PRIMARY KEY AUTOINCREMENT,
+            test_id INTEGER NOT NULL,
+            question_type TEXT NOT NULL CHECK(question_type IN ('text', 'single_choice', 'multi_choice')),
+            question_text TEXT NOT NULL,
+            options TEXT
+        )
+    ''')
 
     connection.commit()
     connection.close()
