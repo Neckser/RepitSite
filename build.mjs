@@ -170,6 +170,10 @@ const entries = [
     out: 'build/cards/lesson.html',
   },
   {
+    html: 'src/app/templates/cards/nohw.html',
+    out: 'build/cards/nohw.html',
+  },
+  {
     html: 'src/app/templates/cards/nolessons.html',
     out: 'build/cards/nolessons.html',
   },
