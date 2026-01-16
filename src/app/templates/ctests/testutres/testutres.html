@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Результаты теста | RepitHub</title>
+</head>
+<body class="body">
+<header class="top-bar">
+    <div class="top-bar__container">
+        <div class="top-bar__nav">
+            <a href="/hometut" class="top-bar__nav-button">Главная</a>
+            <a href="/homeworkstut" class="top-bar__nav-button">Задания</a>
+            <a href="/tutgrades" class="top-bar__nav-button">Оценки</a>
+            <a href="/tuttime" class="top-bar__nav-button">Расписание</a>
+            <a href="/tuttests" class="top-bar__nav-button top-bar__nav-button_active">Тесты</a>
+        </div>
+        <a href="/profiletut" class="top-bar__account">
+            <div class="top-bar__avatar">{{ avatar }}</div>
+            <div class="top-bar__user-info">
+                <div class="top-bar__user-name">{{ first_name }} {{ last_name }}</div>
+                <div class="top-bar__user-role">Репетитор</div>
+            </div>
+        </a>
+    </div>
+</header>
+
+<div class="container">
+    <div class="page-header">
+        <h1 class="page-header__title">Результаты теста</h1>
+    </div>
+    <div class="card">
+        <h2 class="card__title">Общая информация</h2>
+
+        <div class="test-summary">
+            <div class="info">
+                <span>Тест: {{ title }}</span>
+                <span>Дата начала: {{ date_start }}</span>
+                <span>Дедлайн: {{ date_end }}</span>
+                <span>Время прохождения: {{ duration }}</span>
+            </div>
+            <a class="open-test-btn" href="/test/t/{{ test_id }}">Открыть тест</a>
+        </div>
+
+        <div class="test-info-grid">
+            <div class="stat-card">
+                <div class="stat-number">{{ students_done }}</div>
+                <div class="stat-label">Прошло учеников</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">{{ avg_score }}%</div>
+                <div class="stat-label">Средний балл</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">{{ avg_time }} мин</div>
+                <div class="stat-label">Среднее время</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">{{ questions_colvo }}</div>
+                <div class="stat-label">Вопросов</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2 class="card__title">👨‍🎓 Ученики</h2>
+
+        <div class="results-table">
+            <div class="results-row results-row_header">
+                <div>Ученик</div>
+                <div>Баллы</div>
+                <div>Процент</div>
+                <div>Время</div>
+                <div>Дата</div>
+            </div>
+            {{ studtest_template }}
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

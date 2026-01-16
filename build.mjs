@@ -118,6 +118,17 @@ const entries = [
     out: 'build/ctests/tuttests.html',
   },
   {
+    html: 'src/app/templates/ctests/testutres/testutres.html',
+    css: 'src/app/templates/ctests/testutres/testutres.css',
+    out: 'build/ctests/testutres.html',
+  },
+  {
+    html: 'src/app/templates/ctests/viewtest/viewtest.html',
+    css: 'src/app/templates/ctests/viewtest/viewtest.css',
+    js: 'src/app/templates/ctests/viewtest/viewtest.js',
+    out: 'build/ctests/viewtest.html',
+  },
+  {
     html: "src/app/templates/landing/mainlanding/mainlanding.html",
     css: "src/app/templates/landing/mainlanding/mainlanding.css",
     out: "build/landing/mainlanding.html",
@@ -192,6 +203,22 @@ const entries = [
   {
     html: 'src/app/templates/cards/tuttest.html',
     out: 'build/cards/tuttest.html',
+  },
+  {
+    html: 'src/app/templates/cards/studtest_res.html',
+    out: 'build/cards/studtest_res.html',
+  },
+  {
+    html: 'src/app/templates/cards/textquestion.html',
+    out: 'build/cards/textquestion.html',
+  },
+  {
+    html: 'src/app/templates/cards/singlequestion.html',
+    out: 'build/cards/singlequestion.html',
+  },
+  {
+    html: 'src/app/templates/cards/multiquestion.html',
+    out: 'build/cards/multiquestion.html',
   },
 ];
 

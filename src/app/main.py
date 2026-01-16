@@ -1460,7 +1460,7 @@ def tuttests(request: Request):
                 tests_template = tests_template.replace("{{ subject }}", str(tuttest[4]))
                 tests_template = tests_template.replace("{{ studfirst_name }}", studfirst_name)
                 tests_template = tests_template.replace("{{ studlast_name }}", studlast_name)
-                tests_template = tests_template.replace("{{ question_colvo }}", str(getquestioncolvo(tuttest[0])))
+                tests_template = tests_template.replace("{{ question_colvo }}", str(getquestioncolvobyid(tuttest[0])))
                 tests_template = tests_template.replace("{{ data }}", str(tuttest[7]))
                 tests_template = tests_template.replace("{{ date_start }}", str(tuttest[5]))
                 tests_template = tests_template.replace("{{ date_end }}", str(tuttest[6]))
@@ -1552,3 +1552,122 @@ def deletetest(request: Request, test_id: str = Form(...)):
     except Exception as e:
         print(f"Произола ошибка - {e}")
         return RedirectResponse(url="/login", status_code=303)
+    
+@app.get("/testutres/{test_id}")
+def testutres(request: Request, test_id: int):
+    try:
+        name, user_type = get_current_user(request)
+
+        if user_type != "tutor":
+            return RedirectResponse(url="/login", status_code=303)
+
+    except HTTPException:
+        return RedirectResponse(url="/login", status_code=303)
+    
+    try:
+        tutorinfo = gettutorinfo(name)
+        tutfirst_name = tutorinfo[0]
+        tutlast_name = tutorinfo[1]
+
+        testinfo = gettestbyid(test_id)
+        title = testinfo[2]
+        subject = testinfo[3]
+        date_start = testinfo[4]
+        date_end = testinfo[5]
+        created_at = testinfo[6]
+        duration = testinfo[7]
+
+        questions_colvo = getquestioncolvobyid(test_id)
+
+        with open(f"{TEMPLATES_PATH}ctests/testutres.html", 'r', encoding="utf-8") as f:
+            content = verstkaprofile(f.read(), name, tutfirst_name, tutlast_name)
+        content = content.replace("{{ test_id }}", str(test_id))
+        content = content.replace("{{ title }}", title)
+        content = content.replace("{{ subject }}", subject)
+        content = content.replace("{{ date_start }}", str(date_start))
+        content = content.replace("{{ date_end }}", str(date_end))
+        content = content.replace("{{ duration }}", str(duration))
+        content = content.replace("{{ questions_colvo }}", str(questions_colvo))
+        return HTMLResponse(content=content)
+
+    except Exception as e:
+        print(f"Произола ошибка - {e}")
+        return RedirectResponse(url="/login", status_code=303)
+    
+
+@app.get("/test/t/{test_id}")
+def viewtest(request: Request, test_id: int):
+    try:
+        name, user_type = get_current_user(request)
+
+        if user_type != "tutor":
+            return RedirectResponse(url="/login", status_code=303)
+
+    except HTTPException:
+        return RedirectResponse(url="/login", status_code=303)
+    
+    try:
+        tutorinfo = gettutorinfo(name)
+        tutfirst_name = tutorinfo[0]
+        tutlast_name = tutorinfo[1]
+
+        testinfo = gettestbyid(test_id)
+        title = testinfo[2]
+        subject = testinfo[3]
+
+        questions_template = ""
+
+        with open(f"{TEMPLATES_PATH}cards/textquestion.html", 'r', encoding="utf-8") as f:
+            textquestion = f.read()
+
+        with open(f"{TEMPLATES_PATH}cards/singlequestion.html", 'r', encoding="utf-8") as f:
+            singlequestion = f.read()
+
+        with open(f"{TEMPLATES_PATH}cards/multiquestion.html", 'r', encoding="utf-8") as f:
+            multiquestion = f.read()
+
+        questions = gettestquestionsbyid(test_id)
+
+        index = 1
+        for question in questions:
+            type = question[1]
+            title = question[2]
+            data_str = question[3]
+            data = json.loads(data_str)
+            if type == "text":
+                questions_template += textquestion
+                questions_template = questions_template.replace("{{ question_number }}", str(index))
+                questions_template = questions_template.replace("{{ title_question }}", title)
+            elif type == "single_choice":
+                questions_template += singlequestion
+                options = data.get("options", ["", "", "", ""])
+                questions_template = questions_template.replace("{{ question_number }}", str(index))
+                questions_template = questions_template.replace("{{ title_question }}", title)
+                questions_template = questions_template.replace("{{ first_var }}", options[0])
+                questions_template = questions_template.replace("{{ second_var }}", options[1])
+                questions_template = questions_template.replace("{{ third_var }}", options[2])
+                questions_template = questions_template.replace("{{ fourth_var }}", options[3])
+            elif type == "multi_choice":
+                questions_template += multiquestion
+                options = data.get("options", ["", "", "", ""])
+                questions_template = questions_template.replace("{{ question_number }}", str(index))
+                questions_template = questions_template.replace("{{ title_question }}", title)
+                questions_template = questions_template.replace("{{ first_var }}", options[0])
+                questions_template = questions_template.replace("{{ second_var }}", options[1])
+                questions_template = questions_template.replace("{{ third_var }}", options[2])
+                questions_template = questions_template.replace("{{ fourth_var }}", options[3])
+            index += 1
+
+    
+        with open(f"{TEMPLATES_PATH}ctests/viewtest.html", "r", encoding='utf-8') as f:
+            content = verstkaprofile(f.read(), name, tutfirst_name, tutlast_name)
+        content = content.replace("{{ questions_template }}", questions_template)
+        content = content.replace("{{ title }}", title)
+        content = content.replace("{{ subject }}", subject)
+        return HTMLResponse(content=content)
+    
+
+    except Exception as e:
+        print(f"Произола ошибка - {e}")
+        return RedirectResponse(url="/login", status_code=303)
+    

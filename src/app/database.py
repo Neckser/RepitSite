@@ -111,7 +111,8 @@ def init_database():
             subject TEXT NOT NULL,
             date_start DATETIME NOT NULL,
             date_end DATETIME NOT NULL,
-            created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+            created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+            duration INTEGER NOT NULL
         )
     ''')
     cursor.execute('''
@@ -122,6 +123,20 @@ def init_database():
             question_text TEXT NOT NULL,
             options TEXT
         )
+    ''')
+    cursor.execute('''
+    CREATE TABLE IF NOT EXISTS test_attempts (
+        attempt_id INTEGER PRIMARY KEY AUTOINCREMENT,
+        test_id INTEGER NOT NULL,
+        student_id INTEGER NOT NULL,
+        start_time DATETIME DEFAULT CURRENT_TIMESTAMP,
+        end_time DATETIME,
+        duration_seconds INTEGER,
+        score INTEGER DEFAULT 0,
+        max_score INTEGER,
+        FOREIGN KEY (test_id) REFERENCES tests(test_id) ON DELETE CASCADE,
+        FOREIGN KEY (student_id) REFERENCES students(student_id) ON DELETE CASCADE
+    );
     ''')
 
     connection.commit()

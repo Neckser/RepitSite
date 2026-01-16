@@ -862,7 +862,7 @@ def createtest(tutor_id, form):
     connection = sqlite3.connect(DB_PATH)
     cursor = connection.cursor()
 
-    cursor.execute("""INSERT INTO tests (tutor_id, student_id, title, subject, date_start, date_end) VALUES (?, ?, ?, ?, ?, ?)""", ( tutor_id, form['student_id'], form['test_title'], form['subject'], form['date_start'], form['date_end']))
+    cursor.execute("""INSERT INTO tests (tutor_id, student_id, title, subject, date_start, date_end, duration) VALUES (?, ?, ?, ?, ?, ?, ?)""", ( tutor_id, form['student_id'], form['test_title'], form['subject'], form['date_start'], form['date_end'], form['test_duration']))
     test_id = cursor.lastrowid
 
     questions = form.getlist('question[]')
@@ -925,7 +925,7 @@ def deltest(tutor_id, test_id):
     finally:
         connection.close()
 
-def getquestioncolvo(test_id):
+def getquestioncolvobyid(test_id):
     try:
         connection = sqlite3.connect(DB_PATH)
         cursor = connection.cursor()
@@ -938,3 +938,40 @@ def getquestioncolvo(test_id):
     except Exception as e:
         print(f"Произошла ошибка - {e}")
         raise e
+    
+    finally:
+        connection.close()
+    
+def gettestquestionsbyid(test_id):
+    try:
+        connection = sqlite3.connect(DB_PATH)
+        cursor = connection.cursor()
+
+        cursor.execute("""SELECT question_id, question_type, question_text, options FROM test_questions WHERE test_id = ? ORDER BY question_id""", (test_id,))
+        questions = cursor.fetchall()
+
+        return questions
+    
+    except Exception as e:
+        print(f"Произошла ошибка - {e}")
+        raise e
+    
+    finally:
+        connection.close()
+
+def gettestbyid(test_id):
+    try:
+        connection = sqlite3.connect(DB_PATH)
+        cursor = connection.cursor()
+
+        cursor.execute("SELECT tutor_id, student_id, title, subject, date_start, date_end, created_at, duration FROM tests WHERE test_id = ?", (test_id,))
+        questioninfo = cursor.fetchone()
+
+        return questioninfo
+    
+    except Exception as e:
+        print(f"Произошла ошибка - {e}")
+        raise e
+    
+    finally:
+        connection.close()
