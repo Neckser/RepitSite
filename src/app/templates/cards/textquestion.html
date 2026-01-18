@@ -1,10 +1,13 @@
 <div class="question-card" data-index="{{ question_number }}" data-type="text">
+    <input type="hidden" name="question_id[]" value="{{ question_id }}">
     <div class="question-type">Текстовый ответ</div>
     <div class="question-number">Вопрос {{ question_number }}</div>
     <div class="question-text">{{ title_question }}</div>
     <div class="text-answer-container">
         <label class="text-answer-label">Введите ваш ответ:</label>
-        <textarea class="text-answer" placeholder="Начните вводить текст здесь..." maxlength="500" rows="5"></textarea>
-        <div class="character-count"><span class="char-count">0</span>/500 символов</div>
+        <textarea class="text-answer" name="answer_text[]" maxlength="500" rows="5"></textarea>
+        <div class="character-count">
+            <span class="char-count">0</span>/500 символов
+        </div>
     </div>
 </div>

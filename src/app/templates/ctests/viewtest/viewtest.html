@@ -5,58 +5,49 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Прохождение теста | RepitHub</title>
 </head>
-<body data-test-time-minutes="20">
+<body data-test-time-minutes="{{ duration }}" data-test-id="{{ test_id }}">
 <div class="timeout-modal" id="timeout-modal">
     <div class="modal-content">
         <div class="modal-icon">⏰</div>
         <h2 class="modal-title">Время вышло!</h2>
         <p class="modal-text">Время на прохождение теста истекло. Тест будет автоматически завершен, и вы будете перенаправлены на главную страницу.</p>
         <p class="modal-text" id="redirect-countdown">Перенаправление через: 5 секунд</p>
-        <button class="btn btn-primary" id="redirect-now-btn">Перейти сейчас</button>
     </div>
 </div>
 
 <header class="top-bar">
-    <div class="top-bar__container">
-        <div class="top-bar__nav">
-        </div>
-
-        <a href="/profiletut" class="top-bar__account">
-            <div class="top-bar__avatar">{{ avatar }}</div>
-            <div class="top-bar__user-info">
-                <div class="top-bar__user-name">{{ first_name }} {{ last_name }}</div>
-                <div class="top-bar__user-role">Репетитор</div>
-            </div>
-        </a>
-    </div>
 </header>
 
 <div class="container">
-    <div class="test-header">
-        <div class="test-header__top">
-            <div class="test-title">{{ subject }} · {{ title }}</div>
-            <div class="test-timer" id="test-timer">⏱ Осталось: </div>
-        </div>
-
-        <div class="test-progress">
-            <div class="progress-bar">
-                <div class="progress-bar__fill" id="progress-fill"></div>
+    <!-- ФОРМА ДЛЯ ОТПРАВКИ ОТВЕТОВ -->
+    <form method="POST" action="/tutanswertest" id="test-form">
+        <input type="hidden" name="test_id" value="{{ test_id }}">
+        <input type="hidden" name="time_spent" id="time-spent-input" value="0">
+        
+        <div class="test-header">
+            <div class="test-header__top">
+                <div class="test-title">{{ subject }} · {{ title }}</div>
+                <div class="test-timer" id="test-timer">⏱ Осталось: </div>
             </div>
-            <div class="progress-text" id="progress-text">Вопрос 1 из 5</div>
+            <div class="test-progress">
+                <div class="progress-bar">
+                    <div class="progress-bar__fill" id="progress-fill"></div>
+                </div>
+                <div class="progress-text" id="progress-text">Вопрос 1 из 5</div>
+            </div>
         </div>
-    </div>
 
-    {{ questions_template }}
-
-    <div class="question-dots" id="question-dots">
-    </div>
-
-    <div class="test-actions">
-        <button class="btn btn-secondary" id="prev-btn">← Назад</button>
-        <button class="btn btn-primary" id="next-btn">Далее →</button>
-        <button class="btn btn-danger" id="finish-btn">Завершить тест</button>
-    </div>
-
+        {{ questions_template }}
+        
+        <div class="question-dots" id="question-dots"></div>
+        
+        <div class="test-actions">
+            <button type="button" class="btn btn-secondary" id="prev-btn">← Назад</button>
+            <button type="button" class="btn btn-primary" id="next-btn">Далее →</button>
+            
+            <!-- ИЗМЕНЕНИЕ ЗДЕСЬ: type="submit" вместо type="button" -->
+            <button type="submit" class="btn btn-danger" id="finish-btn">Завершить тест</button>
+        </div>
+    </form>
 </div>
 </body>
-</html>

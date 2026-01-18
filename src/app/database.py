@@ -121,19 +121,33 @@ def init_database():
             test_id INTEGER NOT NULL,
             question_type TEXT NOT NULL CHECK(question_type IN ('text', 'single_choice', 'multi_choice')),
             question_text TEXT NOT NULL,
-            options TEXT
+            options TEXT,
+            FOREIGN KEY (test_id) REFERENCES tests(test_id) ON DELETE CASCADE
         )
     ''')
+
+    cursor.execute('''
+    CREATE TABLE IF NOT EXISTS test_answers (
+        answer_id INTEGER PRIMARY KEY AUTOINCREMENT,
+        test_id INTEGER,
+        question_id INTEGER,
+        answer TEXT,
+        is_correct INTEGER,
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (test_id) REFERENCES tests(test_id) ON DELETE CASCADE,
+        FOREIGN KEY (question_id) REFERENCES test_questions(question_id) ON DELETE CASCADE
+    );
+    ''')
+    
     cursor.execute('''
     CREATE TABLE IF NOT EXISTS test_attempts (
         attempt_id INTEGER PRIMARY KEY AUTOINCREMENT,
         test_id INTEGER NOT NULL,
         student_id INTEGER NOT NULL,
-        start_time DATETIME DEFAULT CURRENT_TIMESTAMP,
+        start_time DATETIME,
         end_time DATETIME,
         duration_seconds INTEGER,
         score INTEGER DEFAULT 0,
-        max_score INTEGER,
         FOREIGN KEY (test_id) REFERENCES tests(test_id) ON DELETE CASCADE,
         FOREIGN KEY (student_id) REFERENCES students(student_id) ON DELETE CASCADE
     );

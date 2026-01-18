@@ -1,28 +1,33 @@
-    <div class="question-card" data-index="{{ question_number }}" data-type="multiple">
-        <div class="question-type">Выберите несколько ответов</div>
-        <div class="question-number">Вопрос {{ question_number }}</div>
-        <div class="question-text">{{ title_question }}</div>
+<div class="question-card" data-index="{{ question_number }}" data-type="multiple">
+    <input type="hidden" name="question_id[]" value="{{ question_id }}">
 
-        <div class="answers">
-            <label class="answer-option">
-                <input type="checkbox" name="answer-multiple-{{ question_number }}" value="{{ first_var }}" />
-                <span class="custom-checkbox"></span>
-                <span class="answer-option__label">{{ first_var }}</span>
-            </label>
-            <label class="answer-option">
-                <input type="checkbox" name="answer-multiple-{{ question_number }}" value="{{ second_var }}" />
-                <span class="custom-checkbox"></span>
-                <span class="answer-option__label">{{ second_var }}</span>
-            </label>
-            <label class="answer-option">
-                <input type="checkbox" name="answer-multiple-{{ question_number }}" value="{{ third_var }}" />
-                <span class="custom-checkbox"></span>
-                <span class="answer-option__label">{{ third_var }}</span>
-            </label>
-            <label class="answer-option">
-                <input type="checkbox" name="answer-multiple-{{ question_number }}" value="{{ fourth_var }}" />
-                <span class="custom-checkbox"></span>
-                <span class="answer-option__label">{{ fourth_var }}</span>
-            </label>
-        </div>
+    <div class="question-type">Выберите несколько ответов</div>
+    <div class="question-number">Вопрос {{ question_number }}</div>
+    <div class="question-text">{{ title_question }}</div>
+
+    <div class="answers">
+        <label class="answer-option">
+            <input type="checkbox" name="answer_multi_{{ question_id }}[]" value="{{ first_var }}"/>
+            <span class="custom-checkbox"></span>
+            <span class="answer-option__label">{{ first_var }}</span>
+        </label>
+
+        <label class="answer-option">
+            <input type="checkbox" name="answer_multi_{{ question_id }}[]" value="{{ second_var }}"/>
+            <span class="custom-checkbox"></span>
+            <span class="answer-option__label">{{ second_var }}</span>
+        </label>
+
+        <label class="answer-option">
+            <input type="checkbox" name="answer_multi_{{ question_id }}[]" value="{{ third_var }}"/>
+            <span class="custom-checkbox"></span>
+            <span class="answer-option__label">{{ third_var }}</span>
+        </label>
+
+        <label class="answer-option">
+            <input type="checkbox" name="answer_multi_{{ question_id }}[]" value="{{ fourth_var }}"/>
+            <span class="custom-checkbox"></span>
+            <span class="answer-option__label">{{ fourth_var }}</span>
+        </label>
     </div>
+</div>

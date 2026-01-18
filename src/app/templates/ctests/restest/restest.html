@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Результаты теста | RepitHub</title>
+</head>
+<body>
+<header class="top-bar">
+</header>
+<div class="container">
+    <div class="result-hero">
+        <div class="subject-badge">{{ subject }}</div>
+        <h1 class="hero-title">{{ title }}</h1>
+        <p class="hero-subtitle">Тест завершен</p>
+        <div class="circle-container">
+            <svg class="circle-svg" viewBox="0 0 250 250">
+                <defs>
+                    <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" stop-color="#6b8e23" />
+                        <stop offset="100%" stop-color="#a3d977" />
+                    </linearGradient>
+                </defs>
+                <circle class="circle-bg" cx="125" cy="125" r="120"></circle>
+                <circle class="circle-progress" 
+                        cx="125" cy="125" r="120"
+                        id="progressCircle"></circle>
+            </svg>
+            <div class="circle-text">
+                <div class="circle-percent" id="scorePercent">0%</div>
+                <div class="circle-label">Общий результат</div>
+            </div>
+        </div>
+    </div>
+    <div class="stats-section">
+        <h2 style="font-size: 20px; font-weight: 600; color: #2c3e50; margin-bottom: 10px; text-align: center;">
+            Статистика теста
+        </h2>
+        <p style="text-align: center; color: #666; margin-bottom: 25px; font-size: 14px;">
+            Детальные результаты выполнения
+        </p>
+        
+        <div class="stats-grid">
+            <div class="stat-item">
+                <span class="stat-icon">✓</span>
+                <div class="stat-value" id="correctAnswers">всё на джаваскрипте</div>
+                <div class="stat-label">Правильные ответы</div>
+            </div>
+            
+            <div class="stat-item">
+                <span class="stat-icon">⏱</span>
+                <div class="stat-value">{{ time }} сек</div>
+                <div class="stat-label">Затраченное время</div>
+            </div>
+        </div>
+    </div>
+    <div class="action-button">
+        <a href="/tuttests" class="btn-next">
+            Далее →
+        </a>
+    </div>
+<script>
+  window.TEST_RESULT = {
+    percent: '{{ percent_score }}',
+    score: '{{ score }}',
+    total: '{{ questions_colvo }}'
+  };
+</script>
+</div>
+</body>
+</html>
