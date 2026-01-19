@@ -1756,3 +1756,28 @@ async def tutanswertest(request: Request, test_id: int = Form(...)):
     except Exception as e:
         print(f"Произошла ошибка - {e}")
         return RedirectResponse(url="/login", status_code=303)
+    
+
+@app.get("/studtests")
+def studtests(request: Request):
+    try:
+        name, user_type = get_current_user(request)
+
+        if user_type != "student":
+            return RedirectResponse(url="/login", status_code=303)
+
+    except HTTPException:
+        return RedirectResponse(url="/login", status_code=303)
+    
+    try:
+        studinfo = getstudinfo(name)
+        studfirst_name = studinfo[0]
+        studlast_name = studinfo[1]
+
+        with open(f"{TEMPLATES_PATH}ctests/studtests.html", 'r', encoding='utf-8') as f:
+            content = verstkaprofile(f.read(), name , studfirst_name, studlast_name)
+        return HTMLResponse(content=content)
+    
+    except Exception as e:
+        print(f"Произошла ошибка - {e}")
+        return RedirectResponse(url="/login", status_code=303)

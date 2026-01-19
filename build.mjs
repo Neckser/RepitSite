@@ -135,6 +135,11 @@ const entries = [
     out: 'build/ctests/restest.html',
   },
   {
+    html: 'src/app/templates/ctests/studtests/studtests.html',
+    css: 'src/app/templates/ctests/studtests/studtests.css',
+    out: 'build/ctests/studtests.html',
+  },
+  {
     html: "src/app/templates/landing/mainlanding/mainlanding.html",
     css: "src/app/templates/landing/mainlanding/mainlanding.css",
     out: "build/landing/mainlanding.html",

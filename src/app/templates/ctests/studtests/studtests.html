@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Мои тесты | RepitHub</title>
+</head>
+<body>
+<header class="top-bar">
+    <div class="nav-container">
+        <div class="nav-buttons">
+            <a href="/tutlist" class="nav-button">Мои репетиторы</a>
+            <a href="/home" class="nav-button">Мои задания</a>
+            <a href="/studgrades" class="nav-button">Мои оценки</a>
+            <a href="/studtime" class="nav-button">Моё расписание</a>
+            <a href="/studtests" class="nav-button active">Мои тесты</a>
+        </div>
+        <a href="/profile" class="account-widget">
+            <div class="user-avatar">{{ avatar }}</div>
+            <div class="user-info">
+                <div class="user-name">{{ first_name }} {{ last_name }}</div>
+                <div class="user-role">Ученик</div>
+            </div>
+        </a>
+    </div>
+</header>
+
+<div class="container">
+    <div class="page-header">
+        <h1>Все тесты</h1>
+    </div>
+
+    <div class="tests-grid">
+        {{ tests_template }}
+    </div>
+</div>
+</body>
+</html>
