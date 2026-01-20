@@ -846,7 +846,7 @@ def gettuttests(tutor_id):
         connection = sqlite3.connect(DB_PATH)
         cursor = connection.cursor()
 
-        cursor.execute("SELECT * FROM tests WHERE tutor_id = ? ORDER BY date_start DESC", (tutor_id,))
+        cursor.execute("SELECT * FROM tests WHERE tutor_id = ? ORDER BY created_at DESC", (tutor_id,))
         tests = cursor.fetchall()
 
         return tests
@@ -857,6 +857,24 @@ def gettuttests(tutor_id):
     
     finally:
         connection.close()
+
+def getstudtests(student_id):
+    try:
+        connection = sqlite3.connect(DB_PATH)
+        cursor = connection.cursor()
+
+        cursor.execute("""SELECT * FROM tests WHERE student_id = ? AND date_start <= CURRENT_TIMESTAMP AND date_end >= CURRENT_TIMESTAMP ORDER BY created_at DESC""", (student_id,))
+        tests = cursor.fetchall()
+
+        return tests
+
+    except Exception as e:
+        print(f"Произошла ошибка - {e}")
+        raise e
+
+    finally:
+        connection.close()
+
 
 def createtest(tutor_id, form):
     connection = sqlite3.connect(DB_PATH)
@@ -1112,3 +1130,23 @@ def savestudattempt(test_id: int, student_id: int, duration: int, score: int):
     except Exception as e:
         print(f"Произошла ошибка - {e}")
         raise e
+    
+    finally:
+        connection.close()
+
+def getteststudstr(test_id):
+    try:
+        connection = sqlite3.connect(DB_PATH)
+        cursor = connection.cursor()
+
+        cursor.execute("SELECT * FROM test_attempts WHERE test_id=?", (test_id,))
+        studstr = cursor.fetchall()
+
+        return studstr
+    
+    except Exception as e:
+        print(f"Произошла ошибка - {e}")
+        raise e
+    
+    finally:
+        connection.close()

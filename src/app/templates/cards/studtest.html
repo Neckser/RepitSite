@@ -1,0 +1,19 @@
+<div class="test-card">
+    <div class="test-header">
+        <span class="subject-badge {{ subject }}">{{ subject }}</span>
+        <div class="test-title">{{ title }}</div>
+    </div>
+
+    <div class="test-info">
+        <div><strong>Репетитор:</strong> {{ tutfirst_name }} {{ tutlast_name }}</div>
+        <div><strong>Вопросов:</strong> {{ question_colvo }}</div>
+        <div><strong>Начало:</strong> {{ date_start }}</div>
+        <div><strong>Дедлайн:</strong> {{ date_end }}</div>
+        <div><strong>Время теста:</strong> {{ duration }}</div>
+    </div>
+
+    <div class="test-actions">
+        <a href="/test/s/{{ test_id }}" class="view-btn">Открыть</a>
+    </div>
+</div>
+

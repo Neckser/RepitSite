@@ -140,6 +140,18 @@ const entries = [
     out: 'build/ctests/studtests.html',
   },
   {
+    html: 'src/app/templates/ctests/studviewtest/studviewtest.html',
+    css: 'src/app/templates/ctests/studviewtest/studviewtest.css',
+    js: 'src/app/templates/ctests/studviewtest/studviewtest.js',
+    out: 'build/ctests/studviewtest.html',
+  },
+  {
+    html: 'src/app/templates/ctests/studrestest/studrestest.html',
+    css: 'src/app/templates/ctests/studrestest/studrestest.css',
+    js: 'src/app/templates/ctests/studrestest/studrestest.js',
+    out: 'build/ctests/studrestest.html',
+  },
+  {
     html: "src/app/templates/landing/mainlanding/mainlanding.html",
     css: "src/app/templates/landing/mainlanding/mainlanding.css",
     out: "build/landing/mainlanding.html",
@@ -230,6 +242,14 @@ const entries = [
   {
     html: 'src/app/templates/cards/multiquestion.html',
     out: 'build/cards/multiquestion.html',
+  },
+  {
+    html: 'src/app/templates/cards/notests.html',
+    out: 'build/cards/notests.html',
+  },
+  {
+    html: 'src/app/templates/cards/studtest.html',
+    out: 'build/cards/studtest.html',
   },
 ];
 
