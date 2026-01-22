@@ -1312,6 +1312,10 @@ def error500(request: Request, exc):
 def favicon():
     return FileResponse("static/favicon.ico")
 
+@app.get("/yandexlogo.svg")
+def yandexlogo():
+    return FileResponse("static/yandexlogo.svg")
+
 @app.get("/logout")
 def logout():
     response = RedirectResponse(url="/login")
@@ -1604,8 +1608,8 @@ def testutres(request: Request, test_id: int):
             studtest_template = studtest_template.replace("{{ studfirst_name }}", studfirst_name)
             studtest_template = studtest_template.replace("{{ studlast_name }}", studlast_name)
             studtest_template = studtest_template.replace("{{ data }}", str(data))
-            studtest_template = studtest_template.replace("{{ duration }}", str(duration))
-            studtest_template = studtest_template.replace("{{ score }}", str(score))
+            studtest_template = studtest_template.replace("{{ duration }}", str(duration) + " сек")
+            studtest_template = studtest_template.replace("{{ score }}", str(score) + f"/{questions_colvo}")
             studtest_template = studtest_template.replace("{{ score_percent }}", str(score_percent))
 
         with open(f"{TEMPLATES_PATH}ctests/testutres.html", 'r', encoding="utf-8") as f:
@@ -1949,7 +1953,7 @@ async def tutanswertest(request: Request, test_id: int = Form(...)):
         questions_colvo = getquestioncolvobyid(test_id)
         percent_score = round((score / questions_colvo) * 100, 2)
 
-        savestudattempt(test_id, student_id, duration, percent_score)
+        savestudattempt(test_id, student_id, time, percent_score)
 
         with open(f"{TEMPLATES_PATH}ctests/studrestest.html", 'r', encoding='utf-8') as f:
             content = f.read()

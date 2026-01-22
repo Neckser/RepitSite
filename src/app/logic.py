@@ -1087,7 +1087,6 @@ def checktestanswers(answers, test_id):
     finally:
         connection.close()
 
-import sqlite3
 
 def gettestres(test_id):
     try:
