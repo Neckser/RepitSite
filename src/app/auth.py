@@ -1,11 +1,7 @@
 import time
 import jwt
-from fastapi import HTTPException, Depends, Request
-
-SECRET_KEY = "SUPER_SECRET_KEY_CHANGE_ME1488"
-ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE = 60 * 60
-
+from fastapi import HTTPException, Request
+from config import SECRET_KEY, ALGORITHM, ACCESS_TOKEN_EXPIRE
 
 def create_access_token(username: str, user_type: str):
     payload = {

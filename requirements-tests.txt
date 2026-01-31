@@ -1,0 +1,11 @@
+# тестирование
+pytest
+pytest-cov
+pytest-mock
+
+# integration / data
+factory-boy
+faker
+
+# работа со временем
+freezegun
