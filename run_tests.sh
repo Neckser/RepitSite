@@ -1,29 +1,18 @@
 #!/usr/bin/env bash
 set -e
 
-export PYTHONPATH=src
-
-
-if ! command -v python3 &> /dev/null; then
-  echo "❌ python3 не найден. Установи Python 3.10+"
+# Проверяем наличие Docker
+if ! command -v docker &> /dev/null; then
+  echo "❌ Docker не найден. Установи Docker"
   exit 1
 fi
 
-if [ ! -d ".venv" ]; then
-  echo "📦 Создаю виртуальное окружение..."
-  python3 -m venv .venv
-fi
+# Собираем тестовый контейнер
+echo "🐳 Сборка тестового Docker контейнера..."
+sudo docker build -f Dockerfile.tests -t repitsite-tests .
 
-echo "🐍 Активирую venv"
-source .venv/bin/activate
+# Запускаем тесты
+echo "🧪 Запуск unit-тестов в контейнере..."
+sudo docker run --rm repitsite-tests
 
-echo "⬆️ Обновляю pip"
-pip install --upgrade pip
-
-echo "📚 Устанавливаю зависимости"
-pip install -r requirements-tests.txt
-
-echo "🧪 Запускаю unit-тесты"
-pytest tests/unit -v
-
-echo "✅ Все unit-тесты прошли успешно"
+echo "✅ Все тесты прошли"

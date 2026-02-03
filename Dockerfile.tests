@@ -1,0 +1,22 @@
+# Используем минимальный Python 3.12 образ
+FROM python:3.12-slim
+
+# Рабочая директория внутри контейнера
+WORKDIR /app
+
+# Копируем файлы зависимостей
+COPY requirements-tests.txt .
+
+# Устанавливаем зависимости
+RUN pip install --upgrade pip
+RUN pip install -r requirements-tests.txt
+
+# Копируем проект внутрь контейнера
+COPY src ./src
+COPY tests ./tests
+
+# Обеспечиваем корректные пути для Python
+ENV PYTHONPATH=/app/src/app
+
+# По умолчанию запускаем pytest для unit-тестов
+CMD ["pytest", "tests/unit", "-v"]
