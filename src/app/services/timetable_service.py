@@ -31,3 +31,36 @@ def dellesson(schedule_id):
     
     finally:
         connection.close()
+
+def addtexttask(lesson_id, task_type, task):
+    try:
+        connection = sqlite3.connect(DB_PATH)
+        cursor = connection.cursor()
+        
+        cursor.execute('''INSERT INTO lesson_tasks (schedule_id, type, content) VALUES (?, ?, ?) ''', (lesson_id, task_type, task))
+        connection.commit()
+
+    except Exception as e:
+        print(f"Произошла ошибка - {e}")
+        raise e
+    
+    finally:
+        connection.close()
+
+def getlessontasks(lesson_id):
+    try:
+        connection = sqlite3.connect(DB_PATH)
+        cursor = connection.cursor()
+        
+        cursor.execute('''SELECT * FROM lesson_tasks WHERE schedule_id = ?''', (lesson_id,))
+        res = cursor.fetchall()
+
+        return res
+
+
+    except Exception as e:
+        print(f"Произошла ошибка - {e}")
+        raise e
+    
+    finally:
+        connection.close()

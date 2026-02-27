@@ -13,3 +13,8 @@ data/
 .env.*.local
 node_modules
 build/
+
+venv
+venv/*
+
+uploads/*

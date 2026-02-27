@@ -89,6 +89,7 @@ const entries = [
   {
     html: 'src/app/templates/timetable/tuttime/tuttime.html',
     css: 'src/app/templates/timetable/tuttime/tuttime.css',
+    js: 'src/app/templates/timetable/tuttime/tuttime.js',
     out: 'build/timetable/tuttime.html',
   },
   {
@@ -250,6 +251,10 @@ const entries = [
   {
     html: 'src/app/templates/cards/studtest.html',
     out: 'build/cards/studtest.html',
+  },
+  {
+    html: 'src/app/templates/cards/lessontask.html',
+    out: 'build/cards/lessontask.html',
   },
 ];
 

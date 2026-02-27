@@ -827,3 +827,556 @@
         font-size: 9px;
     }
 }
+
+/* --- Стили для карточки урока (дополнение к основной верстке) --- */
+
+/* Контейнер действий в карточке */
+.schedule__lesson-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+/* Кнопка "Подробнее" — делаем в основном стиле Repithub */
+.schedule__lesson-action-btn_details {
+    background: var(--background-light);
+    color: var(--primary-dark);
+    border: 1px solid var(--primary-light);
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+}
+
+.schedule__lesson-action-btn_details:hover {
+    background: var(--primary-color);
+    color: white;
+    box-shadow: 0 2px 8px rgba(107, 142, 35, 0.2);
+}
+
+/* Стили для модального окна внутри карточки (скрытый контент) */
+.lesson-modal-content {
+    display: none; /* Всегда скрыто в самой сетке, отображается только скриптом в модалке */
+}
+
+/* Стили элементов внутри модалки (когда они скопированы в основное окно) */
+.lesson-info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 25px;
+}
+
+.lesson-info-item {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.lesson-info-label {
+    font-size: 12px;
+    color: var(--text-gray);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.lesson-info-value {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-dark);
+}
+
+.lesson-description, .tasks-section {
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid var(--border-light);
+}
+
+.lesson-description h3, .tasks-section h3 {
+    font-size: 16px;
+    color: var(--primary-dark);
+    margin-bottom: 10px;
+}
+
+.lesson-description-text {
+    line-height: 1.6;
+    color: var(--text-gray);
+    background: var(--background-light);
+    padding: 15px;
+    border-radius: 10px;
+}
+
+/* Список заданий в модалке */
+.tasks-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* Адаптивность для модалки */
+@media (max-width: 480px) {
+    .lesson-info-grid {
+        grid-template-columns: 1fr;
+    }
+}
+/* --- СИСТЕМНОЕ МОДАЛЬНОЕ ОКНО (ПО КРАСОТЕ) --- */
+
+/* Фон-затемнение */
+.modal-overlay {
+    display: none; /* Скрыто по умолчанию */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6); /* Полупрозрачный черный */
+    backdrop-filter: blur(4px);    /* Эффект матового стекла */
+    z-index: 9999;                 /* Поверх всего */
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+/* Активное состояние модалки (вызывается через JS) */
+.modal-overlay.active {
+    display: flex;
+    animation: fadeIn 0.3s ease;
+}
+
+/* Контейнер самого окна */
+.modal-container {
+    background: white;
+    width: 100%;
+    max-width: 650px;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+    animation: slideUp 0.3s ease;
+}
+
+/* Шапка модалки */
+.modal-header {
+    background: var(--primary-color);
+    color: white;
+    padding: 20px 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-header h2 {
+    font-size: 20px;
+    margin: 0;
+}
+
+/* Кнопка закрытия (крестик) */
+.modal-close {
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    color: white;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.3s;
+}
+
+.modal-close:hover {
+    background: rgba(255, 255, 255, 0.4);
+}
+
+/* Тело модалки */
+.modal-content {
+    padding: 25px;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+/* Анимации */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideUp {
+    from { transform: translateY(30px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+/* Стили для внутренней сетки информации (внутри модалки) */
+.lesson-info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 20px;
+    background: var(--background-light);
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid var(--border-light);
+    margin-bottom: 20px;
+}
+
+.lesson-info-label {
+    display: block;
+    font-size: 11px;
+    color: var(--text-gray);
+    text-transform: uppercase;
+    margin-bottom: 5px;
+}
+
+.lesson-info-value {
+    font-weight: 700;
+    color: var(--text-dark);
+}
+
+/* Красивые поля ввода в модалке */
+.modal-content textarea {
+    width: 100%;
+    min-height: 100px;
+    padding: 12px 15px;
+    border: 2px solid var(--border-light);
+    border-radius: 12px;
+    font-size: 14px;
+    margin-top: 10px;
+    resize: none;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    background: #fdfdfd;
+}
+
+.modal-content textarea:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 4px rgba(107, 142, 35, 0.1);
+}
+
+/* Секция добавления задания (если она там есть) */
+.add-task-form {
+    background: var(--background-light);
+    padding: 20px;
+    border-radius: 15px;
+    margin-top: 20px;
+    border: 1px dashed var(--primary-light);
+}
+
+.add-task-form h4 {
+    margin-bottom: 15px;
+    color: var(--primary-dark);
+    font-size: 15px;
+}
+
+/* Кнопка "Сохранить/Добавить" в модалке */
+.btn-modal-save {
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 10px;
+    width: 100%;
+    transition: 0.3s;
+}
+
+.btn-modal-save:hover {
+    background: var(--primary-dark);
+    transform: translateY(-1px);
+}
+
+/* Карточки заданий внутри модалки (уже созданные) */
+.task-card {
+    background: white;
+    padding: 15px;
+    border-radius: 10px;
+    border-left: 4px solid var(--primary-color);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    margin-bottom: 10px;
+}
+
+/* --- СТИЛИ ВНУТРИ МОДАЛКИ (ПО КРАСОТЕ) --- */
+
+/* Заголовки секций */
+.modal-content h3 {
+    font-size: 18px;
+    color: var(--text-dark);
+    margin: 25px 0 15px 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.modal-content h3::before {
+    content: '';
+    display: inline-block;
+    width: 4px;
+    height: 18px;
+    background: var(--primary-color);
+    border-radius: 2px;
+}
+
+/* Поля ввода текста (Описание и Задания) */
+.modal-content textarea {
+    width: 100%;
+    min-height: 120px;
+    padding: 15px;
+    border: 1px solid #dce0e0;
+    border-radius: 12px;
+    font-size: 14px;
+    line-height: 1.5;
+    transition: all 0.3s ease;
+    background: #fdfdfd;
+    margin-bottom: 15px;
+}
+
+.modal-content textarea:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 4px rgba(107, 142, 35, 0.1);
+    background: #fff;
+}
+
+/* Стилизация поля выбора файла (Картинки) */
+.file-upload-wrapper {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+/* Делаем дефолтную кнопку выбора файла красивой */
+.modal-content input[type="file"] {
+    width: 100%;
+    padding: 10px;
+    background: #f8f9fa;
+    border: 2px dashed #ccd1d1;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.modal-content input[type="file"]::file-selector-button {
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    margin-right: 15px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.modal-content input[type="file"]::file-selector-button:hover {
+    background: var(--primary-dark);
+}
+
+/* Кнопка сохранения внизу */
+.btn-save-all {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    padding: 14px;
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 10px;
+}
+
+.btn-save-all:hover {
+    background: var(--primary-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(107, 142, 35, 0.3);
+}
+
+/* Список уже добавленных заданий (карточки) */
+.task-item {
+    background: #fff;
+    border: 1px solid var(--border-light);
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Инфо-панель сверху */
+.lesson-info-summary {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    background: #f0f4f0;
+    padding: 12px;
+    border-radius: 12px;
+}
+
+.info-pill {
+    background: white;
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 13px;
+    border: 1px solid #e0e0e0;
+}
+
+/* Переключатель типа задания */
+.task-type-toggle {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.task-type-toggle label {
+    flex: 1;
+    cursor: pointer;
+}
+
+.task-type-toggle input {
+    display: none; /* Прячем стандартный кружок */
+}
+
+.task-type-toggle span {
+    display: block;
+    text-align: center;
+    padding: 10px;
+    background: #f8f9fa;
+    border: 2px solid #e9ecef;
+    border-radius: 10px;
+    transition: 0.3s;
+    font-weight: 600;
+}
+
+.task-type-toggle input:checked + span {
+    background: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+}
+
+/* Красивое поле загрузки */
+.file-upload-styled {
+    border: 2px dashed var(--primary-light);
+    padding: 30px;
+    text-align: center;
+    border-radius: 12px;
+    background: #fafdfa;
+}
+
+.file-upload-styled p {
+    margin-top: 10px;
+    color: var(--text-gray);
+    font-size: 14px;
+}
+
+/* Контейнер для скролла заданий */
+.tasks-scroll-container {
+    max-height: 250px; /* Фиксированная высота */
+    overflow-y: auto;  /* Включаем вертикальный скролл */
+    background: #fdfdfd;
+    border: 1px solid #eee;
+    border-radius: 12px;
+    padding: 15px;
+    margin-bottom: 25px;
+    /* Красивый тонкий скроллбар для современных браузеров */
+    scrollbar-width: thin;
+    scrollbar-color: var(--primary-color) #f0f0f0;
+}
+
+/* Настройка скроллбара для Chrome/Safari */
+.tasks-scroll-container::-webkit-scrollbar {
+    width: 6px;
+}
+.tasks-scroll-container::-webkit-scrollbar-track {
+    background: #f0f0f0;
+    border-radius: 10px;
+}
+.tasks-scroll-container::-webkit-scrollbar-thumb {
+    background-color: var(--primary-color);
+    border-radius: 10px;
+}
+
+.task-mini-card {
+    background: white;
+    border: 1px solid #e8f5e8;
+    border-left: 4px solid #6b8e23;
+    border-radius: 10px;
+    padding: 12px;
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    min-width: 0;
+}
+
+.task-mini-header {
+    margin-bottom: 8px;
+    font-size: 12px;
+    font-weight: bold;
+    color: #666;
+    text-transform: uppercase;
+}
+
+.task-content {
+    font-size: 14px;
+    color: #333;
+    line-height: 1.5;
+    white-space: pre-wrap; 
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-word;
+    margin: 0;
+}
+
+
+.task-mini-card {
+    display: flex;
+    flex-direction: column; /* Заголовок сверху, картинка снизу */
+    width: 100%;            /* Занимает всю ширину модалки */
+    min-width: 0;           /* Позволяет контенту сжиматься */
+    background: #fff;
+    border: 1px solid #e8f5e8;
+    border-left: 4px solid #6b8e23; /* Твой основной зеленый */
+    border-radius: 10px;
+    padding: 12px;
+    margin-bottom: 10px;
+}
+
+.task-clickable-img {
+    width: 100%;            /* Растягиваем по ширине карточки */
+    max-height: 250px;      /* Ограничиваем высоту, чтобы не скроллить вечность */
+    object-fit: contain;    /* Картинка не обрезается, а вписывается целиком */
+    border-radius: 6px;
+    cursor: zoom-in;        /* Курсор-лупа для подсказки */
+    margin-top: 8px;
+    background: #f9f9f9;    /* Светлый фон, если картинка на прозрачном фоне */
+}
+
+/* Фиксируем пространство под инпуты */
+.modal-form__input-container {
+    min-height: 150px; /* Высота должна быть примерно равна textarea + отступы */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    margin-top: 10px;
+}
+
+/* Убираем margin у самих инпутов, чтобы при их скрытии ничего не ехало */
+.modal-content textarea, 
+#task_image_input .file-upload-styled {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+}
+
+/* Чтобы шрифт не дергался при перерисовке слоев в модалке */
+.modal-container {
+    -webkit-font-smoothing: antialiased;
+    transform: translateZ(0);
+}

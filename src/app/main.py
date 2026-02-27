@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 import locale
 from database import init_database
+from prometheus_fastapi_instrumentator import Instrumentator
 
 from routes import (
     auth_routes,
@@ -21,6 +22,8 @@ from routes import (
 )
 
 app = FastAPI()
+
+Instrumentator().instrument(app).expose(app)
 
 try:
     locale.setlocale(locale.LC_TIME, 'ru_RU.UTF-8')

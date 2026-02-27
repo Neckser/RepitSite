@@ -8,6 +8,13 @@
                 <span>{{ studfirst_name }} {{ studlast_name }}</span>
             </div>
         </div>
-        <button type="submit" class="schedule__lesson-action-btn_delete">Удалить</button>
+        <div class="hidden-tasks-content" style="display: none;">
+            {{ tasks_template }}
+        </div>
+        <div class="schedule__lesson-actions">
+            <button type="button" class="schedule__lesson-action-btn_details" onclick="showLessonModal(this)">Подробнее</button>
+            <button type="submit" class="schedule__lesson-action-btn_delete">Удалить</button>
+        </div>
+        
     </div>
 </form>
