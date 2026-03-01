@@ -16,8 +16,9 @@ def build_week_for_students(monday_date, rows):
             "lessons": []
         }
     for row in rows:
-        lesson_date, lesson_time, subject, tutor_id, status, notes, duration = row
+        schedule_id, lesson_date, lesson_time, subject, tutor_id, status, notes, duration = row
         week[lesson_date]["lessons"].append({
+            "schedule_id": schedule_id,
             "time": lesson_time,
             "subject": subject,
             "tutor_id": tutor_id,

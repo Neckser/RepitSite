@@ -84,6 +84,7 @@ const entries = [
   {
     html: 'src/app/templates/timetable/studtime/studtime.html',
     css: 'src/app/templates/timetable/studtime/studtime.css',
+    js: 'src/app/templates/timetable/studtime/studtime.js',
     out: 'build/timetable/studtime.html',
   },
   {

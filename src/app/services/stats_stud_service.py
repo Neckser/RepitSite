@@ -212,6 +212,7 @@ def getstudentweektimetable(studlogin, monday):
 
         cursor.execute("""
             SELECT
+                t.schedule_id,
                 t.lesson_date,
                 t.lesson_time,
                 t.subject,

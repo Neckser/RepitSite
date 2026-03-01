@@ -1,6 +1,23 @@
-<div class="schedule__lesson-card">
-    <div class="schedule__lesson-time">{{ starttime }} - {{ endtime }}</div>
-    <div class="subject-badge {{ subject }}">{{ subject }}</div>
-    <div class="schedule__lesson-tutor">{{ tutfirst_name }} {{ tutlast_name }}</div>
-    <!-- <div class="schedule__lesson-status schedule__lesson-status_upcoming">{{ status }}</div> -->
+<div class="lesson-card" data-lesson-id="{{ schedule_id }}">
+    <input type="hidden" name="lesson_id" value="{{ schedule_id }}" />
+    
+    <div class="schedule__lesson-card">
+        <div class="schedule__lesson-content">
+            <div class="schedule__lesson-time">{{ starttime }} - {{ endtime }}</div>
+            <div class="subject-badge {{ subject }}">{{ subject }}</div>
+            <div class="schedule__lesson-student">
+                <span>{{ tutfirst_name }} {{ tutlast_name }}</span>
+            </div>
+        </div>
+
+        <div class="hidden-tasks-content" style="display: none;">
+            {{ tasks_template }}
+        </div>
+
+        <div class="schedule__lesson-actions">
+            <button type="button" class="schedule__lesson-action-btn_details" onclick="showLessonModal(this)">
+                Подробнее
+            </button>
+        </div>
+    </div>
 </div>

@@ -126,152 +126,212 @@
 }
 
 .page-title {
-    color: var(--text-dark);
+    color: var(--primary-color);
+    font-size: 32px;
+    font-weight: bold;
     margin-bottom: 30px;
 }
 
 .schedule-container {
-    background: linear-gradient(135deg, var(--white) 0%, var(--background-light) 100%);
+    background: var(--white);
     border-radius: 20px;
     padding: 25px;
-    box-shadow: 0 5px 20px rgba(107, 142, 35, 0.1);
+    box-shadow: 0 3px 15px rgba(0, 0, 0, 0.08);
     border: 2px solid var(--border-light);
-    margin-bottom: 30px;
 }
 
 .schedule__week-selector {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
     margin-bottom: 25px;
-    padding: 20px;
-    background: var(--white);
-    border-radius: 15px;
-    border: 1px solid var(--border-light);
-    box-shadow: 0 2px 8px rgba(107, 142, 35, 0.05);
 }
 
 .schedule__week-nav {
     display: flex;
-    align-items: center;
-    gap: 15px;
+    gap: 10px;
 }
 
 .schedule__nav-button {
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    border: 2px solid var(--primary-color);
-    background: var(--white);
-    color: var(--primary-color);
+    background: var(--primary-color);
+    color: white;
+    border: none;
     font-size: 18px;
+    font-weight: 600;
     cursor: pointer;
+    text-decoration: none;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.3s ease;
-    text-decoration: none;
+    transition: all 0.3s;
 }
 
 .schedule__nav-button:hover {
-    background: var(--primary-color);
-    color: var(--white);
-    transform: scale(1.05);
+    background: var(--primary-dark);
+    box-shadow: 0 3px 10px rgba(107, 142, 35, 0.2);
     text-decoration: none;
-}
-
-.schedule__current-week {
-    font-size: 18px;
-    font-weight: 600;
-    color: var(--primary-color);
-    min-width: 200px;
-    text-align: center;
 }
 
 .schedule__today-button {
-    padding: 10px 24px;
-    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
-    color: var(--white);
-    border: none;
+    width: 120px;
+    height: 40px;
     border-radius: 20px;
+    background: var(--primary-color);
+    color: white;
+    border: none;
     font-size: 14px;
     font-weight: 600;
     cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 3px 10px rgba(107, 142, 35, 0.2);
     text-decoration: none;
-    display: inline-block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s;
+    text-align: center;
 }
 
 .schedule__today-button:hover {
-    background: linear-gradient(135deg, var(--primary-dark) 0%, #4a6419 100%);
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(107, 142, 35, 0.3);
+    background: var(--primary-dark);
+    box-shadow: 0 3px 10px rgba(107, 142, 35, 0.2);
     text-decoration: none;
 }
 
-.schedule__days-grid {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 10px;
-    margin-bottom: 20px;
+.schedule__table {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
 }
 
+/* Всегда показываем 7 колонок с адаптивной минимальной шириной */
+.schedule__days-grid,
+.schedule__lessons-container {
+    display: grid;
+    grid-template-columns: repeat(7, minmax(140px, 1fr));
+    gap: 6px;
+}
+
+@media (max-width: 1100px) {
+    .schedule__days-grid,
+    .schedule__lessons-container {
+        grid-template-columns: repeat(7, minmax(130px, 1fr));
+    }
+}
+
+@media (max-width: 900px) {
+    .schedule__days-grid,
+    .schedule__lessons-container {
+        grid-template-columns: repeat(7, minmax(120px, 1fr));
+    }
+}
+
+@media (max-width: 700px) {
+    .schedule__days-grid,
+    .schedule__lessons-container {
+        grid-template-columns: repeat(7, minmax(110px, 1fr));
+    }
+}
+
+@media (max-width: 500px) {
+    .schedule__days-grid,
+    .schedule__lessons-container {
+        grid-template-columns: repeat(7, minmax(100px, 1fr));
+    }
+}
+
+/* Стилизация скроллбара */
+.schedule__table::-webkit-scrollbar {
+    height: 8px;
+}
+
+.schedule__table::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+.schedule__table::-webkit-scrollbar-thumb {
+    background: var(--primary-color);
+    border-radius: 4px;
+}
+
+.schedule__table::-webkit-scrollbar-thumb:hover {
+    background: var(--primary-dark);
+}
+
+/* Фиксированный размер ячеек с датами */
 .schedule__day-header {
     text-align: center;
-    padding: 15px;
-    background: #6b8e23;
-    border-radius: 15px;
-    border: 2px solid #5a7a1f;
+    padding: 10px 8px;
+    background: var(--primary-color);
+    border-radius: 12px;
+    border: 2px solid var(--primary-dark);
     transition: all 0.3s ease;
     cursor: pointer;
     color: white;
+    width: 100%;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: 1 / 0.9;
 }
 
 .schedule__day-header:hover {
-    background: #5a7a1f;
-    transform: translateY(-3px);
-    box-shadow: 0 5px 15px rgba(107, 142, 35, 0.2);
+    background: var(--primary-dark);
+    box-shadow: 0 3px 8px rgba(107, 142, 35, 0.2);
 }
 
-.schedule__day-name,
+.schedule__day-name {
+    font-size: 12px;
+    margin-bottom: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+}
+
 .schedule__day-number {
-    color: white;
+    font-size: 20px;
+    font-weight: bold;
+    line-height: 1.2;
+    white-space: nowrap;
 }
 
 .schedule__lessons-container {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 10px;
-    margin-bottom: 30px;
     min-height: 400px;
+    margin-bottom: 0;
 }
 
 .schedule__day-column {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 8px;
 }
 
-.schedule__lesson-card {
-    background: var(--white);
-    border-radius: 12px;
-    padding: 18px;
+/* Стили для карточки урока ученика */
+.lesson-card {
+    background: white;
+    border-radius: 10px;
     border: 2px solid var(--border-light);
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
-    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
     transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
+    padding: 0;
+    margin: 0;
 }
 
-.schedule__lesson-card:hover {
-    transform: translateY(-4px);
+.lesson-card:hover {
     border-color: var(--primary-light);
-    box-shadow: 0 8px 20px rgba(107, 142, 35, 0.15);
+    box-shadow: 0 4px 12px rgba(107, 142, 35, 0.15);
 }
 
-.schedule__lesson-card::before {
+.lesson-card::before {
     content: '';
     position: absolute;
     top: 0;
@@ -281,51 +341,76 @@
     background: var(--primary-color);
 }
 
+.schedule__lesson-card {
+    padding: 10px;
+    position: relative;
+}
+
+.schedule__lesson-content {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
 .schedule__lesson-time {
-    font-size: 12px;
+    font-size: 11px;
     color: var(--text-gray);
-    margin-bottom: 8px;
+    margin-bottom: 6px;
     font-weight: 600;
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 4px;
+    line-height: 1.2;
 }
 
 .schedule__lesson-time::before {
     content: '🕐';
-    font-size: 11px;
+    font-size: 10px;
 }
 
 .schedule__lesson-subject {
-    font-size: 16px;
+    font-size: 13px;
     font-weight: bold;
     color: var(--text-dark);
-    margin-bottom: 8px;
+    margin-bottom: 6px;
     line-height: 1.3;
+    word-wrap: break-word;
 }
 
 .schedule__lesson-tutor {
-    font-size: 14px;
+    font-size: 12px;
     color: var(--primary-color);
     margin-bottom: 4px;
     display: flex;
-    align-items: center;
-    gap: 5px;
+    align-items: flex-start;
+    gap: 4px;
+    line-height: 1.3;
+    max-width: 100%;
+    min-height: 2.6em;
 }
 
 .schedule__lesson-tutor::before {
     content: '👤';
-    font-size: 12px;
+    font-size: 11px;
+    flex-shrink: 0;
+    margin-top: 1px;
+}
+
+.schedule__lesson-tutor span {
+    display: block;
+    word-break: keep-all;
 }
 
 .schedule__lesson-status {
     display: inline-block;
-    padding: 6px 12px;
-    border-radius: 15px;
-    font-size: 12px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 11px;
     font-weight: bold;
-    margin-top: 10px;
+    margin-top: 8px;
     text-align: center;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .schedule__lesson-status_upcoming {
@@ -336,7 +421,7 @@
 
 .schedule__lesson-status_in-progress {
     background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
-    color: #f57c00;
+    color: var(--warning-color);
     border: 1px solid #ffe0b2;
 }
 
@@ -354,97 +439,339 @@
 
 .schedule__empty-day {
     text-align: center;
-    padding: 40px 15px;
+    padding: 30px 12px;
     color: var(--text-gray);
-    font-size: 14px;
+    font-size: 13px;
     background: var(--background-light);
-    border-radius: 12px;
+    border-radius: 10px;
     border: 2px dashed var(--border-light);
     font-style: italic;
 }
 
 .subject-badge {
-    padding: 4px 12px;
-    border-radius: 20px;
-    font-size: 12px;
+    padding: 3px 10px;
+    border-radius: 15px;
+    font-size: 11px;
     font-weight: bold;
     color: white;
     display: inline-block;
-    margin-top: 5px;
+    margin-top: 4px;
 }
 
-.subject-badge.Математика {
-    background-color: #6b8e23;
-}
-.subject-badge.Физика {
-    background-color: #3a6ea5;
-}
-.subject-badge.Информатика {
-    background-color: #0288d1;
-}
-.subject-badge.Химия {
-    background-color: #7b1fa2;
-}
-.subject-badge.Английский {
-    background-color: #e53935;
-}
-.subject-badge.Русский {
-    background-color: #f57c00;
-}
-.subject-badge.Немецкий {
-    background-color: #43a047;
-}
-.subject-badge.Французский {
-    background-color: #5e35b1;
-}
-.subject-badge.Обществознание {
-    background-color: #5d4037;
-}
-.subject-badge.История {
-    background-color: #6d4c41;
-}
-.subject-badge.Литература {
-    background-color: #00897b;
-}
-.subject-badge.Биология {
-    background-color: #388e3c;
-}
-.subject-badge.География {
-    background-color: #0097a7;
-}
-.subject-badge.Экономика {
-    background-color: #fbc02d;
-    color: #333;
-}
-.subject-badge.ИЗО {
-    background-color: #ad1457;
-}
-.subject-badge.Музыка {
-    background-color: #8e24aa;
+/* Цвета предметов */
+.subject-badge.Математика { background-color: #6b8e23; }
+.subject-badge.Физика { background-color: #3a6ea5; }
+.subject-badge.Информатика { background-color: #0288d1; }
+.subject-badge.Химия { background-color: #7b1fa2; }
+.subject-badge.Английский { background-color: #e53935; }
+.subject-badge.Русский { background-color: #f57c00; }
+.subject-badge.Немецкий { background-color: #43a047; }
+.subject-badge.Французский { background-color: #5e35b1; }
+.subject-badge.Обществознание { background-color: #5d4037; }
+.subject-badge.История { background-color: #6d4c41; }
+.subject-badge.Литература { background-color: #00897b; }
+.subject-badge.Биология { background-color: #388e3c; }
+.subject-badge.География { background-color: #0097a7; }
+.subject-badge.Экономика { background-color: #fbc02d; color: #333; }
+.subject-badge.ИЗО { background-color: #ad1457; }
+.subject-badge.Музыка { background-color: #8e24aa; }
+
+/* Контейнер действий в карточке */
+.schedule__lesson-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 10px;
 }
 
+/* Кнопка "Подробнее" для ученика */
+.schedule__lesson-action-btn_details {
+    background: var(--background-light);
+    color: var(--primary-dark);
+    border: 1px solid var(--primary-light);
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+    width: 100%;
+    white-space: normal;
+    word-break: break-word;
+    box-sizing: border-box;
+}
+
+.schedule__lesson-action-btn_details:hover {
+    background: var(--primary-color);
+    color: white;
+    box-shadow: 0 2px 8px rgba(107, 142, 35, 0.2);
+}
+
+/* Кнопка удаления для ученика */
+.schedule__lesson-action-btn_delete {
+    background: linear-gradient(135deg, #ff4d4d 0%, #d93636 100%);
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    margin-top: 8px;
+    width: 100%;
+    box-shadow: 0 2px 4px rgba(220, 53, 69, 0.2);
+    white-space: normal;
+    word-break: break-word;
+    box-sizing: border-box;
+}
+
+.schedule__lesson-action-btn_delete:hover {
+    background: linear-gradient(135deg, #d93636 0%, #c82333 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(220, 53, 69, 0.3);
+}
+
+.schedule__lesson-action-btn_delete::before {
+    content: '🗑️';
+    font-size: 10px;
+    line-height: 1;
+}
+
+/* Скрытый контент для модального окна */
+.hidden-tasks-content {
+    display: none;
+}
+
+/* --- СТИЛИ ДЛЯ МОДАЛЬНОГО ОКНА --- */
+
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    z-index: 9999;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.modal-overlay.active {
+    display: flex;
+    animation: fadeIn 0.3s ease;
+}
+
+.modal-container {
+    background: white;
+    width: 100%;
+    max-width: 650px;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+    animation: slideUp 0.3s ease;
+}
+
+.modal-header {
+    background: var(--primary-color);
+    color: white;
+    padding: 20px 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-header h2 {
+    font-size: 20px;
+    margin: 0;
+}
+
+.modal-close {
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    color: white;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.3s;
+}
+
+.modal-close:hover {
+    background: rgba(255, 255, 255, 0.4);
+}
+
+.modal-content {
+    padding: 25px;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideUp {
+    from { transform: translateY(30px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.lesson-info-summary {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    background: var(--background-light);
+    padding: 12px;
+    border-radius: 12px;
+    flex-wrap: wrap;
+}
+
+.info-pill {
+    background: white;
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 13px;
+    border: 1px solid var(--border-light);
+    flex: 1 1 auto;
+    min-width: 140px;
+}
+
+.tasks-scroll-container {
+    max-height: 300px;
+    overflow-y: auto;
+    background: var(--background-light);
+    border: 1px solid var(--border-light);
+    border-radius: 12px;
+    padding: 15px;
+    margin-bottom: 20px;
+    scrollbar-width: thin;
+    scrollbar-color: var(--primary-color) #f0f0f0;
+}
+
+.tasks-scroll-container::-webkit-scrollbar {
+    width: 6px;
+}
+
+.tasks-scroll-container::-webkit-scrollbar-track {
+    background: #f0f0f0;
+    border-radius: 10px;
+}
+
+.tasks-scroll-container::-webkit-scrollbar-thumb {
+    background-color: var(--primary-color);
+    border-radius: 10px;
+}
+
+.task-mini-card {
+    background: white;
+    border: 1px solid var(--border-light);
+    border-left: 4px solid var(--primary-color);
+    border-radius: 10px;
+    padding: 12px;
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    min-width: 0;
+}
+
+.task-mini-header {
+    margin-bottom: 8px;
+    font-size: 12px;
+    font-weight: bold;
+    color: var(--text-gray);
+    text-transform: uppercase;
+}
+
+.task-content {
+    font-size: 14px;
+    color: var(--text-dark);
+    line-height: 1.5;
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-word;
+    margin: 0;
+}
+
+.task-clickable-img {
+    width: 100%;
+    max-height: 250px;
+    object-fit: contain;
+    border-radius: 6px;
+    cursor: zoom-in;
+    margin-top: 8px;
+    background: #f9f9f9;
+}
+
+.no-tasks {
+    text-align: center;
+    color: var(--text-gray);
+    font-style: italic;
+    padding: 20px;
+}
+
+.student-note {
+    background: #e8f5e8;
+    border: 1px dashed var(--primary-light);
+    border-radius: 10px;
+    padding: 12px;
+    margin-top: 15px;
+    text-align: center;
+    font-size: 13px;
+    color: var(--primary-dark);
+}
+
+.full-image-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    z-index: 10000;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.full-image-overlay.active {
+    display: flex;
+}
+
+.full-image-overlay img {
+    max-width: 90%;
+    max-height: 90%;
+    object-fit: contain;
+}
+
+/* Адаптация для планшетов */
 @media (max-width: 1023px) {
-    .top-bar__container {
-        max-width: 100%;
-        padding: 0 15px;
-    }
-
     .container {
         max-width: 100%;
         padding: 25px 15px;
     }
 
-    .schedule__days-grid,
-    .schedule__lessons-container {
-        grid-template-columns: repeat(4, 1fr);
+    .page-title {
+        font-size: 28px;
     }
 
     .schedule-container {
         padding: 20px;
-    }
-
-    .page-title {
-        font-size: 28px;
     }
 }
 
@@ -470,22 +797,8 @@
         font-size: 13px;
     }
 
-    .schedule__week-selector {
-        flex-direction: column;
-        gap: 15px;
-    }
-
-    .schedule__week-nav {
-        order: 2;
-    }
-
-    .schedule__today-button {
-        order: 1;
-    }
-
-    .schedule__days-grid,
-    .schedule__lessons-container {
-        grid-template-columns: repeat(2, 1fr);
+    .container {
+        padding: 20px 15px;
     }
 
     .page-title {
@@ -493,12 +806,30 @@
         margin-bottom: 20px;
     }
 
-    .schedule-container {
-        padding: 15px;
+    .schedule__week-selector {
+        margin-bottom: 20px;
     }
 
-    .schedule__lesson-card {
-        padding: 15px;
+    .schedule__today-button {
+        width: 100px;
+    }
+
+    .schedule__lesson-tutor {
+        font-size: 11px;
+    }
+}
+
+@media (max-width: 500px) {
+    .schedule__day-header {
+        aspect-ratio: 1 / 1;
+    }
+    
+    .schedule__day-name {
+        font-size: 11px;
+    }
+    
+    .schedule__day-number {
+        font-size: 18px;
     }
 }
 
@@ -542,46 +873,97 @@
         margin-bottom: 15px;
     }
 
-    .schedule__days-grid,
-    .schedule__lessons-container {
-        grid-template-columns: 1fr;
-    }
-
     .schedule-container {
         padding: 12px;
         border-radius: 10px;
     }
 
-    .schedule__week-selector {
-        padding: 15px;
-        border-radius: 10px;
+    .schedule__nav-button {
+        width: 36px;
+        height: 36px;
+        font-size: 16px;
     }
 
-    .schedule__day-header {
-        padding: 12px;
-        border-radius: 10px;
+    .schedule__today-button {
+        width: 90px;
+        height: 36px;
+        font-size: 13px;
     }
 
+    .lesson-card,
     .schedule__lesson-card {
-        padding: 12px;
+        padding: 10px;
         border-radius: 8px;
     }
 
     .schedule__lesson-subject {
-        font-size: 14px;
+        font-size: 12px;
     }
 
     .schedule__lesson-tutor {
-        font-size: 13px;
+        font-size: 10.5px;
     }
 
     .schedule__lesson-status {
-        font-size: 11px;
-        padding: 4px 10px;
+        font-size: 10px;
+        padding: 3px 8px;
     }
 
     .subject-badge {
-        font-size: 11px;
-        padding: 3px 8px;
+        font-size: 10px;
+        padding: 2px 8px;
+    }
+
+    .schedule__lesson-action-btn_details,
+    .schedule__lesson-action-btn_delete {
+        padding: 5px 10px;
+        font-size: 10px;
+    }
+    
+    .modal-header h2 {
+        font-size: 18px;
+    }
+    
+    .modal-content {
+        padding: 15px;
+    }
+    
+    .info-pill {
+        font-size: 12px;
+        padding: 5px 10px;
+        min-width: 120px;
+    }
+    
+    .task-mini-card {
+        padding: 10px;
+    }
+    
+    .task-content {
+        font-size: 13px;
+    }
+    
+    .student-note {
+        font-size: 12px;
+        padding: 10px;
+    }
+}
+
+@media (max-width: 380px) {
+    .schedule__day-name {
+        font-size: 10px;
+    }
+    
+    .schedule__day-number {
+        font-size: 16px;
+    }
+    
+    .schedule__lesson-tutor {
+        font-size: 10px;
+    }
+
+    .schedule__lesson-action-btn_details,
+    .schedule__lesson-action-btn_delete {
+        padding: 4px 8px;
+        font-size: 9.5px;
     }
 }

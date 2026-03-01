@@ -7,6 +7,7 @@ from utils.dates import get_base_monday, getweekdates
 from utils.templates import verstkaprofile
 from services.stats_stud_service import getstudinfo, getstudentweektimetable
 from services.stats_tut_service import gettutinfobyid
+from services.timetable_service import getlessontasks
 
 router = APIRouter()
 
@@ -40,188 +41,67 @@ def studtime(request: Request, week_offset: int = Query(0)):
         sat = weekdates[5]
         sun = weekdates[6]
 
-        monday_date = list(week.keys())[0]
-        monday_lessons = week[monday_date]["lessons"]
-        if monday_lessons == "Нет занятий":
-            with open(f'{TEMPLATES_PATH}cards/nolessons.html', 'r', encoding='utf-8') as f:
-                monday_template = f.read()
-        else:
-            with open(f'{TEMPLATES_PATH}cards/lesson.html', 'r', encoding='utf-8') as f:
-                a = f.read()
-            monday_template = ""
-            for lesson in monday_lessons:
-                start_time = datetime.strptime(lesson["time"], "%H:%M")
-                duration_minutes = lesson.get("duration", 60)
-                duration = timedelta(minutes=duration_minutes)
-                start_time_str = start_time.strftime("%H:%M")
-                end_time_str = (start_time + duration).strftime("%H:%M")
-                monday_template += a
-                tutinfo = gettutinfobyid(lesson["tutor_id"])
-                tutfirst_name = tutinfo[0]
-                tutlast_name = tutinfo[1]
-                monday_template = monday_template.replace('{{ subject }}', lesson["subject"])
-                monday_template = monday_template.replace('{{ tutfirst_name }}', tutfirst_name)
-                monday_template = monday_template.replace('{{ tutlast_name }}', tutlast_name)
-                monday_template = monday_template.replace('{{ starttime }}', str(start_time_str))
-                monday_template = monday_template.replace('{{ endtime }}', str(end_time_str))
+        with open(f'{TEMPLATES_PATH}cards/nolessons.html', 'r', encoding='utf-8') as f:
+            day_no_lessons_template = f.read()
 
+        with open(f'{TEMPLATES_PATH}cards/lesson.html', 'r', encoding='utf-8') as f:
+            day_lesson_template = f.read()
 
-        tuesday_date = list(week.keys())[1]
-        tuesday_lessons = week[tuesday_date]["lessons"]
-        if tuesday_lessons == "Нет занятий":
-            with open(f'{TEMPLATES_PATH}cards/nolessons.html', 'r', encoding='utf-8') as f:
-                tuesday_template = f.read()
-        else:
-            with open(f'{TEMPLATES_PATH}cards/lesson.html', 'r', encoding='utf-8') as f:
-                a = f.read()
-            tuesday_template = ""
-            for lesson in tuesday_lessons:
-                start_time = datetime.strptime(lesson["time"], "%H:%M")
-                duration_minutes = lesson.get("duration", 60)
-                duration = timedelta(minutes=duration_minutes)
-                start_time_str = start_time.strftime("%H:%M")
-                end_time_str = (start_time + duration).strftime("%H:%M")
-                tuesday_template += a
-                tutinfo = gettutinfobyid(lesson["tutor_id"])
-                tutfirst_name = tutinfo[0]
-                tutlast_name = tutinfo[1]
-                tuesday_template = tuesday_template.replace('{{ subject }}', lesson["subject"])
-                # tuesday_template = tuesday_template.replace('{{ status }}', lesson["status"])
-                tuesday_template = tuesday_template.replace('{{ tutfirst_name }}', tutfirst_name)
-                tuesday_template = tuesday_template.replace('{{ tutlast_name }}', tutlast_name)
-                tuesday_template = tuesday_template.replace('{{ starttime }}', str(start_time_str))
-                tuesday_template = tuesday_template.replace('{{ endtime }}', str(end_time_str))
+        with open(f'{TEMPLATES_PATH}cards/lessontask.html', 'r', encoding='utf-8') as f:
+            task_template = f.read()
 
-        wednesday_date = list(week.keys())[2]
-        wednesday_lessons = week[wednesday_date]["lessons"]
-        if wednesday_lessons == "Нет занятий":
-            with open(f'{TEMPLATES_PATH}cards/nolessons.html', 'r', encoding='utf-8') as f:
-                wednesday_template = f.read()
-        else:
-            with open(f'{TEMPLATES_PATH}cards/lesson.html', 'r', encoding='utf-8') as f:
-                a = f.read()
-            wednesday_template = ""
-            for lesson in wednesday_lessons:
-                start_time = datetime.strptime(lesson["time"], "%H:%M")
-                duration_minutes = lesson.get("duration", 60)
-                duration = timedelta(minutes=duration_minutes)
-                start_time_str = start_time.strftime("%H:%M")
-                end_time_str = (start_time + duration).strftime("%H:%M")
-                wednesday_template += a
-                tutinfo = gettutinfobyid(lesson["tutor_id"])
-                tutfirst_name = tutinfo[0]
-                tutlast_name = tutinfo[1]
-                wednesday_template = wednesday_template.replace('{{ tutfirst_name }}', tutfirst_name)
-                wednesday_template = wednesday_template.replace('{{ tutlast_name }}', tutlast_name)
-                wednesday_template = wednesday_template.replace('{{ subject }}', lesson["subject"])
-                # wednesday_template = wednesday_template.replace('{{ status }}', lesson["status"])
-                wednesday_template = wednesday_template.replace('{{ starttime }}', str(start_time_str))
-                wednesday_template = wednesday_template.replace('{{ endtime }}', str(end_time_str))
+        for i in range(0,7):
+            day_template = ""
+            day = list(week.keys())[i]
+            day_lessons = week[day]["lessons"]
 
-        thursday_date = list(week.keys())[3]
-        thursday_lessons = week[thursday_date]["lessons"]
-        if thursday_lessons == "Нет занятий":
-            with open(f'{TEMPLATES_PATH}cards/nolessons.html', 'r', encoding='utf-8') as f:
-                thursday_template = f.read()
-        else:
-            with open(f'{TEMPLATES_PATH}cards/lesson.html', 'r', encoding='utf-8') as f:
-                a = f.read()
-            thursday_template = ""
-            for lesson in thursday_lessons:
-                start_time = datetime.strptime(lesson["time"], "%H:%M")
-                duration_minutes = lesson.get("duration", 60)
-                duration = timedelta(minutes=duration_minutes)
-                start_time_str = start_time.strftime("%H:%M")
-                end_time_str = (start_time + duration).strftime("%H:%M")
-                thursday_template += a
-                tutinfo = gettutinfobyid(lesson["tutor_id"])
-                tutfirst_name = tutinfo[0]
-                tutlast_name = tutinfo[1]
-                thursday_template = thursday_template.replace('{{ tutfirst_name }}', tutfirst_name)
-                thursday_template = thursday_template.replace('{{ tutlast_name }}', tutlast_name)
-                thursday_template = thursday_template.replace('{{ subject }}', lesson["subject"])
-                # thursday_template = thursday_template.replace('{{ status }}', lesson["status"])
-                thursday_template = thursday_template.replace('{{ starttime }}', str(start_time_str))
-                thursday_template = thursday_template.replace('{{ endtime }}', str(end_time_str))
-                
+            if day_lessons == "Нет занятий":
+                day_template = day_no_lessons_template
+            else:
+                for lesson in day_lessons:
 
-        friday_date = list(week.keys())[4]
-        friday_lessons = week[friday_date]["lessons"]
-        if friday_lessons == "Нет занятий":
-            with open(f'{TEMPLATES_PATH}cards/nolessons.html', 'r', encoding='utf-8') as f:
-                friday_template = f.read()
-        else:
-            with open(f'{TEMPLATES_PATH}cards/lesson.html', 'r', encoding='utf-8') as f:
-                a = f.read()
-            friday_template = ""
-            for lesson in friday_lessons:
-                start_time = datetime.strptime(lesson["time"], "%H:%M")
-                duration_minutes = lesson.get("duration", 60)
-                duration = timedelta(minutes=duration_minutes)
-                start_time_str = start_time.strftime("%H:%M")
-                end_time_str = (start_time + duration).strftime("%H:%M")
-                friday_template += a
-                tutinfo = gettutinfobyid(lesson["tutor_id"])
-                tutfirst_name = tutinfo[0]
-                tutlast_name = tutinfo[1]
-                friday_template = friday_template.replace('{{ tutfirst_name }}', tutfirst_name)
-                friday_template = friday_template.replace('{{ tutlast_name }}', tutlast_name)
-                friday_template = friday_template.replace('{{ subject }}', lesson["subject"])
-                # friday_template = friday_template.replace('{{ status }}', lesson["status"])
-                friday_template = friday_template.replace('{{ starttime }}', str(start_time_str))
-                friday_template = friday_template.replace('{{ endtime }}', str(end_time_str))
+                    lesson_id = lesson["schedule_id"]
+                    lesson_tasks = getlessontasks(lesson_id)
+                    lesson_tasks_template =""
+                    task_number = 1
+                    for task in lesson_tasks:
+                        content = task[3]
+                        lesson_tasks_template += task_template
+                        lesson_tasks_template = lesson_tasks_template.replace("{{ number }}", str(task_number))
+                        lesson_tasks_template = lesson_tasks_template.replace("{{ content }}", str(content))
+                        task_number += 1
 
-        saturday_date = list(week.keys())[5]
-        saturday_lessons = week[saturday_date]["lessons"]
-        if saturday_lessons == "Нет занятий":
-            with open(f'{TEMPLATES_PATH}cards/nolessons.html', 'r', encoding='utf-8') as f:
-                saturday_template = f.read()
-        else:
-            with open(f'{TEMPLATES_PATH}cards/lesson.html', 'r', encoding='utf-8') as f:
-                a = f.read()
-            saturday_template = ""
-            for lesson in saturday_lessons:
-                start_time = datetime.strptime(lesson["time"], "%H:%M")
-                duration_minutes = lesson.get("duration", 60)
-                duration = timedelta(minutes=duration_minutes)
-                start_time_str = start_time.strftime("%H:%M")
-                end_time_str = (start_time + duration).strftime("%H:%M")
-                saturday_template += a
-                tutinfo = gettutinfobyid(lesson["tutor_id"])
-                tutfirst_name = tutinfo[0]
-                tutlast_name = tutinfo[1]
-                saturday_template = saturday_template.replace('{{ tutfirst_name }}', tutfirst_name)
-                saturday_template = saturday_template.replace('{{ tutlast_name }}', tutlast_name)
-                saturday_template = saturday_template.replace('{{ subject }}', lesson["subject"])
-                # saturday_template = saturday_template.replace('{{ status }}', lesson["status"])
-                saturday_template = saturday_template.replace('{{ starttime }}', str(start_time_str))
-                saturday_template = saturday_template.replace('{{ endtime }}', str(end_time_str))
+                    start_time = datetime.strptime(lesson["time"], "%H:%M")
+                    duration_minutes = lesson.get("duration", 60)
+                    duration = timedelta(minutes=duration_minutes)
+                    start_time_str = start_time.strftime("%H:%M")
+                    end_time_str = (start_time + duration).strftime("%H:%M")
 
-        sunday_date = list(week.keys())[6]
-        sunday_lessons = week[sunday_date]["lessons"]
-        if sunday_lessons == "Нет занятий":
-            with open(f'{TEMPLATES_PATH}cards/nolessons.html', 'r', encoding='utf-8') as f:
-                sunday_template = f.read()
-        else:
-            with open(f'{TEMPLATES_PATH}cards/lesson.html', 'r', encoding='utf-8') as f:
-                a = f.read()
-            sunday_template = ""
-            for lesson in sunday_lessons:
-                start_time = datetime.strptime(lesson["time"], "%H:%M")
-                duration_minutes = lesson.get("duration", 60)
-                duration = timedelta(minutes=duration_minutes)
-                start_time_str = start_time.strftime("%H:%M")
-                end_time_str = (start_time + duration).strftime("%H:%M")
-                sunday_template += a
-                tutinfo = gettutinfobyid(lesson["tutor_id"])
-                tutfirst_name = tutinfo[0]
-                tutlast_name = tutinfo[1]
-                sunday_template = sunday_template.replace('{{ tutfirst_name }}', tutfirst_name)
-                sunday_template = sunday_template.replace('{{ tutlast_name }}', tutlast_name)
-                sunday_template = sunday_template.replace('{{ subject }}', lesson["subject"])
-                # sunday_template = sunday_template.replace('{{ status }}', lesson["status"])
-                sunday_template = sunday_template.replace('{{ starttime }}', str(start_time_str))
-                sunday_template = sunday_template.replace('{{ endtime }}', str(end_time_str))
+                    day_template += day_lesson_template
+
+                    tutinfo = gettutinfobyid(lesson["tutor_id"])
+                    tutfirst_name = tutinfo[0]
+                    tutlast_name = tutinfo[1]
+                    day_template = day_template.replace('{{ subject }}', lesson["subject"])
+                    day_template = day_template.replace('{{ tutfirst_name }}', tutfirst_name)
+                    day_template = day_template.replace('{{ tutlast_name }}', tutlast_name)
+                    day_template = day_template.replace('{{ starttime }}', str(start_time_str))
+                    day_template = day_template.replace('{{ endtime }}', str(end_time_str))
+                    day_template = day_template.replace('{{ tasks_template }}', str(lesson_tasks_template))
+            if i == 0:
+                monday_template = day_template
+            elif i == 1:
+                tuesday_template = day_template
+            elif i == 2:
+                wednesday_template = day_template
+            elif i == 3:
+                thursday_template = day_template
+            elif i == 4:
+                friday_template = day_template
+            elif i == 5:
+                saturday_template = day_template
+            elif i == 6:
+                sunday_template = day_template
 
         with open(f'{TEMPLATES_PATH}timetable/studtime.html', 'r', encoding="utf-8") as f:
             content = verstkaprofile(f.read(), name, studfirst_name, studlast_name)

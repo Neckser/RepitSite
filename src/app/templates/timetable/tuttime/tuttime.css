@@ -306,15 +306,63 @@
 }
 
 .schedule__table-inner {
-    min-width: 700px;
     width: 100%;
 }
 
-.schedule__days-header {
+/* Всегда показываем 7 колонок с адаптивной минимальной шириной */
+.schedule__days-header,
+.schedule__lessons-container {
     display: grid;
-    grid-template-columns: repeat(7, 1fr);
+    grid-template-columns: repeat(7, minmax(140px, 1fr));
     gap: 6px;
     margin-bottom: 10px;
+}
+
+@media (max-width: 1100px) {
+    .schedule__days-header,
+    .schedule__lessons-container {
+        grid-template-columns: repeat(7, minmax(130px, 1fr));
+    }
+}
+
+@media (max-width: 900px) {
+    .schedule__days-header,
+    .schedule__lessons-container {
+        grid-template-columns: repeat(7, minmax(120px, 1fr));
+    }
+}
+
+@media (max-width: 700px) {
+    .schedule__days-header,
+    .schedule__lessons-container {
+        grid-template-columns: repeat(7, minmax(110px, 1fr));
+    }
+}
+
+@media (max-width: 500px) {
+    .schedule__days-header,
+    .schedule__lessons-container {
+        grid-template-columns: repeat(7, minmax(100px, 1fr));
+    }
+}
+
+/* Стилизация скроллбара */
+.schedule__table::-webkit-scrollbar {
+    height: 8px;
+}
+
+.schedule__table::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+.schedule__table::-webkit-scrollbar-thumb {
+    background: var(--primary-color);
+    border-radius: 4px;
+}
+
+.schedule__table::-webkit-scrollbar-thumb:hover {
+    background: var(--primary-dark);
 }
 
 .schedule__day-header {
@@ -347,9 +395,6 @@
 }
 
 .schedule__lessons-container {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 6px;
     min-height: 300px;
 }
 
@@ -360,7 +405,6 @@
     min-width: 90px;
 }
 
-/* Форма с карточкой занятия */
 .lesson-card {
     background: white;
     border-radius: 10px;
@@ -388,9 +432,8 @@
     background: #6b8e23;
 }
 
-/* Внутренний контейнер карточки */
 .schedule__lesson-card {
-    padding: 12px;
+    padding: 10px;
     position: relative;
 }
 
@@ -613,7 +656,7 @@
     }
 }
 
-@media (max-width: 767px) {
+@media (max-width: 1100px) {
     .top-bar__container {
         flex-direction: column;
         gap: 15px;
@@ -635,15 +678,24 @@
         font-size: 13px;
     }
 
+    /* --- Ключевое изменение: вертикальное расположение и порядок --- */
     .content-grid {
-        grid-template-columns: 1fr;
+        display: flex;
+        flex-direction: column;
         gap: 15px;
     }
 
     .sidebar {
-        order: 2;
+        order: 2;          /* форма теперь снизу */
+        width: 100%;
     }
 
+    .main-content {
+        order: 1;          /* расписание сверху */
+        width: 100%;
+    }
+
+    /* --- Остальные стили для мобильных (можно оставить как есть) --- */
     .schedule__controls {
         flex-direction: column;
         align-items: stretch;
@@ -671,15 +723,20 @@
         padding: 5px 10px;
         font-size: 10px;
     }
-}
 
-@media (max-width: 650px) {
-    .schedule__days-header,
-    .schedule__lessons-container {
-        grid-template-columns: repeat(4, 1fr);
+    /* Немного уменьшаем форму, чтобы она не была громоздкой */
+    .sidebar .card {
+        padding: 15px;
+    }
+
+    .lesson-form {
+        gap: 10px;
+    }
+
+    .lesson-form__group {
+        margin-bottom: 0;
     }
 }
-
 @media (max-width: 480px) {
     .top-bar {
         padding: 8px 0;
@@ -764,11 +821,6 @@
         border-radius: 8px;
     }
 
-    .schedule__days-header,
-    .schedule__lessons-container {
-        grid-template-columns: repeat(3, 1fr);
-    }
-
     .schedule__nav-button {
         width: 36px;
         height: 36px;
@@ -813,11 +865,6 @@
 }
 
 @media (max-width: 380px) {
-    .schedule__days-header,
-    .schedule__lessons-container {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
     .schedule__lesson-student {
         font-size: 10px;
     }
@@ -826,11 +873,15 @@
         padding: 3px 6px;
         font-size: 9px;
     }
+
+    .schedule__lesson-action-btn_details {
+        padding: 4px 8px;
+        font-size: 10px;
+    }
 }
 
 /* --- Стили для карточки урока (дополнение к основной верстке) --- */
 
-/* Контейнер действий в карточке */
 .schedule__lesson-actions {
     display: flex;
     flex-direction: column;
@@ -838,7 +889,6 @@
     margin-top: 10px;
 }
 
-/* Кнопка "Подробнее" — делаем в основном стиле Repithub */
 .schedule__lesson-action-btn_details {
     background: var(--background-light);
     color: var(--primary-dark);
@@ -850,6 +900,10 @@
     cursor: pointer;
     transition: all 0.3s ease;
     text-align: center;
+    width: 100%;    
+    white-space: normal;  
+    word-break: break-word;   
+    box-sizing: border-box;   
 }
 
 .schedule__lesson-action-btn_details:hover {
@@ -858,12 +912,10 @@
     box-shadow: 0 2px 8px rgba(107, 142, 35, 0.2);
 }
 
-/* Стили для модального окна внутри карточки (скрытый контент) */
 .lesson-modal-content {
-    display: none; /* Всегда скрыто в самой сетке, отображается только скриптом в модалке */
+    display: none;
 }
 
-/* Стили элементов внутри модалки (когда они скопированы в основное окно) */
 .lesson-info-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -910,44 +962,40 @@
     border-radius: 10px;
 }
 
-/* Список заданий в модалке */
 .tasks-list {
     display: flex;
     flex-direction: column;
     gap: 10px;
 }
 
-/* Адаптивность для модалки */
 @media (max-width: 480px) {
     .lesson-info-grid {
         grid-template-columns: 1fr;
     }
 }
-/* --- СИСТЕМНОЕ МОДАЛЬНОЕ ОКНО (ПО КРАСОТЕ) --- */
 
-/* Фон-затемнение */
+/* --- СИСТЕМНОЕ МОДАЛЬНОЕ ОКНО --- */
+
 .modal-overlay {
-    display: none; /* Скрыто по умолчанию */
+    display: none;
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.6); /* Полупрозрачный черный */
-    backdrop-filter: blur(4px);    /* Эффект матового стекла */
-    z-index: 9999;                 /* Поверх всего */
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    z-index: 9999;
     justify-content: center;
     align-items: center;
     padding: 20px;
 }
 
-/* Активное состояние модалки (вызывается через JS) */
 .modal-overlay.active {
     display: flex;
     animation: fadeIn 0.3s ease;
 }
 
-/* Контейнер самого окна */
 .modal-container {
     background: white;
     width: 100%;
@@ -958,7 +1006,6 @@
     animation: slideUp 0.3s ease;
 }
 
-/* Шапка модалки */
 .modal-header {
     background: var(--primary-color);
     color: white;
@@ -973,7 +1020,6 @@
     margin: 0;
 }
 
-/* Кнопка закрытия (крестик) */
 .modal-close {
     background: rgba(255, 255, 255, 0.2);
     border: none;
@@ -993,14 +1039,12 @@
     background: rgba(255, 255, 255, 0.4);
 }
 
-/* Тело модалки */
 .modal-content {
     padding: 25px;
     max-height: 80vh;
     overflow-y: auto;
 }
 
-/* Анимации */
 @keyframes fadeIn {
     from { opacity: 0; }
     to { opacity: 1; }
@@ -1011,7 +1055,6 @@
     to { transform: translateY(0); opacity: 1; }
 }
 
-/* Стили для внутренней сетки информации (внутри модалки) */
 .lesson-info-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
@@ -1036,7 +1079,6 @@
     color: var(--text-dark);
 }
 
-/* Красивые поля ввода в модалке */
 .modal-content textarea {
     width: 100%;
     min-height: 100px;
@@ -1056,7 +1098,6 @@
     box-shadow: 0 0 0 4px rgba(107, 142, 35, 0.1);
 }
 
-/* Секция добавления задания (если она там есть) */
 .add-task-form {
     background: var(--background-light);
     padding: 20px;
@@ -1071,7 +1112,6 @@
     font-size: 15px;
 }
 
-/* Кнопка "Сохранить/Добавить" в модалке */
 .btn-modal-save {
     background: var(--primary-color);
     color: white;
@@ -1090,7 +1130,6 @@
     transform: translateY(-1px);
 }
 
-/* Карточки заданий внутри модалки (уже созданные) */
 .task-card {
     background: white;
     padding: 15px;
@@ -1100,9 +1139,6 @@
     margin-bottom: 10px;
 }
 
-/* --- СТИЛИ ВНУТРИ МОДАЛКИ (ПО КРАСОТЕ) --- */
-
-/* Заголовки секций */
 .modal-content h3 {
     font-size: 18px;
     color: var(--text-dark);
@@ -1121,7 +1157,6 @@
     border-radius: 2px;
 }
 
-/* Поля ввода текста (Описание и Задания) */
 .modal-content textarea {
     width: 100%;
     min-height: 120px;
@@ -1142,13 +1177,11 @@
     background: #fff;
 }
 
-/* Стилизация поля выбора файла (Картинки) */
 .file-upload-wrapper {
     position: relative;
     margin-bottom: 20px;
 }
 
-/* Делаем дефолтную кнопку выбора файла красивой */
 .modal-content input[type="file"] {
     width: 100%;
     padding: 10px;
@@ -1173,7 +1206,6 @@
     background: var(--primary-dark);
 }
 
-/* Кнопка сохранения внизу */
 .btn-save-all {
     display: flex;
     align-items: center;
@@ -1198,7 +1230,6 @@
     box-shadow: 0 5px 15px rgba(107, 142, 35, 0.3);
 }
 
-/* Список уже добавленных заданий (карточки) */
 .task-item {
     background: #fff;
     border: 1px solid var(--border-light);
@@ -1210,7 +1241,6 @@
     align-items: center;
 }
 
-/* Инфо-панель сверху */
 .lesson-info-summary {
     display: flex;
     gap: 10px;
@@ -1228,7 +1258,6 @@
     border: 1px solid #e0e0e0;
 }
 
-/* Переключатель типа задания */
 .task-type-toggle {
     display: flex;
     gap: 10px;
@@ -1241,7 +1270,7 @@
 }
 
 .task-type-toggle input {
-    display: none; /* Прячем стандартный кружок */
+    display: none;
 }
 
 .task-type-toggle span {
@@ -1261,7 +1290,6 @@
     border-color: var(--primary-color);
 }
 
-/* Красивое поле загрузки */
 .file-upload-styled {
     border: 2px dashed var(--primary-light);
     padding: 30px;
@@ -1276,21 +1304,18 @@
     font-size: 14px;
 }
 
-/* Контейнер для скролла заданий */
 .tasks-scroll-container {
-    max-height: 250px; /* Фиксированная высота */
-    overflow-y: auto;  /* Включаем вертикальный скролл */
+    max-height: 250px;
+    overflow-y: auto;
     background: #fdfdfd;
     border: 1px solid #eee;
     border-radius: 12px;
     padding: 15px;
     margin-bottom: 25px;
-    /* Красивый тонкий скроллбар для современных браузеров */
     scrollbar-width: thin;
     scrollbar-color: var(--primary-color) #f0f0f0;
 }
 
-/* Настройка скроллбара для Chrome/Safari */
 .tasks-scroll-container::-webkit-scrollbar {
     width: 6px;
 }
@@ -1335,47 +1360,30 @@
     margin: 0;
 }
 
-
-.task-mini-card {
-    display: flex;
-    flex-direction: column; /* Заголовок сверху, картинка снизу */
-    width: 100%;            /* Занимает всю ширину модалки */
-    min-width: 0;           /* Позволяет контенту сжиматься */
-    background: #fff;
-    border: 1px solid #e8f5e8;
-    border-left: 4px solid #6b8e23; /* Твой основной зеленый */
-    border-radius: 10px;
-    padding: 12px;
-    margin-bottom: 10px;
-}
-
 .task-clickable-img {
-    width: 100%;            /* Растягиваем по ширине карточки */
-    max-height: 250px;      /* Ограничиваем высоту, чтобы не скроллить вечность */
-    object-fit: contain;    /* Картинка не обрезается, а вписывается целиком */
+    width: 100%;
+    max-height: 250px;
+    object-fit: contain;
     border-radius: 6px;
-    cursor: zoom-in;        /* Курсор-лупа для подсказки */
+    cursor: zoom-in;
     margin-top: 8px;
-    background: #f9f9f9;    /* Светлый фон, если картинка на прозрачном фоне */
+    background: #f9f9f9; 
 }
 
-/* Фиксируем пространство под инпуты */
 .modal-form__input-container {
-    min-height: 150px; /* Высота должна быть примерно равна textarea + отступы */
+    min-height: 150px;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     margin-top: 10px;
 }
 
-/* Убираем margin у самих инпутов, чтобы при их скрытии ничего не ехало */
 .modal-content textarea, 
 #task_image_input .file-upload-styled {
     margin-top: 0 !important;
     margin-bottom: 0 !important;
 }
 
-/* Чтобы шрифт не дергался при перерисовке слоев в модалке */
 .modal-container {
     -webkit-font-smoothing: antialiased;
     transform: translateZ(0);
