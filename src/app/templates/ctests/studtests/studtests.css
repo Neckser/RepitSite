@@ -389,3 +389,153 @@ body {
 @media(max-width:767px){
     .tests-grid{ grid-template-columns: repeat(auto-fill, minmax(150px,1fr)); }
 }
+
+/* Карточка "Нет тестов" */
+.no-tests {
+    text-align: center;
+    padding: 60px 20px;
+    background: linear-gradient(135deg, #ffffff 0%, #f8fff8 100%);
+    border-radius: 20px;
+    border: 2px dashed #e8f5e8;
+    margin: 20px 0;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.no-tests__icon {
+    font-size: 80px;
+    margin-bottom: 20px;
+    color: #6b8e23;
+    opacity: 0.7;
+}
+
+.no-tests__title {
+    color: #6b8e23;
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.no-tests__text {
+    color: #666;
+    font-size: 16px;
+    line-height: 1.5;
+    max-width: 400px;
+    margin: 0 auto 25px;
+}
+
+.no-tests__emoji {
+    font-size: 40px;
+    margin: 20px 0;
+    display: block;
+}
+
+.no-tests__suggestion {
+    color: #888;
+    font-size: 14px;
+    font-style: italic;
+    margin-top: 20px;
+}
+
+/* Адаптация под контейнер страницы тестов */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 30px 20px;
+}
+
+.page-header {
+    margin-bottom: 30px;
+}
+
+.page-header h1 {
+    color: #333;
+    font-size: 32px;
+    margin: 0;
+}
+
+/* Адаптация для карточки внутри сетки тестов */
+.tests-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Медиа-запросы для адаптивности */
+@media (max-width: 1023px) {
+    .container {
+        padding: 25px 15px;
+    }
+
+    .page-header h1 {
+        font-size: 28px;
+    }
+
+    .no-tests {
+        padding: 50px 20px;
+    }
+
+    .no-tests__icon {
+        font-size: 70px;
+    }
+
+    .no-tests__title {
+        font-size: 26px;
+    }
+}
+
+@media (max-width: 767px) {
+    .container {
+        padding: 20px 15px;
+    }
+
+    .page-header h1 {
+        font-size: 24px;
+        margin-bottom: 20px;
+    }
+
+    .no-tests {
+        padding: 40px 15px;
+        margin: 20px 0;
+    }
+
+    .no-tests__icon {
+        font-size: 60px;
+    }
+
+    .no-tests__title {
+        font-size: 24px;
+    }
+
+    .no-tests__text {
+        font-size: 15px;
+        padding: 0 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 15px 10px;
+    }
+
+    .page-header h1 {
+        font-size: 20px;
+    }
+
+    .no-tests {
+        padding: 30px 15px;
+        margin: 15px 0;
+    }
+
+    .no-tests__icon {
+        font-size: 50px;
+    }
+
+    .no-tests__title {
+        font-size: 22px;
+    }
+
+    .no-tests__text {
+        font-size: 14px;
+    }
+}

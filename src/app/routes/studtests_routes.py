@@ -35,7 +35,7 @@ def studtests(request: Request):
         with open(f"{TEMPLATES_PATH}cards/studtest.html", 'r', encoding='utf-8') as f:
             a = f.read()
 
-        if tests is not None:
+        if tests:
             for test in tests:
                 tests_template += a
                 tutorinfo = gettutinfobyid(test[1])
@@ -51,8 +51,9 @@ def studtests(request: Request):
                 tests_template = tests_template.replace("{{ date_start }}", str(test[5]))
                 tests_template = tests_template.replace("{{ date_end }}", str(test[6]))
                 tests_template = tests_template.replace("{{ duration }}", str(test[8]))
+                # tests_template = tests_template.replace("{{ attempts_colvo }}", str(666))
         else:
-            with open(f"{TEMPLATES_PATH}ctests/notests/html", 'r', encoding="utf-8") as f:
+            with open(f"{TEMPLATES_PATH}cards/notests.html", 'r', encoding="utf-8") as f:
                 tests_template = f.read()
 
 

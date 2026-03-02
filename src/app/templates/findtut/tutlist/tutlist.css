@@ -100,11 +100,11 @@
     line-height: 1.2;
 }
 
-.tutors-page {
+/* .tutors-page {
     max-width: 1200px;
     margin: 25px auto;
     padding: 0 20px;
-}
+} */
 
 .tutors-page__title {
     color: #333;
@@ -369,8 +369,8 @@
     }
 
     .tutors-page__title {
-        font-size: 26px;
-        margin-bottom: 20px;
+        font-size: 32px;
+        margin-bottom: 30px;
     }
 
     .tutors-grid {
@@ -422,5 +422,70 @@
         width: 50px;
         height: 50px;
         font-size: 18px;
+    }
+}
+/* Добавьте единый контейнер как на странице расписания */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 30px 20px;
+}
+
+/* Добавьте единый стиль заголовка как на странице расписания */
+.page-title {
+    color: #333;
+    font-size: 32px;
+    font-weight: bold;
+    margin-bottom: 30px;
+}
+
+/* Адаптация сетки репетиторов под новый контейнер */
+.tutors-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+/* Адаптивные стили для нового контейнера */
+@media (max-width: 1023px) {
+    .container {
+        padding: 25px 15px;
+    }
+
+    .page-title {
+        font-size: 28px;
+        margin-bottom: 25px;
+    }
+
+    .tutors-grid {
+        gap: 15px;
+    }
+}
+
+@media (max-width: 767px) {
+    .container {
+        padding: 20px 15px;
+    }
+
+    .page-title {
+        font-size: 24px;
+        margin-bottom: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 15px 10px;
+    }
+
+    .page-title {
+        font-size: 20px;
+        margin-bottom: 15px;
+    }
+
+    .tutors-grid {
+        gap: 12px;
+        margin-bottom: 20px;
     }
 }
