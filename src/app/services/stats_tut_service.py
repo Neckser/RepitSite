@@ -1,5 +1,6 @@
 import sqlite3
 from utils.dates import build_week_for_tutors
+from datetime import date
 from config import DB_PATH
 
 def gettutsubject(tutlogin):
@@ -203,6 +204,28 @@ def gettuttests(tutor_id):
 
         return tests
         
+    except Exception as e:
+        print(f"Произошла ошибка - {e}")
+        raise e
+    
+    finally:
+        connection.close()
+
+def gettodaylessonscolvo():
+    try:
+        connection = sqlite3.connect(DB_PATH)
+        cursor = connection.cursor()
+
+        today = date.today()
+
+        cursor.execute('''SELECT COUNT(*) FROM timetable WHERE lesson_date = ?''', (today,))
+        res = cursor.fetchone()
+        if res:
+            colvo = res[0]
+        else:
+            colvo = 0
+        return colvo
+
     except Exception as e:
         print(f"Произошла ошибка - {e}")
         raise e

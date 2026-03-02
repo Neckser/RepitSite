@@ -4,7 +4,7 @@ from config import TEMPLATES_PATH
 from auth import get_current_user
 from utils.templates import verstkaprofile
 from services.stats_stud_service import getstudinfo, getstudhw
-from services.stats_tut_service import getstudcolvo, gettuthwcolvo, getstudents, gettutorinfo
+from services.stats_tut_service import getstudcolvo, gettuthwcolvo, getstudents, gettutorinfo, gettodaylessonscolvo
 from services.hw_service import updatehwstatus
 
 router = APIRouter()
@@ -88,6 +88,8 @@ def get_registertut(request: Request):
 
         tuthomework_colvo = gettuthwcolvo(name)
 
+        lessons_today_colvo = gettodaylessonscolvo()
+
         students = getstudents(name)
 
         for student in students:
@@ -102,6 +104,7 @@ def get_registertut(request: Request):
         content = content.replace("{{ student_colvo }}", str(student_colvo))
         content = content.replace("{{ homework_colvo }}", str(tuthomework_colvo))
         content = content.replace("{{ studtemplate }}", str(studtemplate))
+        content = content.replace("{{ lessons_today }}", str(lessons_today_colvo))
         return HTMLResponse(content=content)
     
     except Exception as e: 
