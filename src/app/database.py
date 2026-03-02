@@ -164,5 +164,15 @@ def init_database():
     );
     ''')
 
+    cursor.execute('''
+    CREATE TABLE IF NOT EXISTS lesson_links (
+        link_id INTEGER PRIMARY KEY AUTOINCREMENT,
+        schedule_id INTEGER,
+        link TEXT,
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (schedule_id) REFERENCES timetable(schedule_id) ON DELETE CASCADE
+    );
+    ''')
+
     connection.commit()
     connection.close()

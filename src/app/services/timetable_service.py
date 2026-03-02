@@ -64,3 +64,41 @@ def getlessontasks(lesson_id):
     
     finally:
         connection.close()
+
+def addvideolink(lesson_id, link):
+    try:
+        connection = sqlite3.connect(DB_PATH)
+        cursor = connection.cursor()
+        
+        cursor.execute('''DELETE FROM lesson_links WHERE schedule_id = ?''', (lesson_id,))
+        cursor.execute('''INSERT INTO lesson_links (schedule_id, link) VALUES (?, ?) ''', (lesson_id, link))
+        connection.commit()
+
+    except Exception as e:
+        print(f"Произошла ошибка - {e}")
+        raise e
+    
+    finally:
+        connection.close()
+
+def getvideolink(lesson_id):
+    try:
+        connection = sqlite3.connect(DB_PATH)
+        cursor = connection.cursor()
+        
+        cursor.execute('''SELECT * FROM lesson_links WHERE schedule_id = ?''', (lesson_id,))
+        res = cursor.fetchone()
+
+        if res is None:
+            return ""
+            
+        return res[2]
+
+
+
+    except Exception as e:
+        print(f"Произошла ошибка - {e}")
+        raise e
+    
+    finally:
+        connection.close()
