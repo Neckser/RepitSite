@@ -120,3 +120,89 @@ window.openFullImage = function(src) {
     document.getElementById('fullImageItem').src = src;
     overlay.classList.add('active');
 };
+
+// Функция для открытия модального окна видеосозвона
+window.showVideoModal = function(button) {
+    const lessonCard = button.closest('.lesson-card');
+    const lessonId = lessonCard.querySelector('input[name="lesson_id"]').value;
+    const subject = lessonCard.querySelector('input[name="subject"]').value;
+    const student = lessonCard.querySelector('input[name="student_name"]').value;
+    const time = lessonCard.querySelector('input[name="lesson_time"]').value;
+    const videoLink = lessonCard.querySelector('input[name="video_link"]').value;
+    
+    let modal = document.getElementById('videoModal');
+    if (!modal) {
+        modal = document.createElement('div');
+        modal.id = 'videoModal';
+        modal.className = 'modal-overlay';
+        document.body.appendChild(modal);
+    }
+
+    modal.innerHTML = `
+        <div class="modal-container">
+            <div class="modal-header" style="background: #4a90e2;">
+                <h2>Видеосозвон: ${subject}</h2>
+                <button class="modal-close" onclick="closeVideoModal()">×</button>
+            </div>
+            <div class="modal-content">
+                <div class="lesson-info-summary">
+                    <div class="info-pill"><strong>Ученик:</strong> ${student}</div>
+                    <div class="info-pill"><strong>Время:</strong> ${time}</div>
+                </div>
+
+                <form action="/savevideolink/${lessonId}" method="POST" class="video-form">
+                    <div class="video-form__group">
+                        <label for="video_link">Ссылка на видеосозвон:</label>
+                        <input 
+                            type="url" 
+                            id="video_link" 
+                            name="video_link" 
+                            class="video-form__input"
+                            placeholder="Ваша ссылка..."
+                            value="${videoLink}"
+                            required
+                        >
+                    </div>
+
+                    <button type="submit" class="btn-save-video">Сохранить ссылку</button>
+                </form>
+
+                <!-- Информационный блок -->
+                <!-- <div class="video-info-box"> --> 
+                <!--     <h4>Как это работает?</h4> -->
+                <!--     <ul> -->
+                <!--         <li>Ссылка будет доступна ученику в его расписании</li> -->
+                 <!--        <li>Появится за 15 минут до начала урока</li> -->
+                <!--         <li>Можно изменить в любой момент</li> -->
+                <!--     </ul> -->
+                <!--  </div> -->
+            </div>
+        </div>
+    `;
+
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+};
+
+// Функция закрытия
+window.closeVideoModal = function() {
+    const modal = document.getElementById('videoModal');
+    if (modal) {
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+};
+
+// Закрытие по клику на фон
+document.addEventListener('click', function(e) {
+    const modal = document.getElementById('videoModal');
+    if (e.target === modal) {
+        closeVideoModal();
+    }
+});
+
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        closeVideoModal();
+    }
+});

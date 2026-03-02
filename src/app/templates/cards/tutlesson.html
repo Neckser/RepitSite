@@ -1,5 +1,14 @@
-<form class="lesson-card" method="POST" action="/deletelesson">
-    <input type="hidden" name="lesson_id" value="{{ schedule_id }}" />
+<div class="lesson-card" data-lesson-id="{{ schedule_id }}">
+    <input type="hidden" class="lesson-data" name="lesson_id" value="{{ schedule_id }}">
+    <input type="hidden" class="lesson-data" name="subject" value="{{ subject }}">
+    <input type="hidden" class="lesson-data" name="student_name" value="{{ studfirst_name }} {{ studlast_name }}">
+    <input type="hidden" class="lesson-data" name="lesson_time" value="{{ starttime }} - {{ endtime }}">
+    <input type="hidden" class="lesson-data" name="video_link" value="{{ video_link }}">
+    
+    <div class="hidden-tasks-content" style="display: none;">
+        {{ tasks_template }}
+    </div>
+    
     <div class="schedule__lesson-card">
         <div class="schedule__lesson-content">
             <div class="schedule__lesson-time">{{ starttime }} - {{ endtime }}</div>
@@ -8,13 +17,15 @@
                 <span>{{ studfirst_name }} {{ studlast_name }}</span>
             </div>
         </div>
-        <div class="hidden-tasks-content" style="display: none;">
-            {{ tasks_template }}
-        </div>
+        
         <div class="schedule__lesson-actions">
             <button type="button" class="schedule__lesson-action-btn_details" onclick="showLessonModal(this)">Подробнее</button>
-            <button type="submit" class="schedule__lesson-action-btn_delete">Удалить</button>
+            <button type="button" class="schedule__lesson-action-btn_video" onclick="showVideoModal(this)">Созвон</button>
+            
+            <form method="POST" action="/deletelesson" class="delete-form">
+                <input type="hidden" name="lesson_id" value="{{ schedule_id }}">
+                <button type="submit" class="schedule__lesson-action-btn_delete">Удалить</button>
+            </form>
         </div>
-        
     </div>
-</form>
+</div>
