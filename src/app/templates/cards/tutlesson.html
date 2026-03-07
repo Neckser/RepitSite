@@ -21,6 +21,7 @@
         <div class="schedule__lesson-actions">
             <button type="button" class="schedule__lesson-action-btn_details" onclick="showLessonModal(this)">Подробнее</button>
             <button type="button" class="schedule__lesson-action-btn_video" onclick="showVideoModal(this)">Созвон</button>
+            <button type="button" class="schedule__lesson-action-btn_board" onclick="showDeskModal(this)">Доска</button>
             
             <form method="POST" action="/deletelesson" class="delete-form">
                 <input type="hidden" name="lesson_id" value="{{ schedule_id }}">

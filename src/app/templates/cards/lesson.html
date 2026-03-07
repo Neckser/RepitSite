@@ -1,5 +1,9 @@
 <div class="lesson-card" data-lesson-id="{{ schedule_id }}">
-    <input type="hidden" name="lesson_id" value="{{ schedule_id }}" />
+    <input type="hidden" class="lesson-data" name="lesson_id" value="{{ schedule_id }}">
+    <input type="hidden" class="lesson-data" name="subject" value="{{ subject }}">
+    <input type="hidden" class="lesson-data" name="tutor_name" value="{{ tutfirst_name }} {{ tutlast_name }}">
+    <input type="hidden" class="lesson-data" name="lesson_time" value="{{ starttime }} - {{ endtime }}">
+    <input type="hidden" class="lesson-data" name="video_link" value="{{ video_link }}">
     
     <div class="schedule__lesson-card">
         <div class="schedule__lesson-content">
@@ -15,9 +19,9 @@
         </div>
 
         <div class="schedule__lesson-actions">
-            <button type="button" class="schedule__lesson-action-btn_details" onclick="showLessonModal(this)">
-                Подробнее
-            </button>
+            <button type="button" class="schedule__lesson-action-btn_details" onclick="showLessonModal(this)">Подробнее</button>
+            <button type="button" class="schedule__lesson-action-btn_video" onclick="showVideoModal(this)">Созвон</button>
+            <button type="button" class="schedule__lesson-action-btn_board" onclick="showDeskLinkPreview(this)">Доска</button>
         </div>
     </div>
 </div>

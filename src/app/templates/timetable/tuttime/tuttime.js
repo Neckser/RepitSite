@@ -166,16 +166,13 @@ window.showVideoModal = function(button) {
 
                     <button type="submit" class="btn-save-video">Сохранить ссылку</button>
                 </form>
-
-                <!-- Информационный блок -->
-                <!-- <div class="video-info-box"> --> 
-                <!--     <h4>Как это работает?</h4> -->
-                <!--     <ul> -->
-                <!--         <li>Ссылка будет доступна ученику в его расписании</li> -->
-                 <!--        <li>Появится за 15 минут до начала урока</li> -->
-                <!--         <li>Можно изменить в любой момент</li> -->
-                <!--     </ul> -->
-                <!--  </div> -->
+                <div class="video-info-box">
+                <h4>Как это работает?</h4>
+                    <ul>
+                        <li>Ссылка будет доступна ученику в его расписании</li>
+                        <li>Можно изменить в любой момент</li>
+                    </ul>
+                </div>
             </div>
         </div>
     `;
@@ -204,5 +201,95 @@ document.addEventListener('click', function(e) {
 document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') {
         closeVideoModal();
+    }
+});
+
+// Функция для открытия модального окна доски
+window.showDeskModal = function(button) {
+    const lessonCard = button.closest('.lesson-card');
+    const lessonId = lessonCard.querySelector('input[name="lesson_id"]').value;
+    const subject = lessonCard.querySelector('input[name="subject"]').value;
+    const student = lessonCard.querySelector('input[name="student_name"]').value;
+    const time = lessonCard.querySelector('input[name="lesson_time"]').value;
+    const deskLink = lessonCard.querySelector('input[name="desk_link"]')?.value || '';
+    
+    let modal = document.getElementById('deskModal');
+    if (!modal) {
+        modal = document.createElement('div');
+        modal.id = 'deskModal';
+        modal.className = 'modal-overlay';
+        document.body.appendChild(modal);
+    }
+
+    modal.innerHTML = `
+        <div class="modal-container">
+            <div class="modal-header" style="background: linear-gradient(135deg, #f1c40f, #f39c12);">
+                <h2>Интерактивная доска: ${subject}</h2>
+                <button class="modal-close" onclick="closeDeskModal()">×</button>
+            </div>
+            <div class="modal-content">
+                <div class="lesson-info-summary">
+                    <div class="info-pill"><strong>Ученик:</strong> ${student}</div>
+                    <div class="info-pill"><strong>Время:</strong> ${time}</div>
+                </div>
+
+                <form action="/savedesklink/${lessonId}" method="POST" class="desk-form">
+                    <div class="desk-form__group">
+                        <label for="desk_link">Ссылка на доску:</label>
+                        <input 
+                            type="url" 
+                            id="desk_link" 
+                            name="desk_link" 
+                            class="desk-form__input"
+                            placeholder="Ваша ссылка..."
+                            value="${deskLink}"
+                            required
+                        >
+                    </div>
+                    <button type="submit" class="btn-save-desk">Сохранить ссылку на доску</button>
+                </form>
+                <div class="desk-info-box">
+                    <h4>Как использовать?</h4>
+                    <ul>
+                        <li>Ссылка будет доступна ученику в его расписании</li>
+                        <li>Можно использовать любую онлайн-доску</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    `;
+
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+};
+
+// Функция закрытия
+window.closeDeskModal = function() {
+    const modal = document.getElementById('deskModal');
+    if (modal) {
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+};
+
+// Функция копирования ссылки на доску
+window.copyDeskLink = function(lessonId) {
+    const link = document.querySelector(`input[name="desk_link"]`).value;
+    navigator.clipboard.writeText(link).then(() => {
+        alert('Ссылка скопирована!');
+    });
+};
+
+// Добавляем обработчики закрытия
+document.addEventListener('click', function(e) {
+    const deskModal = document.getElementById('deskModal');
+    if (e.target === deskModal) {
+        closeDeskModal();
+    }
+});
+
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        closeDeskModal();
     }
 });

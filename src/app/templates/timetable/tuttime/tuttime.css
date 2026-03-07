@@ -1605,3 +1605,232 @@
     transform: translateY(-1px);
     box-shadow: 0 4px 8px rgba(74, 144, 226, 0.3);
 }
+
+/* Оранжевая кнопка для доски */
+.schedule__lesson-action-btn_board {
+    background: linear-gradient(135deg, #f1c40f 0%, #f39c12 100%);
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    width: 100%;
+    box-shadow: 0 2px 4px rgba(243, 156, 18, 0.2);
+}
+
+.schedule__lesson-action-btn_board:hover {
+    background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%); 
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(243, 156, 18, 0.3);
+}
+
+/* Иконка для доски (если нужна) */
+.schedule__lesson-action-btn_board::before {
+    font-size: 12px;
+    margin-right: 4px;
+}
+
+/* Для мобильной версии */
+@media (max-width: 480px) {
+    .schedule__lesson-action-btn_board {
+        padding: 4px 8px;
+        font-size: 10px;
+    }
+}
+
+
+/* Стили для модального окна доски */
+.board-section {
+    margin-top: 20px;
+}
+
+.board-form {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 12px;
+    margin: 15px 0;
+}
+
+.board-form__group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.board-form__group label {
+    font-weight: 600;
+    color: #333;
+    font-size: 14px;
+}
+
+.board-form__textarea {
+    padding: 12px 15px;
+    border: 2px solid #e0e0e0;
+    border-radius: 10px;
+    font-size: 14px;
+    transition: all 0.3s;
+    width: 100%;
+    min-height: 150px;
+    resize: vertical;
+    font-family: inherit;
+}
+
+.board-form__textarea:focus {
+    outline: none;
+    border-color: #f39c12;
+    box-shadow: 0 0 0 3px rgba(243, 156, 18, 0.1);
+}
+
+.btn-save-board {
+    background: #f39c12;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.btn-save-board:hover {
+    background: #e67e22;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(243, 156, 18, 0.3);
+}
+
+.schedule__lesson-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;  /* Одинаковый отступ между всеми элементами */
+    margin-top: 10px;
+}
+
+/* Убираем лишние отступы у кнопок */
+.schedule__lesson-action-btn_details,
+.schedule__lesson-action-btn_video,
+.schedule__lesson-action-btn_board,
+.schedule__lesson-action-btn_delete {
+    margin-top: 0;  /* Убираем индивидуальные отступы */
+    width: 100%;
+}
+
+/* Форма удаления теперь просто часть потока */
+.delete-form {
+    display: block;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+/* Убираем дублирующийся стиль для video, если он есть с margin-top */
+.schedule__lesson-action-btn_video {
+    margin-top: 0;  /* Переопределяем, если был margin-top: 8px */
+}
+
+/* Стили для модального окна доски */
+.desk-form {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 12px;
+    margin: 15px 0;
+}
+
+.desk-form__group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.desk-form__group label {
+    font-weight: 600;
+    color: #333;
+    font-size: 14px;
+}
+
+.desk-form__input {
+    padding: 12px 15px;
+    border: 2px solid #e0e0e0;
+    border-radius: 10px;
+    font-size: 14px;
+    transition: all 0.3s;
+    width: 100%;
+}
+
+.desk-form__input:focus {
+    outline: none;
+    border-color: #f1c40f;
+    box-shadow: 0 0 0 3px rgba(241, 196, 15, 0.1);
+}
+
+.desk-platforms {
+    margin: 15px 0;
+    padding: 10px;
+    background: white;
+    border-radius: 8px;
+}
+
+.btn-save-desk {
+    background: linear-gradient(135deg, #f1c40f, #f39c12);
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.btn-save-desk:hover {
+    background: linear-gradient(135deg, #f39c12, #e67e22);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(241, 196, 15, 0.3);
+}
+
+.desk-link-display {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.desk-link {
+    flex: 1;
+    padding: 10px;
+    background: white;
+    border-radius: 6px;
+    text-decoration: none;
+    color: #f39c12;
+    word-break: break-all;
+    font-size: 14px;
+}
+
+.desk-info-box {
+    margin-top: 20px;
+    padding: 15px;
+    background: #fff3cd;
+    border-radius: 10px;
+    border-left: 4px solid #f1c40f;
+}
+
+.desk-info-box h4 {
+    color: #856404;
+    margin-bottom: 10px;
+}
+
+.desk-info-box ul {
+    padding-left: 20px;
+    color: #856404;
+}
