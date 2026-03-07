@@ -7,7 +7,7 @@ from utils.dates import get_base_monday, getweekdates
 from utils.templates import verstkaprofile
 from services.stats_stud_service import getstudinfo, getstudentweektimetable
 from services.stats_tut_service import gettutinfobyid
-from services.timetable_service import getlessontasks, getvideolink
+from services.timetable_service import getlessontasks, getvideolink, getdesklink, adddesklink
 
 router = APIRouter()
 
@@ -84,6 +84,8 @@ def studtime(request: Request, week_offset: int = Query(0)):
                     tutlast_name = tutinfo[1]
                     
                     video_link = getvideolink(lesson_id)
+                    desk_link = getdesklink(lesson_id)
+
                     day_template = day_template.replace('{{ subject }}', lesson["subject"])
                     day_template = day_template.replace('{{ tutfirst_name }}', tutfirst_name)
                     day_template = day_template.replace('{{ tutlast_name }}', tutlast_name)
@@ -91,6 +93,8 @@ def studtime(request: Request, week_offset: int = Query(0)):
                     day_template = day_template.replace('{{ endtime }}', str(end_time_str))
                     day_template = day_template.replace('{{ tasks_template }}', str(lesson_tasks_template))
                     day_template = day_template.replace('{{ video_link }}', str(video_link))
+                    day_template = day_template.replace('{{ desk_link }}', str(desk_link))
+
             if i == 0:
                 monday_template = day_template
             elif i == 1:

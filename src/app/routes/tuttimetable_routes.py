@@ -8,7 +8,7 @@ from utils.dates import get_base_monday, getweekdates
 from utils.templates import verstkaprofile
 from services.stats_tut_service import getstudents, gettutorinfo, gettutorweektimetable
 from services.stats_stud_service import getstudinfobyid
-from services.timetable_service import addlesson, dellesson, addtexttask, getlessontasks, addvideolink, getvideolink
+from services.timetable_service import addlesson, dellesson, addtexttask, getlessontasks, addvideolink, getvideolink, getdesklink, adddesklink
 
 router = APIRouter()
 
@@ -95,7 +95,10 @@ def tuttime(request: Request, week_offset: int = Query(0)):
                     studinfo = getstudinfobyid(lesson["student_id"])
                     studfirst_name = studinfo[0]
                     studlast_name = studinfo[1]
+
                     video_link = getvideolink(lesson_id)
+                    desk_link = getdesklink(lesson_id)
+
                     day_template = day_template.replace('{{ subject }}', lesson["subject"])
                     day_template = day_template.replace('{{ schedule_id }}', str(lesson["schedule_id"]))
                     day_template = day_template.replace('{{ studfirst_name }}', studfirst_name)
@@ -103,6 +106,7 @@ def tuttime(request: Request, week_offset: int = Query(0)):
                     day_template = day_template.replace('{{ starttime }}', str(start_time_str))
                     day_template = day_template.replace('{{ endtime }}', str(end_time_str))
                     day_template = day_template.replace('{{ video_link }}', str(video_link))
+                    day_template = day_template.replace('{{ desk_link }}', str(desk_link))
                     day_template = day_template.replace('{{ tasks_template }}', str(lesson_tasks_template))
                     
                 
@@ -232,6 +236,29 @@ def savevideolink(request: Request, lesson_id: int, video_link: Optional[str] = 
         else:
             link_to_save = ""
         addvideolink(lesson_id, link_to_save)
+
+    except Exception as e:
+        print(f"Произошла ошибка - {e}")
+        return RedirectResponse(url="/login", status_code=303)
+    
+    return RedirectResponse(url=f"/tuttime", status_code=303)
+
+@router.post("/savedesklink/{lesson_id}")
+def savevideolink(request: Request, lesson_id: int, desk_link: Optional[str] = Form(None)):
+    try:
+        name, user_type = get_current_user(request)
+        if user_type != "tutor":
+            return RedirectResponse(url="/login", status_code=303)
+
+    except HTTPException:
+        return RedirectResponse(url="/login", status_code=303)
+    
+    try:
+        if desk_link is not None:
+            link_to_save = desk_link
+        else:
+            link_to_save = ""
+        adddesklink(lesson_id, link_to_save)
 
     except Exception as e:
         print(f"Произошла ошибка - {e}")

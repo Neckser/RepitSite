@@ -107,9 +107,7 @@ window.showVideoModal = function(button) {
                 <div class="active-link-section">
                     <h4>Активная ссылка на созвон:</h4>
                     <div class="video-link-display">
-                        <a href="${videoLink}" target="_blank" class="video-link">
-                            ${videoLink}
-                        </a>
+                        <div class="video-link">${videoLink}</div>
                         <button class="copy-link-btn" onclick="copyVideoLink('${lessonId}')">Перейти</button>
                     </div>
                 </div>
@@ -152,5 +150,84 @@ document.addEventListener('click', function(e) {
 document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') {
         closeVideoModal();
+    }
+});
+
+// Функция для открытия модального окна доски (для ученика)
+window.showDeskModal = function(button) {
+    const lessonCard = button.closest('.lesson-card');
+    const lessonId = lessonCard.querySelector('input[name="lesson_id"]').value;
+    const subject = lessonCard.querySelector('input[name="subject"]').value;
+    const tutor = lessonCard.querySelector('input[name="tutor_name"]').value;
+    const time = lessonCard.querySelector('input[name="lesson_time"]').value;
+    const deskLink = lessonCard.querySelector('input[name="desk_link"]').value;
+    
+    let modal = document.getElementById('deskModal');
+    if (!modal) {
+        modal = document.createElement('div');
+        modal.id = 'deskModal';
+        modal.className = 'modal-overlay';
+        document.body.appendChild(modal);
+    }
+
+    modal.innerHTML = `
+        <div class="modal-container">
+            <div class="modal-header" style="background: linear-gradient(135deg, #f1c40f, #f39c12);">
+                <h2>Доска: ${subject}</h2>
+                <button class="modal-close" onclick="closeDeskModal()">×</button>
+            </div>
+            <div class="modal-content">
+                <div class="lesson-info-summary">
+                    <div class="info-pill"><strong>Репетитор:</strong> ${tutor}</div>
+                    <div class="info-pill"><strong>Время:</strong> ${time}</div>
+                </div>
+                
+                <div class="active-link-section" style="background: #fff3cd; border-left-color: #f1c40f;">
+                    <h4>Активная ссылка на доску:</h4>
+                    <div class="video-link-display">
+                        <div class="video-link">${deskLink}</div>
+                        <button class="go-desklink-btn" 
+                                onclick="openDeskLink('${deskLink}')">Перейти
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+};
+
+// Функция для открытия ссылки на доску
+window.openDeskLink = function(link) {
+    if (link) {
+        window.open(link, '_blank');
+    } else {
+        alert('Ссылка на доску не найдена');
+    }
+};
+
+// Функция закрытия
+window.closeDeskModal = function() {
+    const modal = document.getElementById('deskModal');
+    if (modal) {
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+};
+
+// Закрытие по клику на фон
+document.addEventListener('click', function(e) {
+    const modal = document.getElementById('deskModal');
+    if (e.target === modal) {
+        closeDeskModal();
+    }
+});
+
+// Закрытие по Escape
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        closeDeskModal();
     }
 });

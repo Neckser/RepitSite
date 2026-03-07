@@ -102,3 +102,41 @@ def getvideolink(lesson_id):
     
     finally:
         connection.close()
+
+
+def adddesklink(lesson_id, desk):
+    try:
+        connection = sqlite3.connect(DB_PATH)
+        cursor = connection.cursor()
+        
+        cursor.execute('''DELETE FROM lesson_desks WHERE schedule_id = ?''', (lesson_id,))
+        cursor.execute('''INSERT INTO lesson_desks (schedule_id, desk) VALUES (?, ?) ''', (lesson_id, desk))
+        connection.commit()
+
+    except Exception as e:
+        print(f"Произошла ошибка - {e}")
+        raise e
+    
+    finally:
+        connection.close()
+
+
+def getdesklink(lesson_id):
+    try:
+        connection = sqlite3.connect(DB_PATH)
+        cursor = connection.cursor()
+        
+        cursor.execute('''SELECT * FROM lesson_desks WHERE schedule_id = ?''', (lesson_id,))
+        res = cursor.fetchone()
+
+        if res is None:
+            return ""
+            
+        return res[2]
+
+    except Exception as e:
+        print(f"Произошла ошибка - {e}")
+        raise e
+    
+    finally:
+        connection.close()

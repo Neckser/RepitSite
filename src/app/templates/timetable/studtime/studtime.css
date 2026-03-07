@@ -1089,7 +1089,6 @@
 
 /* Иконка для доски */
 .schedule__lesson-action-btn_board::before {
-    content: "📋";
     font-size: 12px;
     margin-right: 4px;
 }
@@ -1191,9 +1190,27 @@
     background: white;
     border-radius: 6px;
     text-decoration: none;
-    color: #4a90e2;
     word-break: break-all;
     font-size: 14px;
+}
+
+.go-desklink-btn {
+    background: white;
+    border: 1px solid #f39c12;
+    color: #f39c12;  /* оранжевый текст */
+    padding: 8px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s;
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.go-desklink-btn:hover {
+    background: #f39c12;  /* оранжевый фон */
+    color: white;  /* белый текст */
 }
 
 .copy-link-btn {
