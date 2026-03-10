@@ -148,6 +148,18 @@ const entries = [
     out: 'build/ctests/studviewtest.html',
   },
   {
+    html: 'src/app/templates/chat/tutchat/tutchat.html',
+    css: 'src/app/templates/chat/tutchat/tutchat.css',
+    js: 'src/app/templates/chat/tutchat/tutchat.js',
+    out: 'build/chat/tutchat.html',
+  },
+  {
+    html: 'src/app/templates/chat/studchat/studchat.html',
+    css: 'src/app/templates/chat/studchat/studchat.css',
+    js: 'src/app/templates/chat/studchat/studchat.js',
+    out: 'build/chat/studchat.html',
+  },
+  {
     html: 'src/app/templates/ctests/studrestest/studrestest.html',
     css: 'src/app/templates/ctests/studrestest/studrestest.css',
     js: 'src/app/templates/ctests/studrestest/studrestest.js',
@@ -256,6 +268,10 @@ const entries = [
   {
     html: 'src/app/templates/cards/lessontask.html',
     out: 'build/cards/lessontask.html',
+  },
+  {
+    html: 'src/app/templates/cards/tutcontact.html',
+    out: 'build/cards/tutcontact.html',
   },
 ];
 

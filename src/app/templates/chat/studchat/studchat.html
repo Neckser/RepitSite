@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="ru">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Ученик | Чат</title>
+    </head>
+    <body class="page">
+        <header class="top-bar">
+            <div class="nav-container">
+                <div class="nav-buttons">
+                    <a href="/tutlist" class="nav-button">Мои репетиторы</a>
+                    <a href="/home" class="nav-button">Мои задания</a>
+                    <a href="/studgrades" class="nav-button">Мои оценки</a>
+                    <a href="/studtime" class="nav-button">Моё расписание</a>
+                    <a href="/studtests" class="nav-button active">Чат</a>
+                </div>
+
+                <a href="/profile" class="account-widget">
+                    <div class="user-avatar">{{ avatar }}</div>
+                    <div class="user-info">
+                        <div class="user-name">{{ first_name }} {{ last_name }}</div>
+                        <div class="user-role">Ученик</div>
+                    </div>
+                </a>
+            </div>
+        </header>
+
+        <div class="container">
+            <div class="page-header">
+                <h1 class="page-header__title">Чат с репетитором</h1>
+            </div>
+
+            <div class="chat-container">
+                <div class="chat-card">
+                    <div class="chat-header">
+                        <div class="chat-room-info">
+                            <div class="chat-with-name">{{ dialog_first_name }} {{ dialog_last_name }}</div>
+                            <div class="connection-status">
+                                <span class="status-indicator" id="statusIndicator"></span>
+                                <span id="statusText">Отключен</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Скрытые поля с данными для JavaScript -->
+                    <div class="chat-data">
+                        <input type="hidden" id="roomId" value="{{ room_name }}">
+                        <input type="hidden" id="student_id" value="{{ student_id }}">
+                        <input type="hidden" id="chatstudentmember" value="{{ studfirst_name }} {{ studlast_name }}">
+                        <span id="status" style="display: none;">⚫ Отключен</span>
+                    </div>
+                    
+                    <div class="messages-container">
+                        <div id="messages">
+                            {{ messages_template }}
+                        </div>
+                    </div>
+                    
+                    <form id="form" onsubmit="sendMessage(event)">
+                        <input type="text" id="messageText" placeholder="Введите сообщение..." autocomplete="off" disabled>
+                        <button type="submit" disabled>Отправить</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- ТОТ ЖЕ САМЫЙ JAVASCRIPT (с небольшими изменениями) -->
+        <script>
+            let ws = null;
+            let currentRoom = '';
+            let currentUser = '';
+            let reconnectAttempts = 0;
+            const maxReconnectAttempts = 5;
+            
+            function getWebSocketUrl(roomId, username) {
+                const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+                const host = window.location.host;
+                return `${protocol}//${host}/ws/${roomId}?username=${encodeURIComponent(username)}`;
+            }
+            
+            function updateConnectionStatus(isConnected, roomId = '') {
+                const indicator = document.getElementById('statusIndicator');
+                const statusText = document.getElementById('statusText');
+                
+                if (isConnected) {
+                    indicator.className = 'status-indicator connected';
+                    statusText.textContent = 'Подключен к ' + roomId;
+                    statusText.style.color = '#4caf50';
+                } else {
+                    indicator.className = 'status-indicator disconnected';
+                    statusText.textContent = 'Отключен';
+                    statusText.style.color = '#f44336';
+                }
+            }
+            
+            function connect() {
+                const roomId = document.getElementById('roomId').value;
+                const username = document.getElementById('chatstudentmember').value;
+                
+                currentRoom = roomId;
+                currentUser = username;
+                
+                if (ws) {
+                    ws.close();
+                }
+                
+                try {
+                    const wsUrl = getWebSocketUrl(roomId, username);
+                    console.log('Connecting to:', wsUrl);
+                    ws = new WebSocket(wsUrl);
+                    
+                    ws.onopen = function() {
+                        console.log('WebSocket connected');
+                        reconnectAttempts = 0;
+                        document.getElementById('status').innerHTML = '🟢 Подключен';
+                        document.getElementById('status').style.color = 'green';
+                        document.getElementById('messageText').disabled = false;
+                        document.querySelector('button[type="submit"]').disabled = false;
+                        
+                        updateConnectionStatus(true, roomId);
+                        addMessage('Система', 'Вы подключились к чату', 'system');
+                    };
+                    
+                    ws.onmessage = function(event) {
+                        try {
+                            const data = JSON.parse(event.data);
+                            
+                            if (data.type === 'message') {
+                                const messageClass = (data.sender === currentUser) ? 'my-message' : 'other-message';
+                                addMessage(data.sender, data.text, messageClass);
+                            } else if (data.type === 'system') {
+                                addMessage('Система', data.text, 'system');
+                            } else if (data.type === 'users') {
+                                console.log('Пользователи онлайн:', data.users);
+                            }
+                        } catch (e) {
+                            console.error('Error parsing message:', e);
+                        }
+                    };
+                    
+                    ws.onclose = function(event) {
+                        console.log('WebSocket closed:', event);
+                        document.getElementById('status').innerHTML = '⚫ Отключен';
+                        document.getElementById('status').style.color = 'red';
+                        document.getElementById('messageText').disabled = true;
+                        document.querySelector('button[type="submit"]').disabled = true;
+                        
+                        updateConnectionStatus(false);
+                        
+                        if (reconnectAttempts < maxReconnectAttempts) {
+                            reconnectAttempts++;
+                            setTimeout(connect, 3000);
+                            addMessage('Система', `Попытка переподключения ${reconnectAttempts}/${maxReconnectAttempts}...`, 'system');
+                        } else {
+                            addMessage('Система', 'Не удалось подключиться к серверу. Обновите страницу.', 'system');
+                        }
+                    };
+                    
+                    ws.onerror = function(error) {
+                        console.error('WebSocket ошибка:', error);
+                        addMessage('Система', 'Ошибка соединения', 'system');
+                    };
+                    
+                } catch (error) {
+                    console.error('Error creating WebSocket:', error);
+                }
+            }
+            
+            function sendMessage(event) {
+                event.preventDefault();
+                const input = document.getElementById('messageText');
+                const text = input.value.trim();
+                const roomId = document.getElementById('roomId').value;
+                const student_id = document.getElementById('student_id').value;
+                        
+                if (text && ws && ws.readyState === WebSocket.OPEN) {
+                    ws.send(JSON.stringify({
+                        type: 'message',
+                        text: text
+                    }));
+
+                    fetch('/savestudentmessage', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            room_id: roomId,
+                            sender_id: student_id,
+                            sender_type: 'student',
+                            text: text,
+                            timestamp: new Date().toISOString()
+                        })
+                    }).catch(error => console.error('Ошибка сохранения:', error));
+
+                    input.value = '';
+                } else if (ws && ws.readyState !== WebSocket.OPEN) {
+                    addMessage('Система', 'Соединение потеряно. Переподключаемся...', 'system');
+                    connect();
+                }
+            }
+
+            function addMessage(sender, text, className = 'other-message') {
+                const messages = document.getElementById('messages');
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `message ${className}`;
+                
+                const time = new Date().toLocaleTimeString();
+                messageDiv.innerHTML = `<strong>${sender}</strong> [${time}]<br>${text}`;
+                
+                messages.appendChild(messageDiv);
+                messages.scrollTop = messages.scrollHeight;
+            }
+            
+            window.onload = function() {
+                connect();
+            };
+        </script>
+    </body>
+</html>

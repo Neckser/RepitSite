@@ -184,5 +184,48 @@ def init_database():
     );
     ''')
 
+    
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS chats (
+            chat_id TEXT UNIQUE PRIMARY KEY,
+            student_id INTEGER NOT NULL,
+            tutor_id INTEGER NOT NULL,
+            last_message_text TEXT,
+            last_message_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            UNIQUE(student_id, tutor_id)  -- чтобы не было дубликатов чатов между теми же людьми
+        )
+    ''')
+
+    
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS messages (
+            message_id INTEGER PRIMARY KEY AUTOINCREMENT,
+            chat_id TEXT NOT NULL,
+            sender_id INTEGER NOT NULL,
+            sender_type TEXT NOT NULL CHECK(sender_type IN ('student', 'tutor')),
+            message_text TEXT NOT NULL,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (chat_id) REFERENCES chats(chat_id) ON DELETE CASCADE
+        )
+    ''')
+
+    
+    cursor.execute('''
+        CREATE TRIGGER IF NOT EXISTS update_chat_last_message 
+        AFTER INSERT ON messages
+        BEGIN
+            UPDATE chats 
+            SET last_message_text = NEW.message_text,
+                last_message_at = NEW.created_at 
+            WHERE chat_id = NEW.chat_id;
+        END;
+    ''')
+
+    cursor.execute('''
+        CREATE INDEX IF NOT EXISTS idx_messages_chat_time 
+        ON messages(chat_id, created_at DESC)
+    ''')
+
     connection.commit()
     connection.close()

@@ -1,5 +1,5 @@
 fastapi
-uvicorn
+uvicorn[standard]
 python-multipart
 PyJWT
 prometheus-fastapi-instrumentator

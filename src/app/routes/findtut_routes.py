@@ -7,6 +7,7 @@ from services.stats_stud_service import getstudinfo, gettutlist
 from services.stats_tut_service import getstudcolvo, gettutsubject
 from services.findtut_service import addtutor
 from services.auth_tut_service import checktutexistsbyid
+from services.chat_service import generatecontacttotutor
 
 router = APIRouter()
 
@@ -110,6 +111,9 @@ def addtut(request: Request, tutor_code: str = Form(...)):
         if checktutexistsbyid(tutor_code):
 
             addtutor(student_id, tutor_code)
+
+            generatecontacttotutor(student_id, tutor_code)
+
 
         else:
             with open(f"{TEMPLATES_PATH}findtut/findtutidfailed.html", "r", encoding='utf-8') as file:
