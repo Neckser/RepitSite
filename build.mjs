@@ -198,6 +198,11 @@ const entries = [
     out: "build/landing/faq.html",
   },
   {
+    html: 'src/app/templates/chat/tutmainchat/tutmainchat.html',
+    css: 'src/app/templates/chat/tutmainchat/tutmainchat.css',
+    out: 'build/chat/tutmainchat.html',
+  },
+  {
     html: 'src/app/templates/cards/hwcard.html',
     out: 'build/cards/hwcard.html',
   },

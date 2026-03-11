@@ -4,7 +4,7 @@ from typing import List, Dict
 from config import TEMPLATES_PATH
 from auth import get_current_user
 from utils.templates import verstkaprofile
-from services.chat_service import getchatsbytutorid, addmessage, getstudentchatinfo, getchatmessages, gettutorchatinfo
+from services.chat_service import  getchatmessages, gettutorchatinfo, checkchatexists
 from services.stats_tut_service import gettutorinfo, gettutinfobyid
 from services.stats_stud_service import getstudinfo
 import asyncio
@@ -22,6 +22,11 @@ def studchat(request: Request, room_name: str):
     except HTTPException:
         return RedirectResponse(url="/login", status_code=303)
     
+    if checkchatexists(room_name) == False:
+        with open(f'{TEMPLATES_PATH}errors/error.html', 'r', encoding='utf-8') as f:
+            content = f.read()
+        return HTMLResponse(content=content, status_code=404)
+    
     studinfo = getstudinfo(name)
     studfirst_name = studinfo[0]
     studlast_name = studinfo[1]
@@ -29,8 +34,8 @@ def studchat(request: Request, room_name: str):
 
 
     tutinfo = gettutorchatinfo(room_name)
-    tutfirst_name = tutinfo[0]
-    tutlast_name = tutinfo[1]
+    tutfirst_name = tutinfo[1]
+    tutlast_name = tutinfo[2]
 
 
     messages_history = getchatmessages(room_name)

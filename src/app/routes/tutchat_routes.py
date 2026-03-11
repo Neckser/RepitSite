@@ -4,7 +4,7 @@ from typing import List, Dict
 from config import TEMPLATES_PATH
 from auth import get_current_user
 from utils.templates import verstkaprofile
-from services.chat_service import getchatsbytutorid, addmessage, getstudentchatinfo, getchatmessages
+from services.chat_service import getchatsbytutorid, addmessage, getstudentchatinfo, getchatmessages, checkchatexists
 from services.stats_tut_service import gettutorinfo, gettutinfobyid
 import asyncio
 import json
@@ -15,6 +15,56 @@ router = APIRouter()
 active_connections: Dict[str, List[WebSocket]] = {}
 
 
+@router.get("/tutchat")
+def tutmainchat(request: Request):
+    try:
+        name, user_type = get_current_user(request)
+        if user_type != "tutor":
+            return RedirectResponse(url="/login", status_code=303)
+
+    except HTTPException:
+        return RedirectResponse(url="/login", status_code=303)
+    
+    try:
+
+        tutorinfo = gettutorinfo(name)
+        tutfirst_name = tutorinfo[0]
+        tutlast_name = tutorinfo[1]
+        tutor_id = tutorinfo[2]
+
+        chats = getchatsbytutorid(tutor_id)
+        
+        contact_template = ""
+
+        with open(f"{TEMPLATES_PATH}cards/tutcontact.html", 'r', encoding="utf-8") as f:
+            contact_card = f.read()
+        
+
+        if chats:
+            for chat in chats:
+                contact_template += contact_card
+
+                chat_id = chat[0]
+                student_first_name = chat[2]
+                student_last_name = chat[3]
+                last = chat[5]
+
+                contact_template = contact_template.replace("{{ chat_id }}", str(chat_id))
+                contact_template = contact_template.replace("{{ contact_avatar }}", str(student_first_name)[0] + str(student_last_name)[0])
+                contact_template = contact_template.replace("{{ contact_first_name }}", str(student_first_name))
+                contact_template = contact_template.replace("{{ contact_last_name }}", str(student_last_name))
+                contact_template = contact_template.replace("{{ last_message }}", str(last))
+        
+    except Exception as e:
+        print(f"Произошла ошибка - {e}")
+        return RedirectResponse(url='/login', status_code=303)
+    
+
+    with open(f"{TEMPLATES_PATH}chat/tutmainchat.html", 'r', encoding='utf-8') as f:
+        content = verstkaprofile(f.read(), name, tutfirst_name, tutlast_name)
+
+    content = content.replace("{{ contacts_template }}", str(contact_template))
+    return HTMLResponse(content=content)
 
 @router.get("/tutchat/{room_name}")
 def tutchat(request: Request, room_name: str):
@@ -27,6 +77,10 @@ def tutchat(request: Request, room_name: str):
         return RedirectResponse(url="/login", status_code=303)
 
     try:
+
+        if checkchatexists(room_name) == False:
+            return RedirectResponse(url='/tutchat', status_code=303)
+
         tutorinfo = gettutorinfo(name)
         tutor_id = tutorinfo[2]
         tutfirst_name = tutorinfo[0]
@@ -39,54 +93,57 @@ def tutchat(request: Request, room_name: str):
 
         chats = getchatsbytutorid(tutor_id)
 
-        for chat in chats:
-            contact_template += contact_card
+        if chats:
+            for chat in chats:
+                contact_template += contact_card
 
-            chat_id = chat[0]
-            student_first_name = chat[2]
-            student_last_name = chat[3]
-            last = chat[5]
+                chat_id = chat[0]
+                student_first_name = chat[2]
+                student_last_name = chat[3]
+                last = chat[5]
 
-            contact_template = contact_template.replace("{{ chat_id }}", str(chat_id))
-            contact_template = contact_template.replace("{{ contact_avatar }}", str(student_first_name)[0] + str(student_last_name)[0])
-            contact_template = contact_template.replace("{{ contact_first_name }}", str(student_first_name))
-            contact_template = contact_template.replace("{{ contact_last_name }}", str(student_last_name))
-            contact_template = contact_template.replace("{{ last_message }}", str(last))
+                contact_template = contact_template.replace("{{ chat_id }}", str(chat_id))
+                contact_template = contact_template.replace("{{ contact_avatar }}", str(student_first_name)[0] + str(student_last_name)[0])
+                contact_template = contact_template.replace("{{ contact_first_name }}", str(student_first_name))
+                contact_template = contact_template.replace("{{ contact_last_name }}", str(student_last_name))
+                contact_template = contact_template.replace("{{ last_message }}", str(last))
 
-        studinfo = getstudentchatinfo(chat_id)
+
+        studinfo = getstudentchatinfo(room_name)
         student_id = studinfo[0]
         studfirst_name = studinfo[1]
         studlast_name = studinfo[2]
 
-
         messages_history = getchatmessages(room_name)
     
         messages_template= ""
-        for message in messages_history:
-            message_id = message[0]
-            sender_id = message[1]
-            sender_type = message[2]
-            message_text = message[3]
-            created_at = message[4]
 
-            if sender_type == 'tutor' and sender_id == tutor_id:
-                message_class = "my-message"
-                sender_name = str(tutfirst_name) + str(tutlast_name)
+        if messages_history:
+            for message in messages_history:
+                message_id = message[0]
+                sender_id = message[1]
+                sender_type = message[2]
+                message_text = message[3]
+                created_at = message[4]
 
-            elif sender_type == 'system':
-                message_class = "system-message"
-                sender_name = "system"
-            else:
-                message_class = "other-message"
-                sender_name = str(studfirst_name) + str(studlast_name)
+                if sender_type == 'tutor' and sender_id == tutor_id:
+                    message_class = "my-message"
+                    sender_name = str(tutfirst_name) + str(tutlast_name)
 
-            message_card = f"""
-            <div class="message {message_class}">
-                <strong>{sender_name}</strong> [{created_at}]<br>
-                {message_text}
-            </div>
-            """
-            messages_template += message_card
+                elif sender_type == 'system':
+                    message_class = "system-message"
+                    sender_name = "system"
+                else:
+                    message_class = "other-message"
+                    sender_name = str(studfirst_name) + str(studlast_name)
+
+                message_card = f"""
+                <div class="message {message_class}">
+                    <strong>{sender_name}</strong> [{created_at}]<br>
+                    {message_text}
+                </div>
+                """
+                messages_template += message_card
 
     except Exception as e:
         print(f"Произошла ошибка - {e}")

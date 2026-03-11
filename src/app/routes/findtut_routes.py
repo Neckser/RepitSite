@@ -7,7 +7,7 @@ from services.stats_stud_service import getstudinfo, gettutlist
 from services.stats_tut_service import getstudcolvo, gettutsubject
 from services.findtut_service import addtutor
 from services.auth_tut_service import checktutexistsbyid
-from services.chat_service import generatecontacttotutor
+from services.chat_service import generatecontacttotutor, getchatid
 
 router = APIRouter()
 
@@ -31,16 +31,19 @@ def tutlist(request: Request):
         studinfo = getstudinfo(name)
         studfirst_name = studinfo[0]
         studlast_name = studinfo[1]
+        student_id = studinfo[2]
 
         tutorlist = gettutlist(name)
 
         for tutor in tutorlist:
-
+            tutor_id = tutor[0]
             tutfirst_name = tutor[1]
             tutlast_name = tutor[2]
             tutlogin = tutor[4]
             student_colvo = getstudcolvo(tutlogin)
             tutsubjects = gettutsubject(tutlogin)
+
+            chat_id = getchatid(student_id, tutor_id)
 
             subjecttemplate = ""
 
@@ -56,6 +59,7 @@ def tutlist(request: Request):
             tuttemplate = tuttemplate.replace("{{ subjecttemplate }}", subjecttemplate)
             tuttemplate = tuttemplate.replace("{{ lesson_count }}", '🚧')
             tuttemplate = tuttemplate.replace("{{ rating }}", '🚧')
+            tuttemplate = tuttemplate.replace("{{ chat_id }}", str(chat_id))
 
         with open(f'{TEMPLATES_PATH}findtut/tutlist.html', 'r', encoding="utf-8") as f:
             content = verstkaprofile(f.read(), name, studfirst_name, studlast_name)

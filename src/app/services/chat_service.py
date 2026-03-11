@@ -106,3 +106,41 @@ def generatecontacttotutor(student_id, tutor_id):
     
     finally:
         connection.close()
+
+
+def checkchatexists(chat_id):
+    try:
+        connection = sqlite3.connect(DB_PATH)
+        cursor = connection.cursor()
+        
+        cursor.execute("SELECT EXISTS(SELECT 1 FROM chats WHERE chat_id = ?)", (chat_id,))
+        exists = cursor.fetchone()[0]
+        
+        return bool(exists)
+        
+    except Exception as e:
+        print(f"Ошибка при проверке чата: {e}")
+        return False
+    
+    finally:
+        connection.close()
+
+
+def getchatid(student_id, tutor_id):
+    try:
+        connection = sqlite3.connect(DB_PATH)
+        cursor = connection.cursor()
+        
+        cursor.execute('''SELECT chat_id FROM chats WHERE student_id = ? AND tutor_id = ?''', (student_id, tutor_id))
+        result = cursor.fetchone()
+        
+        if result:
+            return result[0]
+        else:
+            return ""
+        
+    except Exception as e:
+        print(f"Ошибка при получении chat_id: {e}")
+        return False
+    finally:
+        connection.close()

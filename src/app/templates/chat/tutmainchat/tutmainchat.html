@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="ru">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Репетитор | Чат</title>
+    </head>
+    <body class="body">
+        <header class="top-bar">
+            <div class="top-bar__container">
+                <div class="top-bar__nav">
+                    <a href="/hometut" class="top-bar__nav-button">Главная</a>
+                    <a href="/homeworkstut" class="top-bar__nav-button">Задания</a>
+                    <a href="/tutgrades" class="top-bar__nav-button">Оценки</a>
+                    <a href="/tuttime" class="top-bar__nav-button">Расписание</a>
+                    <a href="/tuttests" class="top-bar__nav-button">Тесты</a>
+                    <a href="/tutchat" class="top-bar__nav-button top-bar__nav-button_active">Чат</a>
+                </div>
+
+                <a href="/profiletut" class="top-bar__account">
+                    <div class="top-bar__avatar">{{ avatar }}</div>
+                    <div class="top-bar__user-info">
+                        <div class="top-bar__user-name">{{ first_name }} {{ last_name }}</div>
+                        <div class="top-bar__user-role">Репетитор</div>
+                    </div>
+                </a>
+            </div>
+        </header>
+
+        <div class="container">
+            <div class="page-header">
+                <h1 class="page-header__title">Чат-комната</h1>
+            </div>
+
+            <div class="content-grid">
+                <aside class="sidebar">
+                    <div class="card">
+                        <h2 class="card__title">Контакты</h2>
+                        <div class="contacts-list">
+                             {{ contacts_template }}
+                        </div>
+                    </div>
+                </aside>
+
+                <!-- Правая колонка: чат -->
+                <main class="main-content">
+                    <div class="chat-card">
+                        <div class="chat-header">
+                        </div>
+                    </div>
+                </main>
+            </div>
+        </div>
+    </body>
+</html>

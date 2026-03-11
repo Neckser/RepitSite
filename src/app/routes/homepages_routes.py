@@ -6,6 +6,7 @@ from utils.templates import verstkaprofile
 from services.stats_stud_service import getstudinfo, getstudhw
 from services.stats_tut_service import getstudcolvo, gettuthwcolvo, getstudents, gettutorinfo, gettodaylessonscolvo
 from services.hw_service import updatehwstatus
+from services.chat_service import getchatid
 
 router = APIRouter()
 
@@ -65,7 +66,7 @@ def home(request: Request):
     
 
 @router.get("/hometut")
-def get_registertut(request: Request):
+def hometut(request: Request):
     try:
         name, user_type = get_current_user(request)
         if user_type != "tutor":
@@ -83,6 +84,7 @@ def get_registertut(request: Request):
         tutinfo = gettutorinfo(name)
         tutfirst_name = tutinfo[0]
         tutlast_name = tutinfo[1]
+        tutor_id = tutinfo[2]
         
         student_colvo = getstudcolvo(name)
 
@@ -94,10 +96,16 @@ def get_registertut(request: Request):
 
         for student in students:
             studtemplate += a
-            studtemplate = studtemplate.replace("{{ first_name }}", str(student[1]))
-            studtemplate = studtemplate.replace("{{ last_name }}", str(student[2]))
+            student_id = student[0]
+            studfirst_name = student[1]
+            studlast_name = student[2]
+            chat_id = getchatid(student_id, tutor_id)
+
+            studtemplate = studtemplate.replace("{{ first_name }}", str(studfirst_name))
+            studtemplate = studtemplate.replace("{{ last_name }}", str(studlast_name))
             studtemplate = studtemplate.replace("{{ grade }}", str(student[5]))
-            studtemplate = studtemplate.replace("{{ avatarstud }}", str(student[1][0] + student[2][0]))
+            studtemplate = studtemplate.replace("{{ avatarstud }}", str(studfirst_name[0] + studlast_name[0]))
+            studtemplate = studtemplate.replace("{{ chat_id }}", str(chat_id))
 
         with open(f'{TEMPLATES_PATH}mainpages/hometut.html', 'r', encoding='utf-8') as file:
             content = verstkaprofile(file.read(), name, tutfirst_name, tutlast_name)
