@@ -160,6 +160,18 @@ const entries = [
     out: 'build/chat/studchat.html',
   },
   {
+    html: 'src/app/templates/boards/tutboard/tutboard.html',
+    css: 'src/app/templates/boards/tutboard/tutboard.css',
+    js: 'src/app/templates/boards/tutboard/tutboard.js',
+    out: 'build/boards/tutboard.html',
+  },
+  {
+    html: 'src/app/templates/boards/studboard/studboard.html',
+    css: 'src/app/templates/boards/studboard/studboard.css',
+    js: 'src/app/templates/boards/studboard/studboard.js',
+    out: 'build/boards/studboard.html',
+  },
+  {
     html: 'src/app/templates/ctests/studrestest/studrestest.html',
     css: 'src/app/templates/ctests/studrestest/studrestest.css',
     js: 'src/app/templates/ctests/studrestest/studrestest.js',

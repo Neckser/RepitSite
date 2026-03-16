@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Онлайн доска | RepitHub</title>
+</head>
+<body class="body">
+    <header class="top-bar">
+        <div class="top-bar__container">
+            <div class="top-bar__nav">
+                <a href="/tutlist" class="top-bar__nav-button">Мои репетиторы</a>
+                <a href="/home" class="top-bar__nav-button">Мои задания</a>
+                <a href="/studgrades" class="top-bar__nav-button">Мои оценки</a>
+                <a href="/studtime" class="top-bar__nav-button">Моё расписание</a>
+                <a href="/studtests" class="top-bar__nav-button">Мои тесты</a>
+            </div>
+
+            <a href="/profile" class="top-bar__account">
+                <div class="top-bar__avatar">{{ avatar }}</div>
+                <div class="top-bar__user-info">
+                    <div class="top-bar__user-name">{{ first_name }} {{ last_name }}</div>
+                    <div class="top-bar__user-role">Ученик</div>
+                </div>
+            </a>
+        </div>
+    </header>
+
+    <div class="app" id="app" style="display: flex;">
+        <input type="hidden" id="currentRoom" value="{{ board_id }}">
+        <div class="toolbar-wrapper">
+            <div class="toolbar">
+                <div class="toolbar__container">
+                    <div class="toolbar__group">
+                        <button class="tool-btn cursor active" id="toolCursor" title="Курсор">↖️</button>
+                        <button class="tool-btn brush" id="toolBrush" title="Кисточка">✏️</button>
+                        <button class="tool-btn eraser" id="toolEraser" title="Ластик">🧽</button>
+                    </div>
+                    <div class="toolbar__group">
+                        <input type="color" id="colorPicker" class="toolbar__color" value="#000000">
+                    </div>
+                    <div class="toolbar__group">
+                        <input type="range" id="brushSize" min="1" max="50" value="5" class="toolbar__range">
+                        <span class="toolbar__value" id="sizeValue">5</span>
+                    </div>
+                    <div class="toolbar__group">
+                        <div class="toolbar__file">
+                            <button class="btn btn_small" id="imageInputButton">
+                                Вставить картинку
+                            </button>
+                            <input type="file" id="imageInput" accept="image/*">
+                        </div>
+                    </div>
+                    <div class="toolbar__group">
+                        <button class="btn btn_danger" id="clearBtn">Очистить</button>
+                        <button class="btn btn_primary" id="saveBtn">Сохранить</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="canvas-container" id="canvasContainer">
+            <canvas id="whiteboard" width="2000" height="2000"></canvas>
+        </div>
+        <div class="zoom-controls-bottom">
+            <button id="zoomIn">+</button>
+            <div class="zoom-level-bottom" id="zoomLevel">100%</div>
+            <button id="zoomOut">−</button>
+            <button id="zoomReset">↺</button>
+        </div>
+        <div class="hint">
+            💡 Колесико - зум | Правая кнопка - перемещение | Delete - удалить картинку
+        </div>
+    </div>
+</body>
+</html>
