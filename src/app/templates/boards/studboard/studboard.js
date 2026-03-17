@@ -56,6 +56,12 @@ let usersCount = 1;
 //     alert('Ссылка скопирована!');
 // });
 
+// Функция для правильного определения протокола WebSocket (как в чате)
+function getWebSocketUrl(roomToken) {
+    const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+    const host = window.location.host;
+    return `${protocol}//${host}/ws/board/${roomToken}`;
+}
 // Автоматическое подключение при загрузке страницы
 window.addEventListener('load', () => {
     // Получаем room_token из скрытого поля
@@ -73,78 +79,89 @@ window.addEventListener('load', () => {
 });
 
 function connectWebSocket() {
-    ws = new WebSocket(`ws://${window.location.host}/ws/board/${roomToken}`);
-    
-    ws.onopen = () => {
-        console.log('Connected to room:', roomToken);
-        isConnected = true;
-    };
-    
-    ws.onmessage = (event) => {
-        const message = JSON.parse(event.data);
+    try {
+        const wsUrl = getWebSocketUrl(roomToken);
+        console.log('Connecting to WebSocket:', wsUrl);
+        ws = new WebSocket(wsUrl);
         
-        if (message.type === 'init') {
-            // Инициализация - загружаем состояние комнаты
-            console.log('Получена инициализация:', message.data);
+        ws.onopen = () => {
+            console.log('Connected to room:', roomToken);
+            isConnected = true;
+        };
+        
+        ws.onmessage = (event) => {
+            const message = JSON.parse(event.data);
             
-            // Загружаем линии
-            drawings = message.data.drawings || [];
-            
-            // Загружаем картинки (асинхронно)
-            images = [];
-            if (message.data.images && message.data.images.length > 0) {
-                loadImagesSequentially(message.data.images);
-            } else {
-                redrawCanvas();
-            }
-        } 
-        else if (message.sender !== id(ws)) {
-            // Получено сообщение от другого пользователя
-            console.log('Получено сообщение:', message.type);
-            
-            switch(message.type) {
-                case 'draw_line':
-                    drawings.push(message.data);
+            if (message.type === 'init') {
+                // Инициализация - загружаем состояние комнаты
+                console.log('Получена инициализация:', message.data);
+                
+                // Загружаем линии
+                drawings = message.data.drawings || [];
+                
+                // Загружаем картинки (асинхронно)
+                images = [];
+                if (message.data.images && message.data.images.length > 0) {
+                    loadImagesSequentially(message.data.images);
+                } else {
                     redrawCanvas();
-                    break;
-                    
-                case 'add_image':
-                    // Добавляем картинку не удаляя существующие
-                    addImageFromData(message.data);
-                    break;
-                    
-                case 'move_image':
-                    updateImagePosition(message.data.id, message.data.x, message.data.y);
-                    break;
-                    
-                case 'resize_image':
-                    updateImageSize(message.data.id, message.data);
-                    break;
-                    
-                case 'delete_image':
-                    images = images.filter(img => img.id !== message.data.id);
-                    if (selectedImageId === message.data.id) {
+                }
+            } 
+            else if (message.sender !== id(ws)) {
+                // Получено сообщение от другого пользователя
+                console.log('Получено сообщение:', message.type);
+                
+                switch(message.type) {
+                    case 'draw_line':
+                        drawings.push(message.data);
+                        redrawCanvas();
+                        break;
+                        
+                    case 'add_image':
+                        // Добавляем картинку не удаляя существующие
+                        addImageFromData(message.data);
+                        break;
+                        
+                    case 'move_image':
+                        updateImagePosition(message.data.id, message.data.x, message.data.y);
+                        break;
+                        
+                    case 'resize_image':
+                        updateImageSize(message.data.id, message.data);
+                        break;
+                        
+                    case 'delete_image':
+                        images = images.filter(img => img.id !== message.data.id);
+                        if (selectedImageId === message.data.id) {
+                            selectedImageId = null;
+                        }
+                        redrawCanvas();
+                        break;
+                        
+                    case 'clear_board':
+                        drawings = [];
+                        images = [];
                         selectedImageId = null;
-                    }
-                    redrawCanvas();
-                    break;
-                    
-                case 'clear_board':
-                    drawings = [];
-                    images = [];
-                    selectedImageId = null;
-                    redrawCanvas();
-                    break;
+                        redrawCanvas();
+                        break;
+                }
             }
-        }
-    };
-    
-    ws.onclose = () => {
-        console.log('Disconnected from room');
-        isConnected = false;
-        // Пробуем переподключиться через 2 секунды
-        setTimeout(connectWebSocket, 2000);
-    };
+        };
+        
+        ws.onclose = () => {
+            console.log('Disconnected from room');
+            isConnected = false;
+            // Пробуем переподключиться через 2 секунды
+            setTimeout(connectWebSocket, 2000);
+        };
+        
+        ws.onerror = (error) => {
+            console.error('WebSocket error:', error);
+        };
+        
+    } catch (error) {
+        console.error('Error creating WebSocket:', error);
+    }
 }
 
 // Функция для последовательной загрузки изображений
