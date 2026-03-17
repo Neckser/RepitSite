@@ -14,7 +14,6 @@ from services.stats_stud_service import getstudinfo
 
 router = APIRouter()
 
-# Хранилище комнат: token -> {connections: [], drawings: [], images: []}
 rooms: Dict[str, Dict[str, Any]] = {}
 
 @router.get("/tutboard/{board_id}")

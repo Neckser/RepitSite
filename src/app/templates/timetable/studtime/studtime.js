@@ -191,6 +191,13 @@ window.showDeskModal = function(button) {
                         </button>
                     </div>
                 </div>
+                <div class="desk-action-section">
+                    <button class="btn-internal-desk" onclick="openDeskLink('/studboard/${lessonId}')">
+                        <span class="btn-internal-desk__icon">📋</span>
+                        <span class="btn-internal-desk__text">Перейти на внутреннюю доску</span>
+                        <span class="btn-internal-desk__arrow">→</span>
+                    </button>
+                </div>
             </div>
         </div>
     `;

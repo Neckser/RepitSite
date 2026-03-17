@@ -94,6 +94,7 @@ def studtime(request: Request, week_offset: int = Query(0)):
                     day_template = day_template.replace('{{ tasks_template }}', str(lesson_tasks_template))
                     day_template = day_template.replace('{{ video_link }}', str(video_link))
                     day_template = day_template.replace('{{ desk_link }}', str(desk_link))
+                    day_template = day_template.replace('{{ schedule_id }}', str(lesson_id))
 
             if i == 0:
                 monday_template = day_template
