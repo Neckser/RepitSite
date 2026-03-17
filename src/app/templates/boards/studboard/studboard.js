@@ -49,29 +49,41 @@ let panStartY = 0;
 // Счетчик пользователей
 let usersCount = 1;
 
-// УДАЛЯЕМ ЭТОТ БЛОК (он вызывает ошибку):
-// document.getElementById('copyRoomLink').addEventListener('click', () => {
-//     const url = `${window.location.origin}?room=${roomToken}`;
-//     navigator.clipboard.writeText(url);
-//     alert('Ссылка скопирована!');
-// });
+// Очередь для сообщений, которые не удалось отправить
+let pendingMessages = [];
 
-// Функция для правильного определения протокола WebSocket (как в чате)
+// Функция для безопасной отправки сообщений
+function safeSend(message) {
+    if (ws && ws.readyState === WebSocket.OPEN) {
+        try {
+            ws.send(JSON.stringify(message));
+            return true;
+        } catch (error) {
+            console.error('Ошибка отправки сообщения:', error);
+            pendingMessages.push(message);
+            return false;
+        }
+    } else {
+        console.warn('WebSocket не подключен, сообщение добавлено в очередь. Состояние:', ws ? ws.readyState : 'null');
+        pendingMessages.push(message);
+        return false;
+    }
+}
+
+// Функция для правильного определения протокола WebSocket
 function getWebSocketUrl(roomToken) {
     const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
     const host = window.location.host;
     return `${protocol}//${host}/ws/board/${roomToken}`;
 }
+
 // Автоматическое подключение при загрузке страницы
 window.addEventListener('load', () => {
     // Получаем room_token из скрытого поля
     const token = document.getElementById('currentRoom')?.value;
     
     if (token) {
-        // Сразу подключаемся
         roomToken = token;
-        // НЕ НАДО менять textContent, потому что это скрытое поле
-        // document.getElementById('currentRoom').textContent = token;
         connectWebSocket();
     } else {
         console.error('Нет токена комнаты!');
@@ -79,88 +91,109 @@ window.addEventListener('load', () => {
 });
 
 function connectWebSocket() {
+    // Если уже есть соединение, закрываем его
+    if (ws) {
+        try {
+            ws.close();
+        } catch (e) {
+            console.log('Ошибка при закрытии старого соединения:', e);
+        }
+        ws = null;
+    }
+    
     try {
         const wsUrl = getWebSocketUrl(roomToken);
         console.log('Connecting to WebSocket:', wsUrl);
         ws = new WebSocket(wsUrl);
         
         ws.onopen = () => {
-            console.log('Connected to room:', roomToken);
+            console.log('✅ Connected to room:', roomToken);
             isConnected = true;
-        };
-        
-        ws.onmessage = (event) => {
-            const message = JSON.parse(event.data);
             
-            if (message.type === 'init') {
-                // Инициализация - загружаем состояние комнаты
-                console.log('Получена инициализация:', message.data);
-                
-                // Загружаем линии
-                drawings = message.data.drawings || [];
-                
-                // Загружаем картинки (асинхронно)
-                images = [];
-                if (message.data.images && message.data.images.length > 0) {
-                    loadImagesSequentially(message.data.images);
-                } else {
-                    redrawCanvas();
-                }
-            } 
-            else if (message.sender !== id(ws)) {
-                // Получено сообщение от другого пользователя
-                console.log('Получено сообщение:', message.type);
-                
-                switch(message.type) {
-                    case 'draw_line':
-                        drawings.push(message.data);
-                        redrawCanvas();
-                        break;
-                        
-                    case 'add_image':
-                        // Добавляем картинку не удаляя существующие
-                        addImageFromData(message.data);
-                        break;
-                        
-                    case 'move_image':
-                        updateImagePosition(message.data.id, message.data.x, message.data.y);
-                        break;
-                        
-                    case 'resize_image':
-                        updateImageSize(message.data.id, message.data);
-                        break;
-                        
-                    case 'delete_image':
-                        images = images.filter(img => img.id !== message.data.id);
-                        if (selectedImageId === message.data.id) {
-                            selectedImageId = null;
-                        }
-                        redrawCanvas();
-                        break;
-                        
-                    case 'clear_board':
-                        drawings = [];
-                        images = [];
-                        selectedImageId = null;
-                        redrawCanvas();
-                        break;
-                }
+            // Отправляем все накопленные сообщения
+            while (pendingMessages.length > 0) {
+                const msg = pendingMessages.shift();
+                safeSend(msg);
             }
         };
         
-        ws.onclose = () => {
-            console.log('Disconnected from room');
+        ws.onmessage = (event) => {
+            try {
+                const message = JSON.parse(event.data);
+                
+                if (message.type === 'init') {
+                    console.log('Получена инициализация:', message.data);
+                    
+                    drawings = message.data.drawings || [];
+                    images = [];
+                    
+                    if (message.data.images && message.data.images.length > 0) {
+                        loadImagesSequentially(message.data.images);
+                    } else {
+                        redrawCanvas();
+                    }
+                } 
+                else if (message.sender !== id(ws)) {
+                    console.log('Получено сообщение:', message.type);
+                    
+                    switch(message.type) {
+                        case 'draw_line':
+                            drawings.push(message.data);
+                            redrawCanvas();
+                            break;
+                            
+                        case 'add_image':
+                            addImageFromData(message.data);
+                            break;
+                            
+                        case 'move_image':
+                            updateImagePosition(message.data.id, message.data.x, message.data.y);
+                            break;
+                            
+                        case 'resize_image':
+                            updateImageSize(message.data.id, message.data);
+                            break;
+                            
+                        case 'delete_image':
+                            images = images.filter(img => img.id !== message.data.id);
+                            if (selectedImageId === message.data.id) {
+                                selectedImageId = null;
+                            }
+                            redrawCanvas();
+                            break;
+                            
+                        case 'clear_board':
+                            drawings = [];
+                            images = [];
+                            selectedImageId = null;
+                            redrawCanvas();
+                            break;
+                    }
+                }
+            } catch (e) {
+                console.error('Ошибка обработки сообщения:', e);
+            }
+        };
+        
+        ws.onclose = (event) => {
+            console.log('❌ Disconnected from room. Код:', event.code, 'Причина:', event.reason);
             isConnected = false;
-            // Пробуем переподключиться через 2 секунды
-            setTimeout(connectWebSocket, 2000);
+            
+            // Пробуем переподключиться через 3 секунды
+            setTimeout(connectWebSocket, 3000);
         };
         
         ws.onerror = (error) => {
-            console.error('WebSocket error:', error);
+            console.error('❌ WebSocket error:', error);
+            isConnected = false;
         };
         
     } catch (error) {
-        console.error('Error creating WebSocket:', error);
+        console.error('❌ Error creating WebSocket:', error);
+        isConnected = false;
+        
+        // Пробуем переподключиться через 3 секунды
+        setTimeout(connectWebSocket, 3000);
     }
 }
 
@@ -182,7 +215,6 @@ function loadImagesSequentially(imageDataArray) {
             
             loadedCount++;
             if (loadedCount === imageDataArray.length) {
-                // Все картинки загружены - перерисовываем
                 redrawCanvas();
             }
         };
@@ -198,7 +230,6 @@ function loadImagesSequentially(imageDataArray) {
 }
 
 function id(ws) {
-    // Простой способ получить ID соединения
     return ws._id || (ws._id = Math.random());
 }
 
@@ -348,15 +379,13 @@ canvas.addEventListener('mouseup', () => {
         
         // Сохраняем локально
         drawings.push(currentLine);
+        redrawCanvas();
         
-        // Отправляем на сервер
-        ws.send(JSON.stringify({
+        // Отправляем на сервер через безопасную функцию
+        safeSend({
             type: 'draw_line',
             data: currentLine
-        }));
-        
-        // Перерисовываем
-        redrawCanvas();
+        });
     }
     
     isDrawing = false;
@@ -374,7 +403,6 @@ canvas.addEventListener('mouseout', () => {
 
 // Обработка курсора
 function handleCursorMouseDown(e, x, y) {
-    // Ищем картинку под курсором
     for (let i = images.length - 1; i >= 0; i--) {
         const img = images[i];
         if (x >= img.x - 5 && x <= img.x + img.width + 5 &&
@@ -382,7 +410,6 @@ function handleCursorMouseDown(e, x, y) {
             
             selectedImageId = img.id;
             
-            // Проверяем углы для изменения размера
             const cornerSize = 10;
             if (Math.abs(x - (img.x + img.width)) < cornerSize && 
                 Math.abs(y - (img.y + img.height)) < cornerSize) {
@@ -411,7 +438,6 @@ function handleCursorMouseDown(e, x, y) {
                 dragOffsetX = x - img.x;
                 dragOffsetY = y - img.y;
                 
-                // Поднимаем картинку наверх
                 images.splice(i, 1);
                 images.push(img);
             }
@@ -455,14 +481,12 @@ function handleCursorMouseMove(x, y) {
                 newX = initialPosition.x + (initialSize.width - newWidth);
             }
             
-            // Обновляем картинку
             img.x = newX;
             img.y = newY;
             img.width = newWidth;
             img.height = newHeight;
             
-            // Отправляем изменения на сервер
-            ws.send(JSON.stringify({
+            safeSend({
                 type: 'resize_image',
                 data: {
                     id: img.id,
@@ -471,7 +495,7 @@ function handleCursorMouseMove(x, y) {
                     width: newWidth,
                     height: newHeight
                 }
-            }));
+            });
             
             redrawCanvas();
         }
@@ -481,15 +505,14 @@ function handleCursorMouseMove(x, y) {
             img.x = x - dragOffsetX;
             img.y = y - dragOffsetY;
             
-            // Отправляем новую позицию на сервер
-            ws.send(JSON.stringify({
+            safeSend({
                 type: 'move_image',
                 data: {
                     id: img.id,
                     x: img.x,
                     y: img.y
                 }
-            }));
+            });
             
             redrawCanvas();
         }
@@ -511,7 +534,6 @@ function startDrawing(x, y, lineColor) {
 function continueDrawing(x, y) {
     if (!currentLine) return;
     
-    // Рисуем локально
     ctx.beginPath();
     ctx.strokeStyle = currentLine.color;
     ctx.lineWidth = brushSize;
@@ -521,7 +543,6 @@ function continueDrawing(x, y) {
     ctx.lineTo(x, y);
     ctx.stroke();
     
-    // Сохраняем точку
     currentLine.points.push({ x, y });
     lastX = x;
     lastY = y;
@@ -537,7 +558,6 @@ document.getElementById('imageInput').addEventListener('change', (e) => {
             img.onload = () => {
                 const imageId = 'img_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
                 
-                // Вычисляем размер
                 let width = img.width;
                 let height = img.height;
                 const maxSize = 400;
@@ -552,7 +572,6 @@ document.getElementById('imageInput').addEventListener('change', (e) => {
                     }
                 }
                 
-                // Центрируем
                 const viewportCenterX = (-panX / scale) + (container.clientWidth / (2 * scale));
                 const viewportCenterY = (-panY / scale) + (container.clientHeight / (2 * scale));
                 
@@ -565,14 +584,12 @@ document.getElementById('imageInput').addEventListener('change', (e) => {
                     height: height
                 };
                 
-                // Добавляем в локальное хранилище
                 addImageFromData(imageData);
                 
-                // Отправляем на сервер
-                ws.send(JSON.stringify({
+                safeSend({
                     type: 'add_image',
                     data: imageData
-                }));
+                });
             };
             img.src = event.target.result;
         };
@@ -581,7 +598,6 @@ document.getElementById('imageInput').addEventListener('change', (e) => {
 });
 
 function addImageFromData(imageData) {
-    // Проверяем, есть ли уже такая картинка
     const exists = images.some(img => img.id === imageData.id);
     if (exists) return;
     
@@ -623,10 +639,10 @@ function updateImageSize(id, data) {
 // Удаление по Delete
 document.addEventListener('keydown', (e) => {
     if (e.key === 'Delete' && selectedImageId && currentTool === TOOLS.CURSOR) {
-        ws.send(JSON.stringify({
+        safeSend({
             type: 'delete_image',
             data: { id: selectedImageId }
-        }));
+        });
         
         images = images.filter(img => img.id !== selectedImageId);
         selectedImageId = null;
@@ -637,10 +653,10 @@ document.addEventListener('keydown', (e) => {
 // Очистка доски
 document.getElementById('clearBtn').addEventListener('click', () => {
     if (confirm('Очистить всю доску?')) {
-        ws.send(JSON.stringify({
+        safeSend({
             type: 'clear_board',
             data: {}
-        }));
+        });
         
         drawings = [];
         images = [];
@@ -651,45 +667,35 @@ document.getElementById('clearBtn').addEventListener('click', () => {
 
 // Сохранение
 document.getElementById('saveBtn').addEventListener('click', () => {
-    // Сохраняем текущее состояние
     const currentTransform = canvas.style.transform;
     
-    // Создаем временный canvas для сохранения
     const tempCanvas = document.createElement('canvas');
     tempCanvas.width = canvas.width;
     tempCanvas.height = canvas.height;
     const tempCtx = tempCanvas.getContext('2d');
     
-    // Заливаем белым фоном
     tempCtx.fillStyle = '#FFFFFF';
     tempCtx.fillRect(0, 0, tempCanvas.width, tempCanvas.height);
-    
-    // Рисуем оригинальный canvas поверх белого фона
     tempCtx.drawImage(canvas, 0, 0);
     
-    // Сохраняем
     const link = document.createElement('a');
     link.download = `whiteboard-${roomToken}-${Date.now()}.png`;
     link.href = tempCanvas.toDataURL('image/png');
     link.click();
     
-    // Возвращаем оригинальное состояние
     canvas.style.transform = currentTransform;
 });
 
 // Перерисовка canvas
 function redrawCanvas() {
-    // Полностью очищаем canvas
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     
-    // 1. СНАЧАЛА рисуем ВСЕ картинки (они как подложка)
     if (images && images.length > 0) {
         images.forEach(img => {
             if (img && img.img) {
                 try {
                     ctx.drawImage(img.img, img.x, img.y, img.width, img.height);
                     
-                    // Рамка для выделенной картинки
                     if (img.id === selectedImageId && currentTool === TOOLS.CURSOR) {
                         ctx.strokeStyle = '#007bff';
                         ctx.lineWidth = 2;
@@ -697,7 +703,6 @@ function redrawCanvas() {
                         ctx.strokeRect(img.x - 2, img.y - 2, img.width + 4, img.height + 4);
                         ctx.setLineDash([]);
                         
-                        // Маркеры углов
                         ctx.fillStyle = '#007bff';
                         ctx.fillRect(img.x - 4, img.y - 4, 8, 8);
                         ctx.fillRect(img.x + img.width - 4, img.y - 4, 8, 8);
@@ -711,7 +716,6 @@ function redrawCanvas() {
         });
     }
     
-    // 2. ПОТОМ рисуем ВСЕ линии (они поверх картинок)
     if (drawings && drawings.length > 0) {
         drawings.forEach(line => {
             if (!line || !line.points || line.points.length < 2) return;
