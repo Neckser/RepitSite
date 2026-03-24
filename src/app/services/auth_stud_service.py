@@ -1,13 +1,16 @@
 import sqlite3
 from config import DB_PATH
 from utils.id import create_id
+from utils.id import generate_uuid
 
 def studregister(studfirst_name, studlast_name, grade, studlogin, password):
     try:
         connection = sqlite3.connect(DB_PATH)
         cursor = connection.cursor()
 
-        cursor.execute("INSERT INTO students (student_id, first_name, last_name, grade, login, password) VALUES (?, ?, ?, ?, ?, ?)", (create_id(), studfirst_name, studlast_name, grade, studlogin, password))
+        new_uuid = str(generate_uuid())
+
+        cursor.execute("INSERT INTO students (student_id, first_name, last_name, grade, login, password) VALUES (?, ?, ?, ?, ?, ?)", (new_uuid, studfirst_name, studlast_name, grade, studlogin, password))
         connection.commit()
 
     except Exception as e:

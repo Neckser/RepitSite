@@ -8,7 +8,7 @@ def init_database():
 
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS students (
-            student_id INTEGER UNIQUE PRIMARY KEY,
+            student_id TEXT UNIQUE PRIMARY KEY,
             first_name TEXT NOT NULL,
             last_name TEXT NOT NULL,
             grade INTEGER NOT NULL,
@@ -20,7 +20,7 @@ def init_database():
     
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS tutors (
-            tutor_id INTEGER UNIQUE PRIMARY KEY,
+            tutor_id TEXT UNIQUE PRIMARY KEY,
             first_name TEXT NOT NULL,
             last_name TEXT NOT NULL,
             subject_math TEXT,
@@ -49,8 +49,8 @@ def init_database():
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS student_tutors (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            student_id INTEGER NOT NULL,
-            tutor_id INTEGER NOT NULL,
+            student_id TEXT NOT NULL,
+            tutor_id TEXT NOT NULL,
             start_date DATETIME DEFAULT CURRENT_TIMESTAMP,
             FOREIGN KEY (student_id) REFERENCES students(student_id) ON DELETE CASCADE,
             FOREIGN KEY (tutor_id) REFERENCES tutors(tutor_id) ON DELETE CASCADE,
@@ -60,8 +60,8 @@ def init_database():
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS homeworks (
             homework_id INTEGER PRIMARY KEY AUTOINCREMENT,
-            student_id INTEGER NOT NULL,
-            tutor_id INTEGER NOT NULL,
+            student_id TEXT NOT NULL,
+            tutor_id TEXT NOT NULL,
             title TEXT NOT NULL,
             description TEXT,
             subject TEXT NOT NULL,
@@ -75,8 +75,8 @@ def init_database():
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS timetable (
             schedule_id INTEGER PRIMARY KEY AUTOINCREMENT,
-            student_id INTEGER NOT NULL,
-            tutor_id INTEGER NOT NULL,
+            student_id TEXT NOT NULL,
+            tutor_id TEXT NOT NULL,
             subject TEXT NOT NULL,
             lesson_date DATE NOT NULL,
             lesson_time TIME NOT NULL,
@@ -91,8 +91,8 @@ def init_database():
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS grades (
             grade_id INTEGER PRIMARY KEY AUTOINCREMENT,
-            student_id INTEGER NOT NULL,
-            tutor_id INTEGER NOT NULL,
+            student_id TEXT NOT NULL,
+            tutor_id TEXT NOT NULL,
             subject TEXT NOT NULL,
             grade INTEGER NOT NULL CHECK(grade BETWEEN 2 AND 5),
             date DATETIME DEFAULT CURRENT_TIMESTAMP,
@@ -105,8 +105,8 @@ def init_database():
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS tests (
             test_id INTEGER PRIMARY KEY AUTOINCREMENT,
-            tutor_id INTEGER NOT NULL,
-            student_id INTEGER NOT NULL,
+            tutor_id TEXT NOT NULL,
+            student_id TEXT NOT NULL,
             title TEXT NOT NULL,
             subject TEXT NOT NULL,
             date_start DATETIME NOT NULL,
@@ -143,7 +143,7 @@ def init_database():
     CREATE TABLE IF NOT EXISTS test_attempts (
         attempt_id INTEGER PRIMARY KEY AUTOINCREMENT,
         test_id INTEGER NOT NULL,
-        student_id INTEGER NOT NULL,
+        student_id TEXT NOT NULL,
         start_time DATETIME,
         end_time DATETIME,
         duration_seconds INTEGER,
@@ -188,8 +188,8 @@ def init_database():
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS chats (
             chat_id TEXT UNIQUE PRIMARY KEY,
-            student_id INTEGER NOT NULL,
-            tutor_id INTEGER NOT NULL,
+            student_id TEXT NOT NULL,
+            tutor_id TEXT NOT NULL,
             last_message_text TEXT,
             last_message_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -202,7 +202,7 @@ def init_database():
         CREATE TABLE IF NOT EXISTS messages (
             message_id INTEGER PRIMARY KEY AUTOINCREMENT,
             chat_id TEXT NOT NULL,
-            sender_id INTEGER NOT NULL,
+            sender_id TEXT NOT NULL,
             sender_type TEXT NOT NULL CHECK(sender_type IN ('student', 'tutor')),
             message_text TEXT NOT NULL,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
