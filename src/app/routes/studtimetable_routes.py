@@ -71,7 +71,7 @@ def studtime(request: Request, week_offset: int = Query(0)):
                         lesson_tasks_template = lesson_tasks_template.replace("{{ content }}", str(content))
                         task_number += 1
 
-                    start_time = datetime.strptime(lesson["time"], "%H:%M")
+                    start_time = datetime.combine(datetime.today(), lesson["time"])
                     duration_minutes = lesson.get("duration", 60)
                     duration = timedelta(minutes=duration_minutes)
                     start_time_str = start_time.strftime("%H:%M")

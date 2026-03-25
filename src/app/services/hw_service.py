@@ -1,11 +1,10 @@
 import datetime
-import sqlite3
-from config import DB_PATH
+from db_wrapper import execute, query_one, query_all
 
 def gethwstatus(deadline):
     try:
-        deadline = datetime.fromisoformat(deadline.replace('Z', '+00:00'))
-        now = datetime.now()
+        deadline = datetime.datetime.fromisoformat(deadline.replace('Z', '+00:00'))
+        now = datetime.datetime.now()
         if now > deadline:
             return "Завершено"
         else:
@@ -17,49 +16,27 @@ def gethwstatus(deadline):
     
 def updatehwstatus():
     try:
-        connection = sqlite3.connect(DB_PATH)
-        cursor = connection.cursor()
-        
-        cursor.execute('''UPDATE homeworks SET status = 'Завершено' WHERE deadline < datetime('now') AND status != 'Завершено' ''')
-        connection.commit()
+        execute("UPDATE homeworks SET status = 'Завершено' WHERE deadline < CURRENT_TIMESTAMP AND status != 'Завершено'")
         
     except Exception as e:
         print(f"Произошла ошибка - {e}")
         raise e
-    
-    finally:
-        connection.close()
-
 
 def addhw(student_id, tutor_id, title, description, subject, deadline):
     try:
-        connection = sqlite3.connect(DB_PATH)
-        cursor = connection.cursor()
-
         status = gethwstatus(deadline)
         
-        cursor.execute('''INSERT INTO homeworks (student_id, tutor_id, title, description, subject, deadline, status) VALUES (?, ?, ?, ?, ?, ?, ?)''', (student_id, tutor_id, title, description, subject, deadline, status))
-        connection.commit()
-
+        execute("INSERT INTO homeworks (student_id, tutor_id, title, description, subject, deadline, status) VALUES (?, ?, ?, ?, ?, ?, ?)", 
+                (student_id, tutor_id, title, description, subject, deadline, status))
+        
     except Exception as e:
         print(f"Произошла ошибка - {e}")
         raise e
-    
-    finally:
-        connection.close()
-
 
 def delhw(homework_id):
     try:
-        connection = sqlite3.connect(DB_PATH)
-        cursor = connection.cursor()
+        execute("DELETE FROM homeworks WHERE homework_id = ?", (homework_id,))
         
-        cursor.execute('''DELETE FROM homeworks WHERE homework_id = ?''', (homework_id,))
-        connection.commit()
-
     except Exception as e:
         print(f"Произошла ошибка - {e}")
         raise e
-    
-    finally:
-        connection.close()

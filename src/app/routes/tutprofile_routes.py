@@ -4,7 +4,7 @@ from config import TEMPLATES_PATH
 from auth import get_current_user
 from utils.templates import verstkaprofile
 from services.stats_tut_service import gettutorinfo, getstudcolvo, gettutsubject
-from services.profile_service import edittutbasic, edittutbio, eduttutsubjects
+from services.profile_service import editutbasic, edittutbio, edittutsubjects
 
 router = APIRouter()
 
@@ -88,7 +88,7 @@ def updatetutbasic(request: Request, first_name: str = Form(...), last_name: str
 
     try:
 
-        edittutbasic(first_name, last_name, experience, name)
+        editutbasic(first_name, last_name, experience, name)
 
         return RedirectResponse(url="/profiletut", status_code=303)
         
@@ -112,7 +112,7 @@ async def updatetutsubjects(request: Request):
         form_data = await request.form()
         selected_subjects = form_data.getlist("subjects")
 
-        eduttutsubjects(selected_subjects, name)
+        edittutsubjects(selected_subjects, name)
 
         return RedirectResponse(url="/profiletut", status_code=303)
         

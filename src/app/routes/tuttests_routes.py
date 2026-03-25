@@ -178,8 +178,8 @@ def testutres(request: Request, test_id: int):
             studtest_template += a
             student_id = studstr[2]
             studinfo = getstudinfobyid(student_id)
-            studfirst_name = studinfo[1]
-            studlast_name = studinfo[2]
+            studfirst_name = studinfo[0]
+            studlast_name = studinfo[1]
             data = studstr[4]
             duration = studstr[5]
             score_percent = studstr[6]

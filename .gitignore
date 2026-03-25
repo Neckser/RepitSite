@@ -18,3 +18,55 @@ venv
 venv/*
 
 uploads/*
+.env
+.env.example
+
+# .gitignore
+
+# Секреты и конфиги
+.env
+.env.local
+.env.*.local
+.env.production
+.env.development
+
+# Базы данных
+*.db
+*.sqlite
+*.sqlite3
+postgres_data/
+
+# Логи
+*.log
+logs/
+/app/logs/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+pip-log.txt
+pip-delete-this-directory.txt
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Docker
+docker-compose.override.yml
+
+# Данные мониторинга
+prometheus_data/
+grafana_data/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store

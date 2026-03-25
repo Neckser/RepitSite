@@ -38,6 +38,7 @@ except locale.Error:
 @app.on_event("startup")
 def startup_event():
     init_database()
+    print("Database initialized successfully!")
 
 app.include_router(auth_routes.router)
 app.include_router(findtut_routes.router)

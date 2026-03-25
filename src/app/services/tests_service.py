@@ -1,23 +1,25 @@
-import sqlite3
+from db_wrapper import execute, query_one, query_all
 import json
 from datetime import datetime, timedelta
-from config import DB_PATH
-
 
 def createtest(tutor_id, form):
-    connection = sqlite3.connect(DB_PATH)
-    cursor = connection.cursor()
-
-    cursor.execute("""INSERT INTO tests (tutor_id, student_id, title, subject, date_start, date_end, duration) VALUES (?, ?, ?, ?, ?, ?, ?)""", ( tutor_id, form['student_id'], form['test_title'], form['subject'], form['date_start'], form['date_end'], form['test_duration']))
-    test_id = cursor.lastrowid
+    execute("""INSERT INTO tests (tutor_id, student_id, title, subject, date_start, date_end, duration) 
+               VALUES (?, ?, ?, ?, ?, ?, ?)""", 
+            (tutor_id, form['student_id'], form['test_title'], form['subject'], 
+             form['date_start'], form['date_end'], form['test_duration']))
+    
+    # Получаем последний test_id
+    result = query_one("SELECT lastval()")
+    test_id = result[0] if result else None
 
     questions = form.getlist('question[]')
     answers = form.getlist('answer[]')
 
     for q_text, answer in zip(questions, answers):
         options = {"correct_answer": answer}
-
-        cursor.execute("""INSERT INTO test_questions (test_id, question_type, question_text, options) VALUES (?, 'text', ?, ?)""", (test_id, q_text, json.dumps(options, ensure_ascii=False)))
+        execute("""INSERT INTO test_questions (test_id, question_type, question_text, options) 
+                   VALUES (?, 'text', ?, ?)""", 
+                (test_id, q_text, json.dumps(options, ensure_ascii=False)))
 
     mcq_questions = form.getlist('mcq_question[]')
 
@@ -33,7 +35,9 @@ def createtest(tutor_id, form):
             "correct": int(correct) - 1
         }
 
-        cursor.execute("""INSERT INTO test_questions (test_id, question_type, question_text, options) VALUES (?, 'single_choice', ?, ?)""", (test_id, q_text, json.dumps(options, ensure_ascii=False)))
+        execute("""INSERT INTO test_questions (test_id, question_type, question_text, options) 
+                   VALUES (?, 'single_choice', ?, ?)""", 
+                (test_id, q_text, json.dumps(options, ensure_ascii=False)))
 
     multi_questions = form.getlist('multi_question[]')
 
@@ -48,79 +52,44 @@ def createtest(tutor_id, form):
             "correct": correct_indexes
         }
 
-        cursor.execute("""INSERT INTO test_questions (test_id, question_type, question_text, options) VALUES (?, 'multi_choice', ?, ?)""", (test_id, q_text, json.dumps(options, ensure_ascii=False)))
-    connection.commit()
-    connection.close()
+        execute("""INSERT INTO test_questions (test_id, question_type, question_text, options) 
+                   VALUES (?, 'multi_choice', ?, ?)""", 
+                (test_id, q_text, json.dumps(options, ensure_ascii=False)))
 
     return test_id
 
 def deltest(tutor_id, test_id):
     try:
-        connection = sqlite3.connect(DB_PATH)
-        cursor = connection.cursor()
-
-        cursor.execute("DELETE FROM test_questions WHERE test_id = ?",(test_id,))
-
-        cursor.execute("DELETE FROM tests WHERE test_id = ? AND tutor_id = ?",(test_id, tutor_id))
-        connection.commit()
-    
+        execute("DELETE FROM test_questions WHERE test_id = ?", (test_id,))
+        execute("DELETE FROM tests WHERE test_id = ? AND tutor_id = ?", (test_id, tutor_id))
     except Exception as e:
         print(f'Произошла ошибка - {e}')
         raise e
-    
-    finally:
-        connection.close()
 
 def getquestioncolvobyid(test_id):
     try:
-        connection = sqlite3.connect(DB_PATH)
-        cursor = connection.cursor()
-
-        cursor.execute('''SELECT COUNT(*) FROM test_questions WHERE test_id = ? ORDER BY question_id; ''', (test_id,))
-        question_colvo = cursor.fetchone()[0]
-
-        return question_colvo
-    
+        result = query_one("SELECT COUNT(*) FROM test_questions WHERE test_id = ?", (test_id,))
+        return result[0] if result else 0
     except Exception as e:
         print(f"Произошла ошибка - {e}")
         raise e
-    
-    finally:
-        connection.close()
     
 def gettestquestionsbyid(test_id):
     try:
-        connection = sqlite3.connect(DB_PATH)
-        cursor = connection.cursor()
-
-        cursor.execute("""SELECT question_id, question_type, question_text, options FROM test_questions WHERE test_id = ? ORDER BY question_id""", (test_id,))
-        questions = cursor.fetchall()
-
-        return questions
-    
+        questions = query_all("""SELECT question_id, question_type, question_text, options 
+                                 FROM test_questions WHERE test_id = ? ORDER BY question_id""", (test_id,))
+        return questions if questions else []
     except Exception as e:
         print(f"Произошла ошибка - {e}")
         raise e
-    
-    finally:
-        connection.close()
 
 def gettestbyid(test_id):
     try:
-        connection = sqlite3.connect(DB_PATH)
-        cursor = connection.cursor()
-
-        cursor.execute("SELECT tutor_id, student_id, title, subject, date_start, date_end, created_at, duration FROM tests WHERE test_id = ?", (test_id,))
-        questioninfo = cursor.fetchone()
-
-        return questioninfo
-    
+        result = query_one("SELECT tutor_id, student_id, title, subject, date_start, date_end, created_at, duration FROM tests WHERE test_id = ?", (test_id,))
+        return result if result else None
     except Exception as e:
         print(f"Произошла ошибка - {e}")
         raise e
-    
-    finally:
-        connection.close()
 
 def gettestanswersandtime(form):
     test_id = int(form.get("test_id"))
@@ -130,7 +99,6 @@ def gettestanswersandtime(form):
     text_answers = form.getlist("answer_text[]")
 
     answers = []
-
     text_index = 0
 
     for qid in question_ids:
@@ -143,19 +111,16 @@ def gettestanswersandtime(form):
                 "type": "single",
                 "answer": single
             })
-
         elif multi:
             answers.append({
                 "question_id": qid,
                 "type": "multi",
                 "answer": multi
             })
-
         else:
             if text_index < len(text_answers):
                 text_answer = text_answers[text_index].strip()
                 text_index += 1
-
                 if text_answer:
                     answers.append({
                         "question_id": qid,
@@ -165,7 +130,6 @@ def gettestanswersandtime(form):
 
     return [answers, time_spent]
 
-    
 def check_answer(question_type, user_answer, options_json):
     options = json.loads(options_json)
 
@@ -185,95 +149,65 @@ def check_answer(question_type, user_answer, options_json):
 
     return False
 
-
 def checktestanswers(answers, test_id):
     try:
-        connection = sqlite3.connect(DB_PATH)
-        cursor = connection.cursor()
-
         correct_count = 0
 
         for a in answers:
-            cursor.execute("""SELECT question_type, options FROM test_questions WHERE question_id = ?""", (a["question_id"],))
-
-            q_type, options_json = cursor.fetchone()
-
-            is_correct = check_answer(q_type, a["answer"], options_json)
-
-            if is_correct:
-                correct_count += 1
-
-            cursor.execute("""INSERT INTO test_answers (test_id, question_id, answer, is_correct) VALUES (?, ?, ?, ?)""", (test_id, a["question_id"], json.dumps(a["answer"], ensure_ascii=False), int(is_correct)))
-            connection.commit()
+            result = query_one("SELECT question_type, options FROM test_questions WHERE question_id = ?", (a["question_id"],))
+            if result:
+                q_type, options_json = result
+                is_correct = check_answer(q_type, a["answer"], options_json)
+                if is_correct:
+                    correct_count += 1
+                execute("""INSERT INTO test_answers (test_id, question_id, answer, is_correct) 
+                           VALUES (?, ?, ?, ?)""", 
+                        (test_id, a["question_id"], json.dumps(a["answer"], ensure_ascii=False), int(is_correct)))
 
         return correct_count
-
     except Exception as e:
         print(f"Произошла ошибка - {e}")
         raise e
-    
-    finally:
-        connection.close()
-
 
 def gettestres(test_id):
     try:
-        connection = sqlite3.connect(DB_PATH)
-        cursor = connection.cursor()
-
-        cursor.execute("""SELECT COUNT(DISTINCT student_id) AS students_passed, ROUND(AVG(score), 2) AS avg_score_percent, ROUND(AVG(duration_seconds), 2) AS avg_duration_seconds, ROUND(AVG(duration_seconds)/60.0, 2) AS avg_duration_minutes FROM test_attempts WHERE test_id = ?""", (test_id,))
-        row = cursor.fetchone()
-
-        students_passed, avg_score_percent, avg_duration_seconds, avg_duration_minutes = row
-
-        avg_score_percent = avg_score_percent or 0.0
-        avg_duration_seconds = avg_duration_seconds or 0.0
-        avg_duration_minutes = avg_duration_minutes or 0.0
-
-        return students_passed, avg_score_percent, avg_duration_seconds, avg_duration_minutes
-    
+        result = query_one("""SELECT COUNT(DISTINCT student_id) AS students_passed, 
+                                     ROUND(AVG(score), 2) AS avg_score_percent, 
+                                     ROUND(AVG(duration_seconds), 2) AS avg_duration_seconds, 
+                                     ROUND(AVG(duration_seconds)/60.0, 2) AS avg_duration_minutes 
+                              FROM test_attempts WHERE test_id = ?""", (test_id,))
+        
+        if result:
+            students_passed, avg_score_percent, avg_duration_seconds, avg_duration_minutes = result
+            avg_score_percent = avg_score_percent or 0.0
+            avg_duration_seconds = avg_duration_seconds or 0.0
+            avg_duration_minutes = avg_duration_minutes or 0.0
+            return students_passed, avg_score_percent, avg_duration_seconds, avg_duration_minutes
+        return 0, 0.0, 0.0, 0.0
     except Exception as e:
         print(f"Произошла ошибка - {e}")
         raise e
-    
-    finally:
-        connection.close()
 
-
-
-def savestudattempt(test_id: int, student_id: int, duration: int, score: int):
+def savestudattempt(test_id, student_id, duration, score):
     try:
-        connection = sqlite3.connect(DB_PATH)
-        cursor = connection.cursor()
-
         end_time = datetime.utcnow()
         start_time = end_time - timedelta(seconds=duration)
 
-        cursor.execute("""INSERT INTO test_attempts (test_id, student_id, start_time, end_time, duration_seconds, score) VALUES (?, ?, ?, ?, ?, ?)""", (test_id, student_id, start_time, end_time, duration, score))
-        connection.commit()
-
-        return cursor.lastrowid
-
+        execute("""INSERT INTO test_attempts (test_id, student_id, start_time, end_time, duration_seconds, score) 
+                   VALUES (?, ?, ?, ?, ?, ?)""", 
+                (test_id, student_id, start_time, end_time, duration, score))
+        
+        # Получаем последний attempt_id
+        result = query_one("SELECT lastval()")
+        return result[0] if result else None
     except Exception as e:
         print(f"Произошла ошибка - {e}")
         raise e
-    
-    finally:
-        connection.close()
 
 def getteststudstr(test_id):
     try:
-        connection = sqlite3.connect(DB_PATH)
-        cursor = connection.cursor()
-
-        cursor.execute("SELECT * FROM test_attempts WHERE test_id=?", (test_id,))
-        studstr = cursor.fetchall()
-
-        return studstr
-    
+        studstr = query_all("SELECT * FROM test_attempts WHERE test_id = ?", (test_id,))
+        return studstr if studstr else []
     except Exception as e:
         print(f"Произошла ошибка - {e}")
         raise e
-    
-    finally:
-        connection.close()

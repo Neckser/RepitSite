@@ -84,7 +84,7 @@ def tuttime(request: Request, week_offset: int = Query(0)):
                     
 
 
-                    start_time = datetime.strptime(lesson["time"], "%H:%M")
+                    start_time = datetime.combine(datetime.today(), lesson["time"])
                     duration_minutes = lesson.get("duration", 60)
                     duration = timedelta(minutes=duration_minutes)
                     start_time_str = start_time.strftime("%H:%M")

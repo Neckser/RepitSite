@@ -5,6 +5,3 @@ ACCESS_TOKEN_EXPIRE = 60 * 60
 
 #Путь к верстке
 TEMPLATES_PATH = "../../build/"
-
-#Путь к базе данных
-DB_PATH = '../../data/basa.db'

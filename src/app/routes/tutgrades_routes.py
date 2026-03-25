@@ -53,7 +53,7 @@ def tutgrades(request: Request):
                 gradestemplate = gradestemplate.replace("{{ grade_id }}", str(grade[0]))
                 gradestemplate = gradestemplate.replace("{{ grade }}", str(grade[3]))
                 gradestemplate = gradestemplate.replace("{{ description }}", grade[5])
-                gradestemplate = gradestemplate.replace("{{ date }}", grade[4])
+                gradestemplate = gradestemplate.replace("{{ date }}", str(grade[4]))
                 gradestemplate = gradestemplate.replace("{{ comment }}", grade[6])
                 gradestemplate = gradestemplate.replace("{{ subject }}", grade[2])
 

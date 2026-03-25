@@ -1,142 +1,64 @@
-import sqlite3
-from config import DB_PATH
+from db_wrapper import execute, query_one, query_all
 
 def addlesson(student_id, tutor_id, subject, lesson_date, lesson_time, duration):
     try:
-        connection = sqlite3.connect(DB_PATH)
-        cursor = connection.cursor()
-
-        cursor.execute("""INSERT INTO timetable (student_id, tutor_id, subject, lesson_date, lesson_time, duration) VALUES (?, ?, ?, ?, ?, ?) """, (student_id, tutor_id, subject, lesson_date, lesson_time, duration))
-        connection.commit()
-
+        execute("INSERT INTO timetable (student_id, tutor_id, subject, lesson_date, lesson_time, duration) VALUES (?, ?, ?, ?, ?, ?)", 
+                (student_id, tutor_id, subject, lesson_date, lesson_time, duration))
     except Exception as e:
         print(f"Произошла ошибка - {e}")
         raise e
-    
-    finally:
-        connection.close()
-
 
 def dellesson(schedule_id):
     try:
-        connection = sqlite3.connect(DB_PATH)
-        cursor = connection.cursor()
-        
-        cursor.execute('''DELETE FROM timetable WHERE schedule_id = ?''', (schedule_id,))
-        connection.commit()
-
+        execute("DELETE FROM timetable WHERE schedule_id = ?", (schedule_id,))
     except Exception as e:
         print(f"Произошла ошибка - {e}")
         raise e
-    
-    finally:
-        connection.close()
 
 def addtexttask(lesson_id, task_type, task):
     try:
-        connection = sqlite3.connect(DB_PATH)
-        cursor = connection.cursor()
-        
-        cursor.execute('''INSERT INTO lesson_tasks (schedule_id, type, content) VALUES (?, ?, ?) ''', (lesson_id, task_type, task))
-        connection.commit()
-
+        execute("INSERT INTO lesson_tasks (schedule_id, type, content) VALUES (?, ?, ?)", 
+                (lesson_id, task_type, task))
     except Exception as e:
         print(f"Произошла ошибка - {e}")
         raise e
-    
-    finally:
-        connection.close()
 
 def getlessontasks(lesson_id):
     try:
-        connection = sqlite3.connect(DB_PATH)
-        cursor = connection.cursor()
-        
-        cursor.execute('''SELECT * FROM lesson_tasks WHERE schedule_id = ?''', (lesson_id,))
-        res = cursor.fetchall()
-
-        return res
-
-
+        res = query_all("SELECT * FROM lesson_tasks WHERE schedule_id = ?", (lesson_id,))
+        return res if res else []
     except Exception as e:
         print(f"Произошла ошибка - {e}")
         raise e
-    
-    finally:
-        connection.close()
 
 def addvideolink(lesson_id, link):
     try:
-        connection = sqlite3.connect(DB_PATH)
-        cursor = connection.cursor()
-        
-        cursor.execute('''DELETE FROM lesson_links WHERE schedule_id = ?''', (lesson_id,))
-        cursor.execute('''INSERT INTO lesson_links (schedule_id, link) VALUES (?, ?) ''', (lesson_id, link))
-        connection.commit()
-
+        execute("DELETE FROM lesson_links WHERE schedule_id = ?", (lesson_id,))
+        execute("INSERT INTO lesson_links (schedule_id, link) VALUES (?, ?)", (lesson_id, link))
     except Exception as e:
         print(f"Произошла ошибка - {e}")
         raise e
-    
-    finally:
-        connection.close()
 
 def getvideolink(lesson_id):
     try:
-        connection = sqlite3.connect(DB_PATH)
-        cursor = connection.cursor()
-        
-        cursor.execute('''SELECT * FROM lesson_links WHERE schedule_id = ?''', (lesson_id,))
-        res = cursor.fetchone()
-
-        if res is None:
-            return ""
-            
-        return res[2]
-
-
-
+        res = query_one("SELECT * FROM lesson_links WHERE schedule_id = ?", (lesson_id,))
+        return res[2] if res else ""
     except Exception as e:
         print(f"Произошла ошибка - {e}")
         raise e
-    
-    finally:
-        connection.close()
-
 
 def adddesklink(lesson_id, desk):
     try:
-        connection = sqlite3.connect(DB_PATH)
-        cursor = connection.cursor()
-        
-        cursor.execute('''DELETE FROM lesson_desks WHERE schedule_id = ?''', (lesson_id,))
-        cursor.execute('''INSERT INTO lesson_desks (schedule_id, desk) VALUES (?, ?) ''', (lesson_id, desk))
-        connection.commit()
-
+        execute("DELETE FROM lesson_desks WHERE schedule_id = ?", (lesson_id,))
+        execute("INSERT INTO lesson_desks (schedule_id, desk) VALUES (?, ?)", (lesson_id, desk))
     except Exception as e:
         print(f"Произошла ошибка - {e}")
         raise e
-    
-    finally:
-        connection.close()
-
 
 def getdesklink(lesson_id):
     try:
-        connection = sqlite3.connect(DB_PATH)
-        cursor = connection.cursor()
-        
-        cursor.execute('''SELECT * FROM lesson_desks WHERE schedule_id = ?''', (lesson_id,))
-        res = cursor.fetchone()
-
-        if res is None:
-            return ""
-            
-        return res[2]
-
+        res = query_one("SELECT * FROM lesson_desks WHERE schedule_id = ?", (lesson_id,))
+        return res[2] if res else ""
     except Exception as e:
         print(f"Произошла ошибка - {e}")
         raise e
-    
-    finally:
-        connection.close()
