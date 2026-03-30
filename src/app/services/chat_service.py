@@ -51,12 +51,19 @@ def gettutorchatinfo(chat_id):
         raise e
 
 def generatecontacttotutor(student_id, tutor_id):
+    """Создает чат между студентом и репетитором, если его еще нет"""
     try:
-        newuuid = str(generate_uuid())
-        execute("INSERT INTO chats (chat_id, student_id, tutor_id) VALUES (?, ?, ?)", 
-                (newuuid, student_id, tutor_id))
+        existing_chat = query_one("SELECT chat_id FROM chats WHERE student_id = %s AND tutor_id = %s",(student_id, tutor_id))
+        
+        if existing_chat:
+            pass
+
+        else:
+            newuuid = str(generate_uuid())
+            execute("INSERT INTO chats (chat_id, student_id, tutor_id) VALUES (%s, %s, %s)", (newuuid, student_id, tutor_id))
+        
     except Exception as e:
-        print(f"Произошла ошибка: {e}")
+        print(f"Произошла ошибка в generatecontacttotutor: {e}")
         raise e
 
 def checkchatexists(chat_id):

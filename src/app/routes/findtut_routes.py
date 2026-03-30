@@ -3,6 +3,7 @@ from fastapi.responses import HTMLResponse, RedirectResponse
 from config import TEMPLATES_PATH
 from auth import get_current_user
 from utils.templates import verstkaprofile
+from utils.validation import checkrequiredfields
 from services.stats_stud_service import getstudinfo, gettutlist
 from services.stats_tut_service import getstudcolvo, gettutsubject
 from services.findtut_service import addtutor
@@ -97,7 +98,7 @@ def findtut(request: Request):
 
 
 @router.post("/addtut")
-def addtut(request: Request, tutor_code: str = Form(...)):
+def addtut(request: Request, tutor_code: str = Form(None)):
     try:
         name, user_type = get_current_user(request)
         if user_type != "student":
@@ -107,6 +108,11 @@ def addtut(request: Request, tutor_code: str = Form(...)):
         return RedirectResponse(url="/login", status_code=303)
 
     try:
+        form_data = {"tutor_code": tutor_code}
+        error_validation = checkrequiredfields(form_data, ["tutor_code"],f"{TEMPLATES_PATH}findtut/findtut.html")
+        if error_validation:
+            return error_validation
+
         studinfo = getstudinfo(name)
         student_id = studinfo[2]
         studfirst_name = studinfo[0]
