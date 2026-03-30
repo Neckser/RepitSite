@@ -19,7 +19,6 @@ venv/*
 
 uploads/*
 .env
-.env.example
 
 # .gitignore
 
