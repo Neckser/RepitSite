@@ -24,6 +24,16 @@ const entries = [
     out: 'build/register/regstud.html',
   },
   {
+    html: 'src/app/templates/register/regstudloginalreadyexists/regstudloginalreadyexists.html',
+    css: 'src/app/templates/register/regstudloginalreadyexists/regstudloginalreadyexists.css',
+    out: 'build/regstudloginalreadyexists/regstudloginalreadyexists.html',
+  },
+  {
+    html: 'src/app/templates/register/regtutloginalreadyexists/regtutloginalreadyexists.html',
+    css: 'src/app/templates/register/regtutloginalreadyexists/regtutloginalreadyexists.css',
+    out: 'build/regtutloginalreadyexists/regtutloginalreadyexists.html',
+  },
+  {
     html: 'src/app/templates/register/regtut/regtut.html',
     css: 'src/app/templates/register/regtut/regtut.css',
     out: 'build/register/regtut.html',

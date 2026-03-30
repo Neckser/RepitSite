@@ -32,6 +32,16 @@ def get_student_by_login(login):
     except Exception as e:
         print(f'Произошла ошибка - {e}')
         raise e
+    
+def checkstudloginexists(login):
+    """Проверка существования логина в базе"""
+    try:
+        student = query_one("SELECT login FROM students WHERE login = %s", (login,))
+        return student is not None
+        
+    except Exception as e:
+        print(f'Произошла ошибка - {e}')
+        raise e
 
 
 def get_student_by_id(student_id):

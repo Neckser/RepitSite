@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="ru">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Регистрация репетитора | RepitHub</title>
+    </head>
+    <body class="page">
+        <header class="top-bar">
+            <a href="/" class="top-bar__logo">RepitHub</a>
+        </header>
+
+        <main class="registration-wrapper">
+            <div class="registration-page">
+                <div class="registration-page__header">
+                    <span class="registration-page__icon">👨‍🏫</span>
+                    <h1 class="registration-page__title">Стать репетитором</h1>
+                    <!-- <p class="registration-page__subtitle">Присоединяйтесь к лучшей платформе для преподавателей</p> -->
+                </div>
+
+                <!-- <div class="registration-page__moderation-notice">
+                    Ваша анкета будет проверена модератором. Обычно это занимает несколько часов, но в редких случаях может занять до 3 дней.
+                </div> -->
+
+                <form id="registration-form" class="registration-form" action="/registertut" method="post" enctype="multipart/form-data">
+                    <div class="registration-form__grid">
+                        <div class="registration-form__group">
+                            <label for="first-name" class="registration-form__label registration-form__label--required">Имя</label>
+                            <div class="registration-form__input-wrapper">
+                                <input type="text" id="first-name" name="first_name" class="registration-form__input" required placeholder="Ваше имя" />
+                            </div>
+                        </div>
+
+                        <div class="registration-form__group">
+                            <label for="last-name" class="registration-form__label registration-form__label--required">Фамилия</label>
+                            <div class="registration-form__input-wrapper">
+                                <input type="text" id="last-name" name="last_name" class="registration-form__input" required placeholder="Ваша фамилия" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="registration-form__group registration-form__group--full-width">
+                        <label class="registration-form__label registration-form__label--required">Предметы преподавания</label>
+                        <div class="registration-form__subjects-grid">
+                            <input type="checkbox" id="math" name="subject_math" value="1" class="registration-form__subject-checkbox" />
+                            <label for="math" class="registration-form__subject-label">Математика</label>
+
+                            <input type="checkbox" id="physics" name="subject_physics" value="1" class="registration-form__subject-checkbox" />
+                            <label for="physics" class="registration-form__subject-label">Физика</label>
+
+                            <input type="checkbox" id="chemistry" name="subject_chemistry" value="1" class="registration-form__subject-checkbox" />
+                            <label for="chemistry" class="registration-form__subject-label">Химия</label>
+
+                            <input type="checkbox" id="computer" name="subject_computer" value="1" class="registration-form__subject-checkbox" />
+                            <label for="computer" class="registration-form__subject-label">Информатика</label>
+
+                            <input type="checkbox" id="russian" name="subject_russian" value="1" class="registration-form__subject-checkbox" />
+                            <label for="russian" class="registration-form__subject-label">Русский язык</label>
+
+                            <input type="checkbox" id="english" name="subject_english" value="1" class="registration-form__subject-checkbox" />
+                            <label for="english" class="registration-form__subject-label">Английский</label>
+
+                            <input type="checkbox" id="german" name="subject_german" value="1" class="registration-form__subject-checkbox" />
+                            <label for="german" class="registration-form__subject-label">Немецкий</label>
+
+                            <input type="checkbox" id="french" name="subject_french" value="1" class="registration-form__subject-checkbox" />
+                            <label for="french" class="registration-form__subject-label">Французский</label>
+
+                            <input type="checkbox" id="history" name="subject_history" value="1" class="registration-form__subject-checkbox" />
+                            <label for="history" class="registration-form__subject-label">История</label>
+
+                            <input type="checkbox" id="social" name="subject_social" value="1" class="registration-form__subject-checkbox" />
+                            <label for="social" class="registration-form__subject-label">Обществознание</label>
+
+                            <input type="checkbox" id="literature" name="subject_literature" value="1" class="registration-form__subject-checkbox" />
+                            <label for="literature" class="registration-form__subject-label">Литература</label>
+
+                            <input type="checkbox" id="biology" name="subject_biology" value="1" class="registration-form__subject-checkbox" />
+                            <label for="biology" class="registration-form__subject-label">Биология</label>
+
+                            <input type="checkbox" id="geography" name="subject_geography" value="1" class="registration-form__subject-checkbox" />
+                            <label for="geography" class="registration-form__subject-label">География</label>
+
+                            <input type="checkbox" id="economics" name="subject_economics" value="1" class="registration-form__subject-checkbox" />
+                            <label for="economics" class="registration-form__subject-label">Экономика</label>
+
+                            <input type="checkbox" id="art" name="subject_art" value="1" class="registration-form__subject-checkbox" />
+                            <label for="art" class="registration-form__subject-label">ИЗО</label>
+
+                            <input type="checkbox" id="music" name="subject_music" value="1" class="registration-form__subject-checkbox" />
+                            <label for="music" class="registration-form__subject-label">Музыка</label>
+                        </div>
+                        <div class="registration-form__subjects-info">Выберите один или несколько предметов</div>
+                    </div>
+
+                    <div class="registration-form__grid">
+                        <div class="registration-form__group">
+                            <label for="education" class="registration-form__label registration-form__label--required">Образование</label>
+                            <div class="registration-form__input-wrapper">
+                                <input type="text" id="education" name="education" class="registration-form__input" placeholder="Вуз, специальность" required />
+                            </div>
+                        </div>
+
+                        <div class="registration-form__group">
+                            <label for="experience" class="registration-form__label registration-form__label--required">Опыт (лет)</label>
+                            <div class="registration-form__input-wrapper">
+                                <input type="number" id="experience" name="experience" class="registration-form__input" min="0" max="50" placeholder="0" required />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="registration-form__grid">
+                        <div class="registration-form__group">
+                            <label for="username" class="registration-form__label registration-form__label--required">Логин</label>
+                            <div class="registration-form__input-wrapper">
+                                <input type="text" id="username" name="login" class="registration-form__input" required placeholder="Придумайте логин" />
+                            </div>
+                        </div>
+
+                        <div class="registration-form__group">
+                            <label for="password" class="registration-form__label registration-form__label--required">Пароль</label>
+                            <div class="registration-form__input-wrapper">
+                                <input type="password" id="password" name="password" class="registration-form__input" required placeholder="Создайте пароль" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="registration-form__error">
+                        ⚠ Такой логин уже существует. Пожалуйста, выберите другой!
+                    </div>
+
+                    <button type="submit" class="registration-form__submit">📨 Отправить заявку</button>
+                </form>
+
+                <div class="registration-page__login-link">
+                    Уже есть аккаунт?
+                    <a href="/login">Войти</a>
+                    или
+                    <a href="/register">Регистрация ученика</a>
+                </div>
+            </div>
+        </main>
+    </body>
+</html>

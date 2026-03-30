@@ -19,6 +19,17 @@ def checktutreg(login, password):
     except Exception as e:
         print(f'Произошла ошибка - {e}')
         raise e
+    
+
+def checktutloginexists(login):
+    """Проверка существования логина в базе"""
+    try:
+        tutor = query_one("SELECT login FROM tutors WHERE login = %s", (login,))
+        return tutor is not None
+        
+    except Exception as e:
+        print(f'Произошла ошибка - {e}')
+        raise e
 
 def checktutexistsbyid(tutor_id):
     try:

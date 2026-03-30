@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="ru">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Регистрация ученика | RepitHub</title>
+    </head>
+    <body class="page">
+        <main class="registration-page">
+            <h1 class="registration-page__title">Регистрация ученика</h1>
+
+            <form id="registration-form" class="registration-form" action="/register" method="post">
+                <div class="registration-form__group">
+                    <label for="first-name" class="registration-form__label">Имя</label>
+                    <input type="text" id="first-name" name="first_name" class="registration-form__input" required />
+                </div>
+
+                <div class="registration-form__group">
+                    <label for="last-name" class="registration-form__label">Фамилия</label>
+                    <input type="text" id="last-name" name="last_name" class="registration-form__input" required />
+                </div>
+
+                <div class="registration-form__group">
+                    <label for="grade" class="registration-form__label">Класс</label>
+                    <input type="number" id="grade" name="grade" class="registration-form__input" min="1" max="11" required />
+                </div>
+
+                <div class="registration-form__group">
+                    <label for="login" class="registration-form__label">Логин</label>
+                    <input type="text" id="login" name="login" class="registration-form__input" required pattern="[A-Za-z0-9]+" />
+                </div>
+
+                <div class="registration-form__group">
+                    <label for="password" class="registration-form__label">Пароль</label>
+                    <input type="password" id="password" name="password" class="registration-form__input" required pattern="[A-Za-z0-9]+" />
+                    <div class="registration-form__hint">Запомните ваш пароль. Мы не сможем его восстановить!</div>
+                </div>
+                <div class="registration-form__error">
+                    ⚠ Такой логин уже существует. Пожалуйста, выберите другой!
+                </div>
+
+                <button type="submit" class="registration-form__submit">Зарегистрироваться</button>
+            </form>
+
+            <div class="registration-page__login-link">
+                Уже есть аккаунт?
+                <a href="/login">Войдите</a>
+            </div>
+        </main>
+    </body>
+</html>
