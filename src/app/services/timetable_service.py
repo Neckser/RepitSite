@@ -22,6 +22,15 @@ def addtexttask(lesson_id, task_type, task):
     except Exception as e:
         print(f"Произошла ошибка - {e}")
         raise e
+    
+def addimagetask(lesson_id, task_type, filename):
+    """Добавляет задание с изображением"""
+    try:
+        execute("""INSERT INTO lesson_tasks (schedule_id, type, content) VALUES (%s, %s, %s)""", (lesson_id, task_type, filename))
+    except Exception as e:
+        print(f"Ошибка при добавлении изображения: {e}")
+        raise e
+    
 
 def getlessontasks(lesson_id):
     try:

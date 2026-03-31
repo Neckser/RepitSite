@@ -1,9 +1,12 @@
-<div class="task-mini-card">
+<div class="task-mini-card task-mini-card-image">
     <div class="task-mini-header">
         <span>Задание {{ number }}</span>
+        <span class="task-type-badge">📷 Изображение</span>
     </div>
-    <div class="task-content">
-        <img src="{{ path }}" class="task-clickable-img" 
-             onclick="openFullImage(this.src)">
+    <div class="task-image-container" onclick="openFullImage('/viewimage/{{ content }}')">
+        <img src="/viewimage/{{ content }}" alt="Задание {{ number }}" class="task-image-preview">
+        <div class="image-overlay">
+            <span class="zoom-icon">🔍</span>
+        </div>
     </div>
 </div>

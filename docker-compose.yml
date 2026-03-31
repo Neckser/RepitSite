@@ -24,6 +24,8 @@ services:
     container_name: tutoring_app
     ports:
       - "127.0.0.1:8000:80"
+    volumes:
+      - ./uploads:/app/uploads
     environment:
       - PYTHONDONTWRITEBYTECODE=1
       - PYTHONUNBUFFERED=1
@@ -32,6 +34,7 @@ services:
       - DB_NAME=${DB_NAME}
       - DB_USER=${DB_USER}
       - DB_PASSWORD=${DB_PASSWORD}
+      - UPLOAD_DIR=/app/uploads
     depends_on:
       postgres:
         condition: service_healthy

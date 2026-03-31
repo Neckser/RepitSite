@@ -75,6 +75,45 @@ window.openFullImage = function(src) {
 };
 
 
+window.openFullImage = function(src) {
+    let overlay = document.getElementById('fullImageOverlay');
+    if (!overlay) {
+        overlay = document.createElement('div');
+        overlay.id = 'fullImageOverlay';
+        overlay.className = 'full-image-overlay';
+        overlay.innerHTML = '<img src="" id="fullImageItem">';
+        document.body.appendChild(overlay);
+        
+        overlay.addEventListener('click', function(e) {
+            if (e.target === overlay) {
+                closeFullscreenImage();
+            }
+        });
+        
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeFullscreenImage();
+            }
+        });
+    }
+    document.getElementById('fullImageItem').src = src;
+    overlay.classList.add('active');
+    document.body.style.overflow = 'hidden';
+};
+
+window.closeFullscreenImage = function() {
+    const overlay = document.getElementById('fullImageOverlay');
+    if (overlay) {
+        overlay.classList.remove('active');
+        document.body.style.overflow = '';
+        setTimeout(() => {
+            const img = document.getElementById('fullImageItem');
+            if (img) img.src = '';
+        }, 300);
+    }
+};
+
+
 
 // Функция для открытия модального окна видеосозвона
 window.showVideoModal = function(button) {

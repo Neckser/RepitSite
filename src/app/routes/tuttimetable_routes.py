@@ -2,16 +2,20 @@ from fastapi import APIRouter, Form, Query, HTTPException, Request, UploadFile, 
 from fastapi.responses import HTMLResponse, RedirectResponse
 from typing import Optional
 from config import TEMPLATES_PATH
+import os
+import asyncio
+from utils.id import generate_uuid
 from datetime import datetime, timedelta
 from auth import get_current_user
 from utils.dates import get_base_monday, getweekdates
 from utils.templates import verstkaprofile
 from services.stats_tut_service import getstudents, gettutorinfo, gettutorweektimetable
 from services.stats_stud_service import getstudinfobyid
-from services.timetable_service import addlesson, dellesson, addtexttask, getlessontasks, addvideolink, getvideolink, getdesklink, adddesklink
+from services.timetable_service import addlesson, dellesson, addtexttask, getlessontasks, addvideolink, getvideolink, getdesklink, adddesklink, addimagetask
 
 router = APIRouter()
 
+UPLOAD_DIR = os.getenv('UPLOAD_DIR', '/app/uploads')
 
 @router.get("/tuttime")
 def tuttime(request: Request, week_offset: int = Query(0)):
@@ -60,6 +64,9 @@ def tuttime(request: Request, week_offset: int = Query(0)):
         with open(f'{TEMPLATES_PATH}cards/lessontask.html', 'r', encoding='utf-8') as f:
             task_template = f.read()
 
+        with open(f'{TEMPLATES_PATH}cards/lessontaskimage.html', 'r', encoding='utf-8') as f:
+            imagetask_template = f.read()
+
         for i in range(0,7):
 
             day_template = ""
@@ -76,12 +83,18 @@ def tuttime(request: Request, week_offset: int = Query(0)):
                     lesson_tasks_template =""
                     task_number = 1
                     for task in lesson_tasks:
+                        task_type = task[2]
                         content = task[3]
-                        lesson_tasks_template += task_template
-                        lesson_tasks_template = lesson_tasks_template.replace("{{ number }}", str(task_number))
-                        lesson_tasks_template = lesson_tasks_template.replace("{{ content }}", str(content))
-                        task_number += 1
-                    
+                        if task_type == "text":
+                            lesson_tasks_template += task_template
+                            lesson_tasks_template = lesson_tasks_template.replace("{{ number }}", str(task_number))
+                            lesson_tasks_template = lesson_tasks_template.replace("{{ content }}", str(content))
+                            task_number += 1
+                        elif task_type == "image":
+                            lesson_tasks_template += imagetask_template
+                            lesson_tasks_template = lesson_tasks_template.replace("{{ number }}", str(task_number))
+                            lesson_tasks_template = lesson_tasks_template.replace("{{ content }}", str(content))
+                            task_number += 1
 
 
                     start_time = datetime.combine(datetime.today(), lesson["time"])
@@ -196,7 +209,7 @@ def deletelesson(request: Request, lesson_id: str = Form(...)):
     return RedirectResponse(url=f"/tuttime", status_code=303)
 
 @router.post("/add_lesson_task/{lesson_id}")
-def addtask(request: Request, lesson_id: int, task_type: str = Form(...), task_text: str = Form(None), task_file: UploadFile = File(None)):
+async def addtask(request: Request, lesson_id: int, task_type: str = Form(...), task_text: str = Form(None), task_file: UploadFile = File(None)):
     try:
         name, user_type = get_current_user(request)
         if user_type != "tutor":
@@ -211,8 +224,19 @@ def addtask(request: Request, lesson_id: int, task_type: str = Form(...), task_t
             addtexttask(lesson_id, task_type, task_text)
 
         elif task_type == "image":
-            #TODO
-            pass
+            upload_dir = os.path.join(UPLOAD_DIR, "tasks")
+            os.makedirs(upload_dir, exist_ok=True)
+            file_extension = os.path.splitext(task_file.filename)[1].lower()
+
+            new_uuid = str(generate_uuid())
+            unique_filename = f"{new_uuid}{file_extension}"
+            save_path = os.path.join(upload_dir, unique_filename)
+            content = await task_file.read()
+            with open(save_path, "wb") as f:
+                f.write(content)
+            
+            addimagetask(lesson_id, "image",unique_filename)
+                
 
     except Exception as e:
         print(f"Произошла ошибка - {e}")

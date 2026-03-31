@@ -50,6 +50,9 @@ def studtime(request: Request, week_offset: int = Query(0)):
         with open(f'{TEMPLATES_PATH}cards/lessontask.html', 'r', encoding='utf-8') as f:
             task_template = f.read()
 
+        with open(f'{TEMPLATES_PATH}cards/lessontaskimage.html', 'r', encoding='utf-8') as f:
+            imagetask_template = f.read()
+
         for i in range(0,7):
             day_template = ""
             day = list(week.keys())[i]
@@ -65,11 +68,18 @@ def studtime(request: Request, week_offset: int = Query(0)):
                     lesson_tasks_template =""
                     task_number = 1
                     for task in lesson_tasks:
+                        task_type = task[2]
                         content = task[3]
-                        lesson_tasks_template += task_template
-                        lesson_tasks_template = lesson_tasks_template.replace("{{ number }}", str(task_number))
-                        lesson_tasks_template = lesson_tasks_template.replace("{{ content }}", str(content))
-                        task_number += 1
+                        if task_type == "text":
+                            lesson_tasks_template += task_template
+                            lesson_tasks_template = lesson_tasks_template.replace("{{ number }}", str(task_number))
+                            lesson_tasks_template = lesson_tasks_template.replace("{{ content }}", str(content))
+                            task_number += 1
+                        elif task_type == "image":
+                            lesson_tasks_template += imagetask_template
+                            lesson_tasks_template = lesson_tasks_template.replace("{{ number }}", str(task_number))
+                            lesson_tasks_template = lesson_tasks_template.replace("{{ content }}", str(content))
+                            task_number += 1
 
                     start_time = datetime.combine(datetime.today(), lesson["time"])
                     duration_minutes = lesson.get("duration", 60)

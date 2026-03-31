@@ -297,6 +297,10 @@ const entries = [
     out: 'build/cards/lessontask.html',
   },
   {
+    html: 'src/app/templates/cards/lessontaskimage.html',
+    out: 'build/cards/lessontaskimage.html',
+  },
+  {
     html: 'src/app/templates/cards/tutcontact.html',
     out: 'build/cards/tutcontact.html',
   },

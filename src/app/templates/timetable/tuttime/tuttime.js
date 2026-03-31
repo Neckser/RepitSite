@@ -108,17 +108,52 @@ document.addEventListener('keydown', function(e) {
 
 // Функция открытия картинки во весь экран
 window.openFullImage = function(src) {
+    // УДАЛИТЕ ЭТИ СТРОКИ:
+    // const lessonModal = document.getElementById('lessonModal');
+    // if (lessonModal && lessonModal.classList.contains('active')) {
+    //     closeLessonModal();
+    // }
+    
     let overlay = document.getElementById('fullImageOverlay');
     if (!overlay) {
         overlay = document.createElement('div');
         overlay.id = 'fullImageOverlay';
         overlay.className = 'full-image-overlay';
         overlay.innerHTML = `<img src="" id="fullImageItem">`;
-        overlay.onclick = function() { this.classList.remove('active'); };
         document.body.appendChild(overlay);
+        
+        // Закрытие по клику на фон
+        overlay.addEventListener('click', function(e) {
+            if (e.target === overlay) {
+                closeFullscreenImage();
+            }
+        });
+        
+        // Закрытие по клавише Escape
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeFullscreenImage();
+            }
+        });
     }
-    document.getElementById('fullImageItem').src = src;
+    
+    const img = document.getElementById('fullImageItem');
+    img.src = src;
     overlay.classList.add('active');
+    document.body.style.overflow = 'hidden';
+};
+
+// Функция закрытия полноэкранного режима
+window.closeFullscreenImage = function() {
+    const overlay = document.getElementById('fullImageOverlay');
+    if (overlay) {
+        overlay.classList.remove('active');
+        document.body.style.overflow = '';
+        setTimeout(() => {
+            const img = document.getElementById('fullImageItem');
+            if (img) img.src = '';
+        }, 300);
+    }
 };
 
 // Функция для открытия модального окна видеосозвона
