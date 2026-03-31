@@ -14,7 +14,7 @@
     background-color: #6b8e23;
     padding: 12px 0; /* было 8px 0 */
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    position: fixed;
+    /* position: fixed; */
     top: 0;
     left: 0;
     right: 0;
