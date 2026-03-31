@@ -3,6 +3,7 @@ from fastapi.responses import HTMLResponse, RedirectResponse
 from config import TEMPLATES_PATH
 from auth import get_current_user
 from utils.templates import verstkaprofile
+from utils.validation import checkrequiredfields
 from services.stats_tut_service import gettutorinfo, getstudcolvo, gettutsubject
 from services.profile_service import editutbasic, edittutbio, edittutsubjects
 
@@ -76,7 +77,7 @@ def edittutprofile(request: Request):
     
 
 @router.post("/updatetutbasic")
-def updatetutbasic(request: Request, first_name: str = Form(...), last_name: str = Form(...), experience: int = Form(...)):
+def updatetutbasic(request: Request, first_name: str = Form(None), last_name: str = Form(None), experience: int = Form(None)):
     try:
         name, user_type = get_current_user(request)
 
@@ -87,6 +88,10 @@ def updatetutbasic(request: Request, first_name: str = Form(...), last_name: str
         return RedirectResponse(url="/login", status_code=303)
 
     try:
+        form_data = {"first_name": first_name,"last_name": last_name,"experience": experience}
+        error_validation = checkrequiredfields(form_data, ["first_name", "last_name", "experience"],f'{TEMPLATES_PATH}profiles/edittutprofile.html')
+        if error_validation:
+            return RedirectResponse(url="/profiletut", status_code=303)
 
         editutbasic(first_name, last_name, experience, name)
 

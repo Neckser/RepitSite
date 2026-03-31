@@ -3,6 +3,7 @@ from fastapi.responses import HTMLResponse, RedirectResponse
 from config import TEMPLATES_PATH
 from auth import get_current_user
 from utils.templates import verstkaprofile
+from utils.validation import checkrequiredfields
 from services.stats_tut_service import gettutorinfo, getstudents, gettuthw
 from services.hw_service import updatehwstatus, addhw, delhw
 
@@ -67,7 +68,7 @@ def homeworkstut(request: Request):
 
 
 @router.post("/createhw")
-def createhw(request: Request, student_id: str = Form(...), subject: str = Form(...), title: str = Form(...), deadline: str = Form(...), description: str = Form(...)):
+def createhw(request: Request, student_id: str = Form(None), subject: str = Form(None), title: str = Form(None), deadline: str = Form(None), description: str = Form(None)):
     try:
         name, user_type = get_current_user(request)
         if user_type != "tutor":
@@ -77,6 +78,11 @@ def createhw(request: Request, student_id: str = Form(...), subject: str = Form(
         return RedirectResponse(url="/login", status_code=303)
 
     try:
+        form_data = {"student_id": student_id,"subject": subject,"title": title,"deadline": deadline,"description": description}
+        error_validation = checkrequiredfields(form_data, ["student_id", "subject", "title", "deadline", "description"],f'{TEMPLATES_PATH}homeworks/homeworkstut.html')
+        if error_validation:
+            return RedirectResponse(url=f"/homeworkstut", status_code=303)
+
         tutinfo = gettutorinfo(name)
         tutor_id = tutinfo[2]
 

@@ -111,7 +111,7 @@ def addtut(request: Request, tutor_code: str = Form(None)):
         form_data = {"tutor_code": tutor_code}
         error_validation = checkrequiredfields(form_data, ["tutor_code"],f"{TEMPLATES_PATH}findtut/findtut.html")
         if error_validation:
-            return error_validation
+            return RedirectResponse(url=f"/tutlist", status_code=303)
 
         studinfo = getstudinfo(name)
         student_id = studinfo[2]

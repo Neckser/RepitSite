@@ -3,6 +3,7 @@ from fastapi.responses import HTMLResponse, RedirectResponse
 from config import TEMPLATES_PATH
 from auth import get_current_user
 from utils.templates import verstkaprofile
+from utils.validation import checkrequiredfields
 from services.stats_tut_service import gettutorinfo, gettutorgrades, getstudents
 from services.stats_stud_service import getstudinfobyid
 from services.grade_service import addgrade, delgrade
@@ -69,7 +70,7 @@ def tutgrades(request: Request):
     return HTMLResponse(content=content)
 
 @router.post('/creategrade')
-def creategrade(request: Request, student_id: str = Form(...), subject: str = Form(...), grade: str = Form(...), reason: str = Form(...), comment: str = Form(...)):
+def creategrade(request: Request, student_id: str = Form(None), subject: str = Form(None), grade: str = Form(None), reason: str = Form(None), comment: str = Form(None)):
     try:
         name, user_type = get_current_user(request)
         if user_type != "tutor":
@@ -79,6 +80,11 @@ def creategrade(request: Request, student_id: str = Form(...), subject: str = Fo
         return RedirectResponse(url="/login", status_code=303)
 
     try:
+        form_data = {"student_id": student_id,"subject": subject,"grade": grade,"reason": reason,"comment": comment}
+        error_validation = checkrequiredfields(form_data, ["student_id", "subject", "grade", "reason", "comment"],f'{TEMPLATES_PATH}grades/tutgrades.html')
+        if error_validation:
+            return RedirectResponse(url=f"/tutgrades", status_code=303)
+        
         tutinfo = gettutorinfo(name)
         tutor_id = tutinfo[2]
 
@@ -92,7 +98,7 @@ def creategrade(request: Request, student_id: str = Form(...), subject: str = Fo
 
 
 @router.post("/deletegrade")
-def deletehw(request: Request, grade_id: str = Form(...)):
+def deletehw(request: Request, grade_id: str = Form(None)):
     try:
         name, user_type = get_current_user(request)
         if user_type != "tutor":
@@ -102,7 +108,11 @@ def deletehw(request: Request, grade_id: str = Form(...)):
         return RedirectResponse(url="/login", status_code=303)
 
     try:
-
+        form_data = {"grade_id": grade_id}
+        error_validation = checkrequiredfields(form_data, ["grade_id"],f'{TEMPLATES_PATH}grades/tutgrades.html')
+        if error_validation:
+            return RedirectResponse(url=f"/tutgrades", status_code=303)
+        
         delgrade(grade_id)
 
     except Exception as e:

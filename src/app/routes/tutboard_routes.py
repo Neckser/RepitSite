@@ -2,15 +2,11 @@ from fastapi import APIRouter, WebSocket, WebSocketDisconnect, Request, HTTPExce
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import HTMLResponse, RedirectResponse
 import json
-import asyncio
-from typing import Dict, List, Any
-from datetime import datetime
-import uuid
+from typing import Dict, Any
 from config import TEMPLATES_PATH
 from auth import get_current_user
 from utils.templates import verstkaprofile
 from services.stats_tut_service import gettutorinfo
-from services.stats_stud_service import getstudinfo
 
 router = APIRouter()
 
@@ -48,20 +44,17 @@ async def websocket_endpoint(websocket: WebSocket, room_token: str):
     
     print(f"Новое подключение к комнате: {room_token}")
     
-    # Создаем комнату если её ещё нет
     if room_token not in rooms:
         rooms[room_token] = {
             "connections": [],
-            "drawings": [],  # Сохраненные линии
-            "images": []     # Сохраненные картинки (base64 + координаты)
+            "drawings": [],
+            "images": []
         }
         print(f"Создана новая комната: {room_token}")
     
-    # Добавляем соединение в комнату
     rooms[room_token]["connections"].append(websocket)
     print(f"В комнате {room_token} сейчас {len(rooms[room_token]['connections'])} пользователей")
     
-    # Отправляем новому пользователю текущее состояние комнаты
     await websocket.send_json({
         "type": "init",
         "data": {
@@ -72,27 +65,18 @@ async def websocket_endpoint(websocket: WebSocket, room_token: str):
     
     try:
         while True:
-            # Получаем сообщение от клиента
             data = await websocket.receive_text()
             message = json.loads(data)
-            
-            # Добавляем отправителя в сообщение
             message["sender"] = id(websocket)
-            
-            # Обрабатываем разные типы сообщений
             if message["type"] == "draw_line":
-                # Сохраняем линию в историю комнаты
                 rooms[room_token]["drawings"].append(message["data"])
-                # Ограничиваем историю (последние 1000 линий)
                 if len(rooms[room_token]["drawings"]) > 1000:
                     rooms[room_token]["drawings"] = rooms[room_token]["drawings"][-1000:]
                 
             elif message["type"] == "add_image":
-                # Сохраняем картинку в историю комнаты
                 rooms[room_token]["images"].append(message["data"])
                 
             elif message["type"] == "move_image":
-                # Обновляем позицию картинки
                 for i, img in enumerate(rooms[room_token]["images"]):
                     if img["id"] == message["data"]["id"]:
                         rooms[room_token]["images"][i]["x"] = message["data"]["x"]
@@ -100,7 +84,6 @@ async def websocket_endpoint(websocket: WebSocket, room_token: str):
                         break
                         
             elif message["type"] == "resize_image":
-                # Обновляем размер картинки
                 for i, img in enumerate(rooms[room_token]["images"]):
                     if img["id"] == message["data"]["id"]:
                         rooms[room_token]["images"][i]["width"] = message["data"]["width"]
@@ -110,18 +93,15 @@ async def websocket_endpoint(websocket: WebSocket, room_token: str):
                         break
                         
             elif message["type"] == "delete_image":
-                # Удаляем картинку
                 rooms[room_token]["images"] = [
                     img for img in rooms[room_token]["images"] 
                     if img["id"] != message["data"]["id"]
                 ]
                 
             elif message["type"] == "clear_board":
-                # Очищаем всю доску
                 rooms[room_token]["drawings"] = []
                 rooms[room_token]["images"] = []
             
-            # Рассылаем сообщение всем в комнате (кроме отправителя)
             for connection in rooms[room_token]["connections"]:
                 if connection != websocket:
                     try:
@@ -130,11 +110,8 @@ async def websocket_endpoint(websocket: WebSocket, room_token: str):
                         pass
     
     except WebSocketDisconnect:
-        # Удаляем соединение из комнаты
         rooms[room_token]["connections"].remove(websocket)
         print(f"Пользователь отключился. В комнате {room_token} осталось {len(rooms[room_token]['connections'])} пользователей")
-        
-        # Если комната пустая, можно её удалить (опционально)
         if len(rooms[room_token]["connections"]) == 0:
             del rooms[room_token]
             print(f"Комната {room_token} удалена (пуста)")

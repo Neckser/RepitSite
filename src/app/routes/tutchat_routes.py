@@ -5,8 +5,7 @@ from config import TEMPLATES_PATH
 from auth import get_current_user
 from utils.templates import verstkaprofile
 from services.chat_service import getchatsbytutorid, addmessage, getstudentchatinfo, getchatmessages, checkchatexists
-from services.stats_tut_service import gettutorinfo, gettutinfobyid
-import asyncio
+from services.stats_tut_service import gettutorinfo
 import json
 
 router = APIRouter()
@@ -207,18 +206,15 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str, username: str =
         return
 
     try:
-        # Добавляем в комнату
         if room_id not in active_connections:
             active_connections[room_id] = []
         active_connections[room_id].append(websocket)
 
-        # Уведомляем всех в комнате о новом пользователе
         await broadcast_to_room(room_id, {
             "type": "system",
             "text": f"{username} присоединился к чату"
         }, exclude=websocket)
 
-        # Отправляем новому пользователю список всех в комнате
         await websocket.send_json({
             "type": "users",
             "users": [f"Пользователь {i+1}" for i in range(len(active_connections[room_id]))]

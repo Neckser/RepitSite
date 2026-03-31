@@ -3,6 +3,7 @@ from fastapi.responses import HTMLResponse, RedirectResponse
 from config import TEMPLATES_PATH
 from auth import get_current_user
 from utils.templates import verstkaprofile
+from utils.validation import checkrequiredfields
 from services.stats_stud_service import getstudinfo, getstudcompletedhwcolvo, getstudhwcolvo, gettutorcount, getavggrade
 from services.profile_service import editstudbasic, editstudbio
 
@@ -76,7 +77,7 @@ def edittutprofile(request: Request):
     
 
 @router.post("/updatestudbasic")
-def updatestudbasic(request: Request, first_name: str = Form(...), last_name: str = Form(...), grade: int = Form(...)):
+def updatestudbasic(request: Request, first_name: str = Form(None), last_name: str = Form(None), grade: int = Form(None)):
     try:
         name, user_type = get_current_user(request)
 
@@ -87,6 +88,10 @@ def updatestudbasic(request: Request, first_name: str = Form(...), last_name: st
         return RedirectResponse(url="/login", status_code=303)
 
     try:
+        form_data = {"first_name": first_name,"last_name": last_name,"grade": grade}
+        error_validation = checkrequiredfields(form_data, ["first_name", "last_name", "grade"],f'{TEMPLATES_PATH}profiles/editstudprofile.html')
+        if error_validation:
+            return error_validation
 
         editstudbasic(first_name, last_name, grade, name)
 

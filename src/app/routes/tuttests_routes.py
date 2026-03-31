@@ -4,6 +4,7 @@ from fastapi.responses import HTMLResponse, RedirectResponse
 from config import TEMPLATES_PATH
 from auth import get_current_user
 from utils.templates import verstkaprofile
+from utils.validation import checkrequiredfields
 from services.stats_tut_service import gettutorinfo, gettuttests, getstudents
 from services.stats_stud_service import getstudinfobyid
 from services.tests_service import getquestioncolvobyid, gettestanswersandtime, gettestquestionsbyid, gettestres, getteststudstr, gettestbyid, checktestanswers, createtest, deltest
@@ -125,6 +126,12 @@ def deletetest(request: Request, test_id: str = Form(...)):
         return RedirectResponse(url="/login", status_code=303)
 
     try:
+        form_data = {"test_id": test_id}
+        error_validation = checkrequiredfields(form_data, ["test_id"],f'{TEMPLATES_PATH}cards/tuttest.html')
+        if error_validation:
+            return error_validation
+
+
         tutorinfo = gettutorinfo(name)
         tutor_id = tutorinfo[2]
 
@@ -318,7 +325,7 @@ def restest(request: Request):
         return RedirectResponse(url='/login', status_code=303)
     
 @router.post("/tutanswertest")
-async def tutanswertest(request: Request, test_id: int = Form(...)):
+async def tutanswertest(request: Request, test_id: int = Form(None)):
     try:
         name, user_type = get_current_user(request)
 
@@ -329,6 +336,11 @@ async def tutanswertest(request: Request, test_id: int = Form(...)):
         return RedirectResponse(url="/login", status_code=303)
     
     try:
+        form_data = {"test_id": test_id}
+        error_validation = checkrequiredfields(form_data, ["test_id"],f"{TEMPLATES_PATH}ctests/restest.html")
+        if error_validation:
+            return error_validation
+        
         tutorinfo = gettutorinfo(name)
         tutfirst_name = tutorinfo[0]
         tutlast_name = tutorinfo[1]
