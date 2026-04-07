@@ -22,7 +22,7 @@ def studgrades(request: Request):
         return RedirectResponse(url="/login", status_code=303)
     
     try:
-        avg_grade = getavggrade(name)
+        avg_grade = round(getavggrade(name), 2)
         colvo_grades = getcolvogrades(name)
         colvo_fives = getcolvofives(name)
         
