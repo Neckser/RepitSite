@@ -32,6 +32,8 @@ def login(login: str = Form(None), password: str = Form(None)):
                 httponly=True,
                 max_age=60 * 60,
                 path="/",
+                secure=True,
+                samesite="lax", 
             )
             return response
         else:
@@ -61,6 +63,8 @@ def logintut(login: str = Form(None), password: str = Form(None)):
                 httponly=True,
                 max_age=60 * 60,
                 path="/",
+                secure=True,
+                samesite="lax", 
             )
             return response
         else:
@@ -94,7 +98,20 @@ def post_registration(first_name: str = Form(None), last_name: str = Form(None),
 
         else:
             studregister(first_name, last_name, grade, login, password)
-            return RedirectResponse(url="/home", status_code=303)
+
+            access_token = create_access_token(login, "student")
+            response = RedirectResponse(url="/home", status_code=303)
+            response.set_cookie(
+                key="access_token",
+                value=access_token,
+                httponly=True,
+                max_age=60 * 60,
+                path="/",
+                secure=True,
+                samesite="lax",
+            )
+        
+            return response
 
     except Exception as e:
         print(f"Ошибка post_registration: {e}")
@@ -159,7 +176,20 @@ def post_registertut(
             subject_geography, subject_economics, subject_art, 
             subject_music, experience, login, password
         )
-        return RedirectResponse(url="/hometut", status_code=303)
+        access_token = create_access_token(login, "tutor")
+        response = RedirectResponse(url="/hometut", status_code=303)
+        response.set_cookie(
+            key="access_token",
+            value=access_token,
+            httponly=True,
+            max_age=60 * 60,
+            path="/",
+            secure=True,
+            samesite="lax",
+        )
+    
+        return response
+
         
     except Exception as e:
         print(f"Произошла ошибка - {e}")
