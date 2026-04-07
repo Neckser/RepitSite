@@ -1,11 +1,14 @@
 from db_wrapper import execute, query_one, query_all
 from utils.id import generate_uuid
+from utils.hash import hashpassword
+import bcrypt
 
 def studregister(studfirst_name, studlast_name, grade, studlogin, password):
     """Регистрация нового студента"""
     try:
         new_uuid = str(generate_uuid())
-        execute("""INSERT INTO students (student_id, first_name, last_name, grade, login, password) VALUES (%s, %s, %s, %s, %s, %s)""", (new_uuid, studfirst_name, studlast_name, grade, studlogin, password))
+        hashed_password = hashpassword(password)
+        execute("""INSERT INTO students (student_id, first_name, last_name, grade, login, password) VALUES (%s, %s, %s, %s, %s, %s)""", (new_uuid, studfirst_name, studlast_name, grade, studlogin, hashed_password))
         return True
         
     except Exception as e:
@@ -16,8 +19,14 @@ def studregister(studfirst_name, studlast_name, grade, studlogin, password):
 def checkstudreg(login, password):
     """Проверка существования студента"""
     try:
-        student = query_one("SELECT * FROM students WHERE login = %s AND password = %s",(login, password))
-        return student is not None
+        student = query_one("SELECT * FROM students WHERE login = %s",(login,))
+        
+        if not student:
+            return False
+        
+        stored_hash = student[6]
+        
+        return bcrypt.checkpw(password.encode('utf-8'), stored_hash.encode('utf-8'))
         
     except Exception as e:
         print(f'Произошла ошибка - {e}')

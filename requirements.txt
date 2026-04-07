@@ -5,3 +5,4 @@ PyJWT
 prometheus-fastapi-instrumentator
 python-dotenv==1.0.0
 psycopg2-binary==2.9.9
+bcrypt
