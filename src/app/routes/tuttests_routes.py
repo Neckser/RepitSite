@@ -8,6 +8,7 @@ from utils.validation import checkrequiredfields
 from services.stats_tut_service import gettutorinfo, gettuttests, getstudents
 from services.stats_stud_service import getstudinfobyid
 from services.tests_service import getquestioncolvobyid, gettestanswersandtime, gettestquestionsbyid, gettestres, getteststudstr, gettestbyid, checktestanswers, createtest, deltest
+import html
 
 router = APIRouter()
 
@@ -39,15 +40,15 @@ def tuttests(request: Request):
                 studinfo = getstudinfobyid(tuttest[2])
                 studfirst_name = studinfo[0]
                 studlast_name = studinfo[1]
-                tests_template = tests_template.replace("{{ test_id }}", str(tuttest[0]))
-                tests_template = tests_template.replace("{{ title }}", str(tuttest[3]))
-                tests_template = tests_template.replace("{{ subject }}", str(tuttest[4]))
-                tests_template = tests_template.replace("{{ studfirst_name }}", studfirst_name)
-                tests_template = tests_template.replace("{{ studlast_name }}", studlast_name)
-                tests_template = tests_template.replace("{{ question_colvo }}", str(getquestioncolvobyid(tuttest[0])))
-                tests_template = tests_template.replace("{{ data }}", str(tuttest[7]))
-                tests_template = tests_template.replace("{{ date_start }}", str(tuttest[5]))
-                tests_template = tests_template.replace("{{ date_end }}", str(tuttest[6]))
+                tests_template = tests_template.replace("{{ test_id }}", html.escape(str(tuttest[0])))
+                tests_template = tests_template.replace("{{ title }}", html.escape(str(tuttest[3])))
+                tests_template = tests_template.replace("{{ subject }}", html.escape(str(tuttest[4])))
+                tests_template = tests_template.replace("{{ studfirst_name }}", html.escape(studfirst_name))
+                tests_template = tests_template.replace("{{ studlast_name }}", html.escape(studlast_name))
+                tests_template = tests_template.replace("{{ question_colvo }}", html.escape(str(getquestioncolvobyid(tuttest[0]))))
+                tests_template = tests_template.replace("{{ data }}", html.escape(str(tuttest[7])))
+                tests_template = tests_template.replace("{{ date_start }}", html.escape(str(tuttest[5])))
+                tests_template = tests_template.replace("{{ date_end }}", html.escape(str(tuttest[6])))
 
         with open(f'{TEMPLATES_PATH}ctests/tuttests.html', 'r', encoding='utf-8') as f:
             content = verstkaprofile(f.read(), name, tutfirst_name, tutlast_name)
@@ -191,26 +192,26 @@ def testutres(request: Request, test_id: int):
             duration = studstr[5]
             score_percent = studstr[6]
             score = (score_percent * questions_colvo) / 100
-            studtest_template = studtest_template.replace("{{ studfirst_name }}", studfirst_name)
-            studtest_template = studtest_template.replace("{{ studlast_name }}", studlast_name)
-            studtest_template = studtest_template.replace("{{ data }}", str(data))
-            studtest_template = studtest_template.replace("{{ duration }}", str(duration) + " сек")
-            studtest_template = studtest_template.replace("{{ score }}", str(score) + f"/{questions_colvo}")
-            studtest_template = studtest_template.replace("{{ score_percent }}", str(score_percent))
+            studtest_template = studtest_template.replace("{{ studfirst_name }}", html.escape(studfirst_name))
+            studtest_template = studtest_template.replace("{{ studlast_name }}", html.escape(studlast_name))
+            studtest_template = studtest_template.replace("{{ data }}", html.escape(str(data)))
+            studtest_template = studtest_template.replace("{{ duration }}", html.escape(str(duration) + " сек"))
+            studtest_template = studtest_template.replace("{{ score }}", html.escape(str(score) + f"/{questions_colvo}"))
+            studtest_template = studtest_template.replace("{{ score_percent }}", html.escape(str(score_percent)))
 
         with open(f"{TEMPLATES_PATH}ctests/testutres.html", 'r', encoding="utf-8") as f:
             content = verstkaprofile(f.read(), name, tutfirst_name, tutlast_name)
-        content = content.replace("{{ test_id }}", str(test_id))
-        content = content.replace("{{ title }}", title)
-        content = content.replace("{{ subject }}", subject)
-        content = content.replace("{{ date_start }}", str(date_start))
-        content = content.replace("{{ date_end }}", str(date_end))
-        content = content.replace("{{ duration }}", str(duration))
-        content = content.replace("{{ questions_colvo }}", str(questions_colvo))
-        content = content.replace("{{ students_done }}", str(students_done))
-        content = content.replace("{{ avg_score }}", str(avg_score))
-        content = content.replace("{{ avg_time }}", str(avg_time_sec))
-        content = content.replace("{{ studtest_template }}", studtest_template)
+        content = content.replace("{{ test_id }}", html.escape(str(test_id)))
+        content = content.replace("{{ title }}", html.escape(title))
+        content = content.replace("{{ subject }}", html.escape(subject))
+        content = content.replace("{{ date_start }}", html.escape(str(date_start)))
+        content = content.replace("{{ date_end }}", html.escape(str(date_end)))
+        content = content.replace("{{ duration }}", html.escape(str(duration)))
+        content = content.replace("{{ questions_colvo }}", html.escape(str(questions_colvo)))
+        content = content.replace("{{ students_done }}", html.escape(str(students_done)))
+        content = content.replace("{{ avg_score }}", html.escape(str(avg_score)))
+        content = content.replace("{{ avg_time }}", html.escape(str(avg_time_sec)))
+        content = content.replace("{{ studtest_template }}", html.escape(studtest_template))
         return HTMLResponse(content=content)
 
     except Exception as e:
@@ -261,39 +262,39 @@ def viewtest(request: Request, test_id: int):
             data = json.loads(data_str)
             if type == "text":
                 questions_template += textquestion
-                questions_template = questions_template.replace("{{ question_id }}", str(question_id))
-                questions_template = questions_template.replace("{{ question_number }}", str(index))
-                questions_template = questions_template.replace("{{ title_question }}", title)
+                questions_template = questions_template.replace("{{ question_id }}", html.escape(str(question_id)))
+                questions_template = questions_template.replace("{{ question_number }}", html.escape(str(index)))
+                questions_template = questions_template.replace("{{ title_question }}", html.escape(title))
             elif type == "single_choice":
                 questions_template += singlequestion
                 options = data.get("options", ["", "", "", ""])
-                questions_template = questions_template.replace("{{ question_id }}", str(question_id))
-                questions_template = questions_template.replace("{{ question_number }}", str(index))
-                questions_template = questions_template.replace("{{ title_question }}", title)
-                questions_template = questions_template.replace("{{ first_var }}", options[0])
-                questions_template = questions_template.replace("{{ second_var }}", options[1])
-                questions_template = questions_template.replace("{{ third_var }}", options[2])
-                questions_template = questions_template.replace("{{ fourth_var }}", options[3])
+                questions_template = questions_template.replace("{{ question_id }}", html.escape(str(question_id)))
+                questions_template = questions_template.replace("{{ question_number }}", html.escape(str(index)))
+                questions_template = questions_template.replace("{{ title_question }}", html.escape(title))
+                questions_template = questions_template.replace("{{ first_var }}", html.escape(options[0]))
+                questions_template = questions_template.replace("{{ second_var }}", html.escape(options[1]))
+                questions_template = questions_template.replace("{{ third_var }}", html.escape(options[2]))
+                questions_template = questions_template.replace("{{ fourth_var }}", html.escape(options[3]))
             elif type == "multi_choice":
                 questions_template += multiquestion
                 options = data.get("options", ["", "", "", ""])
-                questions_template = questions_template.replace("{{ question_id }}", str(question_id))
-                questions_template = questions_template.replace("{{ question_number }}", str(index))
-                questions_template = questions_template.replace("{{ title_question }}", title)
-                questions_template = questions_template.replace("{{ first_var }}", options[0])
-                questions_template = questions_template.replace("{{ second_var }}", options[1])
-                questions_template = questions_template.replace("{{ third_var }}", options[2])
-                questions_template = questions_template.replace("{{ fourth_var }}", options[3])
+                questions_template = questions_template.replace("{{ question_id }}", html.escape(str(question_id)))
+                questions_template = questions_template.replace("{{ question_number }}", html.escape(str(index)))
+                questions_template = questions_template.replace("{{ title_question }}", html.escape(title))
+                questions_template = questions_template.replace("{{ first_var }}", html.escape(options[0]))
+                questions_template = questions_template.replace("{{ second_var }}", html.escape(options[1]))
+                questions_template = questions_template.replace("{{ third_var }}", html.escape(options[2]))
+                questions_template = questions_template.replace("{{ fourth_var }}", html.escape(options[3]))
             index += 1
 
     
         with open(f"{TEMPLATES_PATH}ctests/viewtest.html", "r", encoding='utf-8') as f:
             content = verstkaprofile(f.read(), name, tutfirst_name, tutlast_name)
         content = content.replace("{{ questions_template }}", questions_template)
-        content = content.replace("{{ title }}", title)
-        content = content.replace("{{ subject }}", subject)
-        content = content.replace("{{ test_id }}", str(test_id))
-        content = content.replace("{{ duration }}", str(duration))
+        content = content.replace("{{ title }}", html.escape(title))
+        content = content.replace("{{ subject }}", html.escape(subject))
+        content = content.replace("{{ test_id }}", html.escape(str(test_id)))
+        content = content.replace("{{ duration }}", html.escape(str(duration)))
         return HTMLResponse(content=content)
     
 
@@ -362,12 +363,12 @@ async def tutanswertest(request: Request, test_id: int = Form(None)):
 
         with open(f"{TEMPLATES_PATH}ctests/restest.html", 'r', encoding='utf-8') as f:
             content = f.read()
-        content = content.replace("'{{ score }}'", str(score))
-        content = content.replace("'{{ questions_colvo }}'", str(questions_colvo))
-        content = content.replace("'{{ percent_score }}'", str(percent_score))
-        content = content.replace("{{ time }}", str(time))
-        content = content.replace("{{ title }}", str(title))
-        content = content.replace("{{ subject }}", subject)
+        content = content.replace("'{{ score }}'", html.escape(str(score)))
+        content = content.replace("'{{ questions_colvo }}'", html.escape(str(questions_colvo)))
+        content = content.replace("'{{ percent_score }}'", html.escape(str(percent_score)))
+        content = content.replace("{{ time }}", html.escape(str(time)))
+        content = content.replace("{{ title }}", html.escape(str(title)))
+        content = content.replace("{{ subject }}", html.escape(subject))
         return HTMLResponse(content=content)
     
     except Exception as e:

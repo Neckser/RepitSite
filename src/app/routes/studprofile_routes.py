@@ -6,6 +6,7 @@ from utils.templates import verstkaprofile
 from utils.validation import checkrequiredfields
 from services.stats_stud_service import getstudinfo, getstudcompletedhwcolvo, getstudhwcolvo, gettutorcount, getavggrade
 from services.profile_service import editstudbasic, editstudbio
+import html
 
 router = APIRouter()
 
@@ -39,12 +40,12 @@ def studprofile(request: Request):
 
         with open(f"{TEMPLATES_PATH}profiles/studprofile.html", "r", encoding = "utf-8") as f:
             content = verstkaprofile(f.read(), name, studfirst_name, studlast_name)
-            content = content.replace("{{ grade }}", str(grade))
-            content = content.replace("{{ tutors_count }}", str(tutor_count))
-            content = content.replace("{{ homework_colvo }}", str(homework_colvo))
-            content = content.replace("{{ completed_homeworks }}", str(completed_homeworks))
-            content = content.replace("{{ avg_grade }}", str(avggrade))
-            content = content.replace("{{ bio }}", bio)
+            content = content.replace("{{ grade }}", html.escape(str(grade)))
+            content = content.replace("{{ tutors_count }}", html.escape(str(tutor_count)))
+            content = content.replace("{{ homework_colvo }}", html.escape(str(homework_colvo)))
+            content = content.replace("{{ completed_homeworks }}", html.escape(str(completed_homeworks)))
+            content = content.replace("{{ avg_grade }}", html.escape(str(avggrade)))
+            content = content.replace("{{ bio }}", html.escape(bio))
 
         return HTMLResponse(content=content)
 

@@ -6,6 +6,7 @@ from utils.templates import verstkaprofile
 from utils.validation import checkrequiredfields
 from services.stats_tut_service import gettutorinfo, getstudcolvo, gettutsubject
 from services.profile_service import editutbasic, edittutbio, edittutsubjects
+import html
 
 router = APIRouter()
 
@@ -41,11 +42,11 @@ def profiletut(request: Request):
 
         with open(f'{TEMPLATES_PATH}profiles/profiletut.html', 'r', encoding='utf-8') as f:
             content = verstkaprofile(f.read(), name, tutfirst_name, tutlast_name)
-        content = content.replace("{{ experience }}", str(experience))
-        content = content.replace("{{ student_colvo }}", str(student_colvo))
-        content = content.replace("{{ repcode }}", str(tutor_id))
+        content = content.replace("{{ experience }}", html.escape(str(experience)))
+        content = content.replace("{{ student_colvo }}", html.escape(str(student_colvo)))
+        content = content.replace("{{ repcode }}", html.escape(str(tutor_id)))
         content = content.replace("{{ profiletutsubjecttemplate }}", profiletutsubjecttemplate)
-        content = content.replace("{{ bio }}", str(bio))
+        content = content.replace("{{ bio }}", html.escape(str(bio)))
         return HTMLResponse(content=content)
     
     except Exception as e:

@@ -3,6 +3,7 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.responses import HTMLResponse, RedirectResponse
 import json
 import asyncio
+import html
 from typing import Dict, List, Any
 from datetime import datetime
 import uuid
@@ -31,7 +32,7 @@ async def studboard(request: Request, board_id: str):
         
         with open(f"{TEMPLATES_PATH}boards/studboard.html", 'r', encoding='utf-8') as f:
             content = verstkaprofile(f.read(), name, studfirst_name, studlast_name)
-        content = content.replace("{{ board_id }}", str(board_id))
+        content = content.replace("{{ board_id }}", html.escape(str(board_id)))
         return HTMLResponse(content=content)
         
     except Exception as e:

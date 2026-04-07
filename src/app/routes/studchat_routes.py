@@ -9,6 +9,7 @@ from services.stats_tut_service import gettutorinfo, gettutinfobyid
 from services.stats_stud_service import getstudinfo
 import asyncio
 import json
+import html
 
 router = APIRouter()
 
@@ -61,7 +62,7 @@ def studchat(request: Request, room_name: str):
         message_card = f"""
         <div class="message {message_class}">
             <strong>{sender_name}</strong> [{created_at}]<br>
-            {message_text}
+            {html.escape(message_text)}
         </div>
         """
         messages_template += message_card
@@ -70,11 +71,11 @@ def studchat(request: Request, room_name: str):
     with open(f"{TEMPLATES_PATH}chat/studchat.html", 'r', encoding='utf-8') as f:
         content = verstkaprofile(f.read(), name, studfirst_name, studlast_name)
     content = content.replace("{{ messages_template }}", str(messages_template))
-    content = content.replace("{{ dialog_first_name }}", str(tutfirst_name))
-    content = content.replace("{{ dialog_last_name }}", str(tutlast_name))
-    content = content.replace("{{ room_name }}", str(room_name))
-    content = content.replace("{{ student_id }}", str(student_id))
-    content = content.replace("{{ studfirst_name }}", str(studfirst_name))
-    content = content.replace("{{ studlast_name }}", str(studlast_name))
+    content = content.replace("{{ dialog_first_name }}", html.escape(str(tutfirst_name)))
+    content = content.replace("{{ dialog_last_name }}", html.escape(str(tutlast_name)))
+    content = content.replace("{{ room_name }}", html.escape(str(room_name)))
+    content = content.replace("{{ student_id }}", html.escape(str(student_id)))
+    content = content.replace("{{ studfirst_name }}", html.escape(str(studfirst_name)))
+    content = content.replace("{{ studlast_name }}", html.escape(str(studlast_name)))
 
     return HTMLResponse(content=content)

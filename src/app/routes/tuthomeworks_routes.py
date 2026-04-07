@@ -6,6 +6,7 @@ from utils.templates import verstkaprofile
 from utils.validation import checkrequiredfields
 from services.stats_tut_service import gettutorinfo, getstudents, gettuthw
 from services.hw_service import updatehwstatus, addhw, delhw
+import html
 
 router = APIRouter()
 
@@ -49,12 +50,12 @@ def homeworkstut(request: Request):
         if homeworks:
             for hw in homeworks:
                 hwtemplate += a
-                hwtemplate = hwtemplate.replace("{{ status }}", str(hw[3]))
-                hwtemplate = hwtemplate.replace("{{ title }}", str(hw[0]))
-                hwtemplate = hwtemplate.replace("{{ data }}", str(hw[2]))
-                hwtemplate = hwtemplate.replace("{{ description }}", str(hw[1]))
-                hwtemplate = hwtemplate.replace("{{ subject }}", str(hw[4]))
-                hwtemplate = hwtemplate.replace("{{ homework_id }}", str(hw[5]))
+                hwtemplate = hwtemplate.replace("{{ status }}", html.escape(str(hw[3])))
+                hwtemplate = hwtemplate.replace("{{ title }}", html.escape(str(hw[0])))
+                hwtemplate = hwtemplate.replace("{{ data }}", html.escape(str(hw[2])))
+                hwtemplate = hwtemplate.replace("{{ description }}", html.escape(str(hw[1])))
+                hwtemplate = hwtemplate.replace("{{ subject }}", html.escape(str(hw[4])))
+                hwtemplate = hwtemplate.replace("{{ homework_id }}", html.escape(str(hw[5])))
         
         with open(f'{TEMPLATES_PATH}homeworks/homeworkstut.html', 'r', encoding='utf-8') as f:
             content = verstkaprofile(f.read(), name, tutfirst_name, tutlast_name)

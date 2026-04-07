@@ -2,6 +2,7 @@ from fastapi import APIRouter, WebSocket, WebSocketDisconnect, Request, HTTPExce
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import HTMLResponse, RedirectResponse
 import json
+import html
 from typing import Dict, Any
 from config import TEMPLATES_PATH
 from auth import get_current_user
@@ -30,7 +31,7 @@ async def tutboard(request: Request, board_id: str):
         with open(f"{TEMPLATES_PATH}boards/tutboard.html", 'r', encoding='utf-8') as f:
             content = verstkaprofile(f.read(), name, tutfirst_name, tutlast_name)
         
-        content = content.replace("{{ board_id }}", str(board_id))
+        content = content.replace("{{ board_id }}", html.escape(str(board_id)))
         return HTMLResponse(content=content)
         
     except Exception as e:

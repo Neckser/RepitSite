@@ -7,6 +7,7 @@ from utils.templates import verstkaprofile
 from services.chat_service import getchatsbytutorid, addmessage, getstudentchatinfo, getchatmessages, checkchatexists
 from services.stats_tut_service import gettutorinfo
 import json
+import html
 
 router = APIRouter()
 
@@ -48,11 +49,11 @@ def tutmainchat(request: Request):
                 student_last_name = chat[3]
                 last = chat[5]
 
-                contact_template = contact_template.replace("{{ chat_id }}", str(chat_id))
-                contact_template = contact_template.replace("{{ contact_avatar }}", str(student_first_name)[0] + str(student_last_name)[0])
-                contact_template = contact_template.replace("{{ contact_first_name }}", str(student_first_name))
-                contact_template = contact_template.replace("{{ contact_last_name }}", str(student_last_name))
-                contact_template = contact_template.replace("{{ last_message }}", str(last))
+                contact_template = contact_template.replace("{{ chat_id }}", html.escape(str(chat_id)))
+                contact_template = contact_template.replace("{{ contact_avatar }}", html.escape(str(student_first_name)[0] + str(student_last_name)[0]))
+                contact_template = contact_template.replace("{{ contact_first_name }}", html.escape(str(student_first_name)))
+                contact_template = contact_template.replace("{{ contact_last_name }}", html.escape(str(student_last_name)))
+                contact_template = contact_template.replace("{{ last_message }}", html.escape(str(last)))
         
     except Exception as e:
         print(f"Произошла ошибка - {e}")
@@ -101,11 +102,11 @@ def tutchat(request: Request, room_name: str):
                 student_last_name = chat[3]
                 last = chat[5]
 
-                contact_template = contact_template.replace("{{ chat_id }}", str(chat_id))
-                contact_template = contact_template.replace("{{ contact_avatar }}", str(student_first_name)[0] + str(student_last_name)[0])
-                contact_template = contact_template.replace("{{ contact_first_name }}", str(student_first_name))
-                contact_template = contact_template.replace("{{ contact_last_name }}", str(student_last_name))
-                contact_template = contact_template.replace("{{ last_message }}", str(last))
+                contact_template = contact_template.replace("{{ chat_id }}", html.escape(str(chat_id)))
+                contact_template = contact_template.replace("{{ contact_avatar }}", html.escape(str(student_first_name)[0] + str(student_last_name)[0]))
+                contact_template = contact_template.replace("{{ contact_first_name }}", html.escape(str(student_first_name)))
+                contact_template = contact_template.replace("{{ contact_last_name }}", html.escape(str(student_last_name)))
+                contact_template = contact_template.replace("{{ last_message }}", html.escape(str(last)))
 
 
         studinfo = getstudentchatinfo(room_name)
@@ -139,7 +140,7 @@ def tutchat(request: Request, room_name: str):
                 message_card = f"""
                 <div class="message {message_class}">
                     <strong>{sender_name}</strong> [{created_at}]<br>
-                    {message_text}
+                    {html.escape(message_text)}
                 </div>
                 """
                 messages_template += message_card
@@ -151,12 +152,12 @@ def tutchat(request: Request, room_name: str):
     with open (f"{TEMPLATES_PATH}chat/tutchat.html", 'r', encoding='utf-8') as f:
         content = verstkaprofile(f.read(), name, tutfirst_name, tutlast_name)
     content = content.replace("{{ contacts_template }}", str(contact_template))
-    content = content.replace("{{ room_name }}", str(room_name))
-    content = content.replace("{{ dialog_first_name }}", str(studfirst_name))
-    content = content.replace("{{ dialog_last_name }}", str(studlast_name))
-    content = content.replace("{{ tutfirst_name }}", str(tutfirst_name))
-    content = content.replace("{{ tutlast_name }}", str(tutlast_name))
-    content = content.replace("{{ tutor_id }}", str(tutor_id))
+    content = content.replace("{{ room_name }}", html.escape(str(room_name)))
+    content = content.replace("{{ dialog_first_name }}", html.escape(str(studfirst_name)))
+    content = content.replace("{{ dialog_last_name }}", html.escape(str(studlast_name)))
+    content = content.replace("{{ tutfirst_name }}", html.escape(str(tutfirst_name)))
+    content = content.replace("{{ tutlast_name }}", html.escape(str(tutlast_name)))
+    content = content.replace("{{ tutor_id }}", html.escape(str(tutor_id)))
     content = content.replace("{{ messages_template }}", str(messages_template))
     return HTMLResponse(content=content)
 

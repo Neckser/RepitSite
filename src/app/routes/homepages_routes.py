@@ -7,6 +7,7 @@ from services.stats_stud_service import getstudinfo, getstudhw
 from services.stats_tut_service import getstudcolvo, gettuthwcolvo, getstudents, gettutorinfo, gettodaylessonscolvo
 from services.hw_service import updatehwstatus
 from services.chat_service import getchatid
+import html
 
 router = APIRouter()
 
@@ -44,12 +45,12 @@ def home(request: Request):
                 elif hw[3] == "Завершено":
                     hwtemplate = hwtemplate.replace("{{ status_line }}", "<span class='status completed'>Завершено</span>")
                 # hwtemplate = hwtemplate.replace("{{ status }}", str(hw[3]))
-                hwtemplate = hwtemplate.replace("{{ title }}", str(hw[0]))
-                hwtemplate = hwtemplate.replace("{{ data }}", str(hw[2]))
-                hwtemplate = hwtemplate.replace("{{ description }}", str(hw[1]))
-                hwtemplate = hwtemplate.replace("{{ tutor_first_name }}", str(hw[4]))
-                hwtemplate = hwtemplate.replace("{{ tutor_last_name }}", str(hw[5]))
-                hwtemplate = hwtemplate.replace("{{ subject }}", str(hw[6]))
+                hwtemplate = hwtemplate.replace("{{ title }}", html.escape(str(hw[0])))
+                hwtemplate = hwtemplate.replace("{{ data }}", html.escape(str(hw[2])))
+                hwtemplate = hwtemplate.replace("{{ description }}", html.escape(str(hw[1])))
+                hwtemplate = hwtemplate.replace("{{ tutor_first_name }}", html.escape(str(hw[4])))
+                hwtemplate = hwtemplate.replace("{{ tutor_last_name }}", html.escape(str(hw[5])))
+                hwtemplate = hwtemplate.replace("{{ subject }}", html.escape(str(hw[6])))
                 
         
         else:
@@ -101,18 +102,18 @@ def hometut(request: Request):
             studlast_name = student[2]
             chat_id = getchatid(student_id, tutor_id)
 
-            studtemplate = studtemplate.replace("{{ first_name }}", str(studfirst_name))
-            studtemplate = studtemplate.replace("{{ last_name }}", str(studlast_name))
-            studtemplate = studtemplate.replace("{{ grade }}", str(student[5]))
-            studtemplate = studtemplate.replace("{{ avatarstud }}", str(studfirst_name[0] + studlast_name[0]))
-            studtemplate = studtemplate.replace("{{ chat_id }}", str(chat_id))
+            studtemplate = studtemplate.replace("{{ first_name }}", html.escape(str(studfirst_name)))
+            studtemplate = studtemplate.replace("{{ last_name }}", html.escape(str(studlast_name)))
+            studtemplate = studtemplate.replace("{{ grade }}", html.escape(str(student[5])))
+            studtemplate = studtemplate.replace("{{ avatarstud }}", html.escape(str(studfirst_name[0] + studlast_name[0])))
+            studtemplate = studtemplate.replace("{{ chat_id }}", html.escape(str(chat_id)))
 
         with open(f'{TEMPLATES_PATH}mainpages/hometut.html', 'r', encoding='utf-8') as file:
             content = verstkaprofile(file.read(), name, tutfirst_name, tutlast_name)
-        content = content.replace("{{ student_colvo }}", str(student_colvo))
-        content = content.replace("{{ homework_colvo }}", str(tuthomework_colvo))
+        content = content.replace("{{ student_colvo }}", html.escape(str(student_colvo)))
+        content = content.replace("{{ homework_colvo }}", html.escape(str(tuthomework_colvo)))
         content = content.replace("{{ studtemplate }}", str(studtemplate))
-        content = content.replace("{{ lessons_today }}", str(lessons_today_colvo))
+        content = content.replace("{{ lessons_today }}", html.escape(str(lessons_today_colvo)))
         return HTMLResponse(content=content)
     
     except Exception as e: 

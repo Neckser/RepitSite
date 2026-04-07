@@ -7,6 +7,7 @@ from utils.validation import checkrequiredfields
 from services.stats_tut_service import gettutorinfo, gettutorgrades, getstudents
 from services.stats_stud_service import getstudinfobyid
 from services.grade_service import addgrade, delgrade
+import html
 
 router = APIRouter()
 
@@ -49,14 +50,14 @@ def tutgrades(request: Request):
             for grade in tutorgrades:
                 gradestemplate += a
                 studinfo = getstudinfobyid(grade[1])
-                gradestemplate = gradestemplate.replace("{{ first_name }}", studinfo[0])
-                gradestemplate = gradestemplate.replace("{{ last_name }}", studinfo[1])
-                gradestemplate = gradestemplate.replace("{{ grade_id }}", str(grade[0]))
-                gradestemplate = gradestemplate.replace("{{ grade }}", str(grade[3]))
-                gradestemplate = gradestemplate.replace("{{ description }}", grade[5])
-                gradestemplate = gradestemplate.replace("{{ date }}", str(grade[4]))
-                gradestemplate = gradestemplate.replace("{{ comment }}", grade[6])
-                gradestemplate = gradestemplate.replace("{{ subject }}", grade[2])
+                gradestemplate = gradestemplate.replace("{{ first_name }}", html.escape(studinfo[0]))
+                gradestemplate = gradestemplate.replace("{{ last_name }}", html.escape(studinfo[1]))
+                gradestemplate = gradestemplate.replace("{{ grade_id }}", html.escape(str(grade[0])))
+                gradestemplate = gradestemplate.replace("{{ grade }}", html.escape(str(grade[3])))
+                gradestemplate = gradestemplate.replace("{{ description }}", html.escape(grade[5]))
+                gradestemplate = gradestemplate.replace("{{ date }}", html.escape(str(grade[4])))
+                gradestemplate = gradestemplate.replace("{{ comment }}", html.escape(grade[6]))
+                gradestemplate = gradestemplate.replace("{{ subject }}", html.escape(grade[2]))
 
     except Exception as e:
         print(f"Произошла ошибка - {e}")

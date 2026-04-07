@@ -4,6 +4,7 @@ from typing import Optional
 from config import TEMPLATES_PATH
 import os
 import asyncio
+import html
 from utils.id import generate_uuid
 from datetime import datetime, timedelta
 from auth import get_current_user
@@ -87,13 +88,13 @@ def tuttime(request: Request, week_offset: int = Query(0)):
                         content = task[3]
                         if task_type == "text":
                             lesson_tasks_template += task_template
-                            lesson_tasks_template = lesson_tasks_template.replace("{{ number }}", str(task_number))
-                            lesson_tasks_template = lesson_tasks_template.replace("{{ content }}", str(content))
+                            lesson_tasks_template = lesson_tasks_template.replace("{{ number }}", html.escape(str(task_number)))
+                            lesson_tasks_template = lesson_tasks_template.replace("{{ content }}", html.escape(str(content)))
                             task_number += 1
                         elif task_type == "image":
                             lesson_tasks_template += imagetask_template
-                            lesson_tasks_template = lesson_tasks_template.replace("{{ number }}", str(task_number))
-                            lesson_tasks_template = lesson_tasks_template.replace("{{ content }}", str(content))
+                            lesson_tasks_template = lesson_tasks_template.replace("{{ number }}", html.escape(str(task_number)))
+                            lesson_tasks_template = lesson_tasks_template.replace("{{ content }}", html.escape(str(content)))
                             task_number += 1
 
 
@@ -112,14 +113,14 @@ def tuttime(request: Request, week_offset: int = Query(0)):
                     video_link = getvideolink(lesson_id)
                     desk_link = getdesklink(lesson_id)
 
-                    day_template = day_template.replace('{{ subject }}', lesson["subject"])
-                    day_template = day_template.replace('{{ schedule_id }}', str(lesson["schedule_id"]))
-                    day_template = day_template.replace('{{ studfirst_name }}', studfirst_name)
-                    day_template = day_template.replace('{{ studlast_name }}', studlast_name)
-                    day_template = day_template.replace('{{ starttime }}', str(start_time_str))
-                    day_template = day_template.replace('{{ endtime }}', str(end_time_str))
-                    day_template = day_template.replace('{{ video_link }}', str(video_link))
-                    day_template = day_template.replace('{{ desk_link }}', str(desk_link))
+                    day_template = day_template.replace('{{ subject }}', html.escape(lesson["subject"]))
+                    day_template = day_template.replace('{{ schedule_id }}', html.escape(str(lesson["schedule_id"])))
+                    day_template = day_template.replace('{{ studfirst_name }}', html.escape(studfirst_name))
+                    day_template = day_template.replace('{{ studlast_name }}', html.escape(studlast_name))
+                    day_template = day_template.replace('{{ starttime }}', html.escape(str(start_time_str)))
+                    day_template = day_template.replace('{{ endtime }}', html.escape(str(end_time_str)))
+                    day_template = day_template.replace('{{ video_link }}', html.escape(str(video_link)))
+                    day_template = day_template.replace('{{ desk_link }}', html.escape(str(desk_link)))
                     day_template = day_template.replace('{{ tasks_template }}', str(lesson_tasks_template))
                     
                 
@@ -140,13 +141,13 @@ def tuttime(request: Request, week_offset: int = Query(0)):
 
         with open(f'{TEMPLATES_PATH}timetable/tuttime.html', 'r', encoding="utf-8") as f:
             content = verstkaprofile(f.read(), name, tutfirst_name, tutlast_name)
-        content = content.replace("{{ mon }}", str(mon))
-        content = content.replace("{{ tue }}", str(tue))
-        content = content.replace("{{ wed }}", str(wed))
-        content = content.replace("{{ thu }}", str(thu))
-        content = content.replace("{{ fri }}", str(fri))
-        content = content.replace("{{ sat }}", str(sat))
-        content = content.replace("{{ sun }}", str(sun))
+        content = content.replace("{{ mon }}", html.escape(str(mon)))
+        content = content.replace("{{ tue }}", html.escape(str(tue)))
+        content = content.replace("{{ wed }}", html.escape(str(wed)))
+        content = content.replace("{{ thu }}", html.escape(str(thu)))
+        content = content.replace("{{ fri }}", html.escape(str(fri)))
+        content = content.replace("{{ sat }}", html.escape(str(sat)))
+        content = content.replace("{{ sun }}", html.escape(str(sun)))
         content = content.replace("{{ selectForm }}", optionTemplate)
         content = content.replace("{{ monday_lessons }}", monday_template)
         content = content.replace("{{ tuesday_lessons }}", tuesday_template)
@@ -155,9 +156,9 @@ def tuttime(request: Request, week_offset: int = Query(0)):
         content = content.replace("{{ friday_lessons }}", friday_template)
         content = content.replace("{{ saturday_lessons }}", saturday_template)
         content = content.replace("{{ sunday_lessons }}", sunday_template)
-        content = content.replace("{{ week_offset }}", str(week_offset))
-        content = content.replace("{{ week_offset - 1 }}", str(week_offset - 1))
-        content = content.replace("{{ week_offset + 1 }}", str(week_offset + 1))
+        content = content.replace("{{ week_offset }}", html.escape(str(week_offset)))
+        content = content.replace("{{ week_offset - 1 }}", html.escape(str(week_offset - 1)))
+        content = content.replace("{{ week_offset + 1 }}", html.escape(str(week_offset + 1)))
         return HTMLResponse(content=content)
     
     except Exception as e:

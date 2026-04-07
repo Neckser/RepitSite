@@ -9,6 +9,7 @@ from services.stats_tut_service import getstudcolvo, gettutsubject
 from services.findtut_service import addtutor
 from services.auth_tut_service import checktutexistsbyid
 from services.chat_service import generatecontacttotutor, getchatid
+import html
 
 router = APIRouter()
 
@@ -53,14 +54,14 @@ def tutlist(request: Request):
             for tutsubject in tutsubjects:
                 subjecttemplate += f'''<span class="subject-badge {tutsubject}">{tutsubject}</span>'''
 
-            tuttemplate = tuttemplate.replace("{{ first_name }}", tutfirst_name)
-            tuttemplate = tuttemplate.replace("{{ last_name }}", tutlast_name)
-            tuttemplate = tuttemplate.replace("{{ avatar }}", tutfirst_name[0] + tutlast_name[0])
-            tuttemplate = tuttemplate.replace("{{ student_colvo }}", str(student_colvo))
+            tuttemplate = tuttemplate.replace("{{ first_name }}", html.escape(tutfirst_name))
+            tuttemplate = tuttemplate.replace("{{ last_name }}", html.escape(tutlast_name))
+            tuttemplate = tuttemplate.replace("{{ avatar }}", html.escape(tutfirst_name[0] + tutlast_name[0]))
+            tuttemplate = tuttemplate.replace("{{ student_colvo }}", html.escape(str(student_colvo)))
             tuttemplate = tuttemplate.replace("{{ subjecttemplate }}", subjecttemplate)
             tuttemplate = tuttemplate.replace("{{ lesson_count }}", '🚧')
             tuttemplate = tuttemplate.replace("{{ rating }}", '🚧')
-            tuttemplate = tuttemplate.replace("{{ chat_id }}", str(chat_id))
+            tuttemplate = tuttemplate.replace("{{ chat_id }}", html.escape(str(chat_id)))
 
         with open(f'{TEMPLATES_PATH}findtut/tutlist.html', 'r', encoding="utf-8") as f:
             content = verstkaprofile(f.read(), name, studfirst_name, studlast_name)

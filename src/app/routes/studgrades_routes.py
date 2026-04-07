@@ -6,6 +6,7 @@ from auth import get_current_user
 from utils.templates import verstkaprofile
 from services.stats_stud_service import getstudinfo
 from services.stats_stud_service import getavggrade, getcolvogrades, getcolvofives, getstrgrades
+import html
 
 router = APIRouter()
 
@@ -39,18 +40,18 @@ def studgrades(request: Request):
         if grades:
             for grade in grades:
                 grade_template += a
-                grade_template = grade_template.replace("{{ subject }}", str(grade[3]))
-                grade_template = grade_template.replace("{{ grade }}", str(grade[4]))
-                grade_template = grade_template.replace("{{ date }}", str(grade[5]))
-                grade_template = grade_template.replace("{{ description }}", str(grade[6]))
-                grade_template = grade_template.replace("{{ comment }}", str(grade[7]))
+                grade_template = grade_template.replace("{{ subject }}", html.escape(str(grade[3])))
+                grade_template = grade_template.replace("{{ grade }}", html.escape(str(grade[4])))
+                grade_template = grade_template.replace("{{ date }}", html.escape(str(grade[5])))
+                grade_template = grade_template.replace("{{ description }}", html.escape(str(grade[6])))
+                grade_template = grade_template.replace("{{ comment }}", html.escape(str(grade[7])))
 
         with open(f'{TEMPLATES_PATH}grades/studgrades.html', 'r', encoding='utf-8') as f:
             content = verstkaprofile(f.read(), name, studfirst_name, studlast_name)
         content = content.replace("{{ grade_template }}", grade_template)
-        content = content.replace("{{ average_grade }}", str(avg_grade))
-        content = content.replace("{{ colvo_grades }}", str(colvo_grades))
-        content = content.replace("{{ colvo_fives }}", str(colvo_fives))
+        content = content.replace("{{ average_grade }}", html.escape(str(avg_grade)))
+        content = content.replace("{{ colvo_grades }}", html.escape(str(colvo_grades)))
+        content = content.replace("{{ colvo_fives }}", html.escape(str(colvo_fives)))
 
         return HTMLResponse(content=content)
     
