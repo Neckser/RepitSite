@@ -14,8 +14,6 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
-    networks:
-      - repitsite_default
 
   app:
     build: 
@@ -39,8 +37,6 @@ services:
       postgres:
         condition: service_healthy
     restart: unless-stopped
-    networks:
-      - repitsite_default
 
   prometheus:
     image: prom/prometheus:latest
@@ -54,8 +50,6 @@ services:
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
       - '--storage.tsdb.path=/prometheus'
-    networks:
-      - repitsite_default
 
   grafana:
     image: grafana/grafana:latest
@@ -67,14 +61,8 @@ services:
     environment:
       - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD}
     restart: unless-stopped
-    networks:
-      - repitsite_default
 
 volumes:
   postgres_data:
   prometheus_data:
   grafana_data:
-
-networks:
-  repitsite_default:
-    external: true
