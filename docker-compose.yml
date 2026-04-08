@@ -62,6 +62,23 @@ services:
       - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD}
     restart: unless-stopped
 
+  go-api:
+      build:
+        context: ./src/app/api
+        dockerfile: Dockerfile
+      container_name: tutoring_go_api
+      ports:
+        - "127.0.0.1:8080:8080"
+      environment:
+        - DB_HOST=postgres
+        - DB_PORT=5432
+        - DB_NAME=${DB_NAME}
+        - DB_USER=${DB_USER}
+        - DB_PASSWORD=${DB_PASSWORD}
+      depends_on:
+        postgres:
+          condition: service_healthy
+
 volumes:
   postgres_data:
   prometheus_data:
