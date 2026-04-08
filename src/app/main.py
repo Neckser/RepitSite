@@ -22,7 +22,8 @@ from routes import (
     tutchat_routes,
     studchat_routes,
     tutboard_routes,
-    studboard_routes
+    studboard_routes,
+    admin_routes
 )
 
 app = FastAPI()
@@ -58,6 +59,7 @@ app.include_router(tutchat_routes.router)
 app.include_router(studchat_routes.router)
 app.include_router(tutboard_routes.router)
 app.include_router(studboard_routes.router)
+app.include_router(admin_routes.router)
 
 app.add_exception_handler(404, errors_routes.error404)
 app.add_exception_handler(500, errors_routes.error500)

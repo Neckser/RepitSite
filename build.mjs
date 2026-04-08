@@ -205,6 +205,12 @@ const entries = [
     out: "build/landing/cookies.html",
   },
   {
+    html: "src/app/templates/admin/adminpanel/adminpanel.html",
+    css: "src/app/templates/admin/adminpanel/adminpanel.css",
+    js: "src/app/templates/admin/adminpanel/adminpanel.js",
+    out: "build/admin/adminpanel.html",
+  },
+  {
     html: "src/app/templates/landing/terms/terms.html",
     css: "src/app/templates/landing/terms/terms.css",
     out: "build/landing/terms.html",

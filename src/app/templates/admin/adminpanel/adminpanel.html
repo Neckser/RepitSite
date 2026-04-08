@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Админ-панель | RepitHub</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+</head>
+<body class="body">
+    <header class="top-bar">
+        <div class="top-bar__container">
+            <div class="top-bar__nav">
+                <!-- <a href="#" class="top-bar__nav-button top-bar__nav-button_active">Панель</a>
+                <a href="#" class="top-bar__nav-button">Пользователи</a>
+                <a href="#" class="top-bar__nav-button">Репетиторы</a>
+                <a href="#" class="top-bar__nav-button">Ученики</a> -->
+            </div>
+            <a href="#" class="top-bar__account" id="adminProfile">
+                <div class="top-bar__avatar" id="adminAvatar">AD</div>
+                <div class="top-bar__user-info">
+                    <div class="top-bar__user-name" id="adminName">Admin</div>
+                    <div class="top-bar__user-role">Администратор</div>
+                </div>
+            </a>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="page-header">
+            <h1 class="page-header__title">Административная панель</h1>
+        </div>
+
+        <div class="stats-grid" id="statsGrid">
+            <div class="stat-card"><div class="stat-card__value" id="totalStudents">—</div><div class="stat-card__label">Учеников</div></div>
+            <div class="stat-card"><div class="stat-card__value" id="totalTutors">—</div><div class="stat-card__label">Репетиторов</div></div>
+            <div class="stat-card"><div class="stat-card__value" id="totalHomeworks">—</div><div class="stat-card__label">Домашек</div></div>
+            <div class="stat-card"><div class="stat-card__value" id="totalGrades">—</div><div class="stat-card__label">Оценок</div></div>
+            <div class="stat-card"><div class="stat-card__value" id="totalLessons">—</div><div class="stat-card__label">Уроков</div></div>
+        </div>
+
+        <div class="graph-container">
+            <div class="graph-header">
+                <div class="graph-title">🕸️ Карта связей учеников и репетиторов</div>
+                <div class="graph-controls">
+                    <button class="graph-control-btn" id="zoomInBtn">🔍 +</button>
+                    <button class="graph-control-btn" id="zoomOutBtn">🔍 -</button>
+                    <button class="graph-control-btn" id="resetViewBtn">⟳ Сброс</button>
+                </div>
+            </div>
+            <div id="graph"><div class="loading">Загрузка графа...</div></div>
+        </div>
+
+        <div id="infoPanel" class="info-panel">
+            <div class="info-panel__title">ℹ️ Информация о пользователе</div>
+            <div class="info-panel__content" id="infoPanelContent"></div>
+        </div>
+
+        <!-- ГЛАВНЫЕ ВКЛАДКИ -->
+        <div class="admin-tabs" id="mainTabs">
+            <button class="admin-tab active" data-tab="users">👥 Пользователи</button>
+            <button class="admin-tab" data-tab="homeworks">📚 Домашние задания</button>
+            <button class="admin-tab" data-tab="grades">⭐ Оценки</button>
+            <button class="admin-tab" data-tab="lessons">📅 Уроки</button>
+            <button class="admin-tab" data-tab="create">➕ Создать</button>
+        </div>
+
+        <!-- ВКЛАДКА: ПОЛЬЗОВАТЕЛИ -->
+        <div id="tab-users" class="tab-content active">
+            <div class="card">
+                <h2 class="card__title">👥 Все пользователи</h2>
+                <div style="overflow-x: auto;">
+                    <table class="data-table" id="usersTable">
+                        <thead><tr><th>ID</th><th>Имя</th><th>Роль</th><th>Статус</th><th>Действия</th></tr></thead>
+                        <tbody id="usersTableBody"><tr><td colspan="5" class="loading">Загрузка...</td></tr></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- ВКЛАДКА: ДОМАШНИЕ ЗАДАНИЯ -->
+        <div id="tab-homeworks" class="tab-content">
+            <div class="card">
+                <h2 class="card__title">📚 Список домашних заданий</h2>
+                <div style="margin-bottom: 20px;">
+                    <button class="btn btn_primary" onclick="openCreateModal('homework')">+ Создать задание</button>
+                </div>
+                <div style="overflow-x: auto;">
+                    <table class="data-table" id="homeworksTable">
+                        <thead><tr><th>ID</th><th>Ученик</th><th>Репетитор</th><th>Предмет</th><th>Тема</th><th>Статус</th><th>Дедлайн</th><th>Действия</th></tr></thead>
+                        <tbody id="homeworksTableBody"><tr><td colspan="8" class="loading">Загрузка...</td></tr></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- ВКЛАДКА: ОЦЕНКИ -->
+        <div id="tab-grades" class="tab-content">
+            <div class="card">
+                <h2 class="card__title">⭐ Журнал оценок</h2>
+                <div style="margin-bottom: 20px;">
+                    <button class="btn btn_primary" onclick="openCreateModal('grade')">+ Выставить оценку</button>
+                </div>
+                <div style="overflow-x: auto;">
+                    <table class="data-table" id="gradesTable">
+                        <thead><tr><th>ID</th><th>Ученик</th><th>Репетитор</th><th>Предмет</th><th>Оценка</th><th>За что</th><th>Дата</th><th>Действия</th></tr></thead>
+                        <tbody id="gradesTableBody"><tr><td colspan="8" class="loading">Загрузка...</td></tr></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- ВКЛАДКА: УРОКИ -->
+        <div id="tab-lessons" class="tab-content">
+            <div class="card">
+                <h2 class="card__title">📅 Расписание уроков</h2>
+                <div style="margin-bottom: 20px;">
+                    <button class="btn btn_primary" onclick="openCreateModal('lesson')">+ Создать урок</button>
+                </div>
+                <div style="overflow-x: auto;">
+                    <table class="data-table" id="lessonsTable">
+                        <thead><tr><th>ID</th><th>Ученик</th><th>Репетитор</th><th>Предмет</th><th>Дата</th><th>Время</th><th>Статус</th><th>Действия</th></tr></thead>
+                        <tbody id="lessonsTableBody"><tr><td colspan="8" class="loading">Загрузка...</td></tr></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- ВКЛАДКА: СОЗДАТЬ -->
+        <div id="tab-create" class="tab-content">
+            <div class="two-columns">
+                <div class="card">
+                    <h2 class="card__title">👨‍🏫 Создать репетитора</h2>
+                    <form id="createTutorForm" onsubmit="submitCreate(event, 'tutor')">
+                        <div class="form-group"><label class="form-label">Имя и фамилия</label><input type="text" name="full_name" class="form-input" required></div>
+                        <div class="form-group"><label class="form-label">Email</label><input type="email" name="email" class="form-input" required></div>
+                        <div class="form-group"><label class="form-label">Пароль</label><input type="password" name="password" class="form-input" required></div>
+                        <div class="form-group"><label class="form-label">Предметы</label><select name="subjects" class="form-select" multiple><option>Математика</option><option>Физика</option><option>Английский</option><option>Русский</option><option>Информатика</option><option>Химия</option><option>Биология</option></select></div>
+                        <button type="submit" class="btn btn_primary">Создать репетитора</button>
+                    </form>
+                </div>
+                <div class="card">
+                    <h2 class="card__title">🎓 Создать ученика</h2>
+                    <form id="createStudentForm" onsubmit="submitCreate(event, 'student')">
+                        <div class="form-group"><label class="form-label">Имя и фамилия</label><input type="text" name="full_name" class="form-input" required></div>
+                        <div class="form-group"><label class="form-label">Email</label><input type="email" name="email" class="form-input" required></div>
+                        <div class="form-group"><label class="form-label">Пароль</label><input type="password" name="password" class="form-input" required></div>
+                        <div class="form-group"><label class="form-label">Класс</label><input type="number" name="grade" class="form-input" min="1" max="11" required></div>
+                        <div class="form-group"><label class="form-label">Репетитор</label><select name="tutor_id" class="form-select" id="studentTutorSelect"><option value="">Без репетитора</option></select></div>
+                        <button type="submit" class="btn btn_primary">Создать ученика</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Единое модальное окно для создания -->
+    <div id="createModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header"><h3 id="modalTitle">Создать</h3><button class="modal-close" onclick="closeModal()">×</button></div>
+            <form id="createModalForm" onsubmit="submitCreateModal(event)">
+                <div id="modalFormFields"></div>
+                <button type="submit" class="btn btn_primary" style="width:100%">Создать</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
