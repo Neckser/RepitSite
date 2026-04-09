@@ -7,13 +7,13 @@ import (
 	"net/http"
 	"os"
 	"time"
-	"tutoring-api/internal/handlers"
+	"tutoring-api/iternal/handlers"
+	"tutoring-api/iternal/service"
 
 	_ "github.com/lib/pq"
 )
 
 func main() {
-	// Подключение через переменные окружения из твоего .env
 	dsn := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",
 		os.Getenv("DB_HOST"),
 		os.Getenv("DB_PORT"),
@@ -39,13 +39,14 @@ func main() {
 
 	mux := http.NewServeMux()
 
-	// Регистрируем руты (Go 1.22+ роутинг)
+	statsService := service.NewStatsService(db)
+	adminHandler := handlers.NewAdminHandler(statsService)
+
 	mux.HandleFunc("GET /api/v1/health", handlers.HealthCheck)
 
 	mux.HandleFunc("GET /api/v1/info", handlers.Info)
 
-	// Здесь мы передаем DB в хендлеры (как только ты пришлешь структуру таблиц)
-	// mux.HandleFunc("GET /api/v1/profile/{id}", GetProfileHandler(db))
+	mux.HandleFunc("GET /api/v1/admin/stats", adminHandler.GetStats)
 
 	port := ":8080"
 	fmt.Printf("🚀 Go API 1.25 запущен на порту %s\n", port)
