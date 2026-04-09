@@ -9,10 +9,13 @@ import (
 type AdminHandler struct {
 	statsSvc *service.StatsService
 	userSvc  *service.UserService
+	homeSvc  *service.HomeworksService
 }
 
-func NewAdminHandler(sSvc *service.StatsService, uSvc *service.UserService) *AdminHandler {
-	return &AdminHandler{statsSvc: sSvc, userSvc: uSvc}
+func NewAdminHandler(sSvc *service.StatsService, uSvc *service.UserService, hSvc *service.HomeworksService) *AdminHandler {
+	return &AdminHandler{statsSvc: sSvc,
+		userSvc: uSvc,
+		homeSvc: hSvc}
 }
 
 func (h *AdminHandler) GetStats(w http.ResponseWriter, r *http.Request) {
@@ -31,4 +34,13 @@ func (h *AdminHandler) GetUsers(w http.ResponseWriter, r *http.Request) {
 	}
 	w.Header().Set("Content-type", "application/json")
 	json.NewEncoder(w).Encode(users)
+}
+
+func (h *AdminHandler) GetHomeworks(w http.ResponseWriter, r *http.Request) {
+	homeworks, err := h.homeSvc.GetAllHomeworks()
+	if err != nil {
+		http.Error(w, "Failed to fetch homeworks", http.StatusInternalServerError)
+	}
+	w.Header().Set("Content-type", "application/json")
+	json.NewEncoder(w).Encode(homeworks)
 }
