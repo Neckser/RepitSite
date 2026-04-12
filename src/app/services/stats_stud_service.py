@@ -39,7 +39,7 @@ def gettutorcount(studlogin):
 
 def getstudhw(student_id):
     try:
-        homeworks = query_all("""SELECT h.title, h.description, h.deadline, h.status, t.first_name, t.last_name, h.subject 
+        homeworks = query_all("""SELECT h.title, h.description, h.deadline, h.status, t.first_name, t.last_name, h.subject, h.homework_id
                                  FROM homeworks h JOIN tutors t ON h.tutor_id = t.tutor_id 
                                  WHERE h.student_id = ? ORDER BY h.deadline ASC""", (student_id,))
         return homeworks if homeworks else None
@@ -130,6 +130,15 @@ def getstudtests(student_id):
     try:
         tests = query_all("SELECT * FROM tests WHERE student_id = ? AND date_start <= CURRENT_TIMESTAMP AND date_end >= CURRENT_TIMESTAMP ORDER BY created_at DESC", (student_id,))
         return tests if tests else []
+    except Exception as e:
+        print(f"Произошла ошибка - {e}")
+        raise e
+    
+def gethwtasks(homework_id):
+    try:
+        hwtasks = query_all("SELECT * FROM homework_tasks WHERE homework_id = ? ORDER BY task_id ASC", (homework_id,))
+        return hwtasks if hwtasks else []
+
     except Exception as e:
         print(f"Произошла ошибка - {e}")
         raise e

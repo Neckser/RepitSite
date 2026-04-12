@@ -1,0 +1,19 @@
+<div class="task-item">
+    <div class="task-header">
+        <div class="task-title-section">
+            <span class="task-number">Задание {{ task_number }}</span>
+        </div>
+        <span class="task-status {{ task_status_class }}">{{ task_status_text }}</span>
+    </div>
+    <p class="task-description">{{ task_content }}</p>
+    <div class="task-footer">
+        <form action="/marklessontask" method="POST" class="task-action-form">
+            <input type="hidden" name="task_id" value="{{ task_id }}">
+            <input type="hidden" name="homework_id" value="{{ homework_id }}">
+            <button type="submit" class="task-action-btn {{ button_class }}">
+                <span class="btn-icon">{{ button_icon }}</span>
+                {{ task_mark_button }}
+            </button>
+        </form>
+    </div>
+</div>

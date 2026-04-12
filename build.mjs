@@ -89,6 +89,7 @@ const entries = [
   {
     html: 'src/app/templates/homeworks/homeworkstut/homeworkstut.html',
     css: 'src/app/templates/homeworks/homeworkstut/homeworkstut.css',
+    js: 'src/app/templates/homeworks/homeworkstut/homeworkstut.js',
     out: 'build/homeworks/homeworkstut.html',
   },
   {
@@ -309,6 +310,22 @@ const entries = [
   {
     html: 'src/app/templates/cards/tutcontact.html',
     out: 'build/cards/tutcontact.html',
+  },
+  {
+    html: 'src/app/templates/cards/hwtextstudtask.html',
+    out: 'build/cards/hwtextstudtask.html',
+  },
+  {
+    html: 'src/app/templates/cards/hwtuttexttask.html',
+    out: 'build/cards/hwtuttexttask.html',
+  },
+  {
+    html: 'src/app/templates/cards/hwimagetuttask.html',
+    out: 'build/cards/hwimagetuttask.html',
+  },
+  {
+    html: 'src/app/templates/cards/hwimagestudtask.html',
+    out: 'build/cards/hwimagestudtask.html',
   },
 ];
 

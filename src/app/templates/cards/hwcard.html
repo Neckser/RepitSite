@@ -1,13 +1,32 @@
 <div class="assignment-card">
     <div class="assignment-header">
-        <span class="subject-badge {{ subject }}">{{ subject }}</span>
-        <span class="due-date">До {{ data }}</span>
-        {{ status_line }}
+        <div class="assignment-header-left">
+            <span class="subject-badge {{ subject }}">{{ subject }}</span>
+            <span class="tutor-name-small">{{ tutor_first_name }} {{ tutor_first_name }}</span>
+        </div>
+        <div class="assignment-header-right">
+            <span class="due-date">До {{ data }}</span>
+            <span class="status {{ status_class }}">{{ status_text }}</span>
+        </div>
     </div>
+    
     <h3 class="assignment-title">{{ title }}</h3>
     <p class="assignment-description">{{ description }}</p>
-    <div class="assignment-footer">
-        <span class="tutor-info">{{ tutor_first_name }} {{ tutor_last_name }}</span>
-        <!-- <button class="assignment-btn">Перейти к заданию</button>                  -->
+    
+    <button class="toggle-tasks-btn">
+        <span class="toggle-text">Показать задания</span>
+        <span class="toggle-arrow">›</span>
+    </button>
+    
+    <div class="tasks-container hidden">
+        <div class="tasks-list">
+            {{ task_template }}
+        </div>
+    </div>
+
+    <div class="tasks-progress">
+        <div class="progress-bar">
+            <div class="progress-fill" style="width: 0%"></div>
+        </div>
     </div>
 </div>

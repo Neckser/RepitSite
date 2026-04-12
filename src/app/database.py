@@ -118,6 +118,18 @@ def init_database():
                     FOREIGN KEY (tutor_id) REFERENCES tutors(tutor_id) ON DELETE CASCADE
                 )
             ''')
+
+            cur.execute('''
+                CREATE TABLE IF NOT EXISTS homework_tasks (
+                    task_id SERIAL PRIMARY KEY,
+                    homework_id INTEGER NOT NULL,
+                    type TEXT,
+                    content TEXT,
+                    status TEXT DEFAULT 'pending',
+                    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                    FOREIGN KEY (homework_id) REFERENCES homeworks(homework_id) ON DELETE CASCADE
+                )
+            ''')
             
             cur.execute('''
                 CREATE TABLE IF NOT EXISTS timetable (

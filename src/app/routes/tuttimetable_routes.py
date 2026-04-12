@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Form, Query, HTTPException, Request, UploadFile, File
 from fastapi.responses import HTMLResponse, RedirectResponse
 from typing import Optional
-from config import TEMPLATES_PATH
+from config import TEMPLATES_PATH, UPLOAD_DIR
 import os
 import asyncio
 import html
@@ -16,7 +16,6 @@ from services.timetable_service import addlesson, dellesson, addtexttask, getles
 
 router = APIRouter()
 
-UPLOAD_DIR = os.getenv('UPLOAD_DIR', '/app/uploads')
 
 @router.get("/tuttime")
 def tuttime(request: Request, week_offset: int = Query(0)):

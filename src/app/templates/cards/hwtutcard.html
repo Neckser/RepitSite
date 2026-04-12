@@ -14,7 +14,10 @@
 
     <div class="assignment-item__content">{{ description }}</div>
 
+     <div class="hidden-tasks-content" style="display: none;">{{ tasks_template }}</div>
+
     <div class="assignment-item__actions">
-        <button type="submit" class="btn btn_danger btn_delete">Удалить</button>
+        <button type="button" class="btn btn_add_task" onclick="showHomeworkTasksModal(this)">Добавить задание</button>
+        <button type="submit" class="btn btn_delete">Удалить</button>
     </div>
 </form>
