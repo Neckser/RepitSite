@@ -102,6 +102,10 @@ async def websocket_endpoint(websocket: WebSocket, room_token: str):
             elif message["type"] == "clear_board":
                 rooms[room_token]["drawings"] = []
                 rooms[room_token]["images"] = []
+
+            elif message["type"] == "restore_drawings":
+                # Ctrl+Z - обновляем линии на сервере
+                rooms[room_token]["drawings"] = message["data"]["drawings"]
             
             for connection in rooms[room_token]["connections"]:
                 if connection != websocket:

@@ -49,6 +49,76 @@ let panStartY = 0;
 // Счетчик пользователей
 let usersCount = 1;
 
+// ========== ИСТОРИЯ ДЕЙСТВИЙ (UNDO/REDO) - ТОЛЬКО ЛИНИИ ==========
+let drawingHistory = [];      // ← ПЕРЕИМЕНОВАНО
+let drawingHistoryIndex = -1; // ← ПЕРЕИМЕНОВАНО
+const MAX_HISTORY = 30;
+let isUndoRedo = false;
+
+function saveToHistory() {
+    if (isUndoRedo) return;
+    
+    const state = JSON.parse(JSON.stringify(drawings));
+    
+    if (drawingHistoryIndex < drawingHistory.length - 1) {
+        drawingHistory = drawingHistory.slice(0, drawingHistoryIndex + 1);
+    }
+    
+    drawingHistory.push(state);
+    
+    if (drawingHistory.length > MAX_HISTORY) {
+        drawingHistory.shift();
+    } else {
+        drawingHistoryIndex = drawingHistory.length - 1;
+    }
+    
+    console.log('💾 История сохранена. Индекс:', drawingHistoryIndex, 'Длина:', drawingHistory.length);
+}
+
+function undo() {
+    console.log('↩️ UNDO: индекс был', drawingHistoryIndex);
+    
+    if (drawingHistoryIndex > 0) {
+        drawingHistoryIndex--;
+        isUndoRedo = true;
+        
+        drawings = JSON.parse(JSON.stringify(drawingHistory[drawingHistoryIndex]));
+        redrawCanvas();
+        
+        safeSend({
+            type: 'restore_drawings',
+            data: { drawings: drawings }
+        });
+        
+        isUndoRedo = false;
+        console.log('✅ UNDO: индекс стал', drawingHistoryIndex, 'Линий:', drawings.length);
+    } else {
+        console.log('❌ UNDO: нечего отменять');
+    }
+}
+
+function redo() {
+    console.log('↪️ REDO: индекс был', drawingHistoryIndex);
+    
+    if (drawingHistoryIndex < drawingHistory.length - 1) {
+        drawingHistoryIndex++;
+        isUndoRedo = true;
+        
+        drawings = JSON.parse(JSON.stringify(drawingHistory[drawingHistoryIndex]));
+        redrawCanvas();
+        
+        safeSend({
+            type: 'restore_drawings',
+            data: { drawings: drawings }
+        });
+        
+        isUndoRedo = false;
+        console.log('✅ REDO: индекс стал', drawingHistoryIndex, 'Линий:', drawings.length);
+    } else {
+        console.log('❌ REDO: нечего повторять');
+    }
+}
+
 // Очередь для сообщений, которые не удалось отправить
 let pendingMessages = [];
 
@@ -122,7 +192,6 @@ function connectWebSocket() {
                 const message = JSON.parse(event.data);
                 
                 if (message.type === 'init') {
-                    console.log('Получена инициализация:', message.data);
                     
                     drawings = message.data.drawings || [];
                     images = [];
@@ -132,6 +201,8 @@ function connectWebSocket() {
                     } else {
                         redrawCanvas();
                     }
+
+                    setTimeout(() => saveToHistory(), 100);
                 } 
                 else if (message.sender !== id(ws)) {
                     console.log('Получено сообщение:', message.type);
@@ -168,7 +239,13 @@ function connectWebSocket() {
                             selectedImageId = null;
                             redrawCanvas();
                             break;
-                    }
+
+                        case 'restore_drawings':
+                            console.log('Получено restore_drawings от сервера');
+                            drawings = message.data.drawings || [];
+                            redrawCanvas();
+                            break;
+                        }
                 }
             } catch (e) {
                 console.error('Ошибка обработки сообщения:', e);
@@ -216,6 +293,7 @@ function loadImagesSequentially(imageDataArray) {
             loadedCount++;
             if (loadedCount === imageDataArray.length) {
                 redrawCanvas();
+                saveToHistory();
             }
         };
         img.onerror = () => {
@@ -375,11 +453,11 @@ canvas.addEventListener('mousemove', (e) => {
 
 canvas.addEventListener('mouseup', () => {
     if (isDrawing && currentLine) {
-        console.log('Отправляем линию на сервер, точек:', currentLine.points.length);
         
         // Сохраняем локально
         drawings.push(currentLine);
         redrawCanvas();
+        saveToHistory();
         
         // Отправляем на сервер через безопасную функцию
         safeSend({
@@ -636,9 +714,12 @@ function updateImageSize(id, data) {
     }
 }
 
-// Удаление по Delete
+// Обработка клавиш (Delete, Ctrl+Z, Ctrl+Y)
+// Обработка клавиш (Delete, Ctrl+Z, Ctrl+Y)
 document.addEventListener('keydown', (e) => {
+    // Delete - удалить выделенную картинку
     if (e.key === 'Delete' && selectedImageId && currentTool === TOOLS.CURSOR) {
+        e.preventDefault();
         safeSend({
             type: 'delete_image',
             data: { id: selectedImageId }
@@ -647,6 +728,27 @@ document.addEventListener('keydown', (e) => {
         images = images.filter(img => img.id !== selectedImageId);
         selectedImageId = null;
         redrawCanvas();
+    }
+    
+    // Ctrl+Z - Отменить (РАБОТАЕТ НА ЛЮБОЙ РАСКЛАДКЕ)
+    if (e.ctrlKey && !e.shiftKey && e.code === 'KeyZ') {
+        console.log('🎯 UNDO (код клавиши)');
+        e.preventDefault();
+        undo();
+    }
+    
+    // Ctrl+Y - Повторить
+    if (e.ctrlKey && !e.shiftKey && e.code === 'KeyY') {
+        console.log('🎯 REDO (код клавиши)');
+        e.preventDefault();
+        redo();
+    }
+    
+    // Ctrl+Shift+Z - Повторить (альтернативная комбинация)
+    if (e.ctrlKey && e.shiftKey && e.code === 'KeyZ') {
+        console.log('🎯 REDO (Ctrl+Shift+Z)');
+        e.preventDefault();
+        redo();
     }
 });
 
@@ -662,6 +764,7 @@ document.getElementById('clearBtn').addEventListener('click', () => {
         images = [];
         selectedImageId = null;
         redrawCanvas();
+        saveToHistory();
     }
 });
 
