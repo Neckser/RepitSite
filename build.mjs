@@ -19,6 +19,16 @@ const entries = [
     out: 'build/auth/loginstudfailed.html',
   },
   {
+    html: 'src/app/templates/register/regtuterror/regtuterror.html',
+    css: 'src/app/templates/register/regtuterror/regtuterror.css',
+    out: 'build/register/regtuterror.html',
+  },
+  {
+    html: 'src/app/templates/register/regstuderror/regstuderror.html',
+    css: 'src/app/templates/register/regstuderror/regstuderror.css',
+    out: 'build/register/regstuderror.html',
+  },
+  {
     html: 'src/app/templates/register/regstud/regstud.html',
     css: 'src/app/templates/register/regstud/regstud.css',
     out: 'build/register/regstud.html',

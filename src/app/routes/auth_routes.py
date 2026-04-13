@@ -5,7 +5,7 @@ from typing import Optional
 from auth import create_access_token
 from services.auth_stud_service import checkstudreg, studregister, checkstudloginexists
 from services.auth_tut_service import checktutreg, tutregister, checktutloginexists
-from utils.validation import checkrequiredfields
+from utils.validation import checkrequiredfields, is_valid_login, is_strong_password
 
 router = APIRouter()
 
@@ -97,6 +97,23 @@ def post_registration(first_name: str = Form(None), last_name: str = Form(None),
             return HTMLResponse(content=content)
 
         else:
+            login_valid, login_validation_error = is_valid_login(login)
+
+            if not login_valid:
+                with open(f"{TEMPLATES_PATH}register/regstuderror.html", 'r', encoding='utf-8') as f:
+                    content = f.read()
+                content = content.replace("{{ error_message }}", str(login_validation_error))
+                return HTMLResponse(content=content)
+
+
+            password_valid, password_validation_error = is_strong_password(password)
+            if not password_valid:
+                with open(f"{TEMPLATES_PATH}register/regstuderror.html", 'r', encoding='utf-8') as f:
+                    content = f.read()
+                content = content.replace("{{ error_message }}", str(password_validation_error))
+                return HTMLResponse(content=content)
+
+
             studregister(first_name, last_name, grade, login, password)
 
             access_token = create_access_token(login, "student")
@@ -166,6 +183,25 @@ def post_registertut(
             with open(f'{TEMPLATES_PATH}regtutloginalreadyexists/regtutloginalreadyexists.html', 'r', encoding='utf-8') as file:
                 content = file.read()
             return HTMLResponse(content=content)
+        
+
+        login_valid, login_validation_error = is_valid_login(login)
+
+        if not login_valid:
+            with open(f"{TEMPLATES_PATH}register/regtuterror.html", 'r', encoding='utf-8') as f:
+                content = f.read()
+            content = content.replace("{{ error_message }}", str(login_validation_error))
+            return HTMLResponse(content=content)
+        
+        password_valid, password_validation_error = is_strong_password(password)
+
+        if not password_valid:
+            with open(f"{TEMPLATES_PATH}register/regtuterror.html", 'r', encoding='utf-8') as f:
+                content = f.read()
+            content = content.replace("{{ error_message }}", str(password_validation_error))
+            return HTMLResponse(content=content)
+
+
         
         tutregister(
             first_name, last_name, 
