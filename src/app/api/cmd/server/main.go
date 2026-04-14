@@ -27,7 +27,6 @@ func main() {
 		log.Fatal("Ошибка подключения к БД:", err)
 	}
 
-	// Ждем базу (ретраи), так как Go стартует быстрее Postgres
 	for i := 0; i < 10; i++ {
 		if err := db.Ping(); err == nil {
 			break
@@ -45,8 +44,17 @@ func main() {
 	gradeService := service.NewGradeService(db)
 	lessonService := service.NewLessonService(db)
 	tutorService := service.NewTutorService(db)
+	studentService := service.NewStudentService(db)
 
-	adminHandler := handlers.NewAdminHandler(statsService, usersService, homeService, gradeService, lessonService, tutorService)
+	adminHandler := handlers.NewAdminHandler(
+		statsService,
+		usersService,
+		homeService,
+		gradeService,
+		lessonService,
+		tutorService,
+		studentService,
+	)
 
 	mux.HandleFunc("GET /api/v1/health", handlers.HealthCheck)
 
@@ -63,6 +71,14 @@ func main() {
 	mux.HandleFunc("GET /api/v1/admin/lessons", adminHandler.GetLessons)
 
 	mux.HandleFunc("GET /api/v1/admin/tutors", adminHandler.GetTutors)
+
+	mux.HandleFunc("GET /api/v1/admin/students", adminHandler.GetStudents)
+
+	mux.HandleFunc("POST /api/v1/admin/tutor/create", adminHandler.CreateTutor)
+
+	mux.HandleFunc("POST /api/v1/admin/student/create", adminHandler.CreateStudent)
+
+	mux.HandleFunc("POST /api/v1/admin/tutor-students/create", adminHandler.LinkStudentToTutor)
 
 	port := ":8080"
 	fmt.Printf("🚀 Go API 1.25 запущен на порту %s\n", port)
