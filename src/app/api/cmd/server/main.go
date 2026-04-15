@@ -80,6 +80,8 @@ func main() {
 
 	mux.HandleFunc("POST /api/v1/admin/tutor-students/create", adminHandler.LinkStudentToTutor)
 
+	mux.HandleFunc("GET /api/v1/admin/links", adminHandler.GetLinks)
+
 	port := ":8080"
 	fmt.Printf("🚀 Go API 1.25 запущен на порту %s\n", port)
 

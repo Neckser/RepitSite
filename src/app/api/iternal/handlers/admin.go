@@ -101,7 +101,7 @@ func (h *AdminHandler) GetStudents(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *AdminHandler) CreateTutor(w http.ResponseWriter, r *http.Request) {
-	var req models.TutorCreateRequest
+	var req models.TutorCreateBadRequest
 
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		http.Error(w, "Invalid JSON", http.StatusBadRequest)
@@ -222,4 +222,13 @@ func (h *AdminHandler) CreateHomework(w http.ResponseWriter, r *http.Request) {
 		"message": "Связь успешно создана",
 	})
 
+}
+
+func (h *AdminHandler) GetLinks(w http.ResponseWriter, r *http.Request) {
+	links, err := h.tutorSvc.GetAllLinks()
+	if err != nil {
+		http.Error(w, "Failed to fetch links", http.StatusInternalServerError)
+	}
+	w.Header().Set("Content-type", "application/json")
+	json.NewEncoder(w).Encode(links)
 }

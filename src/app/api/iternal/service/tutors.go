@@ -6,7 +6,6 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/lib/pq"
-	"golang.org/x/crypto/bcrypt"
 )
 
 type TutorService struct {
@@ -63,30 +62,67 @@ func (s *TutorService) GetAllTutors() ([]models.AdminTutor, error) {
 	return tutors, nil
 }
 
-func (s *TutorService) CreateTutor(req models.TutorCreateRequest) (string, error) {
-	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(req.Password), bcrypt.DefaultCost)
+// func (s *TutorService) CreateTutor(req models.TutorCreateRequest) (string, error) {
+// 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(req.Password), bcrypt.DefaultCost)
+// 	if err != nil {
+// 		return "", err
+// 	}
+
+// 	tutorID := uuid.New().String()
+
+// 	query := `INSERT INTO tutors (tutor_id, first_name, last_name, login, password, subjects) VALUES ($1, $2, $3, $4, $5, $6)`
+
+// 	_, err = s.db.Exec(query,
+// 		tutorID,
+// 		req.FirstName,
+// 		req.LastName,
+// 		req.Login,
+// 		string(hashedPassword),
+// 		pq.Array(req.Subjects),
+// 	)
+
+// 	if err != nil {
+// 		return "", err
+// 	}
+
+// 	return tutorID, nil
+// }
+
+func (s *TutorService) CreateTutor(req models.TutorCreateBadRequest) (string, error) {
+	newUUID := uuid.New().String()
+
+	query := `
+        INSERT INTO tutors (
+            tutor_id, first_name, last_name, 
+            subject_math, subject_physics, subject_chemistry, 
+            subject_computer, subject_russian, subject_english, 
+            subject_german, subject_french, subject_history, 
+            subject_social, subject_literature, subject_biology, 
+            subject_geography, subject_economics, subject_art, 
+            subject_music, experience, login, password
+        ) VALUES (
+            $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, 
+            $12, $13, $14, $15, $16, $17, $18, $19, $20, $21, $22
+        )
+        RETURNING tutor_id`
+
+	var returnedID string
+
+	err := s.db.QueryRow(query,
+		newUUID, req.FirstName, req.LastName,
+		req.SubjectMath, req.SubjectPhysics, req.SubjectChemistry,
+		req.SubjectComputer, req.SubjectRussian, req.SubjectEnglish,
+		req.SubjectGerman, req.SubjectFrench, req.SubjectHistory,
+		req.SubjectSocial, req.SubjectLiterature, req.SubjectBiology,
+		req.SubjectGeography, req.SubjectEconomics, req.SubjectArt,
+		req.SubjectMusic, req.Experience, req.Login, req.Password,
+	).Scan(&returnedID)
+
 	if err != nil {
 		return "", err
 	}
 
-	tutorID := uuid.New().String()
-
-	query := `INSERT INTO tutors (tutor_id, first_name, last_name, login, password, subjects) VALUES ($1, $2, $3, $4, $5, $6)`
-
-	_, err = s.db.Exec(query,
-		tutorID,
-		req.FirstName,
-		req.LastName,
-		req.Login,
-		string(hashedPassword),
-		pq.Array(req.Subjects),
-	)
-
-	if err != nil {
-		return "", err
-	}
-
-	return tutorID, nil
+	return returnedID, nil
 }
 
 func (s *TutorService) LinkStudent(req models.AddRelationRequest) (bool, error) {
@@ -107,4 +143,40 @@ func (s *TutorService) LinkStudent(req models.AddRelationRequest) (bool, error) 
 	}
 
 	return true, nil
+}
+
+func (s *TutorService) GetAllLinks() ([]models.AdminLinkResponse, error) {
+	query := `
+        SELECT 
+            st.id, 
+            st.student_id, s.first_name, s.last_name,
+            st.tutor_id, t.first_name, t.last_name,
+            st.start_date
+        FROM student_tutors st
+        JOIN students s ON st.student_id = s.student_id
+        JOIN tutors t ON st.tutor_id = t.tutor_id
+        ORDER BY st.start_date DESC`
+
+	rows, err := s.db.Query(query)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var relations []models.AdminLinkResponse
+	for rows.Next() {
+		var r models.AdminLinkResponse
+		err := rows.Scan(
+			&r.ID,
+			&r.StudentID, &r.StudentFirstName, &r.StudentLastName,
+			&r.TutorID, &r.TutorFirstName, &r.TutorLastName,
+			&r.StartDate,
+		)
+		if err != nil {
+			return nil, err
+		}
+		relations = append(relations, r)
+	}
+
+	return relations, nil
 }
