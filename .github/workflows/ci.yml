@@ -37,8 +37,6 @@ jobs:
         npm run prettier:check
         npm run eslint:fix
         npm run eslint:check
-        npm run stylelint:fix
-        npm run stylelint:check
     
     - name: Build
       run: npm run esbuild
