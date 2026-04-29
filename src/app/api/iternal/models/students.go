@@ -2,6 +2,7 @@ package models
 
 import (
 	"fmt"
+	"time"
 )
 
 type AdminStudent struct {
@@ -18,6 +19,17 @@ type StudentCreateRequest struct {
 	Grade     int    `json:"grade"`
 	Login     string `json:"login"`
 	Password  string `json:"password"`
+}
+
+type AdminStudentInfo struct {
+	ID               string    `json:"student_id"`
+	FirstName        string    `json:"first_name"`
+	LastName         string    `json:"last_name"`
+	Grade            int       `json:"grade"`
+	Bio              *string   `json:"bio"`
+	Login            string    `json:"login"`
+	Password         string    `json:"password"`
+	RegistrationDate time.Time `json:"registration_date"`
 }
 
 func (r *StudentCreateRequest) Validate() error {

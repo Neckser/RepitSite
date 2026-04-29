@@ -67,3 +67,25 @@ func (s *StudentService) CreateStudent(req models.StudentCreateRequest) (string,
 
 	return studentID, nil
 }
+
+func (s *StudentService) GetStudentInfo(studentUUID string) (models.AdminStudentInfo, error) {
+	var info models.AdminStudentInfo
+
+	query := `SELECT student_id, first_name, last_name, grade, bio, login, password, registration_date FROM students WHERE student_id = $1`
+
+	err := s.db.QueryRow(query, studentUUID).Scan(
+		&info.ID,
+		&info.FirstName,
+		&info.LastName,
+		&info.Grade,
+		&info.Bio,
+		&info.Login,
+		&info.Password,
+		&info.RegistrationDate,
+	)
+	if err != nil {
+		return models.AdminStudentInfo{}, err
+	}
+
+	return info, err
+}

@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"tutoring-api/iternal/models"
 	"tutoring-api/iternal/service"
@@ -15,6 +16,7 @@ type AdminHandler struct {
 	lessonSvc  *service.LessonsService
 	tutorSvc   *service.TutorService
 	studentSvc *service.StudentService
+	testSvc    *service.TestService
 }
 
 func NewAdminHandler(
@@ -25,6 +27,7 @@ func NewAdminHandler(
 	lSvc *service.LessonsService,
 	tSvc *service.TutorService,
 	studSvc *service.StudentService,
+	testSvc *service.TestService,
 ) *AdminHandler {
 
 	return &AdminHandler{statsSvc: sSvc,
@@ -34,6 +37,7 @@ func NewAdminHandler(
 		lessonSvc:  lSvc,
 		tutorSvc:   tSvc,
 		studentSvc: studSvc,
+		testSvc:    testSvc,
 	}
 }
 
@@ -231,4 +235,53 @@ func (h *AdminHandler) GetLinks(w http.ResponseWriter, r *http.Request) {
 	}
 	w.Header().Set("Content-type", "application/json")
 	json.NewEncoder(w).Encode(links)
+}
+
+func (h *AdminHandler) GetAllTests(w http.ResponseWriter, r *http.Request) {
+	data, err := h.testSvc.GetAllTests()
+	if err != nil {
+		http.Error(w, "Internal error: "+err.Error(), 500)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(data)
+}
+
+func (h *AdminHandler) GetTutorInfo(w http.ResponseWriter, r *http.Request) {
+
+	tutorUUID := r.PathValue("uuid")
+
+	if tutorUUID == "" {
+		http.Error(w, "UUID is required", http.StatusBadRequest)
+		return
+	}
+
+	info, err := h.tutorSvc.GetTutorInfo(tutorUUID)
+	if err != nil {
+		http.Error(w, "Failed to find tutor", http.StatusNotFound)
+		return
+	}
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(info)
+}
+
+func (h *AdminHandler) GetStudentInfo(w http.ResponseWriter, r *http.Request) {
+
+	studentUUID := r.PathValue("uuid")
+
+	if studentUUID == "" {
+		http.Error(w, "UUID is required", http.StatusBadRequest)
+		return
+	}
+
+	info, err := h.studentSvc.GetStudentInfo(studentUUID)
+	if err != nil {
+		fmt.Println(err)
+		http.Error(w, "Failed to find student", http.StatusNotFound)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(info)
 }

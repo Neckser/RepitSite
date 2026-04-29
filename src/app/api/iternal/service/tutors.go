@@ -180,3 +180,24 @@ func (s *TutorService) GetAllLinks() ([]models.AdminLinkResponse, error) {
 
 	return relations, nil
 }
+
+func (s *TutorService) GetTutorInfo(tutor_id string) (models.AdminTutorInfo, error) {
+	var info models.AdminTutorInfo
+
+	query := `SELECT tutor_id, first_name, last_name, bio, login, password, registration_date FROM tutors WHERE tutor_id = $1`
+
+	err := s.db.QueryRow(query, tutor_id).Scan(
+		&info.ID,
+		&info.FirstName,
+		&info.LastName,
+		&info.Bio,
+		&info.Login,
+		&info.Password,
+		&info.RegistrationDate,
+	)
+	if err != nil {
+		return models.AdminTutorInfo{}, err
+	}
+
+	return info, nil
+}

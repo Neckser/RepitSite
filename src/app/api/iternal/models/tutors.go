@@ -1,5 +1,7 @@
 package models
 
+import "time"
+
 type AdminTutor struct {
 	ID        string   `json:"id"`
 	FirstName string   `json:"first_name"`
@@ -47,4 +49,14 @@ func (r *TutorCreateBadRequest) Validate() error {
 		return err
 	}
 	return nil
+}
+
+type AdminTutorInfo struct {
+	ID               string    `json:"tutor_id"`
+	FirstName        string    `json:"first_name"`
+	LastName         string    `json:"last_name"`
+	Bio              *string   `json:"bio"`
+	Login            string    `json:"login"`
+	Password         string    `json:"password"`
+	RegistrationDate time.Time `json:"registration_date"`
 }
