@@ -46,6 +46,7 @@ func main() {
 	tutorService := service.NewTutorService(db)
 	studentService := service.NewStudentService(db)
 	testService := service.NewTestService(db)
+	chatService := service.NewChatService(db)
 
 	adminHandler := handlers.NewAdminHandler(
 		statsService,
@@ -56,6 +57,7 @@ func main() {
 		tutorService,
 		studentService,
 		testService,
+		chatService,
 	)
 
 	mux.HandleFunc("GET /api/v1/health", handlers.HealthCheck)
@@ -89,6 +91,10 @@ func main() {
 	mux.HandleFunc("GET /api/v1/admin/tutor/{uuid}/info", adminHandler.GetTutorInfo)
 
 	mux.HandleFunc("GET /api/v1/admin/student/{uuid}/info", adminHandler.GetStudentInfo)
+
+	mux.HandleFunc("GET /api/v1/admin/chats", adminHandler.GetAllChats)
+
+	mux.HandleFunc("GET /api/v1/admin/chats/messages", adminHandler.GetAllMessages)
 
 	port := ":8080"
 	fmt.Printf("🚀 Go API 1.25 запущен на порту %s\n", port)

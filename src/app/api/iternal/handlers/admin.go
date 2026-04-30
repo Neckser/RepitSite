@@ -17,6 +17,7 @@ type AdminHandler struct {
 	tutorSvc   *service.TutorService
 	studentSvc *service.StudentService
 	testSvc    *service.TestService
+	chatSvc    *service.ChatService
 }
 
 func NewAdminHandler(
@@ -28,9 +29,11 @@ func NewAdminHandler(
 	tSvc *service.TutorService,
 	studSvc *service.StudentService,
 	testSvc *service.TestService,
+	chatSvc *service.ChatService,
 ) *AdminHandler {
 
-	return &AdminHandler{statsSvc: sSvc,
+	return &AdminHandler{
+		statsSvc:   sSvc,
 		userSvc:    uSvc,
 		homeSvc:    hSvc,
 		gradeSvc:   gSvc,
@@ -38,6 +41,7 @@ func NewAdminHandler(
 		tutorSvc:   tSvc,
 		studentSvc: studSvc,
 		testSvc:    testSvc,
+		chatSvc:    chatSvc,
 	}
 }
 
@@ -284,4 +288,56 @@ func (h *AdminHandler) GetStudentInfo(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(info)
+}
+
+func (h *AdminHandler) GetAllChats(w http.ResponseWriter, r *http.Request) {
+	chats, err := h.chatSvc.GetAllChats()
+	if err != nil {
+		http.Error(w, "Failed to find chats", http.StatusInternalServerError)
+		fmt.Println(err)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(chats)
+}
+
+func (h *AdminHandler) GetAllMessages(w http.ResponseWriter, r *http.Request) {
+	chatID := r.URL.Query().Get("chat_id")
+	senderID := r.URL.Query().Get("sender_id")
+
+	var messages []models.AdminMessages
+	var err error
+
+	if chatID != "" && senderID != "" {
+		messages, err = h.chatSvc.GetMessagesByChatAndSender(chatID, senderID)
+		if err != nil {
+			http.Error(w, "Internal server Error", http.StatusInternalServerError)
+			return
+		}
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(messages)
+
+	} else if chatID != "" {
+		messages, err = h.chatSvc.GetMessagesByChatID(chatID)
+		if err != nil {
+			http.Error(w, "Internal server Error", http.StatusInternalServerError)
+			return
+		}
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(messages)
+
+	} else if senderID != "" {
+		messages, err = h.chatSvc.GetMessagesBySenderID(senderID)
+		if err != nil {
+			http.Error(w, "Internal server Error", http.StatusInternalServerError)
+			return
+		}
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(messages)
+
+	} else {
+		http.Error(w, "Either chat_id or sender_id required", http.StatusBadRequest)
+		return
+	}
 }
