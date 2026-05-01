@@ -75,6 +75,8 @@ services:
         - DB_NAME=${DB_NAME}
         - DB_USER=${DB_USER}
         - DB_PASSWORD=${DB_PASSWORD}
+        - GO_API_ADMIN_SECRET=${GO_API_ADMIN_SECRET}
+        - MY_ONLY_DEVICE_KEY=${MY_ONLY_DEVICE_KEY}
       depends_on:
         postgres:
           condition: service_healthy

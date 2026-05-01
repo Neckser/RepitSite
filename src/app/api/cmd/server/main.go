@@ -8,6 +8,7 @@ import (
 	"os"
 	"time"
 	"tutoring-api/iternal/handlers"
+	"tutoring-api/iternal/middleware"
 	"tutoring-api/iternal/service"
 
 	_ "github.com/lib/pq"
@@ -60,41 +61,43 @@ func main() {
 		chatService,
 	)
 
-	mux.HandleFunc("GET /api/v1/health", handlers.HealthCheck)
+	adminJwtProtector := func(h http.HandlerFunc) http.Handler {
+		return middleware.AdminAuth(h)
+	}
 
-	mux.HandleFunc("GET /api/v1/info", handlers.Info)
+	mux.Handle("GET /api/v1/admin/health", adminJwtProtector(adminHandler.HealthCheck))
 
-	mux.HandleFunc("GET /api/v1/admin/stats", adminHandler.GetStats)
+	mux.Handle("GET /api/v1/admin/stats", adminJwtProtector(adminHandler.GetStats))
 
-	mux.HandleFunc("GET /api/v1/admin/users", adminHandler.GetUsers)
+	mux.Handle("GET /api/v1/admin/users", adminJwtProtector(adminHandler.GetUsers))
 
-	mux.HandleFunc("GET /api/v1/admin/homeworks", adminHandler.GetHomeworks)
+	mux.Handle("GET /api/v1/admin/homeworks", adminJwtProtector(adminHandler.GetHomeworks))
 
-	mux.HandleFunc("GET /api/v1/admin/grades", adminHandler.GetGrades)
+	mux.Handle("GET /api/v1/admin/grades", adminJwtProtector(adminHandler.GetGrades))
 
-	mux.HandleFunc("GET /api/v1/admin/lessons", adminHandler.GetLessons)
+	mux.Handle("GET /api/v1/admin/lessons", adminJwtProtector(adminHandler.GetLessons))
 
-	mux.HandleFunc("GET /api/v1/admin/tutors", adminHandler.GetTutors)
+	mux.Handle("GET /api/v1/admin/tutors", adminJwtProtector(adminHandler.GetTutors))
 
-	mux.HandleFunc("GET /api/v1/admin/students", adminHandler.GetStudents)
+	mux.Handle("GET /api/v1/admin/students", adminJwtProtector(adminHandler.GetStudents))
 
-	mux.HandleFunc("POST /api/v1/admin/tutor/create", adminHandler.CreateTutor)
+	mux.Handle("POST /api/v1/admin/tutor/create", adminJwtProtector(adminHandler.CreateTutor))
 
-	mux.HandleFunc("POST /api/v1/admin/student/create", adminHandler.CreateStudent)
+	mux.Handle("POST /api/v1/admin/student/create", adminJwtProtector(adminHandler.CreateStudent))
 
-	mux.HandleFunc("POST /api/v1/admin/tutor-students/create", adminHandler.LinkStudentToTutor)
+	mux.Handle("POST /api/v1/admin/tutor-students/create", adminJwtProtector(adminHandler.LinkStudentToTutor))
 
-	mux.HandleFunc("GET /api/v1/admin/links", adminHandler.GetLinks)
+	mux.Handle("GET /api/v1/admin/links", adminJwtProtector(adminHandler.GetLinks))
 
-	mux.HandleFunc("GET /api/v1/admin/tests", adminHandler.GetAllTests)
+	mux.Handle("GET /api/v1/admin/tests", adminJwtProtector(adminHandler.GetAllTests))
 
-	mux.HandleFunc("GET /api/v1/admin/tutor/{uuid}/info", adminHandler.GetTutorInfo)
+	mux.Handle("GET /api/v1/admin/tutor/{uuid}/info", adminJwtProtector(adminHandler.GetTutorInfo))
 
-	mux.HandleFunc("GET /api/v1/admin/student/{uuid}/info", adminHandler.GetStudentInfo)
+	mux.Handle("GET /api/v1/admin/student/{uuid}/info", adminJwtProtector(adminHandler.GetStudentInfo))
 
-	mux.HandleFunc("GET /api/v1/admin/chats", adminHandler.GetAllChats)
+	mux.Handle("GET /api/v1/admin/chats", adminJwtProtector(adminHandler.GetAllChats))
 
-	mux.HandleFunc("GET /api/v1/admin/chats/messages", adminHandler.GetAllMessages)
+	mux.Handle("GET /api/v1/admin/chats/messages", adminJwtProtector(adminHandler.GetAllMessages))
 
 	port := ":8080"
 	fmt.Printf("🚀 Go API 1.25 запущен на порту %s\n", port)
