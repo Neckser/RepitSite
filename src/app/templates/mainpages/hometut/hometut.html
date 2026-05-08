@@ -7,21 +7,21 @@
     </head>
     <body class="page">
         <header class="top-bar">
-            <div class="nav-container">
-                <div class="nav-buttons">
-                    <a href="/hometut" class="nav-button active">Главная</a>
-                    <a href="/homeworkstut" class="nav-button">Задания</a>
-                    <a href="/tutgrades" class="nav-button">Оценки</a>
-                    <a href="/tuttime" class="nav-button">Расписание</a>
-                    <a href="/tuttests" class="nav-button">Тесты</a>
-                    <a href="/tutchat" class="nav-button">Чат</a>
+            <div class="top-bar__container">
+                <div class="top-bar__nav">
+                    <a href="/hometut" class="top-bar__nav-button top-bar__nav-button_active">Главная</a>
+                    <a href="/homeworkstut" class="top-bar__nav-button">Задания</a>
+                    <a href="/tutgrades" class="top-bar__nav-button">Оценки</a>
+                    <a href="/tuttime" class="top-bar__nav-button">Расписание</a>
+                    <a href="/tuttests" class="top-bar__nav-button">Тесты</a>
+                    <a href="/tutchat" class="top-bar__nav-button">Чат</a>
                 </div>
 
-                <a href="/profiletut" class="account-widget">
-                    <div class="user-avatar">{{ avatar }}</div>
-                    <div class="user-info">
-                        <div class="user-name">{{ first_name }} {{ last_name }}</div>
-                        <div class="user-role">Репетитор</div>
+                <a href="/profiletut" class="top-bar__account">
+                    <div class="top-bar__avatar">{{ avatar }}</div>
+                    <div class="top-bar__user-info">
+                        <div class="top-bar__user-name">{{ first_name }} {{ last_name }}</div>
+                        <div class="top-bar__user-role">Репетитор</div>
                     </div>
                 </a>
             </div>
@@ -57,40 +57,6 @@
                 </div>
                 <div class="students-grid">{{ studtemplate }}</div>
             </section>
-
-            <!-- <section class="lessons-section">
-                <div class="section-header">
-                    <h2 class="section-title">Ближайшие занятия</h2>
-                </div>
-                <div class="lessons-list">
-                    <div class="lesson-card">
-                        <div class="lesson-header">
-                            <div class="lesson-time">14:00 - 15:30</div>
-                            <div class="lesson-date">Сегодня</div>
-                        </div>
-                        <div class="lesson-student">Анна Смирнова</div>
-                        <span class="lesson-subject">Математика - Подготовка к ЕГЭ</span>
-                    </div>
-
-                    <div class="lesson-card">
-                        <div class="lesson-header">
-                            <div class="lesson-time">16:00 - 17:30</div>
-                            <div class="lesson-date">Сегодня</div>
-                        </div>
-                        <div class="lesson-student">Петр Захаров</div>
-                        <span class="lesson-subject">Физика - Кинематика</span>
-                    </div>
-
-                    <div class="lesson-card">
-                        <div class="lesson-header">
-                            <div class="lesson-time">10:00 - 11:30</div>
-                            <div class="lesson-date">Завтра</div>
-                        </div>
-                        <div class="lesson-student">Мария Козлова</div>
-                        <span class="lesson-subject">Математика - Производные</span>
-                    </div>
-                </div>
-            </section> -->
         </main>
     </body>
 </html>

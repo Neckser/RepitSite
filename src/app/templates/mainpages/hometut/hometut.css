@@ -21,13 +21,18 @@
     --white: #ffffff;
 }
 
+/* СТИЛИ ШАПКИ ИЗ ПРАВИЛЬНЫХ ПРИМЕРОВ */
 .top-bar {
-    background-color: var(--primary-color);
+    background-color: #6b8e23;
     padding: 12px 0;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
 }
 
-.nav-container {
+.top-bar__container {
     max-width: 1200px;
     margin: 0 auto;
     display: flex;
@@ -36,14 +41,14 @@
     padding: 0 20px;
 }
 
-.nav-buttons {
+.top-bar__nav {
     display: flex;
     gap: 10px;
 }
 
-.nav-button {
+.top-bar__nav-button {
     background-color: rgba(255, 255, 255, 0.2);
-    color: var(--white);
+    color: white;
     border: none;
     padding: 8px 20px;
     border-radius: 20px;
@@ -53,20 +58,22 @@
     text-decoration: none;
 }
 
-.nav-button.active {
-    background-color: var(--white);
-    color: var(--primary-color);
+.top-bar__nav-button_active {
+    background-color: white;
+    color: #6b8e23;
+    text-decoration: none;
 }
 
-.nav-button:hover {
+.top-bar__nav-button:hover {
     background-color: rgba(255, 255, 255, 0.3);
+    text-decoration: none;
 }
 
-.account-widget {
+.top-bar__account {
     display: flex;
     align-items: center;
     gap: 12px;
-    color: var(--white);
+    color: white;
     cursor: pointer;
     padding: 8px 15px;
     border-radius: 20px;
@@ -74,16 +81,18 @@
     text-decoration: none;
 }
 
-.account-widget:hover {
+.top-bar__account:hover {
     background-color: rgba(255, 255, 255, 0.2);
+    text-decoration: none;
+    color: white;
 }
 
-.user-avatar {
+.top-bar__avatar {
     width: 36px;
     height: 36px;
     border-radius: 50%;
-    background-color: var(--white);
-    color: var(--primary-color);
+    background-color: white;
+    color: #6b8e23;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -92,24 +101,25 @@
     border: 2px solid rgba(255, 255, 255, 0.3);
 }
 
-.user-info {
+.top-bar__user-info {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
 }
 
-.user-name {
+.top-bar__user-name {
     font-size: 14px;
     font-weight: 600;
     line-height: 1.2;
 }
 
-.user-role {
+.top-bar__user-role {
     font-size: 12px;
     opacity: 0.9;
     line-height: 1.2;
 }
 
+/* ОСТАЛЬНАЯ ВЕРСТКА СТРАНИЦЫ (БЕЗ ИЗМЕНЕНИЙ) */
 .tutor-dashboard {
     max-width: 1200px;
     margin: 0 auto;
@@ -149,10 +159,6 @@
     transition: transform 0.3s;
 }
 
-.stat-card:hover {
-    transform: translateY(-3px);
-}
-
 .stat-value {
     color: #6b8e23;
     font-size: 32px;
@@ -188,202 +194,37 @@
     gap: 20px;
 }
 
-.student-card {
-    background: white;
-    border-radius: 10px;
-    padding: 20px;
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
-    border: 2px solid #e8f5e8;
-    transition: transform 0.3s;
-}
-
-.student-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 5px 15px rgba(107, 142, 35, 0.1);
-}
-
-.student-header {
-    display: flex;
-    align-items: center;
-    margin-bottom: 15px;
-}
-
-.student-avatar {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    background-color: #6b8e23;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-weight: bold;
-    margin-right: 15px;
-    font-size: 16px;
-}
-
-.student-info h3 {
-    color: #333;
-    margin-bottom: 5px;
-    font-size: 16px;
-}
-
-.student-grade {
-    color: #5a7a1f;
-    font-size: 14px;
-    background-color: #f1f8e9;
-    padding: 2px 8px;
-    border-radius: 10px;
-}
-
-.student-stats {
-    display: flex;
-    justify-content: space-between;
-    margin: 15px 0;
-    padding: 15px 0;
-    border-top: 1px solid #e8f5e8;
-    border-bottom: 1px solid #e8f5e8;
-}
-
-.student-stat {
-    text-align: center;
-}
-
-.student-stat-value {
-    color: #6b8e23;
-    font-size: 16px;
-    font-weight: bold;
-}
-
-.student-stat-label {
-    color: #666;
-    font-size: 12px;
-}
-
-.student-actions {
-    display: flex;
-    gap: 10px;
-}
-
-.student-button {
-    flex: 1;
-    padding: 8px;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: 500;
-    transition: all 0.3s;
-    text-decoration: none;
-    text-align: center;
-    font-size: 13px;
-}
-
-.student-button--assignments {
-    background-color: #6b8e23;
-    color: white;
-}
-
-.student-button--assignments:hover {
-    background-color: #5a7a1f;
-}
-
-.student-button--message {
-    background-color: #f1f8e9;
-    color: #6b8e23;
-    border: 1px solid #6b8e23;
-}
-
-.student-button--message:hover {
-    background-color: #6b8e23;
-    color: white;
-}
-
-.lessons-section {
-    margin-bottom: 30px;
-}
-
-.lessons-list {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
-.lesson-card {
-    background: white;
-    border-radius: 10px;
-    padding: 20px;
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
-    border: 2px solid #e8f5e8;
-    transition: transform 0.3s;
-}
-
-.lesson-card:hover {
-    transform: translateY(-2px);
-}
-
-.lesson-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 10px;
-}
-
-.lesson-time {
-    color: #6b8e23;
-    font-weight: bold;
-    font-size: 16px;
-}
-
-.lesson-date {
-    color: #666;
-    font-size: 14px;
-}
-
-.lesson-student {
-    color: #333;
-    font-weight: 500;
-    margin-bottom: 5px;
-}
-
-.lesson-subject {
-    color: #5a7a1f;
-    background-color: #f1f8e9;
-    padding: 2px 8px;
-    border-radius: 10px;
-    font-size: 13px;
-    display: inline-block;
-}
-
+/* МЕДИА-ЗАПРОСЫ ДЛЯ МОБИЛОК (ИЗ ПРАВИЛЬНЫХ ПРИМЕРОВ) */
 @media (max-width: 1023px) {
     .tutor-dashboard {
         padding: 25px 15px;
     }
-
-    .welcome-section {
-        padding: 25px 20px;
-    }
-
-    .welcome-title {
-        font-size: 26px;
-    }
-
     .stats-grid {
         grid-template-columns: repeat(2, 1fr);
-    }
-
-    .section-title {
-        font-size: 22px;
     }
 }
 
 @media (max-width: 767px) {
-    .nav-container {
+    /* Фикс шапки для мобилок */
+    .top-bar__container {
         flex-direction: column;
         gap: 15px;
+        padding: 10px 15px;
     }
 
-    .account-widget .user-info {
+    .top-bar__user-info {
         display: none;
+    }
+
+    .top-bar__nav {
+        width: 100%;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .top-bar__nav-button {
+        padding: 6px 15px;
+        font-size: 13px;
     }
 
     .stats-grid {
@@ -394,32 +235,41 @@
     .students-grid {
         grid-template-columns: 1fr;
     }
-
-    .student-stats {
-        flex-direction: column;
-        gap: 10px;
-    }
-
-    .student-actions {
-        flex-direction: column;
-    }
-
-    .stat-card {
-        padding: 15px;
-    }
-
-    .stat-value {
-        font-size: 28px;
-    }
 }
 
 @media (max-width: 480px) {
-    .tutor-dashboard {
-        padding: 20px 10px;
+    /* Фикс шапки для самых маленьких экранов */
+    .top-bar {
+        padding: 8px 0;
     }
 
-    .welcome-section {
-        padding: 20px 15px;
+    .top-bar__container {
+        padding: 8px 10px;
+        gap: 10px;
+    }
+
+    .top-bar__nav {
+        gap: 5px;
+    }
+
+    .top-bar__nav-button {
+        padding: 5px 12px;
+        font-size: 12px;
+        border-radius: 15px;
+    }
+
+    .top-bar__account {
+        padding: 5px 10px;
+    }
+
+    .top-bar__avatar {
+        width: 32px;
+        height: 32px;
+        font-size: 12px;
+    }
+
+    .tutor-dashboard {
+        padding: 20px 10px;
     }
 
     .welcome-title {
@@ -428,17 +278,5 @@
 
     .stats-grid {
         grid-template-columns: 1fr;
-    }
-
-    .section-title {
-        font-size: 20px;
-    }
-
-    .student-card {
-        padding: 15px;
-    }
-
-    .lesson-card {
-        padding: 15px;
     }
 }
