@@ -41,6 +41,7 @@
 .nav-buttons {
     display: flex;
     gap: 10px;
+    flex-wrap: wrap;
 }
 
 .nav-button {
@@ -53,6 +54,7 @@
     font-size: 14px;
     transition: all 0.3s;
     text-decoration: none;
+    white-space: nowrap;
 }
 
 .nav-button.active {
