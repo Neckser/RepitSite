@@ -23,7 +23,7 @@
                 --white: #ffffff;
             }
 
-            /* ===== Верхняя панель (из примера ученика) ===== */
+            
             .top-bar {
                 background-color: var(--primary-color);
                 padding: 12px 0;
@@ -43,6 +43,7 @@
             .nav-buttons {
                 display: flex;
                 gap: 10px;
+                flex-wrap: wrap;
             }
 
             .nav-button {
@@ -114,7 +115,7 @@
                 line-height: 1.2;
             }
 
-            /* ===== Основной контейнер ===== */
+            
             .container {
                 max-width: 1200px;
                 margin: 25px auto;
@@ -132,7 +133,7 @@
                 font-weight: bold;
             }
 
-            /* ===== Чат на всю ширину (без левой колонки) ===== */
+            
             .chat-container {
                 display: block;
                 width: 100%;
@@ -299,12 +300,12 @@
                 cursor: not-allowed;
             }
 
-            /* Скрытые поля для данных */
+            
             .chat-data {
                 display: none;
             }
 
-            /* ===== Адаптивность ===== */
+            
             @media (max-width: 1023px) {
                 .container {
                     padding: 0 15px;

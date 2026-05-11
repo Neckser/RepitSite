@@ -10,7 +10,6 @@ body {
     min-height: 100vh;
 }
 
-/* === Верхняя панель === */
 .top-bar {
     background-color: #6b8e23;
     padding: 12px 0;
@@ -26,7 +25,7 @@ body {
     padding: 0 20px;
 }
 
-.nav-buttons { display: flex; gap: 10px; }
+.nav-buttons { display: flex; gap: 10px; flex-wrap: wrap;}
 
 .nav-button {
     background-color: rgba(255,255,255,0.2);
@@ -75,7 +74,6 @@ body {
 .user-name { font-size: 14px; font-weight: 600; line-height: 1.2; }
 .user-role { font-size: 12px; opacity: 0.9; }
 
-/* === Контейнер === */
 .container {
     max-width: 1200px;
     margin: 25px auto;
@@ -91,7 +89,6 @@ body {
 
 .page-header h1 { color: #6b8e23; font-size: 32px; }
 
-/* === Сетка карточек === */
 .tests-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
@@ -99,7 +96,6 @@ body {
     margin-bottom: 30px;
 }
 
-/* === Карточка теста === */
 .test-card {
     background: white;
     border-radius: 12px;
@@ -134,7 +130,7 @@ body {
 .test-meta {
     display: flex;
     flex-direction: column;
-    gap: 6px; /* увеличенное расстояние между строками */
+    gap: 6px;
     font-size: 14px;
     color: #666;
 }
@@ -146,7 +142,6 @@ body {
     color: #555;
 }
 
-/* Действия */
 .test-actions {
     display: flex;
     gap: 10px;
@@ -171,14 +166,13 @@ body {
 }
 
 .test-actions button, .test-actions a {
-    white-space: normal;    /* Разрешаем перенос */
+    white-space: normal;
     line-height: 1.2;
     text-align: center;
-    padding: 6px 10px;      /* Можно уменьшить внутренние отступы */
-    font-size: 12px;        /* Уменьшаем шрифт, если нужно */
+    padding: 6px 10px; 
+    font-size: 12px; 
 }
 
-/* Кнопки по цвету */
 .copy-btn { background-color: #0288d1; color: white; }
 .copy-btn:hover { background-color: #0277bd; }
 
@@ -190,7 +184,6 @@ body {
 
 .copy-btn .copy-text { line-height: 1.2; }
 
-/* === Добавить тест как карточка === */
 .add-test-card {
     background: linear-gradient(135deg, #f8fff8 0%, #e8f5e8 100%);
     border: 2px dashed #8fb84a;
@@ -245,7 +238,6 @@ body {
 }
 
 
-/* === Плашки предметов === */
 
 .subject-badge {
     padding: 5px 12px;
@@ -256,7 +248,7 @@ body {
     flex-shrink: 0;
     white-space: nowrap;
 }
-/* === Стили для пустого состояния === */
+
 .empty-state {
     background: white;
     border-radius: 16px;
@@ -335,7 +327,6 @@ body {
     box-shadow: 0 6px 15px rgba(107,142,35,0.1);
 }
 
-/* Адаптивность для пустого состояния */
 @media (max-width: 768px) {
     .empty-state {
         padding: 40px 20px;
@@ -390,7 +381,6 @@ body {
     .tests-grid{ grid-template-columns: repeat(auto-fill, minmax(150px,1fr)); }
 }
 
-/* Карточка "Нет тестов" */
 .no-tests {
     text-align: center;
     padding: 60px 20px;
@@ -437,7 +427,6 @@ body {
     margin-top: 20px;
 }
 
-/* Адаптация под контейнер страницы тестов */
 .container {
     max-width: 1200px;
     margin: 0 auto;
@@ -454,14 +443,12 @@ body {
     margin: 0;
 }
 
-/* Адаптация для карточки внутри сетки тестов */
 .tests-grid {
     display: flex;
     flex-direction: column;
     gap: 20px;
 }
 
-/* Медиа-запросы для адаптивности */
 @media (max-width: 1023px) {
     .container {
         padding: 25px 15px;
