@@ -192,12 +192,12 @@ def testutres(request: Request, test_id: int):
             duration = studstr[5]
             score_percent = studstr[6]
             score = (score_percent * questions_colvo) / 100
-            studtest_template = studtest_template.replace("{{ studfirst_name }}", html.escape(studfirst_name))
-            studtest_template = studtest_template.replace("{{ studlast_name }}", html.escape(studlast_name))
-            studtest_template = studtest_template.replace("{{ data }}", html.escape(str(data)))
-            studtest_template = studtest_template.replace("{{ duration }}", html.escape(str(duration) + " сек"))
-            studtest_template = studtest_template.replace("{{ score }}", html.escape(str(score) + f"/{questions_colvo}"))
-            studtest_template = studtest_template.replace("{{ score_percent }}", html.escape(str(score_percent)))
+            studtest_template = studtest_template.replace("{{ studfirst_name }}", studfirst_name)
+            studtest_template = studtest_template.replace("{{ studlast_name }}", studlast_name)
+            studtest_template = studtest_template.replace("{{ data }}", str(data))
+            studtest_template = studtest_template.replace("{{ duration }}", str(duration) + " сек")
+            studtest_template = studtest_template.replace("{{ score }}", str(score) + f"/{questions_colvo}")
+            studtest_template = studtest_template.replace("{{ score_percent }}", str(score_percent))
 
         with open(f"{TEMPLATES_PATH}ctests/testutres.html", 'r', encoding="utf-8") as f:
             content = verstkaprofile(f.read(), name, tutfirst_name, tutlast_name)
@@ -211,7 +211,7 @@ def testutres(request: Request, test_id: int):
         content = content.replace("{{ students_done }}", html.escape(str(students_done)))
         content = content.replace("{{ avg_score }}", html.escape(str(avg_score)))
         content = content.replace("{{ avg_time }}", html.escape(str(avg_time_sec)))
-        content = content.replace("{{ studtest_template }}", html.escape(studtest_template))
+        content = content.replace("{{ studtest_template }}", studtest_template)
         return HTMLResponse(content=content)
 
     except Exception as e:
