@@ -1,5 +1,4 @@
 
-        // ========== API ENDPOINTS (настройте под свой бекенд) ==========
         const API_BASE = '';
         const API = {
             stats: `${API_BASE}/api/v1/admin/stats`,
@@ -21,7 +20,7 @@
             deleteLesson: `${API_BASE}/api/v1/admin/lesson/delete`
         };
 
-        // ========== ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ ==========
+        
         async function fetchJSON(url, options = {}) {
             const response = await fetch(url, options);
             if (!response.ok) throw new Error(`HTTP ${response.status}`);
@@ -39,11 +38,10 @@
         }
 
         function showNotification(message, isError = false) {
-            // Простое уведомление, можно заменить на красивый тост
+            
             alert(message);
         }
 
-        // ========== ЗАГРУЗКА ДАННЫХ ==========
         async function loadStats() {
             try {
                 const stats = await fetchJSON(API.stats);
@@ -171,7 +169,6 @@
             }
         }
 
-        // ========== УДАЛЕНИЕ ==========
         async function deleteItem(type, id) {
             if (!confirm(`Удалить ${type} #${id}?`)) return;
             
@@ -194,14 +191,11 @@
             }
         }
 
-        // ========== СОЗДАНИЕ (ФОРМЫ) ==========
         async function submitCreate(event, type) {
             event.preventDefault();
             const form = event.target;
             const formData = new FormData(form);
             const data = Object.fromEntries(formData.entries());
-            
-            // Преобразуем subjects из select multiple в массив
             if (data.subjects && typeof data.subjects === 'string') {
                 const subjectsSelect = form.querySelector('select[name="subjects"]');
                 if (subjectsSelect) {
@@ -234,7 +228,6 @@
             }
         }
 
-        // ========== МОДАЛЬНОЕ ОКНО ДЛЯ СОЗДАНИЯ ==========
         let currentCreateType = null;
 
         async function openCreateModal(type) {
@@ -314,7 +307,6 @@
             document.getElementById('createModal').classList.remove('active');
         }
 
-        // ========== ГРАФ ==========
         let svg, g, zoom, simulation;
 
         async function loadAndRenderGraph() {
@@ -353,7 +345,6 @@
                 .force("center", d3.forceCenter(width / 2, height / 2))
                 .force("collide", d3.forceCollide().radius(55));
 
-            // Рисуем связи
             const link = g.append("g")
                 .selectAll(".link")
                 .data(data.links)
@@ -363,7 +354,6 @@
                 .attr("stroke", "#cbd5e0")
                 .attr("stroke-width", 2);
 
-            // Рисуем узлы
             const node = g.append("g")
                 .selectAll(".node")
                 .data(data.nodes)
@@ -402,7 +392,6 @@
                 node.attr("transform", d => `translate(${d.x},${d.y})`);
             });
 
-            // Управление зумом
             document.getElementById('zoomInBtn').onclick = () => svg.transition().call(zoom.scaleBy, 1.2);
             document.getElementById('zoomOutBtn').onclick = () => svg.transition().call(zoom.scaleBy, 0.8);
             document.getElementById('resetViewBtn').onclick = () => svg.transition().call(zoom.transform, d3.zoomIdentity);
@@ -428,7 +417,6 @@
             panel.classList.add('active');
         }
 
-        // ========== ВКЛАДКИ ==========
         function initTabs() {
             const tabs = document.querySelectorAll('#mainTabs .admin-tab');
             tabs.forEach(tab => {
@@ -441,7 +429,6 @@
             });
         }
 
-        // ========== ЗАГРУЗКА ВСЕХ ДАННЫХ ==========
         async function loadAllData() {
             await Promise.all([
                 loadStats(),
@@ -454,7 +441,6 @@
             ]);
         }
 
-        // ========== ОБРАБОТЧИКИ РАЗМЕРА ОКНА ==========
         window.addEventListener('resize', () => {
             if (svg) {
                 svg.attr("width", document.getElementById('graph').clientWidth);
@@ -462,11 +448,9 @@
             }
         });
 
-        // ========== ЗАПУСК ==========
         initTabs();
         loadAllData();
 
-        // Клик вне модального окна для закрытия
         window.onclick = function(event) {
             const modal = document.getElementById('createModal');
             if (event.target === modal) closeModal();

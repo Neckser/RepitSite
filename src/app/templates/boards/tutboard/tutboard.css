@@ -11,7 +11,6 @@
     overflow: hidden;
 }
 
-/* Top Bar - как на странице с оценками */
 .top-bar {
     background-color: #6b8e23;
     padding: 12px 0;
@@ -110,21 +109,18 @@
     line-height: 1.2;
 }
 
-/* Main App */
 .app {
     display: flex;
     flex-direction: column;
     height: 100vh;
-    padding-top: 60px; /* Высота top-bar */
+    padding-top: 60px;
 }
 
-/* Обертка для тулбара */
 .toolbar-wrapper {
     padding: 15px 0 5px 0;
     background: #f8f9fa;
 }
 
-/* Toolbar - чуть шире */
 .toolbar {
     background: white;
     padding: 10px 0;
@@ -139,37 +135,35 @@
     margin-right: auto;
 }
 
-/* Остальной CSS оставляете как есть */
 
         .toolbar__container {
             max-width: 100%;
             width: auto;
             display: flex;
-            gap: 6px; /* Уменьшил gap */
+            gap: 6px;
             flex-wrap: wrap;
             align-items: center;
             justify-content: center;
-            padding: 0 10px; /* Уменьшил padding */
+            padding: 0 10px;
         }
 
         .toolbar__group {
             display: flex;
             align-items: center;
-            gap: 4px; /* Уменьшил gap */
+            gap: 4px;
             background: #f8f9fa;
-            padding: 3px 6px; /* Уменьшил padding */
+            padding: 3px 6px;
             border-radius: 25px;
             border: 1px solid #e8f5e8;
         }
 
-        /* Инструменты в кружочках */
         .tool-btn {
-            width: 32px; /* Уменьшил размер */
-            height: 32px; /* Уменьшил размер */
+            width: 32px;
+            height: 32px; 
             border: 2px solid transparent;
             border-radius: 50%;
             cursor: pointer;
-            font-size: 16px; /* Уменьшил шрифт */
+            font-size: 16px;
             background: white;
             transition: all 0.2s;
             display: flex;
@@ -189,10 +183,9 @@
             transform: scale(1.05);
         }
 
-        /* Color picker */
         .toolbar__color {
-            width: 32px; /* Уменьшил размер */
-            height: 32px; /* Уменьшил размер */
+            width: 32px;
+            height: 32px;
             border: 2px solid #e8f5e8;
             border-radius: 50%;
             cursor: pointer;
@@ -208,9 +201,8 @@
             border-radius: 50%;
         }
 
-        /* Range slider */
         .toolbar__range {
-            width: 70px; /* Уменьшил ширину */
+            width: 70px;
             height: 5px;
             border-radius: 3px;
             background: #e8f5e8;
@@ -222,10 +214,9 @@
             text-align: center;
             font-weight: bold;
             color: #6b8e23;
-            font-size: 12px; /* Уменьшил шрифт */
+            font-size: 12px;
         }
 
-        /* File input */
         .toolbar__file {
             position: relative;
             overflow: hidden;
@@ -245,17 +236,16 @@
             background: white;
             color: #6b8e23;
             border: 1px solid #6b8e23;
-            padding: 4px 8px; /* Уменьшил padding */
-            font-size: 12px; /* Уменьшил шрифт */
+            padding: 4px 8px; 
+            font-size: 12px; 
             white-space: nowrap;
         }
 
-        /* Buttons */
         .btn {
-            padding: 6px 14px; /* Уменьшил padding */
+            padding: 6px 14px; 
             border: none;
-            border-radius: 20px; /* Более скругленные */
-            font-size: 12px; /* Уменьшил шрифт */
+            border-radius: 20px; 
+            font-size: 12px; 
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s;
@@ -293,14 +283,13 @@
             box-shadow: 0 5px 15px rgba(220, 53, 69, 0.3);
         }
 
-        /* Canvas */
         .canvas-container {
             flex: 1;
             overflow: hidden;
             position: relative;
             background: #f0f2f5;
             cursor: default;
-            margin: 5px 20px 20px 20px; /* Уменьшил верхний отступ */
+            margin: 5px 20px 20px 20px;
             border-radius: 12px;
             box-shadow: 0 3px 15px rgba(0, 0, 0, 0.1);
         }
@@ -322,7 +311,6 @@
             left: 0;
         }
 
-        /* Zoom controls внизу */
         .zoom-controls-bottom {
             position: fixed;
             bottom: 80px;
@@ -339,8 +327,8 @@
         }
 
         .zoom-controls-bottom button {
-            width: 36px; /* Уменьшил размер */
-            height: 36px; /* Уменьшил размер */
+            width: 36px;
+            height: 36px;
             border: none;
             border-radius: 50%;
             background: #f8f9fa;
@@ -368,23 +356,21 @@
             padding: 4px 0;
         }
 
-        /* Hint */
         .hint {
             position: fixed;
             bottom: 20px;
             right: 20px;
             background: #6b8e23;
             color: white;
-            padding: 6px 14px; /* Уменьшил padding */
+            padding: 6px 14px; 
             border-radius: 25px;
-            font-size: 12px; /* Уменьшил шрифт */
+            font-size: 12px; 
             pointer-events: none;
             z-index: 90;
             box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
             border: 2px solid #e8f5e8;
         }
 
-        /* Responsive */
         @media (max-width: 1024px) {
             .toolbar {
                 overflow-x: auto;

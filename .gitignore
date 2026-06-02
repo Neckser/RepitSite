@@ -3,44 +3,30 @@ __pycache__
 nohup.out
 .vscode
 .venv
-
 data/
 *.db
 *.sqlite3
-
 .env
 .env.local
 .env.*.local
 node_modules
 build/
-
 venv
 venv/*
-
 uploads/*
 .env
-
-# .gitignore
-
-# Секреты и конфиги
 .env
 .env.local
 .env.*.local
 .env.production
 .env.development
-
-# Базы данных
 *.db
 *.sqlite
 *.sqlite3
 postgres_data/
-
-# Логи
 *.log
 logs/
 /app/logs/
-
-# Python
 __pycache__/
 *.py[cod]
 *$py.class
@@ -54,15 +40,9 @@ pip-delete-this-directory.txt
 .pytest_cache/
 .coverage
 htmlcov/
-
-# Docker
 docker-compose.override.yml
-
-# Данные мониторинга
 prometheus_data/
 grafana_data/
-
-# IDE
 .vscode/
 .idea/
 *.swp

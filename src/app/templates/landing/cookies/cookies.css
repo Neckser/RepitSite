@@ -42,7 +42,7 @@ body {
     border-radius: 20px;
     display: inline-block;
 }
-/* Секции контента */
+
 .content-section {
     margin-bottom: 35px;
 }
@@ -72,7 +72,7 @@ body {
     margin: 20px 0 10px 0;
     font-size: 18px;
 }
-/* Информационные блоки */
+
 .info-box {
     background: #f8fff8;
     border-left: 4px solid #6b8e23;
@@ -91,7 +91,7 @@ body {
 .icon {
     font-size: 20px;
 }
-/* Таблица cookie */
+
 .cookie-table {
     width: 100%;
     border-collapse: collapse;
@@ -129,7 +129,7 @@ body {
     margin-right: 8px;
     margin-bottom: 5px;
 }
-/* Код */
+
 code {
     background: #f8fff8;
     padding: 2px 6px;
@@ -139,7 +139,7 @@ code {
     font-size: 14px;
     border: 1px solid #e8f5e8;
 }
-/* Версия и действия */
+
 .version-info {
     text-align: center;
     margin-top: 40px;
@@ -192,7 +192,7 @@ code {
     color: white;
     border-color: #6b8e23;
 }
-/* Упрощенный футер */
+
 .simple-footer {
     text-align: center;
     margin-top: 40px;
@@ -209,7 +209,7 @@ code {
 .heart {
     color: #ff6b6b;
 }
-/* Адаптивность */
+
 @media (max-width: 768px) {
     .cookies-container {
         padding: 25px;

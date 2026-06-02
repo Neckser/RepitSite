@@ -554,7 +554,6 @@
     }
 }
 
-/* Обновлённый хедер с репетитором справа от предмета */
 .assignment-header {
     display: flex;
     justify-content: space-between;
@@ -577,7 +576,6 @@
     gap: 12px;
 }
 
-/* Ненавязчивое имя репетитора */
 .tutor-name-small {
     color: #888;
     font-size: 13px;
@@ -593,7 +591,6 @@
     font-size: 14px;
 }
 
-/* Компактная кнопка раскрытия */
 .toggle-tasks-btn {
     background: none;
     border: none;
@@ -630,7 +627,6 @@
     transform: rotate(90deg);
 }
 
-/* Контейнер с задачами */
 .tasks-container {
     margin-top: 10px;
     padding-top: 15px;
@@ -642,7 +638,6 @@
     display: none;
 }
 
-/* Список задач */
 .tasks-list {
     display: flex;
     flex-direction: column;
@@ -650,7 +645,6 @@
     margin-bottom: 15px;
 }
 
-/* Стили для отдельной задачи */
 .task-item {
     background-color: #fafdfa;
     border-radius: 8px;
@@ -759,7 +753,6 @@
     font-size: 14px;
 }
 
-/* Полоска прогресса */
 .tasks-progress {
     margin-top: 5px;
 }
@@ -779,7 +772,6 @@
     transition: width 0.4s ease;
 }
 
-/* Состояние загрузки */
 .task-item.loading {
     opacity: 0.6;
     pointer-events: none;
@@ -790,7 +782,6 @@
     cursor: not-allowed;
 }
 
-/* Уведомления */
 .notification {
     position: fixed;
     bottom: 20px;
@@ -823,7 +814,6 @@
     }
 }
 
-/* Адаптивность */
 @media (max-width: 480px) {
     .assignment-header {
         flex-direction: column;
@@ -845,7 +835,6 @@
     padding: 0;
 }
 
-/* Стили для карточки с изображением */
 .task-mini-card-image {
     background: linear-gradient(135deg, #fafdfa 0%, #f0f4f0 100%);
     cursor: pointer;
@@ -909,7 +898,6 @@
     pointer-events: none;
 }
 
-/* Полноэкранный просмотр изображения */
 .full-image-overlay {
     position: fixed;
     top: 0;

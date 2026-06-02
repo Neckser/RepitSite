@@ -40,7 +40,7 @@
 
         <div class="graph-container">
             <div class="graph-header">
-                <div class="graph-title">🕸️ Карта связей учеников и репетиторов</div>
+                <div class="graph-title">Карта связей учеников и репетиторов</div>
                 <div class="graph-controls">
                     <button class="graph-control-btn" id="zoomInBtn">🔍 +</button>
                     <button class="graph-control-btn" id="zoomOutBtn">🔍 -</button>
@@ -55,7 +55,6 @@
             <div class="info-panel__content" id="infoPanelContent"></div>
         </div>
 
-        <!-- ГЛАВНЫЕ ВКЛАДКИ -->
         <div class="admin-tabs" id="mainTabs">
             <button class="admin-tab active" data-tab="users">👥 Пользователи</button>
             <button class="admin-tab" data-tab="homeworks">📚 Домашние задания</button>
@@ -64,7 +63,6 @@
             <button class="admin-tab" data-tab="create">➕ Создать</button>
         </div>
 
-        <!-- ВКЛАДКА: ПОЛЬЗОВАТЕЛИ -->
         <div id="tab-users" class="tab-content active">
             <div class="card">
                 <h2 class="card__title">👥 Все пользователи</h2>
@@ -77,7 +75,6 @@
             </div>
         </div>
 
-        <!-- ВКЛАДКА: ДОМАШНИЕ ЗАДАНИЯ -->
         <div id="tab-homeworks" class="tab-content">
             <div class="card">
                 <h2 class="card__title">📚 Список домашних заданий</h2>
@@ -93,7 +90,6 @@
             </div>
         </div>
 
-        <!-- ВКЛАДКА: ОЦЕНКИ -->
         <div id="tab-grades" class="tab-content">
             <div class="card">
                 <h2 class="card__title">⭐ Журнал оценок</h2>
@@ -109,7 +105,6 @@
             </div>
         </div>
 
-        <!-- ВКЛАДКА: УРОКИ -->
         <div id="tab-lessons" class="tab-content">
             <div class="card">
                 <h2 class="card__title">📅 Расписание уроков</h2>
@@ -125,7 +120,6 @@
             </div>
         </div>
 
-        <!-- ВКЛАДКА: СОЗДАТЬ -->
         <div id="tab-create" class="tab-content">
             <div class="two-columns">
                 <div class="card">
@@ -153,7 +147,6 @@
         </div>
     </div>
 
-    <!-- Единое модальное окно для создания -->
     <div id="createModal" class="modal">
         <div class="modal-content">
             <div class="modal-header"><h3 id="modalTitle">Создать</h3><button class="modal-close" onclick="closeModal()">×</button></div>

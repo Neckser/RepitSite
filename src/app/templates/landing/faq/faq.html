@@ -9,15 +9,11 @@
 <body>
     <div class="container">
         <div class="faq-container">
-            <!-- Шапка -->
             <div class="faq-header">
                 <h1 class="faq-title">Часто задаваемые вопросы</h1>
                 <p class="faq-subtitle">Найдите ответы на самые популярные вопросы о RepitHub</p>
             </div>
-
-            <!-- Основной контент FAQ -->
             <div class="faq-content">
-                <!-- Категория: Общие вопросы -->
                 <div class="faq-category">
                     <h2 class="category-title">
                         <span class="category-icon">📋</span>
@@ -68,8 +64,6 @@
                         </div>
                     </div>
                 </div>
-
-                <!-- Категория: Для репетиторов -->
                 <div class="faq-category">
                     <h2 class="category-title">
                         <span class="category-icon">👨‍🏫</span>
@@ -146,8 +140,6 @@
                         </div>
                     </div>
                 </div>
-
-                <!-- Категория: Для учеников -->
                 <div class="faq-category">
                     <h2 class="category-title">
                         <span class="category-icon">👨‍🎓</span>
@@ -227,8 +219,6 @@
                         </div>
                     </div>
                 </div>
-
-                <!-- Категория: Технические вопросы -->
                 <div class="faq-category">
                     <h2 class="category-title">
                         <span class="category-icon">🔧</span>
@@ -308,8 +298,6 @@
                         </div>
                     </div>
                 </div>
-
-                <!-- Категория: Оплата и финансы -->
                 <div class="faq-category">
                     <h2 class="category-title">
                         <span class="category-icon">💰</span>
@@ -383,15 +371,11 @@
                     </div>
                 </div>
             </div>
-
-            <!-- Навигация -->
             <div class="actions-section">
                 <a href="/" class="back-btn">
                     <span>←</span> Вернуться на главную
                 </a>
             </div>
-
-            <!-- Футер -->
             <div class="simple-footer">
                 <p>&copy; 2026 RepitHub. Все права защищены.</p>
                 <p>Разработано с <span class="heart">❤️</span> для образования</p>
@@ -400,7 +384,6 @@
     </div>
 
     <script>
-        // Аккордеон для FAQ
         document.querySelectorAll('.faq-question').forEach(question => {
             question.addEventListener('click', () => {
                 const answer = question.nextElementSibling;

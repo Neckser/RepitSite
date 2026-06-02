@@ -309,7 +309,6 @@
     width: 100%;
 }
 
-/* Всегда показываем 7 колонок с адаптивной минимальной шириной */
 .schedule__days-header,
 .schedule__lessons-container {
     display: grid;
@@ -678,7 +677,6 @@
         font-size: 13px;
     }
 
-    /* --- Ключевое изменение: вертикальное расположение и порядок --- */
     .content-grid {
         display: flex;
         flex-direction: column;
@@ -686,16 +684,15 @@
     }
 
     .sidebar {
-        order: 2;          /* форма теперь снизу */
+        order: 2;
         width: 100%;
     }
 
     .main-content {
-        order: 1;          /* расписание сверху */
+        order: 1;  
         width: 100%;
     }
 
-    /* --- Остальные стили для мобильных (можно оставить как есть) --- */
     .schedule__controls {
         flex-direction: column;
         align-items: stretch;
@@ -724,7 +721,6 @@
         font-size: 10px;
     }
 
-    /* Немного уменьшаем форму, чтобы она не была громоздкой */
     .sidebar .card {
         padding: 15px;
     }
@@ -880,8 +876,6 @@
     }
 }
 
-/* --- Стили для карточки урока (дополнение к основной верстке) --- */
-
 .schedule__lesson-actions {
     display: flex;
     flex-direction: column;
@@ -973,8 +967,6 @@
         grid-template-columns: 1fr;
     }
 }
-
-/* --- СИСТЕМНОЕ МОДАЛЬНОЕ ОКНО --- */
 
 .modal-overlay {
     display: none;
@@ -1388,7 +1380,7 @@
     -webkit-font-smoothing: antialiased;
     transform: translateZ(0);
 }
-/* Синяя кнопка для видеосозвона */
+
 .schedule__lesson-action-btn_video {
     background: linear-gradient(135deg, #4a90e2 0%, #3570b2 100%);
     color: white;
@@ -1415,13 +1407,11 @@
     box-shadow: 0 4px 8px rgba(74, 144, 226, 0.3);
 }
 
-/* Иконка видео */
 .schedule__lesson-action-btn_video::before {
     font-size: 12px;
     margin-right: 4px;
 }
 
-/* Для мобильной версии */
 @media (max-width: 480px) {
     .schedule__lesson-action-btn_video {
         padding: 4px 8px;
@@ -1429,7 +1419,6 @@
     }
 }
 
-/* Стили для модального окна видео */
 .video-form {
     background: #f8f9fa;
     padding: 20px;
@@ -1606,7 +1595,6 @@
     box-shadow: 0 4px 8px rgba(74, 144, 226, 0.3);
 }
 
-/* Оранжевая кнопка для доски */
 .schedule__lesson-action-btn_board {
     background: linear-gradient(135deg, #f1c40f 0%, #f39c12 100%);
     color: white;
@@ -1631,13 +1619,11 @@
     box-shadow: 0 4px 8px rgba(243, 156, 18, 0.3);
 }
 
-/* Иконка для доски (если нужна) */
 .schedule__lesson-action-btn_board::before {
     font-size: 12px;
     margin-right: 4px;
 }
 
-/* Для мобильной версии */
 @media (max-width: 480px) {
     .schedule__lesson-action-btn_board {
         padding: 4px 8px;
@@ -1645,8 +1631,6 @@
     }
 }
 
-
-/* Стили для модального окна доски */
 .board-section {
     margin-top: 20px;
 }
@@ -1711,20 +1695,18 @@
 .schedule__lesson-actions {
     display: flex;
     flex-direction: column;
-    gap: 6px;  /* Одинаковый отступ между всеми элементами */
+    gap: 6px;
     margin-top: 10px;
 }
 
-/* Убираем лишние отступы у кнопок */
 .schedule__lesson-action-btn_details,
 .schedule__lesson-action-btn_video,
 .schedule__lesson-action-btn_board,
 .schedule__lesson-action-btn_delete {
-    margin-top: 0;  /* Убираем индивидуальные отступы */
+    margin-top: 0;
     width: 100%;
 }
 
-/* Форма удаления теперь просто часть потока */
 .delete-form {
     display: block;
     width: 100%;
@@ -1732,12 +1714,10 @@
     padding: 0;
 }
 
-/* Убираем дублирующийся стиль для video, если он есть с margin-top */
 .schedule__lesson-action-btn_video {
-    margin-top: 0;  /* Переопределяем, если был margin-top: 8px */
+    margin-top: 0;
 }
 
-/* Стили для модального окна доски */
 .desk-form {
     background: #f8f9fa;
     padding: 20px;
@@ -1834,7 +1814,7 @@
     padding-left: 20px;
     color: #856404;
 }
-/* Контейнер для отступа */
+
 .desk-action-section {
     margin-top: 25px;
     padding-top: 15px;
@@ -1842,7 +1822,6 @@
     text-align: center;
 }
 
-/* Основная кнопка */
 .btn-internal-desk {
     display: inline-flex;
     align-items: center;
@@ -1862,7 +1841,6 @@
     box-shadow: 0 4px 15px rgba(241, 196, 15, 0.3);
 }
 
-/* Эффект поднятия при наведении */
 .btn-internal-desk:hover {
     background: linear-gradient(135deg, #f39c12, #e67e22);
     transform: translateY(-3px);
@@ -1874,19 +1852,16 @@
     box-shadow: 0 5px 15px rgba(241, 196, 15, 0.3);
 }
 
-/* Иконка внутри кнопки */
 .btn-internal-desk__icon {
     font-size: 20px;
     filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.1));
 }
 
-/* Текст кнопки */
 .btn-internal-desk__text {
     flex: 0 1 auto;
     letter-spacing: 0.3px;
 }
 
-/* Стрелка с анимацией */
 .btn-internal-desk__arrow {
     font-size: 18px;
     transition: transform 0.3s ease;
@@ -1896,7 +1871,6 @@
     transform: translateX(5px);
 }
 
-/* Для мобильных устройств */
 @media (max-width: 480px) {
     .desk-action-section {
         margin-top: 20px;
@@ -1919,14 +1893,13 @@
     }
 }
 
-/* Для очень маленьких экранов */
 @media (max-width: 380px) {
     .btn-internal-desk {
         padding: 10px 16px;
         font-size: 13px;
     }
 }
-/* Стили для карточки с изображением */
+
 .task-mini-card-image {
     background: linear-gradient(135deg, #fafdfa 0%, #f0f4f0 100%);
     cursor: pointer;
@@ -1989,7 +1962,7 @@
     border-radius: 50%;
     pointer-events: none;
 }
-/* Полноэкранный просмотр изображения */
+
 .full-image-overlay {
     position: fixed;
     top: 0;
@@ -1997,7 +1970,7 @@
     width: 100%;
     height: 100%;
     background: rgba(0, 0, 0, 0.95);
-    z-index: 100000; /* Очень высокий z-index, выше модального окна */
+    z-index: 100000;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -2032,7 +2005,6 @@
     }
 }
 
-/* Кнопка закрытия для полноэкранного режима */
 .full-image-overlay::after {
     content: '✕';
     position: absolute;

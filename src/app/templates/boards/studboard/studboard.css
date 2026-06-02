@@ -24,7 +24,6 @@
     --danger-dark: #c82333;
 }
 
-/* Top Bar - как на странице с оценками */
 .top-bar {
     background-color: #6b8e23;
     padding: 12px 0;
@@ -123,21 +122,18 @@
     line-height: 1.2;
 }
 
-/* Main App */
 .app {
     display: flex;
     flex-direction: column;
     height: 100vh;
-    padding-top: 60px; /* Высота top-bar */
+    padding-top: 60px;
 }
 
-/* Обертка для тулбара */
 .toolbar-wrapper {
     padding: 15px 0 5px 0;
     background: #f8f9fa;
 }
 
-/* Toolbar - чуть шире */
 .toolbar {
     background: white;
     padding: 10px 0;
@@ -173,7 +169,6 @@
     border: 1px solid var(--border-light);
 }
 
-/* Инструменты в кружочках */
 .tool-btn {
     width: 32px;
     height: 32px;
@@ -200,7 +195,6 @@
     transform: scale(1.05);
 }
 
-/* Color picker */
 .toolbar__color {
     width: 32px;
     height: 32px;
@@ -219,7 +213,6 @@
     border-radius: 50%;
 }
 
-/* Range slider */
 .toolbar__range {
     width: 70px;
     height: 5px;
@@ -236,7 +229,6 @@
     font-size: 12px;
 }
 
-/* File input */
 .toolbar__file {
     position: relative;
     overflow: hidden;
@@ -262,7 +254,6 @@
     border-radius: 20px;
 }
 
-/* Buttons */
 .btn {
     padding: 6px 14px;
     border: none;
@@ -305,7 +296,6 @@
     box-shadow: 0 5px 15px rgba(220, 53, 69, 0.3);
 }
 
-/* Canvas */
 .canvas-container {
     flex: 1;
     overflow: hidden;
@@ -334,7 +324,6 @@
     left: 0;
 }
 
-/* Zoom controls внизу */
 .zoom-controls-bottom {
     position: fixed;
     bottom: 80px;
@@ -380,7 +369,6 @@
     padding: 4px 0;
 }
 
-/* Hint */
 .hint {
     position: fixed;
     bottom: 20px;
@@ -396,7 +384,6 @@
     border: 2px solid var(--border-light);
 }
 
-/* Responsive */
 @media (max-width: 1024px) {
     .toolbar {
         overflow-x: auto;

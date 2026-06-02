@@ -8,7 +8,7 @@ body {
     background-color: #f8f9fa;
     min-height: 100vh;
 }
-/* ===== TOP BAR ===== */
+
 .top-bar {
     background-color: #6b8e23;
     padding: 12px 0;
@@ -81,7 +81,7 @@ body {
     opacity: 0.9;
     line-height: 1.2;
 }
-/* ===== LAYOUT ===== */
+
 .container {
     max-width: 1200px;
     margin: 25px auto;
@@ -95,7 +95,7 @@ body {
     font-weight: bold;
     color: #6b8e23;
 }
-/* ===== CARD ===== */
+
 .card {
     background: white;
     border-radius: 15px;
@@ -113,12 +113,12 @@ body {
     gap: 10px;
     align-items: center;
 }
-/* ===== TEST SUMMARY ===== */
+
 .test-summary {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background-color: #6b8e23; /* основной зелёный */
+    background-color: #6b8e23;
     color: white;
     padding: 15px 20px;
     border-radius: 12px;
@@ -148,7 +148,7 @@ body {
 .test-summary .open-test-btn:hover {
     background-color: #e8f5e8;
 }
-/* ===== TEST INFO GRID (статистика) ===== */
+
 .test-info-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
@@ -156,7 +156,7 @@ body {
     margin-top: 15px;
 }
 .stat-card {
-    background: #f1f9f1; /* светло-зелёный фон */
+    background: #f1f9f1; 
     border-radius: 12px;
     padding: 15px 10px;
     text-align: center;
@@ -170,7 +170,7 @@ body {
 .stat-number {
     font-size: 24px;
     font-weight: 700;
-    color: #2e7d32; /* основной зелёный */
+    color: #2e7d32; 
     margin-bottom: 5px;
 }
 .stat-label {
@@ -178,7 +178,7 @@ body {
     font-weight: 600;
     color: #333;
 }
-/* ===== RESULTS TABLE ===== */
+
 .results-table {
     display: flex;
     flex-direction: column;
@@ -195,7 +195,7 @@ body {
     align-items: center;
 }
 .results-row_header {
-    background-color: #6b8e23; /* основной зелёный */
+    background-color: #6b8e23;
     color: white;
     font-weight: 700;
     display: grid;
@@ -205,7 +205,7 @@ body {
 .result-good { color: #2e7d32; font-weight: 600; }
 .result-excellent { color: #1b5e20; font-weight: 700; }
 .result-bad { color: #c62828; font-weight: 600; }
-/* ===== ADAPTIVE ===== */
+
 @media (max-width: 768px) {
     .top-bar__container { flex-direction: column; gap: 15px; }
     .top-bar__user-info { display: none; }

@@ -12,7 +12,7 @@ body {
     align-items: center;
     padding: 20px;
 }
-/* === ВЕРХНЯЯ ПАНЕЛЬ === */
+
 .top-bar {
     background-color: #6b8e23;
     padding: 12px 0;
@@ -93,14 +93,14 @@ body {
     font-size: 12px; 
     opacity: 0.9; 
 }
-/* ===== LAYOUT ===== */
+
 .container {
     max-width: 800px;
     width: 100%;
     margin-top: 80px;
     margin-bottom: 40px;
 }
-/* ===== HERO SECTION ===== */
+
 .result-hero {
     background: white;
     border-radius: 12px;
@@ -154,7 +154,7 @@ body {
     font-weight: 500;
     opacity: 0.9;
 }
-/* ===== ANIMATED CIRCLE ===== */
+
 .circle-container {
     position: relative;
     width: 250px;
@@ -176,7 +176,7 @@ body {
     stroke: url(#gradient);
     stroke-width: 10;
     stroke-linecap: round;
-    stroke-dasharray: 0 753; /* 2 * π * 120 = 753 */
+    stroke-dasharray: 0 753;
     stroke-dashoffset: 0;
     transition: stroke-dasharray 2s cubic-bezier(0.68, -0.55, 0.27, 1.55);
 }
@@ -199,7 +199,7 @@ body {
     color: #666;
     font-weight: 600;
 }
-/* ===== STATS SECTION ===== */
+
 .stats-section {
     background: white;
     border-radius: 12px;
@@ -244,7 +244,7 @@ body {
     color: #666;
     font-weight: 500;
 }
-/* ===== SINGLE BUTTON ===== */
+
 .action-button {
     display: flex;
     justify-content: center;
@@ -276,7 +276,7 @@ body {
 .btn-next:active {
     transform: translateY(-1px);
 }
-/* === ПЛАШКА ПРЕДМЕТА === */
+
 .subject-badge {
     padding: 6px 15px;
     border-radius: 20px;
@@ -287,7 +287,7 @@ body {
     margin-bottom: 20px;
     background-color: #6b8e23;
 }
-/* ===== RESPONSIVE ===== */
+
 @media (max-width: 768px) {
     body {
         padding: 10px;

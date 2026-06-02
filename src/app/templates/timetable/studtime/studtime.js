@@ -114,8 +114,6 @@ window.closeFullscreenImage = function() {
 };
 
 
-
-// Функция для открытия модального окна видеосозвона
 window.showVideoModal = function(button) {
     const lessonCard = button.closest('.lesson-card');
     const lessonId = lessonCard.querySelector('input[name="lesson_id"]').value;
@@ -158,7 +156,6 @@ window.showVideoModal = function(button) {
     document.body.style.overflow = 'hidden';
 };
 
-// Функция закрытия
 window.closeVideoModal = function() {
     const modal = document.getElementById('videoModal');
     if (modal) {
@@ -167,7 +164,6 @@ window.closeVideoModal = function() {
     }
 };
 
-// Функция копирования ссылки
 window.copyVideoLink = function(lessonId) {
     const videoLink = document.querySelector('.video-link')?.innerText;
     if (videoLink) {
@@ -177,7 +173,6 @@ window.copyVideoLink = function(lessonId) {
     }
 };
 
-// Закрытие по клику на фон
 document.addEventListener('click', function(e) {
     const modal = document.getElementById('videoModal');
     if (e.target === modal) {
@@ -185,14 +180,12 @@ document.addEventListener('click', function(e) {
     }
 });
 
-// Закрытие по Escape
 document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') {
         closeVideoModal();
     }
 });
 
-// Функция для открытия модального окна доски (для ученика)
 window.showDeskModal = function(button) {
     const lessonCard = button.closest('.lesson-card');
     const lessonId = lessonCard.querySelector('input[name="lesson_id"]').value;
@@ -245,7 +238,6 @@ window.showDeskModal = function(button) {
     document.body.style.overflow = 'hidden';
 };
 
-// Функция для открытия ссылки на доску
 window.openDeskLink = function(link) {
     if (link) {
         window.open(link, '_blank');
@@ -254,7 +246,6 @@ window.openDeskLink = function(link) {
     }
 };
 
-// Функция закрытия
 window.closeDeskModal = function() {
     const modal = document.getElementById('deskModal');
     if (modal) {
@@ -263,7 +254,6 @@ window.closeDeskModal = function() {
     }
 };
 
-// Закрытие по клику на фон
 document.addEventListener('click', function(e) {
     const modal = document.getElementById('deskModal');
     if (e.target === modal) {
@@ -271,7 +261,6 @@ document.addEventListener('click', function(e) {
     }
 });
 
-// Закрытие по Escape
 document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') {
         closeDeskModal();

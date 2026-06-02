@@ -33,12 +33,10 @@
             </div>
 
             <div class="content-grid">
-                <!-- Левая колонка: контакты -->
                 <aside class="sidebar">
                     <div class="card">
                         <h2 class="card__title">Контакты</h2>
                         <div class="contacts-list">
-                            <!-- Бекенд подставляет контакты -->
                              {{ contacts_template }}
                         </div>
                     </div>
@@ -55,10 +53,7 @@
                                     <span id="statusText">Отключен</span>
                                 </div>
                             </div>
-                            <!-- <a href="/tuttests" class="leave-button">← К списку чатов</a> -->
                         </div>
-                        
-                        <!-- Скрытые поля с данными для JavaScript -->
                         <div class="chat-data">
                             <input type="hidden" id="roomId" value="{{ room_name }}">
                             <input type="hidden" id="tutor_id" value="{{ tutor_id }}">
@@ -81,7 +76,6 @@
             </div>
         </div>
 
-        <!-- ОРИГИНАЛЬНЫЙ РАБОЧИЙ JAVASCRIPT -->
         <script>
             let ws = null;
             let currentRoom = '';

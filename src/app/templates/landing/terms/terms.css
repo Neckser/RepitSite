@@ -19,7 +19,6 @@ body {
     padding: 0 20px;
 }
 
-/* Контейнер условий */
 .terms-container {
     background: white;
     border-radius: 15px;
@@ -28,7 +27,6 @@ body {
     border: 2px solid #e8f5e8;
 }
 
-/* Шапка */
 .terms-header {
     text-align: center;
     margin-bottom: 40px;
@@ -51,7 +49,6 @@ body {
     display: inline-block;
 }
 
-/* Секции контента */
 .content-section {
     margin-bottom: 35px;
 }
@@ -89,7 +86,6 @@ body {
     font-weight: 600;
 }
 
-/* Текстовые ссылки */
 .text-link {
     color: #6b8e23;
     text-decoration: none;
@@ -102,7 +98,6 @@ body {
     text-decoration: underline;
 }
 
-/* Информационные блоки */
 .info-box {
     background: #f8fff8;
     border-left: 4px solid #6b8e23;
@@ -120,7 +115,6 @@ body {
     gap: 10px;
 }
 
-/* Предупреждающие блоки */
 .warning-box {
     background: #fff8e8;
     border-left: 4px solid #ffc107;
@@ -138,7 +132,6 @@ body {
     gap: 10px;
 }
 
-/* Контактная информация */
 .contact-info {
     background: linear-gradient(135deg, #f8fff8 0%, #e8f5e8 100%);
     border-radius: 10px;
@@ -157,12 +150,10 @@ body {
     margin-bottom: 10px;
 }
 
-/* Иконки */
 .icon {
     font-size: 20px;
 }
 
-/* Версия и действия */
 .version-info {
     text-align: center;
     margin-top: 40px;
@@ -222,7 +213,6 @@ body {
     border-color: #6b8e23;
 }
 
-/* Упрощенный футер */
 .simple-footer {
     text-align: center;
     margin-top: 40px;
@@ -241,7 +231,6 @@ body {
     color: #ff6b6b;
 }
 
-/* Адаптивность */
 @media (max-width: 768px) {
     .terms-container {
         padding: 25px;

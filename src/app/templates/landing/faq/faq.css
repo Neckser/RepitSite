@@ -1,4 +1,3 @@
-/* Общие стили для страницы FAQ */
 * {
     margin: 0;
     padding: 0;
@@ -20,7 +19,6 @@ body {
     padding: 0 20px;
 }
 
-/* Основной контейнер */
 .faq-container {
     background: white;
     border-radius: 15px;
@@ -29,7 +27,6 @@ body {
     border: 2px solid #e8f5e8;
 }
 
-/* Шапка */
 .faq-header {
     text-align: center;
     margin-bottom: 40px;
@@ -47,7 +44,6 @@ body {
     margin-bottom: 30px;
 }
 
-/* Категории FAQ */
 .faq-category {
     margin-bottom: 40px;
 }
@@ -65,7 +61,6 @@ body {
     font-size: 24px;
 }
 
-/* Аккордеон FAQ */
 .faq-item {
     margin-bottom: 15px;
     border: 2px solid #e8f5e8;
@@ -128,14 +123,12 @@ body {
     color: #6b8e23;
 }
 
-/* Добавляем отступ в конце ответа */
 .answer-spacing {
     height: 20px;
     margin: 0;
     padding: 0;
 }
 
-/* Секция помощи */
 .help-section {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -236,7 +229,6 @@ body {
     border-color: #5a7a1f;
 }
 
-/* Навигация */
 .actions-section {
     display: flex;
     justify-content: space-between;
@@ -288,7 +280,6 @@ body {
     border-color: #6b8e23;
 }
 
-/* Футер */
 .simple-footer {
     text-align: center;
     margin-top: 40px;
@@ -307,7 +298,6 @@ body {
     color: #ff6b6b;
 }
 
-/* Адаптивность */
 @media (max-width: 768px) {
     .faq-container {
         padding: 25px;

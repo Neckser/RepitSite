@@ -206,7 +206,6 @@
     -webkit-overflow-scrolling: touch;
 }
 
-/* Всегда показываем 7 колонок с адаптивной минимальной шириной */
 .schedule__days-grid,
 .schedule__lessons-container {
     display: grid;
@@ -242,7 +241,6 @@
     }
 }
 
-/* Стилизация скроллбара */
 .schedule__table::-webkit-scrollbar {
     height: 8px;
 }
@@ -261,7 +259,6 @@
     background: var(--primary-dark);
 }
 
-/* Фиксированный размер ячеек с датами */
 .schedule__day-header {
     text-align: center;
     padding: 10px 8px;
@@ -314,7 +311,6 @@
     gap: 8px;
 }
 
-/* Стили для карточки урока ученика */
 .lesson-card {
     background: white;
     border-radius: 10px;
@@ -459,7 +455,6 @@
     margin-top: 4px;
 }
 
-/* Цвета предметов */
 .subject-badge.Математика { background-color: #6b8e23; }
 .subject-badge.Физика { background-color: #3a6ea5; }
 .subject-badge.Информатика { background-color: #0288d1; }
@@ -477,7 +472,6 @@
 .subject-badge.ИЗО { background-color: #ad1457; }
 .subject-badge.Музыка { background-color: #8e24aa; }
 
-/* Контейнер действий в карточке */
 .schedule__lesson-actions {
     display: flex;
     flex-direction: column;
@@ -485,7 +479,6 @@
     margin-top: 10px;
 }
 
-/* Кнопка "Подробнее" для ученика */
 .schedule__lesson-action-btn_details {
     background: var(--background-light);
     color: var(--primary-dark);
@@ -509,7 +502,6 @@
     box-shadow: 0 2px 8px rgba(107, 142, 35, 0.2);
 }
 
-/* Кнопка удаления для ученика */
 .schedule__lesson-action-btn_delete {
     background: linear-gradient(135deg, #ff4d4d 0%, #d93636 100%);
     color: white;
@@ -544,12 +536,10 @@
     line-height: 1;
 }
 
-/* Скрытый контент для модального окна */
+
 .hidden-tasks-content {
     display: none;
 }
-
-/* --- СТИЛИ ДЛЯ МОДАЛЬНОГО ОКНА --- */
 
 .modal-overlay {
     display: none;
@@ -760,7 +750,6 @@
     object-fit: contain;
 }
 
-/* Адаптация для планшетов */
 @media (max-width: 1023px) {
     .container {
         max-width: 100%;
@@ -969,7 +958,6 @@
     }
 }
 
-/* Стили для предпросмотра ссылки */
 .link-preview-container {
     padding: 20px;
     background: #f8f9fa;
@@ -1060,7 +1048,6 @@
     box-shadow: 0 5px 15px rgba(241, 196, 15, 0.3);
 }
 
-/* Желтая кнопка для доски (как у репетитора) */
 .schedule__lesson-action-btn_board {
     background: linear-gradient(135deg, #f1c40f 0%, #f39c12 100%);
     color: white;
@@ -1088,12 +1075,11 @@
     box-shadow: 0 4px 8px rgba(241, 196, 15, 0.3);
 }
 
-/* Иконка для доски */
 .schedule__lesson-action-btn_board::before {
     font-size: 12px;
     margin-right: 4px;
 }
-/* Стили для модального окна видео */
+
 .video-form {
     background: #f8f9fa;
     padding: 20px;
@@ -1198,7 +1184,7 @@
 .go-desklink-btn {
     background: white;
     border: 1px solid #f39c12;
-    color: #f39c12;  /* оранжевый текст */
+    color: #f39c12;
     padding: 8px 12px;
     border-radius: 6px;
     cursor: pointer;
@@ -1210,8 +1196,8 @@
 }
 
 .go-desklink-btn:hover {
-    background: #f39c12;  /* оранжевый фон */
-    color: white;  /* белый текст */
+    background: #f39c12; 
+    color: white;
 }
 
 .copy-link-btn {
@@ -1277,7 +1263,7 @@
     transform: translateY(-1px);
     box-shadow: 0 4px 8px rgba(74, 144, 226, 0.3);
 }
-/* Контейнер для отступа */
+
 .desk-action-section {
     margin-top: 25px;
     padding-top: 15px;
@@ -1285,7 +1271,6 @@
     text-align: center;
 }
 
-/* Основная кнопка */
 .btn-internal-desk {
     display: inline-flex;
     align-items: center;
@@ -1305,7 +1290,6 @@
     box-shadow: 0 4px 15px rgba(241, 196, 15, 0.3);
 }
 
-/* Эффект поднятия при наведении */
 .btn-internal-desk:hover {
     background: linear-gradient(135deg, #f39c12, #e67e22);
     transform: translateY(-3px);
@@ -1317,19 +1301,16 @@
     box-shadow: 0 5px 15px rgba(241, 196, 15, 0.3);
 }
 
-/* Иконка внутри кнопки */
 .btn-internal-desk__icon {
     font-size: 20px;
     filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.1));
 }
 
-/* Текст кнопки */
 .btn-internal-desk__text {
     flex: 0 1 auto;
     letter-spacing: 0.3px;
 }
 
-/* Стрелка с анимацией */
 .btn-internal-desk__arrow {
     font-size: 18px;
     transition: transform 0.3s ease;
@@ -1339,7 +1320,6 @@
     transform: translateX(5px);
 }
 
-/* Для мобильных устройств */
 @media (max-width: 480px) {
     .desk-action-section {
         margin-top: 20px;
@@ -1362,14 +1342,13 @@
     }
 }
 
-/* Для очень маленьких экранов */
 @media (max-width: 380px) {
     .btn-internal-desk {
         padding: 10px 16px;
         font-size: 13px;
     }
 }
-/* Полноэкранный просмотр изображения */
+
 .full-image-overlay {
     position: fixed;
     top: 0;
@@ -1412,7 +1391,6 @@
     }
 }
 
-/* Стили для карточки с изображением */
 .task-mini-card-image {
     background: linear-gradient(135deg, #fafdfa 0%, #f0f4f0 100%);
     cursor: pointer;

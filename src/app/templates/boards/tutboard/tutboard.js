@@ -1,27 +1,19 @@
-// Состояние приложения
 let roomToken = null;
 let ws = null;
 let isConnected = false;
-
-// Canvas элементы
 const canvas = document.getElementById('whiteboard');
 const ctx = canvas.getContext('2d');
 const container = document.getElementById('canvasContainer');
-
-// Инструменты
 const TOOLS = {
     CURSOR: 'cursor',
     BRUSH: 'brush',
     ERASER: 'eraser'
 };
-
 let currentTool = TOOLS.CURSOR;
 let color = '#000000';
 let brushSize = 5;
-
-// Хранилище элементов
-let images = []; // картинки
-let drawings = []; // линии
+let images = [];
+let drawings = [];
 let selectedImageId = null;
 let isDraggingImage = false;
 let isResizing = false;
@@ -31,27 +23,19 @@ let resizeDirection = null;
 let initialSize = { width: 0, height: 0 };
 let initialPosition = { x: 0, y: 0 };
 let initialMouse = { x: 0, y: 0 };
-
-// Рисование
 let isDrawing = false;
 let lastX = 0;
 let lastY = 0;
 let currentLine = null;
-
-// Масштабирование и панорамирование
 let scale = 1;
 let panX = 0;
 let panY = 0;
 let isPanning = false;
 let panStartX = 0;
 let panStartY = 0;
-
-// Счетчик пользователей
 let usersCount = 1;
-
-// ========== ИСТОРИЯ ДЕЙСТВИЙ (UNDO/REDO) - ТОЛЬКО ЛИНИИ ==========
-let drawingHistory = [];      // ← ПЕРЕИМЕНОВАНО
-let drawingHistoryIndex = -1; // ← ПЕРЕИМЕНОВАНО
+let drawingHistory = [];
+let drawingHistoryIndex = -1; 
 const MAX_HISTORY = 30;
 let isUndoRedo = false;
 
@@ -119,10 +103,7 @@ function redo() {
     }
 }
 
-// Очередь для сообщений, которые не удалось отправить
 let pendingMessages = [];
-
-// Функция для безопасной отправки сообщений
 function safeSend(message) {
     if (ws && ws.readyState === WebSocket.OPEN) {
         try {
@@ -140,16 +121,13 @@ function safeSend(message) {
     }
 }
 
-// Функция для правильного определения протокола WebSocket
 function getWebSocketUrl(roomToken) {
     const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
     const host = window.location.host;
     return `${protocol}//${host}/ws/board/${roomToken}`;
 }
 
-// Автоматическое подключение при загрузке страницы
 window.addEventListener('load', () => {
-    // Получаем room_token из скрытого поля
     const token = document.getElementById('currentRoom')?.value;
     
     if (token) {
@@ -161,7 +139,6 @@ window.addEventListener('load', () => {
 });
 
 function connectWebSocket() {
-    // Если уже есть соединение, закрываем его
     if (ws) {
         try {
             ws.close();
@@ -179,8 +156,6 @@ function connectWebSocket() {
         ws.onopen = () => {
             console.log('✅ Connected to room:', roomToken);
             isConnected = true;
-            
-            // Отправляем все накопленные сообщения
             while (pendingMessages.length > 0) {
                 const msg = pendingMessages.shift();
                 safeSend(msg);
@@ -255,8 +230,6 @@ function connectWebSocket() {
         ws.onclose = (event) => {
             console.log('❌ Disconnected from room. Код:', event.code, 'Причина:', event.reason);
             isConnected = false;
-            
-            // Пробуем переподключиться через 3 секунды
             setTimeout(connectWebSocket, 3000);
         };
         
@@ -268,13 +241,10 @@ function connectWebSocket() {
     } catch (error) {
         console.error('❌ Error creating WebSocket:', error);
         isConnected = false;
-        
-        // Пробуем переподключиться через 3 секунды
         setTimeout(connectWebSocket, 3000);
     }
 }
 
-// Функция для последовательной загрузки изображений
 function loadImagesSequentially(imageDataArray) {
     let loadedCount = 0;
     
@@ -310,8 +280,6 @@ function loadImagesSequentially(imageDataArray) {
 function id(ws) {
     return ws._id || (ws._id = Math.random());
 }
-
-// Инструменты
 document.getElementById('toolCursor').addEventListener('click', () => setTool(TOOLS.CURSOR));
 document.getElementById('toolBrush').addEventListener('click', () => setTool(TOOLS.BRUSH));
 document.getElementById('toolEraser').addEventListener('click', () => setTool(TOOLS.ERASER));
@@ -335,7 +303,6 @@ function setTool(tool) {
     }
 }
 
-// Цвет и размер
 document.getElementById('colorPicker').addEventListener('input', (e) => {
     color = e.target.value;
 });
@@ -345,7 +312,7 @@ document.getElementById('brushSize').addEventListener('input', (e) => {
     document.getElementById('sizeValue').textContent = brushSize;
 });
 
-// Зум
+
 document.getElementById('zoomIn').addEventListener('click', () => {
     scale = Math.min(3, scale + 0.25);
     updateZoom();
@@ -368,7 +335,6 @@ function updateZoom() {
     document.getElementById('zoomLevel').textContent = Math.round(scale * 100) + '%';
 }
 
-// Зум колесиком
 container.addEventListener('wheel', (e) => {
     e.preventDefault();
     
@@ -387,7 +353,6 @@ container.addEventListener('wheel', (e) => {
     updateZoom();
 }, { passive: false });
 
-// Перемещение правой кнопкой
 container.addEventListener('mousedown', (e) => {
     if (e.button === 2) {
         e.preventDefault();
@@ -415,7 +380,6 @@ container.addEventListener('mouseup', (e) => {
 
 container.addEventListener('contextmenu', (e) => e.preventDefault());
 
-// Координаты мыши на canvas
 function getCanvasCoordinates(e) {
     const rect = canvas.getBoundingClientRect();
     return {
@@ -424,7 +388,6 @@ function getCanvasCoordinates(e) {
     };
 }
 
-// События мыши на canvas
 canvas.addEventListener('mousedown', (e) => {
     if (e.button !== 0 || isPanning) return;
     
@@ -453,13 +416,9 @@ canvas.addEventListener('mousemove', (e) => {
 
 canvas.addEventListener('mouseup', () => {
     if (isDrawing && currentLine) {
-        
-        // Сохраняем локально
         drawings.push(currentLine);
         redrawCanvas();
         saveToHistory();
-        
-        // Отправляем на сервер через безопасную функцию
         safeSend({
             type: 'draw_line',
             data: currentLine
@@ -479,7 +438,6 @@ canvas.addEventListener('mouseout', () => {
     currentLine = null;
 });
 
-// Обработка курсора
 function handleCursorMouseDown(e, x, y) {
     for (let i = images.length - 1; i >= 0; i--) {
         const img = images[i];
@@ -597,7 +555,6 @@ function handleCursorMouseMove(x, y) {
     }
 }
 
-// Рисование
 function startDrawing(x, y, lineColor) {
     isDrawing = true;
     currentLine = {
@@ -626,7 +583,6 @@ function continueDrawing(x, y) {
     lastY = y;
 }
 
-// Добавление картинки
 document.getElementById('imageInput').addEventListener('change', (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -714,10 +670,7 @@ function updateImageSize(id, data) {
     }
 }
 
-// Обработка клавиш (Delete, Ctrl+Z, Ctrl+Y)
-// Обработка клавиш (Delete, Ctrl+Z, Ctrl+Y)
 document.addEventListener('keydown', (e) => {
-    // Delete - удалить выделенную картинку
     if (e.key === 'Delete' && selectedImageId && currentTool === TOOLS.CURSOR) {
         e.preventDefault();
         safeSend({
@@ -730,21 +683,18 @@ document.addEventListener('keydown', (e) => {
         redrawCanvas();
     }
     
-    // Ctrl+Z - Отменить (РАБОТАЕТ НА ЛЮБОЙ РАСКЛАДКЕ)
     if (e.ctrlKey && !e.shiftKey && e.code === 'KeyZ') {
         console.log('🎯 UNDO (код клавиши)');
         e.preventDefault();
         undo();
     }
     
-    // Ctrl+Y - Повторить
     if (e.ctrlKey && !e.shiftKey && e.code === 'KeyY') {
         console.log('🎯 REDO (код клавиши)');
         e.preventDefault();
         redo();
     }
     
-    // Ctrl+Shift+Z - Повторить (альтернативная комбинация)
     if (e.ctrlKey && e.shiftKey && e.code === 'KeyZ') {
         console.log('🎯 REDO (Ctrl+Shift+Z)');
         e.preventDefault();
@@ -752,7 +702,6 @@ document.addEventListener('keydown', (e) => {
     }
 });
 
-// Очистка доски
 document.getElementById('clearBtn').addEventListener('click', () => {
     if (confirm('Очистить всю доску?')) {
         safeSend({
@@ -768,7 +717,6 @@ document.getElementById('clearBtn').addEventListener('click', () => {
     }
 });
 
-// Сохранение
 document.getElementById('saveBtn').addEventListener('click', () => {
     const currentTransform = canvas.style.transform;
     
@@ -789,7 +737,6 @@ document.getElementById('saveBtn').addEventListener('click', () => {
     canvas.style.transform = currentTransform;
 });
 
-// Перерисовка canvas
 function redrawCanvas() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     

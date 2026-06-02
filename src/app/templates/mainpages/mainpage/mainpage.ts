@@ -8,8 +8,6 @@ document.addEventListener('DOMContentLoaded', function (): void {
         console.error('Элемент sortSelect не найден');
         return;
     }
-
-    // ========== СТАРАЯ ЛОГИКА (СТАТИСТИКА, ФИЛЬТРАЦИЯ, СОРТИРОВКА) ==========
     
     function updateStats(): void {
         const total = document.querySelectorAll('.assignment-card').length;
@@ -102,8 +100,6 @@ document.addEventListener('DOMContentLoaded', function (): void {
     sortSelect.addEventListener('change', function (this: HTMLSelectElement) {
         sortAssignments(this.value);
     });
-
-    // ========== РАСКРЫТИЕ ЗАДАЧ ==========
     
     function toggleTasks(button: HTMLButtonElement): void {
         const card = button.closest('.assignment-card') as HTMLElement | null;
@@ -124,8 +120,6 @@ document.addEventListener('DOMContentLoaded', function (): void {
             toggleText.textContent = 'Показать задания';
         }
     }
-
-    // ========== ПОДСЧЁТ ПРОГРЕССА ДЛЯ ПОЛОСОЧКИ ==========
     
     function updateProgressBars(): void {
         const cards = document.querySelectorAll('.assignment-card');
@@ -138,14 +132,10 @@ document.addEventListener('DOMContentLoaded', function (): void {
             const total = tasks.length;
             const completed = completedTasks.length;
             const percentage = total > 0 ? (completed / total) * 100 : 0;
-            
-            // Обновляем полоску прогресса
             const progressFill = cardElement.querySelector('.progress-fill') as HTMLElement;
             if (progressFill) {
                 progressFill.style.width = `${percentage}%`;
             }
-            
-            // Обновляем статус карточки
             const statusElement = cardElement.querySelector('.status') as HTMLElement;
             if (statusElement) {
                 if (completed === total && total > 0) {
@@ -160,29 +150,18 @@ document.addEventListener('DOMContentLoaded', function (): void {
                 }
             }
         });
-        
-        // Обновляем общую статистику
         updateStats();
     }
-
-    // Навешиваем обработчики на кнопки раскрытия
     const toggleButtons = document.querySelectorAll('.toggle-tasks-btn');
     toggleButtons.forEach(button => {
         button.addEventListener('click', function(this: HTMLButtonElement) {
             toggleTasks(this);
         });
     });
-
-    // Инициализация прогресс-баров при загрузке
     updateProgressBars();
-    
-    // Обновляем статистику при загрузке
     updateStats();
 });
 
-// ========== ФУНКЦИИ ДЛЯ РАБОТЫ С ИЗОБРАЖЕНИЯМИ ==========
-
-// Функция открытия картинки во весь экран
 (window as any).openFullImage = function(src: string): void {
     let overlay = document.getElementById('fullImageOverlay');
     if (!overlay) {
@@ -203,8 +182,6 @@ document.addEventListener('DOMContentLoaded', function (): void {
     img.src = src;
     overlay.classList.add('active');
     document.body.style.overflow = 'hidden';
-    
-    // Закрытие по Escape
     const escHandler = function(e: KeyboardEvent): void {
         if (e.key === 'Escape') {
             (window as any).closeFullscreenImage();
@@ -213,8 +190,6 @@ document.addEventListener('DOMContentLoaded', function (): void {
     };
     document.addEventListener('keydown', escHandler);
 };
-
-// Функция закрытия полноэкранного режима
 (window as any).closeFullscreenImage = function(): void {
     const overlay = document.getElementById('fullImageOverlay');
     if (overlay) {

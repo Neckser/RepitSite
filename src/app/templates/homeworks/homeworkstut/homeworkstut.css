@@ -877,17 +877,16 @@
 .btn-save-all:hover {
     background: #5a7a1f;
 }
-/* Отступы между секциями в модалке */
+
 .modal-content h3 {
     margin-top: 30px;
     margin-bottom: 20px;
 }
 
 .tasks-scroll-container {
-    margin-bottom: 30px;  /* было 25px, увеличим */
+    margin-bottom: 30px; 
 }
 
-/* Улучшаем поле загрузки картинки – делаем как в уроках */
 .file-upload-styled {
     border: 2px dashed #8fb84a;
     padding: 30px 20px;
@@ -917,12 +916,10 @@
     font-size: 14px;
 }
 
-/* Чтобы кнопки переключения типа задания выглядели как в уроках */
 .task-type-toggle span {
     user-select: none;
 }
 
-/* Стили для input type="file" */
 .file-upload-styled {
     border: 2px dashed #8fb84a;
     border-radius: 12px;
@@ -1051,7 +1048,6 @@
     border-radius: 2px;
 }
 
-/* ВОТ ОН - ПУНКТИРНЫЙ БОРДЕР */
 #homeworkModal .file-upload-styled {
     border: 2px dashed #8fb84a !important;
     padding: 30px !important;
@@ -1141,9 +1137,6 @@
     margin-top: 10px;
 }
 
-/* ========== СТИЛИ ДЛЯ МОДАЛЬНОГО ОКНА ДОМАШНИХ ЗАДАНИЙ ========== */
-
-/* Заголовки с зелёной вертикальной полоской */
 #homeworkModal .modal-content h3 {
     font-size: 18px;
     color: #333;
@@ -1162,7 +1155,6 @@
     border-radius: 2px;
 }
 
-/* Пунктирная обводка для загрузки файла */
 #homeworkModal .file-upload-styled {
     border: 2px dashed #8fb84a !important;
     padding: 30px !important;
@@ -1181,7 +1173,7 @@
     font-size: 14px !important;
 }
 
-/* Плавное переключение между текстом и картинкой */
+
 #homeworkModal #homework_task_text_input,
 #homeworkModal #homework_task_image_input {
     transition: opacity 0.2s ease-in-out;
@@ -1194,7 +1186,6 @@
     opacity: 0;
 }
 
-/* Контейнер с прокруткой для списка задач */
 #homeworkModal .tasks-scroll-container {
     max-height: 250px;
     overflow-y: auto;
@@ -1221,7 +1212,6 @@
     border-radius: 10px;
 }
 
-/* Стили для textarea */
 #homeworkModal .modal-content textarea {
     width: 100%;
     min-height: 120px;
@@ -1243,7 +1233,6 @@
     background: #fff;
 }
 
-/* Кнопка сохранения */
 #homeworkModal .btn-save-all {
     display: flex;
     align-items: center;
@@ -1267,13 +1256,11 @@
     box-shadow: 0 5px 15px rgba(107, 142, 35, 0.3);
 }
 
-/* Кнопки переключения типа задания */
 #homeworkModal .task-type-toggle span {
     user-select: none;
     transition: all 0.2s ease;
 }
 
-/* Контейнер для формы */
 #homeworkModal .modal-form__input-container {
     min-height: 150px;
     display: flex;
@@ -1281,7 +1268,6 @@
     margin-top: 10px;
 }
 
-/* Стили для карточек задач */
 #homeworkModal .task-mini-card {
     background: white;
     border: 1px solid #e8f5e8;
@@ -1320,7 +1306,6 @@
     background: #f9f9f9;
 }
 
-/* Сообщение о пустом списке */
 #homeworkModal .tasks-empty-message {
     text-align: center;
     color: #888;
@@ -1328,9 +1313,6 @@
     font-style: italic;
 }
 
-/* ========== ИСПРАВЛЕННЫЕ СТИЛИ ДЛЯ МОДАЛЬНОГО ОКНА ДОМАШНИХ ЗАДАНИЙ ========== */
-
-/* Заголовки с зелёной вертикальной полоской */
 #homeworkModal .modal-content h3 {
     font-size: 18px;
     color: #333;
@@ -1349,7 +1331,6 @@
     border-radius: 2px;
 }
 
-/* Пунктирная обводка для загрузки файла */
 #homeworkModal .file-upload-styled {
     border: 2px dashed #8fb84a !important;
     padding: 30px !important;
@@ -1367,7 +1348,6 @@
     font-size: 14px !important;
 }
 
-/* Контейнер с прокруткой для списка задач */
 #homeworkModal .tasks-scroll-container {
     max-height: 250px;
     overflow-y: auto;
@@ -1394,7 +1374,6 @@
     border-radius: 10px;
 }
 
-/* Стили для textarea - ТОЧНО КАК В ЭТАЛОНЕ */
 #homeworkModal .modal-content textarea {
     width: 100% !important;
     min-height: 120px !important;
@@ -1404,9 +1383,9 @@
     font-size: 14px !important;
     line-height: 1.5 !important;
     background: #fdfdfd !important;
-    resize: none !important;  /* ЗАПРЕЩАЕМ РАСТЯГИВАНИЕ */
-    overflow-y: auto !important;  /* СКРОЛЛ ПРИ ПЕРЕПОЛНЕНИИ */
-    margin: 0 0 10px 0 !important;  /* ОТСТУП СНИЗУ 10px */
+    resize: none !important;  
+    overflow-y: auto !important;  
+    margin: 0 0 10px 0 !important;  
     transition: border-color 0.3s, box-shadow 0.3s !important;
 }
 
@@ -1417,7 +1396,6 @@
     background: #fff !important;
 }
 
-/* Кнопка сохранения - УМЕНЬШАЕМ ОТСТУП СВЕРХУ */
 #homeworkModal .btn-save-all {
     display: flex !important;
     align-items: center !important;
@@ -1431,7 +1409,7 @@
     font-size: 16px !important;
     font-weight: 600 !important;
     cursor: pointer !important;
-    margin-top: 10px !important;  /* УМЕНЬШЕН ОТСТУП ДО 10px */
+    margin-top: 10px !important;
     transition: all 0.3s !important;
 }
 
@@ -1441,7 +1419,6 @@
     box-shadow: 0 5px 15px rgba(107, 142, 35, 0.3) !important;
 }
 
-/* Кнопки переключения типа задания */
 #homeworkModal .task-type-toggle {
     display: flex !important;
     gap: 10px !important;
@@ -1474,7 +1451,6 @@
     border-color: #6b8e23 !important;
 }
 
-/* Контейнер для формы */
 #homeworkModal .modal-form__input-container {
     display: flex !important;
     flex-direction: column !important;
@@ -1482,7 +1458,6 @@
     margin-bottom: 0 !important;
 }
 
-/* Стили для карточек задач */
 #homeworkModal .task-mini-card {
     background: white;
     border: 1px solid #e8f5e8;
@@ -1521,7 +1496,6 @@
     background: #f9f9f9;
 }
 
-/* Пунктирная обводка для блока загрузки файла И для input */
 #homeworkModal .file-upload-styled {
     border: 2px dashed #8fb84a !important;
     padding: 30px !important;
@@ -1540,7 +1514,6 @@
     font-size: 14px !important;
 }
 
-/* Пунктирная обводка для самого input[type="file"] */
 #homeworkModal .file-upload-styled input[type="file"] {
     border: 2px dashed #8fb84a !important;
     padding: 8px 12px !important;
@@ -1563,7 +1536,6 @@
     transition: 0.3s !important;
 }
 
-/* Исправляем поле выбора файла - возвращаем Browse на место и делаем внутренний пунктир серым */
 #homeworkModal .file-upload-styled {
     border: 2px dashed #8fb84a !important;
     padding: 30px !important;
@@ -1581,19 +1553,17 @@
     font-size: 14px !important;
 }
 
-/* СЕРЫЙ пунктир для input[type="file"] и возвращаем Browse на место */
 #homeworkModal .file-upload-styled input[type="file"] {
     width: 100% !important;
     max-width: 100% !important;
     padding: 10px !important;
     background: #f8f9fa !important;
-    border: 2px dashed #ccd1d1 !important;  /* СЕРЫЙ пунктир как в эталоне */
+    border: 2px dashed #ccd1d1 !important; 
     border-radius: 10px !important;
     cursor: pointer !important;
     margin: 0 !important;
 }
 
-/* Кнопка Browse - зелёная как в эталоне */
 #homeworkModal .file-upload-styled input[type="file"]::file-selector-button {
     background: #6b8e23 !important;
     color: white !important;
@@ -1605,12 +1575,12 @@
     transition: background 0.3s !important;
     font-size: 14px !important;
 }
-/* Затемнение кнопки Browse при наведении */
+
 #homeworkModal .file-upload-styled input[type="file"]::file-selector-button:hover {
-    background: #5a7a1f !important;  /* темнее на 10% */
+    background: #5a7a1f !important; 
     transition: background 0.2s ease !important;
 }
-/* Стили для кнопок в карточке домашнего задания */
+
 .assignment-item__actions {
     display: flex;
     gap: 12px;
@@ -1639,13 +1609,12 @@
     box-shadow: 0 5px 15px rgba(107, 142, 35, 0.3);
 }
 
-/* Кнопка Удалить - более квадратная */
 .btn_delete {
     background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
     color: white;
     border: none;
     padding: 10px 20px;
-    border-radius: 8px;  /* БЫЛО 20px, СТАЛО 8px - более квадратная */
+    border-radius: 8px;
     font-size: 14px;
     font-weight: 600;
     cursor: pointer;
@@ -1662,10 +1631,9 @@
     box-shadow: 0 5px 15px rgba(220, 53, 69, 0.3);
 }
 
-/* Одинаковая высота для textarea и поля загрузки файла */
 #homeworkModal .modal-content textarea {
     width: 100% !important;
-    min-height: 152px !important;  /* ТАКАЯ ЖЕ ВЫСОТА КАК У ПОЛЯ ЗАГРУЗКИ */
+    min-height: 152px !important;
     padding: 15px !important;
     border: 1px solid #dce0e0 !important;
     border-radius: 12px !important;
@@ -1679,7 +1647,6 @@
     box-sizing: border-box !important;
 }
 
-/* Фиксированная высота для контейнера с загрузкой файла */
 #homeworkModal .file-upload-styled {
     border: 2px dashed #8fb84a !important;
     padding: 30px !important;
@@ -1689,14 +1656,12 @@
     margin: 0 !important;
     transition: border-color 0.3s ease, background 0.3s ease;
     cursor: pointer;
-    min-height: 152px !important;  /* ФИКСИРОВАННАЯ ВЫСОТА */
+    min-height: 152px !important;
     display: flex !important;
     flex-direction: column !important;
     justify-content: center !important;
     box-sizing: border-box !important;
 }
-
-/* ========== СТИЛИ ДЛЯ КАРТОЧЕК С ИЗОБРАЖЕНИЯМИ ========== */
 
 .task-mini-card {
     background: white;
@@ -1786,7 +1751,6 @@
     border-radius: 50%;
 }
 
-/* Полноэкранный просмотр изображения */
 .full-image-overlay {
     position: fixed;
     top: 0;

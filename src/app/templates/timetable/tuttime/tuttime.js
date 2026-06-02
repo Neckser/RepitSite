@@ -68,7 +68,6 @@ window.showLessonModal = function(button) {
     document.body.style.overflow = 'hidden';
 };
 
-// Функция переключения полей
 window.toggleTaskType = function(type) {
     const textInput = document.getElementById('task_text_input');
     const imageInput = document.getElementById('task_image_input');
@@ -82,16 +81,14 @@ window.toggleTaskType = function(type) {
     }
 };
 
-// Функция для закрытия модалки (глобальная)
 window.closeLessonModal = function() {
     const modal = document.getElementById('lessonModal');
     if (modal) {
         modal.classList.remove('active');
-        document.body.style.overflow = ''; // Возвращаем скролл
+        document.body.style.overflow = ''; 
     }
 };
 
-// Закрытие по клику на фон
 document.addEventListener('click', function(e) {
     const modal = document.getElementById('lessonModal');
     if (e.target === modal) {
@@ -99,21 +96,13 @@ document.addEventListener('click', function(e) {
     }
 });
 
-// Закрытие по кнопке Escape
 document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') {
         closeLessonModal();
     }
 });
 
-// Функция открытия картинки во весь экран
 window.openFullImage = function(src) {
-    // УДАЛИТЕ ЭТИ СТРОКИ:
-    // const lessonModal = document.getElementById('lessonModal');
-    // if (lessonModal && lessonModal.classList.contains('active')) {
-    //     closeLessonModal();
-    // }
-    
     let overlay = document.getElementById('fullImageOverlay');
     if (!overlay) {
         overlay = document.createElement('div');
@@ -121,15 +110,12 @@ window.openFullImage = function(src) {
         overlay.className = 'full-image-overlay';
         overlay.innerHTML = `<img src="" id="fullImageItem">`;
         document.body.appendChild(overlay);
-        
-        // Закрытие по клику на фон
         overlay.addEventListener('click', function(e) {
             if (e.target === overlay) {
                 closeFullscreenImage();
             }
         });
-        
-        // Закрытие по клавише Escape
+
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') {
                 closeFullscreenImage();
@@ -143,7 +129,6 @@ window.openFullImage = function(src) {
     document.body.style.overflow = 'hidden';
 };
 
-// Функция закрытия полноэкранного режима
 window.closeFullscreenImage = function() {
     const overlay = document.getElementById('fullImageOverlay');
     if (overlay) {
@@ -156,7 +141,6 @@ window.closeFullscreenImage = function() {
     }
 };
 
-// Функция для открытия модального окна видеосозвона
 window.showVideoModal = function(button) {
     const lessonCard = button.closest('.lesson-card');
     const lessonId = lessonCard.querySelector('input[name="lesson_id"]').value;
@@ -216,7 +200,6 @@ window.showVideoModal = function(button) {
     document.body.style.overflow = 'hidden';
 };
 
-// Функция закрытия
 window.closeVideoModal = function() {
     const modal = document.getElementById('videoModal');
     if (modal) {
@@ -225,7 +208,6 @@ window.closeVideoModal = function() {
     }
 };
 
-// Закрытие по клику на фон
 document.addEventListener('click', function(e) {
     const modal = document.getElementById('videoModal');
     if (e.target === modal) {
@@ -239,7 +221,6 @@ document.addEventListener('keydown', function(e) {
     }
 });
 
-// Функция для открытия модального окна доски
 window.showDeskModal = function(button) {
     const lessonCard = button.closest('.lesson-card');
     const lessonId = lessonCard.querySelector('input[name="lesson_id"]').value;
@@ -305,7 +286,6 @@ window.showDeskModal = function(button) {
     document.body.style.overflow = 'hidden';
 };
 
-// Функция закрытия
 window.closeDeskModal = function() {
     const modal = document.getElementById('deskModal');
     if (modal) {
@@ -314,7 +294,6 @@ window.closeDeskModal = function() {
     }
 };
 
-// Функция копирования ссылки на доску
 window.copyDeskLink = function(lessonId) {
     const link = document.querySelector(`input[name="desk_link"]`).value;
     navigator.clipboard.writeText(link).then(() => {
@@ -322,7 +301,6 @@ window.copyDeskLink = function(lessonId) {
     });
 };
 
-// Добавляем обработчики закрытия
 document.addEventListener('click', function(e) {
     const deskModal = document.getElementById('deskModal');
     if (e.target === deskModal) {

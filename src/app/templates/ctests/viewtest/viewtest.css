@@ -9,7 +9,7 @@ body {
     background-color: #f8f9fa;
     min-height: 100vh;
 }
-/* ===== TOP BAR ===== */
+
 .top-bar {
     background-color: #6b8e23;
     padding: 12px 0;
@@ -72,13 +72,13 @@ body {
     font-size: 12px;
     opacity: 0.9;
 }
-/* ===== LAYOUT ===== */
+
 .container {
     max-width: 900px;
     margin: 30px auto;
     padding: 0 20px;
 }
-/* ===== TEST HEADER ===== */
+
 .test-header {
     background: white;
     border-radius: 15px;
@@ -140,7 +140,7 @@ body {
     margin-top: 6px;
     color: #555;
 }
-/* ===== QUESTION CARD ===== */
+
 .question-card {
     background: white;
     border-radius: 15px;
@@ -149,7 +149,7 @@ body {
     box-shadow: 0 3px 15px rgba(0,0,0,0.08);
     animation: fadeIn 0.4s ease-out;
     display: none;
-    min-height: 400px; /* Фиксированная высота для всех карточек */
+    min-height: 400px;
     position: relative;
 }
 .question-card.active {
@@ -172,7 +172,7 @@ body {
     color: #333;
     line-height: 1.5;
 }
-/* ===== ANSWERS: SINGLE CHOICE ===== */
+
 .answers {
     display: flex;
     flex-direction: column;
@@ -195,7 +195,7 @@ body {
     background-color: #f1f9f1;
     transform: translateY(-2px);
 }
-/* Кастомные радио-кнопки */
+
 .custom-radio {
     width: 22px;
     height: 22px;
@@ -215,7 +215,7 @@ body {
     border-radius: 50%;
     background-color: #6b8e23;
 }
-/* Кастомные чекбоксы */
+
 .custom-checkbox {
     width: 22px;
     height: 22px;
@@ -239,9 +239,9 @@ body {
     cursor: pointer;
     flex-grow: 1;
 }
-/* ===== TEXT ANSWER (одинаковый размер с вариантами) ===== */
+
 .text-answer-container {
-    min-height: 240px; /* Такой же размер как у 4 вариантов ответа */
+    min-height: 240px;
     display: flex;
     flex-direction: column;
 }
@@ -277,7 +277,7 @@ body {
     text-align: right;
     margin-top: 8px;
 }
-/* ===== QUESTION TYPE INDICATOR ===== */
+
 .question-type {
     display: inline-block;
     padding: 4px 12px;
@@ -288,7 +288,7 @@ body {
     font-weight: 600;
     margin-bottom: 15px;
 }
-/* ===== ACTIONS (фиксированное положение) ===== */
+
 .test-actions {
     display: flex;
     justify-content: space-between;
@@ -336,14 +336,14 @@ body {
     opacity: 0.5;
     cursor: not-allowed;
 }
-/* Скрываем нативные элементы */
+
 .answer-option input {
     position: absolute;
     opacity: 0;
     width: 0;
     height: 0;
 }
-/* ===== QUESTION NAVIGATION DOTS ===== */
+
 .question-dots {
     display: flex;
     justify-content: center;
@@ -369,7 +369,7 @@ body {
 .question-dot.error {
     background-color: #dc3545;
 }
-/* ===== ADAPTIVE ===== */
+
 @media (max-width: 768px) {
     .test-actions {
         flex-direction: column;
@@ -394,7 +394,7 @@ body {
         padding: 20px;
     }
 }
-/* ===== МОДАЛЬНОЕ ОКНО ТАЙМЕРА ===== */
+
 .timeout-modal {
     position: fixed;
     top: 0;

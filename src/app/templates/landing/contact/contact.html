@@ -104,8 +104,6 @@
                     </div>
                 </div>
             </div>
-
-            <!-- Часто задаваемые вопросы -->
             <div class="faq-section">
                 <h2 class="faq-title">Часто задаваемые вопросы</h2>
                 
@@ -154,8 +152,6 @@
                     </div>
                 </div>
             </div>
-
-            <!-- Дополнительные контакты -->
             <div class="additional-contacts">
                 <h2 class="additional-title">Другие способы связи</h2>
                 
@@ -176,8 +172,6 @@
                     </a>
                 </div>
             </div>
-
-            <!-- Вернуться на главную -->
             <div class="actions-section">
                 <a href="/" class="back-btn">
                     <span>←</span> Вернуться на главную
@@ -188,16 +182,12 @@
                     <a href="/faq" class="policy-link">Все вопросы</a>
                 </div>
             </div>
-
-            <!-- Футер -->
             <div class="simple-footer">
                 <p>&copy; 2024 RepitHub. Все права защищены.</p>
                 <p>Разработано с <span class="heart">❤️</span> для образования</p>
             </div>
         </div>
     </div>
-
-    <!-- Модальное окно чата -->
     <div class="chat-modal" id="chatModal">
         <div class="chat-modal-content">
             <div class="chat-header">
@@ -221,7 +211,6 @@
     </div>
 
     <script>
-        // Открытие/закрытие чата
         document.getElementById('openChatBtn').addEventListener('click', function() {
             document.getElementById('chatModal').style.display = 'flex';
         });
@@ -230,14 +219,12 @@
             document.getElementById('chatModal').style.display = 'none';
         });
 
-        // Закрытие чата по клику вне окна
         document.getElementById('chatModal').addEventListener('click', function(e) {
             if (e.target === this) {
                 this.style.display = 'none';
             }
         });
 
-        // Отправка формы
         document.getElementById('contactForm').addEventListener('submit', function(e) {
             e.preventDefault();
             alert('Спасибо! Ваше сообщение отправлено. Мы свяжемся с вами в ближайшее время.');

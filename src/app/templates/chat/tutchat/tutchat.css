@@ -22,7 +22,6 @@
                 --white: #ffffff;
             }
 
-            /* ===== Верхняя панель ===== */
             .top-bar {
                 background-color: var(--primary-color);
                 padding: 12px 0;
@@ -117,7 +116,6 @@
                 line-height: 1.2;
             }
 
-            /* ===== Основной контейнер ===== */
             .container {
                 max-width: 1200px;
                 margin: 25px auto;
@@ -135,7 +133,6 @@
                 font-weight: bold;
             }
 
-            /* ===== Двухколоночная сетка ===== */
             .content-grid {
                 display: grid;
                 grid-template-columns: 300px 1fr;
@@ -155,7 +152,6 @@
                 gap: 25px;
             }
 
-            /* ===== Карточки ===== */
             .card {
                 background: white;
                 border-radius: 15px;
@@ -165,7 +161,7 @@
                 display: flex;
                 flex-direction: column;
                 height: 680px;
-                overflow: hidden; /* Предотвращаем вылезание содержимого */
+                overflow: hidden;
             }
 
             .card__title {
@@ -179,22 +175,19 @@
                 flex-shrink: 0;
             }
 
-            /* ===== Список контактов ===== */
             .contacts-list {
                 flex: 1;
-                overflow-y: auto; /* Включаем скролл */
+                overflow-y: auto;
                 padding-right: 8px;
                 display: flex;
                 flex-direction: column;
-                gap: 16px; /* Отступ между карточками */
-                /* Убираем лишние padding/margin которые ломают первый элемент */
+                gap: 16px;
                 padding-top: 4px;
                 margin-top: 0;
             }
 
-            /* Стилизация скроллбара */
             .contacts-list::-webkit-scrollbar {
-                width: 8px; /* Немного шире */
+                width: 8px;
             }
 
             .contacts-list::-webkit-scrollbar-track {
@@ -212,7 +205,6 @@
                 background: var(--primary-dark);
             }
 
-            /* Для Firefox */
             .contacts-list {
                 scrollbar-width: thin;
                 scrollbar-color: var(--primary-color) #f1f1f1;
@@ -222,9 +214,8 @@
                 text-decoration: none;
                 color: inherit;
                 display: block;
-                /* Убираем overflow hidden чтобы не обрезать тень */
                 border-radius: 14px;
-                margin-bottom: 0; /* Убираем лишний margin */
+                margin-bottom: 0;
             }
 
             .contact-item {
@@ -237,7 +228,6 @@
                 align-items: center;
                 gap: 15px;
                 cursor: pointer;
-                /* Добавляем margin вместо transform для hover */
                 margin: 0;
                 position: relative;
                 top: 0;
@@ -245,7 +235,6 @@
             }
 
             .contact-link:hover .contact-item {
-                /* Вместо transform используем margin и тень */
                 margin-top: -2px;
                 margin-bottom: 2px;
                 border-color: var(--primary-light);
@@ -280,7 +269,7 @@
             .contact-name {
                 font-weight: 600;
                 color: var(--text-dark);
-                margin-bottom: 6px; /* Увеличил отступ */
+                margin-bottom: 6px;
                 font-size: 15px;
                 display: flex;
                 justify-content: space-between;
@@ -301,7 +290,6 @@
                 text-overflow: ellipsis;
             }
 
-            /* ===== Область чата ===== */
             .chat-card {
                 background: white;
                 border-radius: 15px;
@@ -493,12 +481,10 @@
                 cursor: not-allowed;
             }
 
-            /* Скрытые поля для данных */
             .chat-data {
                 display: none;
             }
 
-            /* Пустое состояние контактов */
             .contacts-list:empty::after {
                 content: "Нет контактов";
                 display: flex;
@@ -513,7 +499,6 @@
                 margin-top: 0;
             }
 
-            /* ===== Адаптивность ===== */
             @media (max-width: 1023px) {
                 .container {
                     padding: 0 15px;
